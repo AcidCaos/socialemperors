@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, send_from_directory, request
+from flask import Flask, render_template, send_from_directory, request, redirect
 from flask.debughelpers import attach_enctype_error_multidict
 
 host = '127.0.0.1'
@@ -64,52 +64,74 @@ def get_game_config():
     user_key = request.values['user_key']
     spdebug = request.values['spdebug']
     language = request.values['language']
-    config = {
-        # - core.Base
-        "result": "ok", # "error"
-        "honor_levels": [
-            {"rank": "UnknownRankI", "points": 10},
-            {"rank": "UnknownRankII", "points": 100}
-        ],
-        # - managers.GameDataManager
-        "kompu_offers": [{
-            "id": 000,
-            "starts_at": 111,
-            "duration": 300,
-            "rewards": None,
-            "hurry_up_cost": 4,
-            "timer_between": None,
-            "viral_icon": None,
-            "game_type": None,
-        }],
-        "items": [ # StaticData for items (buildings...)
-            {
-                "id": 0, # (used in StaticDataLib.getItem(0)) this is the list index, not building/item id. Must start at 0, then 1, and so on.
-            }
-        ],
-        "findable_items": [],
-        "levels": [ # must have playerInfo.map.level entries.  See the very end of PlayerStatus.Init()
-            {"exp_required": 1},
-            {"exp_required": 10},
-            {"exp_required": 50},
-            {"exp_required": 100},
-        ],
-        "neighbor_assists": [],
-        "map_prices": [],
-        "missions": [], # "missions": [{"id": 1}],
-        "magics": [], # "magics": [{"id": 1}],
-        "social_items" : [], # "items": [{"id": 1}],
-        "globals": {},
-        "offer_packs": {},
-        "level_ranking_reward": [],
-        "units_collections_categories": {},
-        "darts_items": [],
-        "images": {},
-        "tournament_type": {},
-        "expansion_prices": [],
-        "localization_strings": {},
-    }
-    return (config, 200)
+    # config = {
+    #     # - core.Base
+    #     "result": "ok", # "error"
+    #     "honor_levels": [
+    #         {"rank": "UnknownRankI", "points": 10},
+    #         {"rank": "UnknownRankII", "points": 100}
+    #     ],
+    #     # - managers.GameDataManager
+    #     "kompu_offers": [{
+    #         "id": 000,
+    #         "starts_at": 111,
+    #         "duration": 300,
+    #         "rewards": None,
+    #         "hurry_up_cost": 4,
+    #         "timer_between": None,
+    #         "viral_icon": None,
+    #         "game_type": None,
+    #     }],
+    #     "items": [ # StaticData for items (buildings...)
+    #         {
+    #             "id": 0, # (used in StaticDataLib.getItem(0)) this is the list index, not building/item id. Must start at 0, then 1, and so on.
+    #             # - Base.processMap (_loc22_ = [...])
+    #             "activation": 3.14,
+    #             "collect": 1,
+    #             "collect_type": "",
+    #             "collect_xp": 0,
+    #             "category_id": 1, #  CAT_BUILDING_TOWN:uint = 1; CAT_BUILDING_WAR:uint = 2; CAT_BUILDING_TROOPS:uint = 3; .... 7.
+    #             "type": 0,
+# 
+# 
+    #             "img_name": "Unknown_Image_name",
+    #             "building": { # StaticData
+    #                 "id": 0, # building/item id. Constants.ID_BUILDING_HOUSE_1
+    #                 "name": "UnknownBuilding",
+    #                 "img_name": "Unknown_Image_name",
+    #                 "category_id": 1,
+    #                 "activation": 3.14,
+    #                 "collect": 1,
+    #                 "collect_type": "",
+    #                 "collect_xp": 0,
+    #             }
+    #         }
+    #     ],
+    #     "findable_items": [],
+    #     "levels": [ # must have playerInfo.map.level entries.  See the very end of PlayerStatus.Init()
+    #         {"exp_required": 1},
+    #         {"exp_required": 10},
+    #         {"exp_required": 50},
+    #         {"exp_required": 100},
+    #     ],
+    #     "neighbor_assists": [],
+    #     "map_prices": [],
+    #     "missions": [], # "missions": [{"id": 1}],
+    #     "magics": [], # "magics": [{"id": 1}],
+    #     "social_items" : [], # "items": [{"id": 1}],
+    #     "globals": {},
+    #     "offer_packs": {},
+    #     "level_ranking_reward": [],
+    #     "units_collections_categories": {},
+    #     "darts_items": [],
+    #     "images": {},
+    #     "tournament_type": {},
+    #     "expansion_prices": [],
+    #     "localization_strings": {},
+    # }
+    # return (config, 200)
+    # return send_from_directory("srvempires", "get_game_config.php.txt")
+    return send_from_directory("srvempires", "get_game_config.php_no_hash.txt")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_player_info.php", methods=['POST'])
 def get_player_info():
@@ -154,86 +176,86 @@ def get_player_info():
             "expirableUnitsTime": {},
             "items": [
                 # core.BuildingReference
-                [
-                    {
-                        "id": 0, # this is the list index, not building/item id. Must start at 0, 1, and so on.
-                        "tx": 2,
-                        "ty": 2,
-                        "x": 33,
-                        "y": 22,
-                        "zIndex": 0,
-                        "frame": 0,
-                        "sort": 0,
-                        "otx": 0,
-                        "oty": 0,
-                        "mc": {}, # core.IsoEngine.IsoElement
-                        "building": { # StaticData
-                            "id": 0, # building/item id. Constants.ID_BUILDING_HOUSE_1
-                            "name": "UnknownBuilding",
-                            "img_name": "Unknown_Image_name",
-                            "type": "b", # Constants.TYPE_BUILDING:String = "b"; Constants.TYPE_UNIT:String = "u";
-                            "xp": 12,
-                            "display_order": 0,
-                            "category_id": 1,
-                            "subcategory_id": 0,
-                            "subcat_functional": 0,
-                            "min_level": 1,
-                            "width": 2,
-                            "height": 2,
-                            "in_store": 1,
-                            "new_item": 1, # 0 or 1 (boolean, but Integer represented)
-                            "giftable": 1, # 0 or 1 (boolean, but Integer represented)
-                            "groups": "unknownFormatGroup:String",
-                            "frame": 0,
-                            "max_frame": 1,
-                            "elevation": 0,
-                            "attack": 2,
-                            "defense": 2,
-                            "life": 8,
-                            "velocity": 15,
-                            "attack_range": 7,
-                            "attack_interval": 20,
-                            "population": 3,
-                            "race": "", #race represented by string (usually a single character)
-                            "flying": 0, # 0 or 1 (boolean, but Integer represented)
-                            "protect": 0, # 0 or 1 (boolean, but Integer represented)
-                            "potion": 0,
-                            "achievement": 0, # 0 or 1 (boolean, but Integer represented)
-                            "upgrades_to": 0, # probably an item id
-                            "units_limit": 0,
-                            "size": 1,
-                            "giftId": 0, # unknown type
-                            "iphone_id": 0, # unknown type
-                            "store_level": 1,
-                            "cost": 13,
-                            "cost_type": "",
-                            "cost_unit_cash": 1,
-                            "activation": 3.14,
-                            "collect": 1,
-                            "collect_type": "",
-                            "collect_xp": 0,
-                            "unit_capacity": 5,
-                            "trains": 0,
-                            "build_time": 300, # unknown type
-                            "subcategory2_id": 0,
-                            "only_mobile": 1,
-                        },
-                        "loaded_": { # DynamicData
-
-                        },
-                    #     setUpBuildings    [processMap() loadedMap array build]
-                    #     **************    *********************************************
-                    },  # "id"          --> _loc14_ = int(_loc7_[0]);
-                    33, # "x"           --> _loc15_ = _loc7_[1];
-                    22, # "y"           --> _loc16_ = _loc7_[2];
-                    0,  # "orientation" --> _loc17_ = _loc7_[3];
-                    0,  # "collected_at"--> _loc31_ = _loc7_[4];
-                    0,  # "level"       --> _loc19_ = _loc7_[5] OR 0
-                    [], # "units"       --> _loc20_ = _loc7_[6] OR []
-                    {}, # "attrs"       --> _loc21_ = _loc7_[7] OR {}
-                    #                                 ^
-                    #                                 L "_loc7_" is THIS array! :: (from processMap): _loc7_ = ---.serverItem = item = player.map.items[x]
-                ],
+                # [
+                #     {
+                #         "id": 0, # this is the list index, not building/item id. Must start at 0, 1, and so on.
+                #         "tx": 2,
+                #         "ty": 2,
+                #         "x": 33,
+                #         "y": 22,
+                #         "zIndex": 0,
+                #         "frame": 0,
+                #         "sort": 0,
+                #         "otx": 0,
+                #         "oty": 0,
+                #         "mc": {}, # core.IsoEngine.IsoElement
+                #         "building": { # StaticData
+                #             "id": 0, # building/item id. Constants.ID_BUILDING_HOUSE_1
+                #             "name": "UnknownBuilding",
+                #             "img_name": "Unknown_Image_name",
+                #             "type": "b", # Constants.TYPE_BUILDING:String = "b"; Constants.TYPE_UNIT:String = "u";
+                #             "xp": 12,
+                #             "display_order": 0,
+                #             "category_id": 1,
+                #             "subcategory_id": 0,
+                #             "subcat_functional": 0,
+                #             "min_level": 1,
+                #             "width": 2,
+                #             "height": 2,
+                #             "in_store": 1,
+                #             "new_item": 1, # 0 or 1 (boolean, but Integer represented)
+                #             "giftable": 1, # 0 or 1 (boolean, but Integer represented)
+                #             "groups": "unknownFormatGroup:String",
+                #             "frame": 0,
+                #             "max_frame": 1,
+                #             "elevation": 0,
+                #             "attack": 2,
+                #             "defense": 2,
+                #             "life": 8,
+                #             "velocity": 15,
+                #             "attack_range": 7,
+                #             "attack_interval": 20,
+                #             "population": 3,
+                #             "race": "", #race represented by string (usually a single character)
+                #             "flying": 0, # 0 or 1 (boolean, but Integer represented)
+                #             "protect": 0, # 0 or 1 (boolean, but Integer represented)
+                #             "potion": 0,
+                #             "achievement": 0, # 0 or 1 (boolean, but Integer represented)
+                #             "upgrades_to": 0, # probably an item id
+                #             "units_limit": 0,
+                #             "size": 1,
+                #             "giftId": 0, # unknown type
+                #             "iphone_id": 0, # unknown type
+                #             "store_level": 1,
+                #             "cost": 13,
+                #             "cost_type": "",
+                #             "cost_unit_cash": 1,
+                #             "activation": 3.14,
+                #             "collect": 1,
+                #             "collect_type": "",
+                #             "collect_xp": 0,
+                #             "unit_capacity": 5,
+                #             "trains": 0,
+                #             "build_time": 300, # unknown type
+                #             "subcategory2_id": 0,
+                #             "only_mobile": 1,
+                #         },
+                #         "loaded_": { # DynamicData
+                # 
+                #         },
+                #     #     setUpBuildings    [processMap() loadedMap array build]
+                #     #     **************    *********************************************
+                #     },  # "id"          --> _loc14_ = int(_loc7_[0]);
+                #     33, # "x"           --> _loc15_ = _loc7_[1];
+                #     22, # "y"           --> _loc16_ = _loc7_[2];
+                #     0,  # "orientation" --> _loc17_ = _loc7_[3];
+                #     0,  # "collected_at"--> _loc31_ = _loc7_[4];
+                #     0,  # "level"       --> _loc19_ = _loc7_[5] OR 0
+                #     [], # "units"       --> _loc20_ = _loc7_[6] OR []
+                #     {}, # "attrs"       --> _loc21_ = _loc7_[7] OR {}
+                #     #                                 ^
+                #     #                                 L "_loc7_" is THIS array! :: (from processMap): _loc7_ = ---.serverItem = item = player.map.items[x]
+                # ],
             ],
         },
         "privateState": {
@@ -300,6 +322,46 @@ def get_player_info():
     }
 
     return (player, 200)
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/sync_error_track.php", methods=['POST'])
+def sync_error_track():
+    print("sync_error_track:", request.values)
+    USERID = request.values['USERID']
+    user_key = request.values['user_key']
+    spdebug = request.values['spdebug']
+    language = request.values['language']
+    error = request.values['error']
+    current_failed = request.values['current_failed']
+    tries = request.values['tries'] if 'tries' in request.values else None
+    survival = request.values['survival']
+    previous_failed = request.values['previous_failed']
+    description = request.values['description']
+    user_id = request.values['user_id']
+    return ("", 200)
+
+@app.route("/null")
+def flash_sync_error():
+    print("flash_sync_error:", request.values)
+    USERID = request.values['USERID']
+    user_key = request.values['user_key']
+    spdebug = request.values['spdebug']
+    language = request.values['language']
+    neighbors = request.values['neighbors']
+    client_id = request.values['client_id']
+    return redirect("/")
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/command.php", methods=['POST'])
+def command():
+    USERID = request.values['USERID']
+    user_key = request.values['user_key']
+    spdebug = request.values['spdebug']
+    language = request.values['language']
+
+    data = request.values['data']
+
+    print("command:", request.values)
+    return ("", 200)
+
 
 ########
 # MAIN #
