@@ -61,6 +61,10 @@ def similar_05122012_projectiles():
 def similar_05122012_magicParticles():
     return send_from_directory("assets/swf", "121009_magicParticles.swf")
 
+@app.route("/default01.static.socialpointgames.com/static/socialempires/swf/05122012_dynamic.swf")
+def similar_05122012_dynamic():
+    return send_from_directory("assets/swf", "120608_dynamic.swf")
+
 @app.route("/default01.static.socialpointgames.com/static/socialempires/<path:path>")
 def static_assets_loader(path):
     return send_from_directory("assets", path)
