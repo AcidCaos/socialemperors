@@ -124,7 +124,7 @@ def sync_error_track():
     user_id = request.values['user_id']
 
     # print("sync_error_track:", request.values)
-    print(f"sync_error_track: [Error: {error}] tries: {tries}.")
+    print(f"sync_error_track: [Error: {error}] tries: {tries}. --", request.values)
 
     return ("", 200)
 
@@ -132,10 +132,17 @@ def sync_error_track():
 def flash_sync_error():
     sp_ref_cat = request.values['sp_ref_cat']
 
-    print("flash_sync_error:", request.values)
+    if sp_ref_cat == "flash_sync_error":
+        reason = "reload On Sync Error"
+    elif sp_ref_cat == "flash_reload_quest":
+        reason = "reload On End Quest"
+    elif sp_ref_cat == "flash_reload_attack":
+        reason = "reload On End Attack"
 
+    print("flash_sync_error", reason, ":", request.values)
+
+    # return redirect("/")
     return ("", 200)
-    return redirect("/")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/command.php", methods=['POST'])
 def command():
@@ -168,8 +175,7 @@ def command():
         if i > 5:
             break
 
-    return ({"result": "ok"}, 200)
-    return ("", 200)
+    return ({"result": "success"}, 200)
 
 
 ########
@@ -179,4 +185,4 @@ def command():
 print (" [+] Running server...")
 
 if __name__ == '__main__':
-    app.run(host=host, port=port, debug=True)
+    app.run(host=host, port=port, debug=False)

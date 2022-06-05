@@ -1,65 +1,35 @@
 import json
 
-game_config = json.load(open("./config/get_game_config.php_no_hash.txt", 'r'))
+game_config = json.load(open("./config/get_game_config.php_26_Aug_2012_no_hash.txt", 'r'))
 
-old_game_config = {
-    # - core.Base
-    "result": "ok", # "error"
-    "honor_levels": [
-        {
-            "id": 1,
-            "points": 0,
-            "rank": "Peasant with Spear"
-        },
-        {
-            "id": 2,
-            "points": 50,
-            "rank": "Count's Squire"
-        }
-    ],
-    # - managers.GameDataManager
-    "kompu_offers": [{
-        "id": 000,
-        "starts_at": 111,
-        "duration": 300,
-        "rewards": None,
-        "hurry_up_cost": 4,
-        "timer_between": None,
-        "viral_icon": None,
-        "game_type": None,
-    }],
-    "items": [ # StaticData for items (buildings...)
-        {
-            "id": 0, # (used in StaticDataLib.getItem(0)) this is the list index, not building/item id. Must start at 0, then 1, and so on.
-            # - Base.processMap (_loc22_ = [...])
-            "activation": 3.14,
-            "collect": 1,
-            "collect_type": "",
-            "collect_xp": 0,
-            "category_id": 1, #  CAT_BUILDING_TOWN:uint = 1; CAT_BUILDING_WAR:uint = 2; CAT_BUILDING_TROOPS:uint = 3; .... 7.
-            "type": 0,
-            "img_name": "Unknown_Image_name",
-        },
-    ],
-    "findable_items": [],
-    "levels": [ # must have playerInfo.map.level entries.  See the very end of PlayerStatus.Init()
-        {"exp_required": 1},
-        {"exp_required": 10},
-        {"exp_required": 50},
-        {"exp_required": 100},
-    ],
-    "neighbor_assists": [],
-    "map_prices": [],
-    "missions": [], # "missions": [{"id": 1}],
-    "magics": [], # "magics": [{"id": 1}],
-    "social_items" : [], # "items": [{"id": 1}],
-    "globals": {},
-    "offer_packs": {},
-    "level_ranking_reward": [],
-    "units_collections_categories": {},
-    "darts_items": [],
-    "images": {},
-    "tournament_type": {},
-    "expansion_prices": [],
-    "localization_strings": {},
-}
+##########
+# PLAYER #
+##########
+
+def get_xp_from_level(level: int) -> int:
+    return game_config["levels"][int(level)]["exp_required"]
+
+def get_level_from_xp(xp: int) -> int:
+    i = 0
+    for lvl in game_config["levels"]:
+        if lvl["exp_required"] > int(xp):
+            return i
+        i += 1
+    return 0
+
+#########
+# ITEMS #
+#########
+
+items_dict_id_to_items_index = {int(item["id"]): i for i, item in enumerate(game_config["items"])}
+
+def get_item_from_id(id: int) -> dict:
+    items_index = items_dict_id_to_items_index[int(id)] if int(id) in items_dict_id_to_items_index else None
+    return game_config["items"][items_index] if items_index is not None else None
+
+def get_attribute_from_item_id(id: int, attribute_name: str) -> str:
+    item = get_item_from_id(id)
+    return item[attribute_name] if item and attribute_name in item else None
+
+def get_name_from_item_id(id: int) -> str:
+    return get_attribute_from_item_id(id, "name")

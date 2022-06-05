@@ -1,3 +1,4 @@
+from game_config import get_xp_from_level
 
 player = {
     # - core.Base
@@ -5,11 +6,24 @@ player = {
     "processed_errors": 1,
     "timestamp": 12345,
     "playerInfo": {
-        "cash": 888,
-        "world_id": 35684,
+        "pid": 1000,
+        "name": "AcidCaos",
+        "pic": "http://localhost:5050/profile/image.jpg",
+        "cash": 222,
+        "coins": 888,
+        "xp": get_xp_from_level(12),
+        "level": 12,
+        "completed_tutorial": 0,
         "default_map": 0,
-        "map_names": ["map1", "map2"],
-        "map_sizes": [0, 0],
+        "map_names": ["Empire 1", "Emipre 2", "Village 3"],
+        "map_sizes": [0, 0, 0],
+        "stone": 22,
+        "wood": 33,
+        "food": 55,
+        "world_id": None,
+        "sp_ref_uid": 1111,
+        "sp_ref_cat_install": "ts",
+        "last_logged_in": 1330436105
     },
     # - managers.PlayerStatus
     "map": {
@@ -18,7 +32,7 @@ player = {
         "timestamp": 12345,
         "coins": 888,
         "xp": 100,
-        "level": 3,
+        "level": 12,
         "stone": 40,
         "wood": 41,
         "food": 42,
@@ -31,109 +45,55 @@ player = {
         "increasedPopulation": 0,
         "expirableUnitsTime": {},
         "items": [
-            # core.BuildingReference
-            # [
-            #     {
-            #         "id": 0, # this is the list index, not building/item id. Must start at 0, 1, and so on.
-            #         "tx": 2,
-            #         "ty": 2,
-            #         "x": 33,
-            #         "y": 22,
-            #         "zIndex": 0,
-            #         "frame": 0,
-            #         "sort": 0,
-            #         "otx": 0,
-            #         "oty": 0,
-            #         "mc": {}, # core.IsoEngine.IsoElement
-            #         "building": { # StaticData
-            #             "id": 0, # building/item id. Constants.ID_BUILDING_HOUSE_1
-            #             "name": "UnknownBuilding",
-            #             "img_name": "Unknown_Image_name",
-            #             "type": "b", # Constants.TYPE_BUILDING:String = "b"; Constants.TYPE_UNIT:String = "u";
-            #             "xp": 12,
-            #             "display_order": 0,
-            #             "category_id": 1,
-            #             "subcategory_id": 0,
-            #             "subcat_functional": 0,
-            #             "min_level": 1,
-            #             "width": 2,
-            #             "height": 2,
-            #             "in_store": 1,
-            #             "new_item": 1, # 0 or 1 (boolean, but Integer represented)
-            #             "giftable": 1, # 0 or 1 (boolean, but Integer represented)
-            #             "groups": "unknownFormatGroup:String",
-            #             "frame": 0,
-            #             "max_frame": 1,
-            #             "elevation": 0,
-            #             "attack": 2,
-            #             "defense": 2,
-            #             "life": 8,
-            #             "velocity": 15,
-            #             "attack_range": 7,
-            #             "attack_interval": 20,
-            #             "population": 3,
-            #             "race": "", #race represented by string (usually a single character)
-            #             "flying": 0, # 0 or 1 (boolean, but Integer represented)
-            #             "protect": 0, # 0 or 1 (boolean, but Integer represented)
-            #             "potion": 0,
-            #             "achievement": 0, # 0 or 1 (boolean, but Integer represented)
-            #             "upgrades_to": 0, # probably an item id
-            #             "units_limit": 0,
-            #             "size": 1,
-            #             "giftId": 0, # unknown type
-            #             "iphone_id": 0, # unknown type
-            #             "store_level": 1,
-            #             "cost": 13,
-            #             "cost_type": "",
-            #             "cost_unit_cash": 1,
-            #             "activation": 3.14,
-            #             "collect": 1,
-            #             "collect_type": "",
-            #             "collect_xp": 0,
-            #             "unit_capacity": 5,
-            #             "trains": 0,
-            #             "build_time": 300, # unknown type
-            #             "subcategory2_id": 0,
-            #             "only_mobile": 1,
-            #         },
-            #         "loaded_": { # DynamicData
-            # 
-            #         },
-            #     #     setUpBuildings    [processMap() loadedMap array build]
-            #     #     **************    *********************************************
-            #     },  # "id"          --> _loc14_ = int(_loc7_[0]);
-            #     33, # "x"           --> _loc15_ = _loc7_[1];
-            #     22, # "y"           --> _loc16_ = _loc7_[2];
-            #     0,  # "orientation" --> _loc17_ = _loc7_[3];
-            #     0,  # "collected_at"--> _loc31_ = _loc7_[4];
-            #     0,  # "level"       --> _loc19_ = _loc7_[5] OR 0
-            #     [], # "units"       --> _loc20_ = _loc7_[6] OR []
-            #     {}, # "attrs"       --> _loc21_ = _loc7_[7] OR {}
-            #     #                                 ^
-            #     #                                 L "_loc7_" is THIS array! :: (from processMap): _loc7_ = ---.serverItem = item = player.map.items[x]
-            # ],
+            # [id, x, y, orientation, collected_at, level, units:Array, attrs:Obj],
+            [26, 10, 10, 0, 0, 0], # Townhall
+            [1, 6, 6, 0, 0, 0, [], {}], # House I
         ],
     },
     "privateState": {
-        "unlockedEarlyBuildings": {
-            # "ItemName": True,
-        },
-        "completedMissions": [
-            # "MissionName",
+        "gifts": [],
+        "neighborAssists": {},
+        "completedMissions": [6, 1, 8, 2, 3, 4, 11, 7, 9],
+        "rewardedMissions": [6, 1, 8, 2, 3, 4],
+        "bonusNextId": 3,
+        "timestampLastBonus": 1330448531,
+        "attacksSent": [
+            {
+                "time": "1330432950",
+                "victim_id": "1111",
+                "description": {
+                    "townhall_gold": 0,
+                    "duration": 774,
+                    "honor": 6,
+                    "victim_units": [
+                        [291, 11, 22, 8],
+                    ],
+                    "attacker_units": [
+                        [575, 2, 0, 0],
+                        [653, 2, 1, 1],
+                    ],
+                    "win": 0,
+                    "resources_victim": {"g": 391},
+                    "resources": {"x": 135, "g": 200},
+                    "voluntary_end": 1,
+                    "oponent": {
+                        "gold": "34062",
+                        "user_id": "1111",
+                        "pic": "",
+                        # there might be more values
+                    }
+                    # there might be more values
+                }
+                # there might be more values
+            }
         ],
-        "rewardedMissions": [
-            # "MissionName",
-        ],
+        "unlockedEarlyBuildings": {},
         "potion": 0,
-        "neighborAssists": {
-            # "u1111": 1231     # "u" + neighbor.pid
-        },
         "kompuSpells": 0,
         "kompuLastTimeStamp": 1,
         "kompuSteps": [],
         "kompuCompleted": [],
         "lastUpgrades": [],
-
         "unlockedSkins": {},
         "unlockedQuestIndex": 0,
         "questsRank": {},
@@ -142,14 +102,16 @@ player = {
         "boughtUnits": [],
         "unitCollectionsCompleted": [],
         "dragonNumber": 0,
-        "stepNumber": 0,
-        "timeStampTakeCare": 12345,
+        "stepNumber": 1,
+        "timeStampTakeCare": 1330446028,
+        "dragonNestActive": 1,
         "monsterNumber": 0,
-        "stepMonsterNumber": 0,
-        "timeStampTakeCareMonster": 12345,
+        "stepMonsterNumber": 5,
+        "timeStampTakeCareMonster": 1330446028,
+        "monsterNestActive": 1,
         "riderNumber": 0,
         "riderStepNumber": 0,
-        "riderTimeStamp": 12345,
+        "riderTimeStamp": "1330446028",
         "timeStampHeavySiegePeriod": 0,
         "timeStampHeavySiegeAttack": 0,
         "timeStampDartsReset": 0,
@@ -160,19 +122,31 @@ player = {
         "dartsGotExtra": True,
         "countTimePacket": [],
         "infoShowed": [],
-        #"teams": None, # ReferenceError: Error #1069: Property tournament not found on String and there is no default value.
-        "teams": { # if(!(this.privateState["teams"][Config.TEAM_TOURNAMENT] is Array))
-            "tournament": None,
+        "teams": {
+            "tournament": None, # if(!(this.privateState["teams"][Config.TEAM_TOURNAMENT] is Array))
         },
-        "timestampLastBonus": 0,
+        # there might be more values
     },
     "neighbors": [
         {
             "pid": 1111,
-            "name": "Neighbor1",
-            "xp": 300,
-            "level": 12,
-            "world_id": 35643,
+            "name": "AcidCaos",
+            "pic": "http://localhost:5050/profile/image.jpg",
+            "cash": "222",
+            "coins": "888",
+            "xp": str(get_xp_from_level(12)),
+            "level": "12",
+            "completed_tutorial": "31",
+            "default_map": "0",
+            "map_names": ["Empire 1", "Emipre 2", "Village 3"],
+            "map_sizes": [9, 3, 0],
+            "stone": "22",
+            "wood": "33",
+            "food": "55",
+            "world_id": None,
+            "sp_ref_uid": "1111",
+            "sp_ref_cat_install": "ts",
+            "last_logged_in": "1330436105"
         }
     ]
 }
