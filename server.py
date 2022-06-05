@@ -5,10 +5,10 @@ if os.name == 'nt':
     os.system("color")
 
 print (" [+] Loading game config...")
-from game_config import game_config
+from get_game_config import get_game_config
 
 print (" [+] Loading player...")
-from player_info import player
+from get_player_info import get_player_info
 
 print (" [+] Loading server...")
 from flask import Flask, render_template, send_from_directory, request, redirect
@@ -72,7 +72,7 @@ def static_assets_loader(path):
 ## GAME DYNAMIC
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/track_game_status.php", methods=['POST'])
-def track_game_status():
+def track_game_status_response():
     status = request.values['status']
     installId = request.values['installId']
     user_id = request.values['user_id']
@@ -83,7 +83,7 @@ def track_game_status():
     return ("", 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_game_config.php")
-def get_game_config():
+def get_game_config_response():
     USERID = request.values['USERID']
     user_key = request.values['user_key']
     spdebug = request.values['spdebug']
@@ -93,10 +93,10 @@ def get_game_config():
     print(f"get_game_config: user_key: {user_key}, spdebug: {spdebug}.")
 
     # return send_from_directory("config", "get_game_config.php_no_hash.txt")
-    return game_config
+    return get_game_config()
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_player_info.php", methods=['POST'])
-def get_player_info():
+def get_player_info_response():
     USERID = request.values['USERID']
     user_key = request.values['user_key']
     spdebug = request.values['spdebug']
@@ -107,10 +107,10 @@ def get_player_info():
     # print("get_player_info:", request.values)
     print(f"get_player_info: user_key: {user_key}, client_id: {client_id}.")
 
-    return (player, 200)
+    return (get_player_info(), 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/sync_error_track.php", methods=['POST'])
-def sync_error_track():
+def sync_error_track_response():
     USERID = request.values['USERID']
     user_key = request.values['user_key']
     spdebug = request.values['spdebug']
@@ -129,7 +129,7 @@ def sync_error_track():
     return ("", 200)
 
 @app.route("/null")
-def flash_sync_error():
+def flash_sync_error_response():
     sp_ref_cat = request.values['sp_ref_cat']
 
     if sp_ref_cat == "flash_sync_error":
@@ -145,7 +145,7 @@ def flash_sync_error():
     return ("", 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/command.php", methods=['POST'])
-def command():
+def command_response():
     USERID = request.values['USERID']
     user_key = request.values['user_key']
     spdebug = request.values['spdebug']
@@ -172,7 +172,8 @@ def command():
         args = comm["args"]
         print(cmd, "-> args", args)
 
-        if i > 5:
+        if i >= 5:
+            print("... (showing first 6)")
             break
 
     return ({"result": "success"}, 200)
