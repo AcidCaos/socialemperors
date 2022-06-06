@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Social Empires</title>
+        <link rel="shortcut icon" href="img/icon.gif"/>
+	    <link rel="icon" type="image/gif" href="img/icon.gif"/>
+    </head>
+    <body>
+    <center>
+        <img src="img/logo.png"/>
+        <h1>Login</h1>
+        <form method="post">
+            <label>Select a village</label>
+            <select id="USERID" name="USERID" required>
+                {% for uid in all_userid %}
+                <option value="{{uid}}">{{uid}}</option>
+                {% endfor %}
+              </select>
+            <button type="submit">Log in</button>
+        </form>
+        Or <a href="new.html">create a new village</a>.
+    </center>
+    </body>
+</html>

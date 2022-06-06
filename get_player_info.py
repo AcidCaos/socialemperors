@@ -1,14 +1,14 @@
 from sessions import session, neighbors
 
-def get_player_info():
+def get_player_info(USERID):
     player_info = {
         "result": "ok",
         "processed_errors": 0,
         "timestamp": 12345,
-        "playerInfo": session()["playerInfo"],
-        "map": session()["map"],
-        "privateState": session()["privateState"],
-        "neighbors": neighbors()
+        "playerInfo": session(USERID)["playerInfo"],
+        "map": session(USERID)["map"],
+        "privateState": session(USERID)["privateState"],
+        "neighbors": neighbors(USERID)
     }
     return player_info
 

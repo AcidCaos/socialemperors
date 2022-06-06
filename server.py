@@ -7,12 +7,15 @@ if os.name == 'nt':
 print (" [+] Loading game config...")
 from get_game_config import get_game_config
 
-print (" [+] Loading player...")
+print (" [+] Loading players...")
 from get_player_info import get_player_info
+from sessions import all_userid, new_village
 
 print (" [+] Loading server...")
-from flask import Flask, render_template, send_from_directory, request, redirect
+from flask import Flask, render_template, send_from_directory, request, redirect, session
 from flask.debughelpers import attach_enctype_error_multidict
+
+version = "pre-alpha 0.01"
 
 host = '127.0.0.1'
 port = 5050
@@ -27,9 +30,30 @@ print (" [+] Configuring server routes...")
 
 ## PAGES AND RESOURCES
 
-@app.route("/")
-def index():
-    return render_template("play.html")
+@app.route("/", methods=['GET', 'POST'])
+def login():
+    # Log out previous session
+    session.pop('USERID', default=None)
+    # If logging in, set session USERID, and go to play
+    if request.method == 'POST':
+        session['USERID'] = request.form['USERID']
+        print("[LOGIN] USERID:", request.form['USERID'])
+        return redirect("/play.html")
+    # Login page
+    if request.method == 'GET':
+        return render_template("login.html", all_userid=all_userid())
+
+@app.route("/play.html")
+def play():
+    if 'USERID' not in session:
+        return redirect("/")
+    print("[PLAY] USERID:", session['USERID'])
+    return render_template("play.html", USERID=session['USERID'])
+
+@app.route("/new.html")
+def new():
+    session['USERID'] = new_village()
+    return redirect("play.html")
 
 @app.route("/crossdomain.xml")
 def crossdomain():
@@ -77,9 +101,7 @@ def track_game_status_response():
     installId = request.values['installId']
     user_id = request.values['user_id']
 
-    #print("track_game_status:", request.values)
-    print(f"track_game_status: status={status}, installId={installId}, user_id={user_id}")
-
+    print(f"track_game_status: status={status}, installId={installId}, user_id={user_id}. --", request.values)
     return ("", 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_game_config.php")
@@ -89,10 +111,7 @@ def get_game_config_response():
     spdebug = request.values['spdebug']
     language = request.values['language']
 
-    # print("get_game_config:", request.values)
-    print(f"get_game_config: user_key: {user_key}, spdebug: {spdebug}.")
-
-    # return send_from_directory("config", "get_game_config.php_no_hash.txt")
+    print(f"get_game_config: USERID: {USERID}. --", request.values)
     return get_game_config()
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_player_info.php", methods=['POST'])
@@ -104,10 +123,8 @@ def get_player_info_response():
     neighbors = request.values['neighbors']
     client_id = request.values['client_id']
 
-    # print("get_player_info:", request.values)
-    print(f"get_player_info: user_key: {user_key}, client_id: {client_id}.")
-
-    return (get_player_info(), 200)
+    print(f"get_player_info: USERID: {USERID}. --", request.values)
+    return (get_player_info(USERID), 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/sync_error_track.php", methods=['POST'])
 def sync_error_track_response():
@@ -123,9 +140,7 @@ def sync_error_track_response():
     description = request.values['description']
     user_id = request.values['user_id']
 
-    # print("sync_error_track:", request.values)
-    print(f"sync_error_track: [Error: {error}] tries: {tries}. --", request.values)
-
+    print(f"sync_error_track: USERID: {USERID}. [Error: {error}] tries: {tries}. --", request.values)
     return ("", 200)
 
 @app.route("/null")
@@ -139,10 +154,8 @@ def flash_sync_error_response():
     elif sp_ref_cat == "flash_reload_attack":
         reason = "reload On End Attack"
 
-    print("flash_sync_error", reason, ":", request.values)
-
-    # return redirect("/")
-    return ("", 200)
+    print("flash_sync_error", reason, ". --", request.values)
+    return redirect("/play.html")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/command.php", methods=['POST'])
 def command_response():
@@ -186,4 +199,5 @@ def command_response():
 print (" [+] Running server...")
 
 if __name__ == '__main__':
+    app.secret_key = 'SECRET_KEY'
     app.run(host=host, port=port, debug=False)
