@@ -1,5 +1,5 @@
 
-class Constants:
+class Constant:
     
     HORACIO_SAYS_NO = False
     WEEKDAY_SUNDAY = 0

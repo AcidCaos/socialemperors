@@ -13,7 +13,7 @@ __villages = {}  # ALL saved villages + static neighbors
 '''__villages = {
     "USERID_1": {
         "playerInfo": {...},
-        "map": {...},
+        "maps": [{...},{...}]
         "privateState": {...}
     },
     "USERID_2": {...}
@@ -24,6 +24,18 @@ __initial_village = json.load(open(os.path.join(__villages_dir, "initial.json"))
 # Load saved villages
 
 def load_saved_villages():
+    # Saves dir check
+    if not os.path.exists(__saves_dir):
+        try:
+            print(f"Creating '{__saves_dir}' folder...")
+            os.mkdir(__saves_dir)
+        except:
+            print(f"Could not create '{__saves_dir}' folder.")
+            exit(1)
+    if not os.path.isdir(__saves_dir):
+        print(f"'{__saves_dir}' is not a folder... Move the file somewhere else.")
+        exit(1)
+    # Static neighbors in /villages
     for file in os.listdir(__villages_dir):
         if file == "initial.json" or not file.endswith(".json"):
             continue
@@ -32,7 +44,7 @@ def load_saved_villages():
         USERID = village["playerInfo"]["pid"]
         print("USERID:", USERID)
         __villages[str(USERID)] = village
-
+    # Saves
     for file in os.listdir(__saves_dir):
         print(f" * Loading SAVE: village at {file}... ", end='')
         village = json.load(open(os.path.join(__saves_dir, file)))
@@ -79,5 +91,5 @@ def save_session(USERID: str):
     # TODO 
     file = str(USERID) + ".save.json"
     print(f" * Saving village at {file}... ", end='')
-    village = json.dump(session(USERID), open(os.path.join(__saves_dir, file), 'w'))
+    village = json.dump(session(USERID), open(os.path.join(__saves_dir, file), 'w'), indent=4)
     print("Done.")

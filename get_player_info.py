@@ -6,7 +6,7 @@ def get_player_info(USERID):
         "processed_errors": 0,
         "timestamp": 12345,
         "playerInfo": session(USERID)["playerInfo"],
-        "map": session(USERID)["map"],
+        "map": session(USERID)["maps"][0],
         "privateState": session(USERID)["privateState"],
         "neighbors": neighbors(USERID)
     }
