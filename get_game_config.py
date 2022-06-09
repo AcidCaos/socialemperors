@@ -39,3 +39,17 @@ def get_attribute_from_item_id(id: int, attribute_name: str) -> str:
 
 def get_name_from_item_id(id: int) -> str:
     return get_attribute_from_item_id(id, "name")
+
+############
+# MISSIONS #
+############
+
+missions_dict_id_to_missions_index = {int(item["id"]): i for i, item in enumerate(__game_config["missions"])}
+
+def get_mission_from_id(id: int) -> dict:
+    items_index = missions_dict_id_to_missions_index[int(id)] if int(id) in missions_dict_id_to_missions_index else None
+    return __game_config["missions"][items_index] if items_index is not None else None
+
+def get_attribute_from_mission_id(id: int, attribute_name: str) -> str:
+    mission = get_mission_from_id(id)
+    return mission[attribute_name] if mission and attribute_name in mission else None

@@ -14,6 +14,7 @@ from sessions import all_userid, new_village
 print (" [+] Loading server...")
 from flask import Flask, render_template, send_from_directory, request, redirect, session
 from flask.debughelpers import attach_enctype_error_multidict
+from command import command
 
 version = "pre-alpha 0.01"
 
@@ -165,7 +166,7 @@ def command_response():
     language = request.values['language']
     client_id = request.values['client_id']
 
-    print("command:")
+    print(f"command: USERID: {USERID}. --", request.values)
 
     data_str = request.values['data']
     data_hash = data_str[:64]
@@ -173,22 +174,8 @@ def command_response():
     data_payload = data_str[65:]
     data = json.loads(data_payload)
 
-    ts = data["ts"]
-    first_number = data["first_number"]
-    accessToken = data["accessToken"]
-    tries = data["tries"]
-    publishActions = data["publishActions"]
-
-    commands = data["commands"]
-    for i, comm in enumerate(commands):
-        cmd = comm["cmd"]
-        args = comm["args"]
-        print(cmd, "-> args", args)
-
-        if i >= 5:
-            print("... (showing first 6)")
-            break
-
+    command(USERID, data)
+    
     return ({"result": "success"}, 200)
 
 
