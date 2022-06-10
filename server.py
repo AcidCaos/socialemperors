@@ -9,7 +9,7 @@ from get_game_config import get_game_config
 
 print (" [+] Loading players...")
 from get_player_info import get_player_info
-from sessions import all_userid, new_village
+from sessions import all_saves_userid, new_village
 
 print (" [+] Loading server...")
 from flask import Flask, render_template, send_from_directory, request, redirect, session
@@ -42,7 +42,7 @@ def login():
         return redirect("/play.html")
     # Login page
     if request.method == 'GET':
-        return render_template("login.html", all_userid=all_userid())
+        return render_template("login.html", all_saves_userid=all_saves_userid())
 
 @app.route("/play.html")
 def play():

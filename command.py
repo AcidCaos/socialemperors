@@ -1,6 +1,6 @@
 
 from sessions import session, save_session
-from get_game_config import get_name_from_item_id, get_attribute_from_mission_id
+from get_game_config import get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level
 from constants import Constant
 from engine import apply_cost, apply_collect, apply_collect_xp
 
@@ -117,16 +117,70 @@ def do_command(USERID, cmd, args):
             cash_to_substract = 0 # TODO 
             save["playerInfo"]["cash"] = min(save["playerInfo"]["cash"] - cash_to_substract, 0)
         save["privateState"]["completedMissions"] += [mission_id]
-        print("Complete mission", mission_id + ":", str(get_attribute_from_mission_id(mission_id, "title")))
+        print("Complete mission", mission_id, ":", str(get_attribute_from_mission_id(mission_id, "title")))
     
     elif cmd == Constant.CMD_REWARD_MISSION:
         town_id = args[0]
         mission_id = args[1]
-        reward = int(get_attribute_from_mission_id(mission_id, "reward")) # xp
-        save["maps"][town_id]["xp"] += reward
+        reward = int(get_attribute_from_mission_id(mission_id, "reward")) # gold
+        save["maps"][town_id]["coins"] += reward
         save["privateState"]["rewardedMissions"] += [mission_id]
-        print("Reward mission", mission_id + ":", str(get_attribute_from_mission_id(mission_id, "title")))
+        print("Reward mission", mission_id, ":", str(get_attribute_from_mission_id(mission_id, "title")))
     
+    elif cmd == Constant.CMD_PUSH_UNIT:
+        unit_x = args[0]
+        unit_y = args[1]
+        unit_id = args[2]
+        b_x = args[3]
+        b_y = args[4]
+        town_id = args[5]
+        print("Push", str(get_name_from_item_id(unit_id)), "to", f"({b_x},{b_y}).")
+        map = save["maps"][town_id]
+        # Unit into building
+        for item in map["items"]:
+            if item[1] == b_x and item[2] == b_y:
+                if len(item) < 7:
+                    item += [[]]
+                item[6] += [unit_id]
+                break
+        # Remove unit
+        for item in map["items"]:
+            if item[0] == unit_id and item[1] == unit_x and item[2] == unit_y:
+                map["items"].remove(item)
+                break
+    
+    elif cmd == Constant.CMD_POP_UNIT:
+        b_x = args[0]
+        b_y = args[1]
+        town_id = args[2]
+        unit_id = args[3]
+        unit_x = args[4]
+        unit_y = args[5]
+        unit_frame = args[2]
+        print("Pop", str(get_name_from_item_id(unit_id)), "from", f"({b_x},{b_y}).")
+        map = save["maps"][town_id]
+        # Remove unit from building
+        for item in map["items"]:
+            if item[1] == b_x and item[2] == b_y:
+                if len(item) < 7:
+                    break
+                item[6].remove(unit_id)
+                break
+        # Spawn unit outside
+        collected_at_timestamp = 0 # TODO 
+        level = 0 # TODO 
+        orientation = 0
+        map["items"] += [[unit_id, unit_x, unit_y, orientation, collected_at_timestamp, level]]
+    
+    elif cmd == Constant.CMD_RT_LEVEL_UP:
+        new_level = args[0]
+        print("Level Up!:", new_level)
+        map = save["maps"][0] # TODO : xp must be general, since theres no given town_id
+        map["level"] = args[0]
+        current_xp = map["xp"]
+        min_expected_xp = get_xp_from_level(max(0, new_level - 1))
+        map["xp"] = max(min_expected_xp, current_xp) # try to fix problems with not counting XP... by keeping up with client-side level counting
+
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
         return
