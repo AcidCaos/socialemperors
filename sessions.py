@@ -9,8 +9,18 @@ from flask import session
 __villages_dir = "./villages"
 __saves_dir = "./saves"
 
-__villages = {}  # ALL saved villages + static neighbors
+__villages = {}  # ALL static neighbors
 '''__villages = {
+    "USERID_1": {
+        "playerInfo": {...},
+        "maps": [{...},{...}]
+        "privateState": {...}
+    },
+    "USERID_2": {...}
+}'''
+
+__saves = {}  # ALL saved villages
+'''__saves = {
     "USERID_1": {
         "playerInfo": {...},
         "maps": [{...},{...}]
@@ -44,13 +54,13 @@ def load_saved_villages():
         USERID = village["playerInfo"]["pid"]
         print("USERID:", USERID)
         __villages[str(USERID)] = village
-    # Saves
+    # Saves in /saves
     for file in os.listdir(__saves_dir):
         print(f" * Loading SAVE: village at {file}... ", end='')
-        village = json.load(open(os.path.join(__saves_dir, file)))
-        USERID = village["playerInfo"]["pid"]
+        save = json.load(open(os.path.join(__saves_dir, file)))
+        USERID = save["playerInfo"]["pid"]
         print("USERID:", USERID)
-        __villages[str(USERID)] = village
+        __saves[str(USERID)] = save
 
 load_saved_villages()
 
@@ -70,16 +80,45 @@ def new_village() -> str:
 
 # Access functions
 
+def all_saves_userid() -> list:
+    "Returns a list of the USERID of every saved village."
+    return list(__saves.keys())
+
 def all_userid() -> list:
-    "Returns a list of the USERID of every loaded village."
-    return list(__villages.keys())
+    "Returns a list of the USERID of every saved village."
+    return list(__villages.keys()) + list(__saves.keys())
 
 def session(USERID: str) -> dict:
-    return __villages[str(USERID)] if str(USERID) in __villages else None
+    return __saves[str(USERID)] if str(USERID) in __saves else None
 
 def neighbors(USERID: str):
-    # TODO 
-    return {}
+    neighbors = []
+    # static villages
+    for key in __villages:
+        vill = __villages[key]
+        neigh = vill["playerInfo"]
+        neigh["coins"] = vill["maps"][0]["coins"]
+        neigh["xp"] = vill["maps"][0]["xp"]
+        neigh["level"] = vill["maps"][0]["level"]
+        neigh["stone"] = vill["maps"][0]["stone"]
+        neigh["wood"] = vill["maps"][0]["wood"]
+        neigh["food"] = vill["maps"][0]["food"]
+        neigh["stone"] = vill["maps"][0]["stone"]
+        neighbors += [neigh]
+    # other players
+    for key in __saves:
+        vill = __saves[key]
+        if vill["playerInfo"]["pid"] != USERID:
+            neigh = vill["playerInfo"]
+            neigh["coins"] = vill["maps"][0]["coins"]
+            neigh["xp"] = vill["maps"][0]["xp"]
+            neigh["level"] = vill["maps"][0]["level"]
+            neigh["stone"] = vill["maps"][0]["stone"]
+            neigh["wood"] = vill["maps"][0]["wood"]
+            neigh["food"] = vill["maps"][0]["food"]
+            neigh["stone"] = vill["maps"][0]["stone"]
+            neighbors += [neigh]
+    return neighbors
 
 # Persistency
 
