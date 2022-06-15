@@ -71,11 +71,17 @@ def new_village() -> str:
     USERID: str = str(uuid.uuid4())
     assert USERID not in all_userid()
     # Copy init
-    village = copy.copy(__initial_village)
+    village = copy.deepcopy(__initial_village)
     village["playerInfo"]["pid"] = USERID
     __villages[USERID] = village
+    __saves[USERID] = village
     # Generate save_file
-    save_session(USERID)
+    # save_session(USERID)
+    file = f"{USERID}.save.json"
+    print(f" * Saving village at {file}... ", end='')
+    with open(os.path.join(__saves_dir, file), 'w') as f:
+        json.dump(village, f, indent=4)
+    print("Done.")
     return USERID
 
 # Access functions
@@ -89,7 +95,8 @@ def all_userid() -> list:
     return list(__villages.keys()) + list(__saves.keys())
 
 def session(USERID: str) -> dict:
-    return __saves[str(USERID)] if str(USERID) in __saves else None
+    assert(isinstance(USERID, str))
+    return __saves[USERID] if USERID in __saves else None
 
 def neighbors(USERID: str):
     neighbors = []
