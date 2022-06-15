@@ -73,7 +73,6 @@ def new_village() -> str:
     # Copy init
     village = copy.deepcopy(__initial_village)
     village["playerInfo"]["pid"] = USERID
-    __villages[USERID] = village
     __saves[USERID] = village
     # Generate save_file
     # save_session(USERID)
