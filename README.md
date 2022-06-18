@@ -1,27 +1,44 @@
-# Social Emperors
+![Social Empires](templates/img/logo.png "Social Empires logo")
 
 Social Empires preservation project.
 
-## Installation
-### Windows 
-You first need to install Python. 
-I have currently run this on 3.10.1, but you may be able to use any version from 3.7-3.10.
-After you have installed Python, you will need to use your favorite package manager (usually `pip`) to install PyInstaller and Flask.
-You can run `pip install -U flask pyinstaller` to do this.
+:speech_balloon: Check our [Discord group](https://discord.gg/zW5gSbQJBw)
 
-You will notice a `build` directory, containing a `build.bat` batch script.
-To build the app, you will need to run this script.
-Once it has finished, you will see a file called `social-emperors_0.01a.exe` in `build/dist`.
-Move this out to the root directory `socialemperors`.
-You will be able to run this application, but it is just a server for the Social Empires game.
-There will be a line in the terminal that says something like `* Running on http://127.0.0.1:5050`. 
-Keep this address in mind.
+---
 
-In order to actually play the game, you will need to use a browser that is still capable of running Flash. 
-[I use this browser](https://github.com/radubirsan/FlashBrowser/). 
-After you open the browser, enter the address from the `* Running` line and then you should be able to play the game.
+## Releases
 
-Have fun! :)
+| Version | Release date | Download |
+| --- | --- | --- |
+| pre-alpha 0.01a | June 18, 2022 | :ticket: [Launcher](../../releases/download/0.01a/social-emperors_0.01a.zip) |
 
-### Other OSes
-TODO
+## How to Install on Windows
+
+- Download a flash-compatible browser (unless you already have one). **Recommended:** [Chromium 82.0](https://chromium.en.uptodown.com/windows/download/2181158)
+- Downlaod Flash Player for that browser. For Chromium: [Pepper Flash](https://archive.org/download/flashplayerarchive/pub/flashplayer/installers/archive/fp_32.0.0.371_archive.zip/32_0_r0_371%2Fflashplayer32_0r0_371_winpep.exe). For Firefox or Basilisk: [Flash NPAPI](https://archive.org/download/flashplayerarchive/pub/flashplayer/installers/archive/fp_32.0.0.371_archive.zip/32_0_r0_371%2Fflashplayer32_0r0_371_win.exe)
+- Download the latest released version from the Releases section.
+- Unzip the file to a suitable location.
+
+## How to Play
+
+- Run the social-emperors executable. (It might take a couple of seconds to start)
+- Open your flash browser and navigate to `http://127.0.0.1:5050/`.
+
+## On archives and accessibility to digital heritage
+
+- [Exemption to PCCPSACT](https://www.federalregister.gov/documents/2018/10/26/2018-23241/exemption-to-prohibition-on-circumvention-of-copyright-protection-systems-for-access-control), exemptions to the provision of the Digital Millennium Copyright Act (“DMCA”). 
+- [EFGAMP](https://efgamp.eu/), the European Federation of Video Game Archives, Museums and Preservation projects.
+- [UNESCO PERSIST Programme](https://unescopersist.org/), helps ensure that digital information can continue to be accessed in the future.
+- [The Internet Archive](https://archive.org/), a digital library of Internet sites and other cultural artifacts in digital form.
+- [BlueMaxima's Flashpoint](https://bluemaxima.org/flashpoint/), the webgame preservation project.
+- [Adobe Flash Player Archive](https://archive.org/download/flashplayerarchive/), the Adobe Inc. archive.org Flash Player Archive.
+
+---
+
+## License [![GPL v3](https://img.shields.io/badge/GPL%20v3-blue)](http://www.gnu.org/licenses/gpl-3.0)
+
+```
+Social Empires preservation project.
+Copyright (C) 2022  The Social Emperors team
+See the GNU General Public License <https://www.gnu.org/licenses/>.
+```

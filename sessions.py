@@ -75,11 +75,7 @@ def new_village() -> str:
     village["playerInfo"]["pid"] = USERID
     __saves[USERID] = village
     # Generate save_file
-    # save_session(USERID)
-    file = f"{USERID}.save.json"
-    print(f" * Saving village at {file}... ", end='')
-    with open(os.path.join(__saves_dir, file), 'w') as f:
-        json.dump(village, f, indent=4)
+    save_session(USERID)
     print("Done.")
     return USERID
 
@@ -134,7 +130,9 @@ def backup_session(USERID: str):
 
 def save_session(USERID: str):
     # TODO 
-    file = str(USERID) + ".save.json"
+    file = f"{USERID}.save.json"
     print(f" * Saving village at {file}... ", end='')
-    village = json.dump(session(USERID), open(os.path.join(__saves_dir, file), 'w'), indent=4)
+    village = session(USERID)
+    with open(os.path.join(__saves_dir, file), 'w') as f:
+        json.dump(village, f, indent=4)
     print("Done.")
