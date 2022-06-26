@@ -181,6 +181,18 @@ def do_command(USERID, cmd, args):
         min_expected_xp = get_xp_from_level(max(0, new_level - 1))
         map["xp"] = max(min_expected_xp, current_xp) # try to fix problems with not counting XP... by keeping up with client-side level counting
 
+    elif cmd == Constant.CMD_EXPAND:
+        land_id = args[0]
+        currency = args[1]
+        town_id = int(args[2])
+        map = save["maps"][town_id]
+        map["expansions"].append(land_id)
+
+    elif cmd == Constant.CMD_NAME_MAP:
+        town_id =int(args[0])
+        new_name = args[1]
+        save["playerInfo"]["map_names"][0] = new_name #changes name on first world
+
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
         return
