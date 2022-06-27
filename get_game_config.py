@@ -2,10 +2,10 @@ import json
 
 __game_config = json.load(open("./config/get_game_config.php_26_Aug_2012_no_hash.txt", 'r'))
 
-def get_game_config():
+def get_game_config() -> dict:
     return __game_config
 
-def game_config():
+def game_config() -> dict:
     return get_game_config()
 
 ##########

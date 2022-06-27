@@ -1,6 +1,6 @@
 
 from sessions import session, save_session
-from get_game_config import get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level
+from get_game_config import get_game_config, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level
 from constants import Constant
 from engine import apply_cost, apply_collect, apply_collect_xp
 
@@ -78,7 +78,7 @@ def do_command(USERID, cmd, args):
         print("Collect", str(get_name_from_item_id(id)))
         map = save["maps"][town_id]
         apply_collect(save["playerInfo"], map, id, resource_multiplier)
-        save["playerInfo"]["cash"] = min(save["playerInfo"]["cash"] - cash_to_substract, 0)
+        save["playerInfo"]["cash"] = max(save["playerInfo"]["cash"] - cash_to_substract, 0)
     
     elif cmd == Constant.CMD_SELL:
         x = args[0]
@@ -115,7 +115,7 @@ def do_command(USERID, cmd, args):
         skipped_with_cash = bool(args[1])
         if skipped_with_cash:
             cash_to_substract = 0 # TODO 
-            save["playerInfo"]["cash"] = min(save["playerInfo"]["cash"] - cash_to_substract, 0)
+            save["playerInfo"]["cash"] = max(save["playerInfo"]["cash"] - cash_to_substract, 0)
         save["privateState"]["completedMissions"] += [mission_id]
         print("Complete mission", mission_id, ":", str(get_attribute_from_mission_id(mission_id, "title")))
     
@@ -183,15 +183,28 @@ def do_command(USERID, cmd, args):
 
     elif cmd == Constant.CMD_EXPAND:
         land_id = args[0]
-        currency = args[1]
+        resource = args[1]
         town_id = int(args[2])
+        print("Expansion", land_id, "purchased")
         map = save["maps"][town_id]
+        if land_id in map["expansions"]:
+            return
+        # Substract resources
+        expansion_prices = get_game_config()["expansion_prices"]
+        exp = expansion_prices[len(map["expansions"])]
+        if resource == "gold":
+            to_substract = exp["coins"]
+            save["maps"][town_id]["coins"] = max(save["maps"][town_id]["coins"] - to_substract, 0)
+        elif resource == "cash":
+            to_substract = exp["cash"]
+            save["playerInfo"]["cash"] = max(save["playerInfo"]["cash"] - to_substract, 0)
+        # Add expansion
         map["expansions"].append(land_id)
 
     elif cmd == Constant.CMD_NAME_MAP:
         town_id =int(args[0])
         new_name = args[1]
-        save["playerInfo"]["map_names"][town_id] = new_name #changes name on first world
+        save["playerInfo"]["map_names"][town_id] = new_name # changes name on first world
 
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
