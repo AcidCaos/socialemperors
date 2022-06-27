@@ -204,7 +204,7 @@ def do_command(USERID, cmd, args):
     elif cmd == Constant.CMD_NAME_MAP:
         town_id =int(args[0])
         new_name = args[1]
-        save["playerInfo"]["map_names"][town_id] = new_name # changes name on first world
+        save["playerInfo"]["map_names"][town_id] = new_name
 
     elif cmd == Constant.CMD_EXCHANGE_CASH:
         town_id = args[0]
