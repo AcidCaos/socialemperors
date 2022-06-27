@@ -206,6 +206,43 @@ def do_command(USERID, cmd, args):
         new_name = args[1]
         save["playerInfo"]["map_names"][town_id] = new_name # changes name on first world
 
+    elif cmd == Constant.CMD_EXCHANGE_CASH:
+        town_id = args[0]
+        save["playerInfo"]["cash"] = max(save["playerInfo"]["cash"] - 5, 0)#maybe make function for editing resources
+        save["maps"][town_id]["coins"] += 2500
+
+    elif cmd == Constant.CMD_STORE_ITEM:
+        x = args[0]
+        y = args[1]
+        town_id = int(args[2])
+        item_id = args[3]
+        map = save["maps"][town_id]
+        for item in map["items"]:
+            if item[0] == item_id and item[1] == x and item[2] == y:
+                map["items"].remove(item)
+                break
+        length = len(save["privateState"]["gifts"])
+        if length <= item_id:
+            for i in range(item_id - length + 1):
+                save["privateState"]["gifts"].append(0)
+        save["privateState"]["gifts"][item_id] += 1
+
+    elif cmd == Constant.CMD_PLACE_GIFT:
+        item_id = args[0]
+        x = args[1]
+        y = args[2]
+        town_id = args[3]#unsure, both 3 and 4 seem to stay 0
+        args[4]#unknown yet
+        items = save["maps"][town_id]["items"]
+        orientation = 0#TODO
+        collected_at_timestamp = 0#TODO
+        level = 0
+        items += [[item_id, x, y, orientation, collected_at_timestamp, level]]#maybe make function for adding items
+        save["privateState"]["gifts"][item_id] -= 1
+        if save["privateState"]["gifts"][item_id] == 0: #removes excess zeros at end if necessary
+            while(save["privateState"]["gifts"][-1] == 0):
+                save["privateState"]["gifts"].pop()
+
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
         return
