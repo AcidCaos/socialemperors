@@ -1,6 +1,6 @@
 
 from sessions import session, save_session
-from get_game_config import get_game_config, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level
+from get_game_config import get_game_config, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id
 from constants import Constant
 from engine import apply_cost, apply_collect, apply_collect_xp
 
@@ -41,6 +41,8 @@ def do_command(USERID, cmd, args):
         map = save["maps"][town_id]
         if not bool_dont_modify_resources:
             apply_cost(save["playerInfo"], map, id, price_multiplier)
+            xp = int(get_attribute_from_item_id(id, "xp"))
+            map["xp"] = map["xp"] + xp
         map["items"] += [[id, x, y, orientation, collected_at_timestamp, level]]
     
     elif cmd == Constant.CMD_COMPLETE_TUTORIAL:
@@ -49,6 +51,7 @@ def do_command(USERID, cmd, args):
         if tutorial_step >= 31: # 31 is Dragon choosing. After that, you have some freedom. There's at least until step 45.
             print("Tutorial COMPLETED!")
             save["playerInfo"]["completed_tutorial"] = 1
+            save["privateState"]["dragonNestActive"] = 1 
     
     elif cmd == Constant.CMD_MOVE:
         ix = args[0]
@@ -72,7 +75,7 @@ def do_command(USERID, cmd, args):
         y = args[1]
         town_id = args[2]
         id = args[3]
-        num_units_contained_when_harvested = args[4]
+        num_units_contained_when_harvested = args[4]#TODO does this affect multiplier?
         resource_multiplier = args[5]
         cash_to_substract = args[6]
         print("Collect", str(get_name_from_item_id(id)))
@@ -94,7 +97,9 @@ def do_command(USERID, cmd, args):
                 map["items"].remove(item)
                 break
         if not bool_dont_modify_resources:
-            pass
+            price_multiplier = -0.05
+            if get_attribute_from_item_id(id, "cost_type") != "c":
+                apply_cost(save["playerInfo"], save["maps"][town_id], id, price_multiplier)
     
     elif cmd == Constant.CMD_KILL:
         x = args[0]
@@ -123,7 +128,7 @@ def do_command(USERID, cmd, args):
         town_id = args[0]
         mission_id = args[1]
         reward = int(get_attribute_from_mission_id(mission_id, "reward")) # gold
-        save["maps"][town_id]["coins"] += reward
+        save["maps"][town_id]["coins"] += reward   
         save["privateState"]["rewardedMissions"] += [mission_id]
         print("Reward mission", mission_id, ":", str(get_attribute_from_mission_id(mission_id, "title")))
     
@@ -200,16 +205,19 @@ def do_command(USERID, cmd, args):
             save["playerInfo"]["cash"] = max(save["playerInfo"]["cash"] - to_substract, 0)
         # Add expansion
         map["expansions"].append(land_id)
+        print(f"map expansion '{land_id}' added.")
 
     elif cmd == Constant.CMD_NAME_MAP:
         town_id =int(args[0])
         new_name = args[1]
         save["playerInfo"]["map_names"][town_id] = new_name # changes name on first world
+        print(f"map name changed to '{new_name}'.")
 
     elif cmd == Constant.CMD_EXCHANGE_CASH:
         town_id = args[0]
         save["playerInfo"]["cash"] = max(save["playerInfo"]["cash"] - 5, 0)#maybe make function for editing resources
         save["maps"][town_id]["coins"] += 2500
+        print("Exchange successful.")
 
     elif cmd == Constant.CMD_STORE_ITEM:
         x = args[0]
@@ -226,6 +234,7 @@ def do_command(USERID, cmd, args):
             for i in range(item_id - length + 1):
                 save["privateState"]["gifts"].append(0)
         save["privateState"]["gifts"][item_id] += 1
+        print("Stored",str(get_name_from_item_id(item_id)), "from", f"({x},{y})")
 
     elif cmd == Constant.CMD_PLACE_GIFT:
         item_id = args[0]
@@ -238,10 +247,57 @@ def do_command(USERID, cmd, args):
         collected_at_timestamp = 0#TODO
         level = 0
         items += [[item_id, x, y, orientation, collected_at_timestamp, level]]#maybe make function for adding items
+        print("Add", str(get_name_from_item_id(item_id)), "at", f"({x},{y})")
         save["privateState"]["gifts"][item_id] -= 1
         if save["privateState"]["gifts"][item_id] == 0: #removes excess zeros at end if necessary
             while(save["privateState"]["gifts"][-1] == 0):
-                save["privateState"]["gifts"].pop()
+                save["privateState"]["gifts"].pop()  
+
+    elif cmd == Constant.CMD_SELL_GIFT:
+        item_id = args[0]
+        town_id = args[1]
+        gifts = save["privateState"]["gifts"]
+        gifts[item_id] -= 1
+        if gifts[item_id] == 0: #removes excess zeros at end if necessary
+            while(len(gifts) != 0 and gifts[-1] == 0):
+                gifts.pop()
+        price_multiplier = -0.05
+        if get_attribute_from_item_id(item_id, "cost_type") != "c":
+            apply_cost(save["playerInfo"], save["maps"][town_id], item_id, price_multiplier)
+        print("gift", str(get_name_from_item_id(item_id)), "sold on town:",town_id)
+    
+    elif cmd == Constant.CMD_ACTIVATE_DRAGON:
+        currency = args[0]
+        if currency == 'c':
+            save["playerInfo"]["cash"] = max(int(save["playerInfo"]["cash"] - 50), 0)
+        elif currency == 'g':
+            map = save["maps"]
+            map[0]["coins"] = max(int(map[0]["coins"] - 100000), 0)
+        save["privateState"]["dragonNestActive"] = 1
+        print("Dragon nest activated.")
+    
+    elif cmd == Constant.CMD_DESACTIVATE_DRAGON:
+        pState = save["privateState"]
+        pState["dragonNestActive"] = 0# reset step and dragon numbers
+        pState["stepNumber"] = 0
+        pState["dragonNumber"] = 0
+        print("Dragon nest deactivated.")
+
+    elif cmd == Constant.CMD_NEXT_DRAGON_STEP:
+        pState = save["privateState"]
+        pState["stepNumber"] += 1
+        print("DragonStep increased.")
+
+    elif cmd == Constant.CMD_NEXT_DRAGON:
+        pState = save["privateState"]
+        pState["stepNumber"] = 0
+        pState["dragonNumber"] += 1
+        print("DragonStep reset and dragonNumber increased.")
+
+    elif cmd == Constant.CMD_DRAGON_BUY_STEP_CASH:
+        price = args[0]
+        save["playerInfo"]["cash"] = max(int(save["playerInfo"]["cash"] - price), 0)
+        #TODO remove the timer
 
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
