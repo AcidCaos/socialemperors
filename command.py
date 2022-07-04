@@ -299,6 +299,82 @@ def do_command(USERID, cmd, args):
         save["playerInfo"]["cash"] = max(int(save["playerInfo"]["cash"] - price), 0)
         #TODO remove the timer
 
+    elif cmd == Constant.CMD_RIDER_BUY_STEP_CASH:
+        price = args[0]
+        save["playerInfo"]["cash"] = max(int(save["playerInfo"]["cash"] - price), 0)
+        #TODO remove the timer
+
+    elif cmd == Constant.CMD_NEXT_RIDER_STEP:
+        pState = save["privateState"]
+        pState["riderStepNumber"] += 1
+        print("riderStep increased.")
+    
+    elif cmd == Constant.CMD_SELECT_RIDER:
+        number = int(args[0])
+        pState = save["privateState"]
+        if number == 1 or number == 2 or number == 3:
+            pState["riderNumber"] = number
+            print("Rider",number,"Selected.")
+        else:
+            pState["riderNumber"] = 0
+            pState["riderStepNumber"] = 0
+            print("Rider reset.")
+    
+    elif cmd == Constant.CMD_ORIENT:
+        x = args[0]
+        y = args[1]
+        new_orientation = args[2]
+        town_id = args[3]
+        map = save["maps"][town_id]
+        for item in map["items"]:
+            if item[1] == x and item[2] == y:
+                item[3] = new_orientation
+                print("item at",f"({x},{y})","changed to orientation",new_orientation)
+                break
+    
+    elif cmd == Constant.CMD_MONSTER_BUY_STEP_CASH:
+        price = args[0]
+        save["playerInfo"]["cash"] = max(int(save["playerInfo"]["cash"] - price), 0)
+        #TODO remove the timer
+    
+    elif cmd == Constant.CMD_ACTIVATE_MONSTER:
+        currency = args[0]
+        if currency == 'c':
+            save["playerInfo"]["cash"] = max(int(save["playerInfo"]["cash"] - 50), 0)
+        elif currency == 'g':
+            map = save["maps"]
+            map[0]["coins"] = max(int(map[0]["coins"] - 100000), 0)
+        save["privateState"]["monsterNestActive"] = 1
+        print("Monster nest activated.")
+    
+    elif cmd == Constant.CMD_ACTIVATE_MONSTER:
+        currency = args[0]
+        if currency == 'c':
+            save["playerInfo"]["cash"] = max(int(save["playerInfo"]["cash"] - 50), 0)
+        elif currency == 'g':
+            map = save["maps"]
+            map[0]["coins"] = max(int(map[0]["coins"] - 100000), 0)
+        save["privateState"]["monsterNestActive"] = 1
+        print("Monster nest activated.")
+    
+    elif cmd == Constant.CMD_DESACTIVATE_MONSTER:#cmd called too late
+        pState = save["privateState"]
+        pState["monsterNestActive"] = 0
+        pState["stepMonsterNumber"] = 0
+        pState["MonsterNumber"] = 0
+        print("Monster nest deactivated.")
+
+    elif cmd == Constant.CMD_NEXT_MONSTER_STEP:
+        pState = save["privateState"]
+        pState["stepMonsterNumber"] += 1
+        print("Monster Step increased.")
+
+    elif cmd == Constant.CMD_NEXT_MONSTER:
+        pState = save["privateState"]
+        pState["stepMonsterNumber"] = 0
+        pState["monsterNumber"] += 1
+        print("MonsterStep reset and MonsterNumber increased.")
+
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
         return
