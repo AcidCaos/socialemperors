@@ -43,7 +43,7 @@ def login():
         return redirect("/play.html")
     # Login page
     if request.method == 'GET':
-        return render_template("login.html", all_saves_userid=all_saves_userid())
+        return render_template("login.html", all_saves_userid=all_saves_userid(), version=version)
 
 @app.route("/play.html")
 def play():
