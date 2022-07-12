@@ -281,39 +281,42 @@ def do_command(USERID, cmd, args):
             map = save["maps"]
             map[0]["coins"] = max(int(map[0]["coins"] - 100000), 0)
         save["privateState"]["dragonNestActive"] = 1
+        save["privateState"]["timeStampTakeCare"] = -1 # remove timer if any
     
     elif cmd == Constant.CMD_DESACTIVATE_DRAGON:
         print("Dragon nest deactivated.")
         pState = save["privateState"]
-        pState["dragonNestActive"] = 0 # reset step and dragon numbers
+        pState["dragonNestActive"] = 0
+        # reset step and dragon numbers
         pState["stepNumber"] = 0
         pState["dragonNumber"] = 0
+        pState["timeStampTakeCare"] = -1 # remove timer if any
 
     elif cmd == Constant.CMD_NEXT_DRAGON_STEP:
+        unknown = args[0]
         print("Dragon step increased.")
         pState = save["privateState"]
-        pState["timeStampTakeCare"] = timestamp_now()
         pState["stepNumber"] += 1
+        pState["timeStampTakeCare"] = timestamp_now()
 
     elif cmd == Constant.CMD_NEXT_DRAGON:
         print("Dragon step reset and dragonNumber increased.")
         pState = save["privateState"]
         pState["stepNumber"] = 0
         pState["dragonNumber"] += 1
+        pState["timeStampTakeCare"] = -1 # remove timer
 
     elif cmd == Constant.CMD_DRAGON_BUY_STEP_CASH:
-        print("Buy dragon step with cash.")
         price = args[0]
+        print("Buy dragon step with cash.")
         save["playerInfo"]["cash"] = max(int(save["playerInfo"]["cash"] - price), 0)
-        # remove the timer
-        pState["timeStampTakeCare"] = 0
+        save["privateState"]["timeStampTakeCare"] = -1 # remove timer
 
     elif cmd == Constant.CMD_RIDER_BUY_STEP_CASH:
-        print("Buy rider step with cash.")
         price = args[0]
+        print("Buy rider step with cash.")
         save["playerInfo"]["cash"] = max(int(save["playerInfo"]["cash"] - price), 0)
-        # remove the timer
-        pState["riderTimeStamp"] = 0
+        save["privateState"]["riderTimeStamp"] = -1 # remove timer
 
     elif cmd == Constant.CMD_NEXT_RIDER_STEP:
         print("Rider step increased.")
@@ -330,6 +333,7 @@ def do_command(USERID, cmd, args):
         else:
             pState["riderNumber"] = 0
             pState["riderStepNumber"] = 0
+            pState["riderTimeStamp"] = -1 # remove timer
             print("Rider reset.")
     
     elif cmd == Constant.CMD_ORIENT:
@@ -348,8 +352,7 @@ def do_command(USERID, cmd, args):
         price = args[0]
         print("Buy monster step with cash.")
         save["playerInfo"]["cash"] = max(int(save["playerInfo"]["cash"] - price), 0)
-        #TODO remove the timer
-        pState["timeStampTakeCareMonster"] = 0
+        save["privateState"]["timeStampTakeCareMonster"] = -1 # remove timer
     
     elif cmd == Constant.CMD_ACTIVATE_MONSTER:
         currency = args[0]
@@ -360,13 +363,16 @@ def do_command(USERID, cmd, args):
             map = save["maps"]
             map[0]["coins"] = max(int(map[0]["coins"] - 100000), 0)
         save["privateState"]["monsterNestActive"] = 1
+        save["privateState"]["timeStampTakeCareMonster"] = -1 # remove timer if any
     
-    elif cmd == Constant.CMD_DESACTIVATE_MONSTER:#cmd called too late
+    elif cmd == Constant.CMD_DESACTIVATE_MONSTER: # cmd called too late
         print("Monster nest deactivated.")
         pState = save["privateState"]
         pState["monsterNestActive"] = 0
         pState["stepMonsterNumber"] = 0
         pState["MonsterNumber"] = 0
+        pState["timeStampTakeCareMonster"] = -1 # remove timer if any
+
 
     elif cmd == Constant.CMD_NEXT_MONSTER_STEP:
         print("Monster Step increased.")
@@ -375,10 +381,11 @@ def do_command(USERID, cmd, args):
         pState["timeStampTakeCareMonster"] = timestamp_now()
 
     elif cmd == Constant.CMD_NEXT_MONSTER:
-        print("MonsterStep reset and MonsterNumber increased.")
+        print("Monster Step reset and Monster Number increased.")
         pState = save["privateState"]
         pState["stepMonsterNumber"] = 0
         pState["monsterNumber"] += 1
+        pState["timeStampTakeCareMonster"] = -1 # remove timer
 
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
