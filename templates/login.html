@@ -12,12 +12,12 @@
         
         <h1 style="font-family: Verdana, Tahoma;">Login</h1>
         <div style="width: 760px; overflow: hidden; background-color: #e5e5e5; border-radius: 5px; padding: 15px;">
-        {% if all_saves_userid %}
+        {% if saves_info %}
             <form method="post">
                 <label>Select a village</label>
                 <select id="USERID" name="USERID" required>
-                    {% for uid in all_saves_userid %}
-                    <option value="{{uid}}">{{uid}}</option>
+                    {% for save in saves_info %}
+                    <option value="{{save.userid}}" title="{{save.userid}}">{{save.name}} ~ level {{save.level}} ({{save.xp}} xp)</option>
                     {% endfor %}
                 </select>
                 <button type="submit">Log in</button>
@@ -25,7 +25,7 @@
             <br>
             Or 
         {% endif %}
-        <a href="new.html">create a new village</a>.
+        <a href="new.html">create a new village</a>
         </div>
     </center>
     </body>

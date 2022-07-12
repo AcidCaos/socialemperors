@@ -94,6 +94,20 @@ def all_userid() -> list:
     "Returns a list of the USERID of every saved village."
     return list(__villages.keys()) + list(__saves.keys())
 
+def save_info(USERID: str) -> dict:
+    save = __saves[USERID]
+    default_map = save["playerInfo"]["default_map"]
+    empire_name = str(save["playerInfo"]["map_names"][default_map])
+    xp = save["maps"][default_map]["xp"]
+    level = save["maps"][default_map]["level"]
+    return{"userid": USERID, "name": empire_name, "xp": xp, "level": level}
+
+def all_saves_info() -> list:
+    saves_info = []
+    for userid in __saves:
+        saves_info.append(save_info(userid))
+    return list(saves_info)
+
 def session(USERID: str) -> dict:
     assert(isinstance(USERID, str))
     return __saves[USERID] if USERID in __saves else None
