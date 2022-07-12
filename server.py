@@ -17,7 +17,7 @@ from flask.debughelpers import attach_enctype_error_multidict
 from command import command
 from engine import timestamp_now
 
-version = "pre-alpha 0.01"
+version = "alpha 0.02-rc1"
 
 host = '127.0.0.1'
 port = 5050
@@ -54,7 +54,7 @@ def play():
         return redirect("/")
     
     print("[PLAY] USERID:", session['USERID'])
-    return render_template("play.html", USERID=session['USERID'], serverTime=timestamp_now())
+    return render_template("play.html", USERID=session['USERID'], serverTime=timestamp_now(), version=version)
 
 @app.route("/new.html")
 def new():

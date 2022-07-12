@@ -7,10 +7,19 @@
     </head>
     <body>
     <center>
-        <img src="img/logo.png"/>
-        <p>Logged in as {{USERID}}</p>
-        <a href="/">&lt; Back to login</a>
-        <a target="_blank" href="https://socialempiresoficial.fandom.com/es/wiki/Wiki_Social_Empires_Oficial">Wiki</a>
+        <img src="img/logo.png" style="width: 200px;"/>
+        <p style="margin: 2px 0px 15px 0px;">The Social Emperors team. ~ version {{version}}</p>
+        <div style="width: 760px; overflow: hidden; background-color: #e5e5e5; border-radius: 5px;"> <!-- header bar -->
+            <div style="float: right; padding: 7px;"> <!-- logout menu -->
+                <p style="display:inline">Logged in as {{USERID}}</p>
+                (<a href="/">logout</a>)
+            </div>
+            <div style="float: left; padding: 7px;"> <!-- logo -->
+                [<a target="_blank" href="https://discord.gg/zW5gSbQJBw">Discord</a>]
+                [<a target="_blank" href="https://github.com/AcidCaos/socialemperors#readme">GitHub</a>]
+                [<a target="_blank" href="https://socialempiresoficial.fandom.com/es/wiki/Wiki_Social_Empires_Oficial">Wiki</a>]
+            </div>
+        </div>
         <br>
         <object>
             <embed
@@ -35,6 +44,7 @@
                 &forceQuestReload=0&brk=0'>
             </embed>
         </object>
+
     </center>
     </body>
 </html>
