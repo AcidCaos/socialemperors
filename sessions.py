@@ -2,9 +2,11 @@ import json
 import os
 import copy
 import uuid
-
 from flask import session
 # from flask_session import SqlAlchemySessionInterface, current_app
+
+from engine import timestamp_now
+
 
 __villages_dir = "./villages"
 __saves_dir = "./saves"
@@ -72,9 +74,12 @@ def new_village() -> str:
     assert USERID not in all_userid()
     # Copy init
     village = copy.deepcopy(__initial_village)
+    # Custom values
     village["playerInfo"]["pid"] = USERID
+    village["maps"][0]["timestamp"] = timestamp_now()
+    # Memory saves
     __saves[USERID] = village
-    # Generate save_file
+    # Generate save file
     save_session(USERID)
     print("Done.")
     return USERID

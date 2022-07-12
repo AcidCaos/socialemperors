@@ -1,7 +1,9 @@
+import time
+
 from get_game_config import get_attribute_from_item_id
 
 def apply_cost(playerInfo: dict, map: dict, id: int, price_multiplier: int) -> None:
-    cost = price_multiplier * int(get_attribute_from_item_id(id, "cost"))
+    cost = int(price_multiplier * int(get_attribute_from_item_id(id, "cost")))
     cost_type = get_attribute_from_item_id(id, "cost_type")
     if cost_type == "w":
         map["wood"] = max(map["wood"] - cost, 0)
@@ -15,7 +17,7 @@ def apply_cost(playerInfo: dict, map: dict, id: int, price_multiplier: int) -> N
         map["food"] = max(map["food"] - cost, 0)
 
 def apply_collect(playerInfo: dict, map: dict, id: int, resource_multiplier: int) -> None:
-    collect = resource_multiplier * int(get_attribute_from_item_id(id, "collect"))
+    collect = int(resource_multiplier * int(get_attribute_from_item_id(id, "collect")))
     collect_type = get_attribute_from_item_id(id, "collect_type")
     apply_collect_xp(map, id)
     if collect_type == "w":
@@ -32,3 +34,6 @@ def apply_collect(playerInfo: dict, map: dict, id: int, resource_multiplier: int
 def apply_collect_xp(map: dict, id: int) -> None:
     collect_xp = int(get_attribute_from_item_id(id, "collect_xp"))
     map["xp"] = map["xp"] + collect_xp
+
+def timestamp_now() -> int:
+    return int(time.time())

@@ -15,6 +15,7 @@ print (" [+] Loading server...")
 from flask import Flask, render_template, send_from_directory, request, redirect, session
 from flask.debughelpers import attach_enctype_error_multidict
 from command import command
+from engine import timestamp_now
 
 version = "pre-alpha 0.01"
 
@@ -48,8 +49,12 @@ def login():
 def play():
     if 'USERID' not in session:
         return redirect("/")
+
+    if session['USERID'] not in all_saves_userid():
+        return redirect("/")
+    
     print("[PLAY] USERID:", session['USERID'])
-    return render_template("play.html", USERID=session['USERID'])
+    return render_template("play.html", USERID=session['USERID'], serverTime=timestamp_now())
 
 @app.route("/new.html")
 def new():
