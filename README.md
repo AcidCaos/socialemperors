@@ -10,12 +10,13 @@ Social Empires preservation project.
 
 | Version | Release date | Download |
 | --- | --- | --- |
+| **alpha 0.02a** | July 14, 2022 | :ticket: [Launcher](../../releases/download/0.02a/social-emperors_0.02a.zip) |
 | pre-alpha 0.01a | June 18, 2022 | :ticket: [Launcher](../../releases/download/0.01a/social-emperors_0.01a.zip) |
 
 ## How to Install on Windows
 
 - Download a flash-compatible browser (unless you already have one). **Recommended:** [Chromium 82.0](https://chromium.en.uptodown.com/windows/download/2181158)
-- Downlaod Flash Player for that browser. For Chromium: [Pepper Flash](https://archive.org/download/flashplayerarchive/pub/flashplayer/installers/archive/fp_32.0.0.371_archive.zip/32_0_r0_371%2Fflashplayer32_0r0_371_winpep.exe). For Firefox or Basilisk: [Flash NPAPI](https://archive.org/download/flashplayerarchive/pub/flashplayer/installers/archive/fp_32.0.0.371_archive.zip/32_0_r0_371%2Fflashplayer32_0r0_371_win.exe)
+- Download Flash Player for that browser. For Chromium: [Pepper Flash](https://archive.org/download/flashplayerarchive/pub/flashplayer/installers/archive/fp_32.0.0.371_archive.zip/32_0_r0_371%2Fflashplayer32_0r0_371_winpep.exe). For Firefox or Basilisk: [Flash NPAPI](https://archive.org/download/flashplayerarchive/pub/flashplayer/installers/archive/fp_32.0.0.371_archive.zip/32_0_r0_371%2Fflashplayer32_0r0_371_win.exe)
 - Download the latest released version from the Releases section.
 - Unzip the file to a suitable location.
 
