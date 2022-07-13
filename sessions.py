@@ -2,10 +2,13 @@ import json
 import os
 import copy
 import uuid
+import random
 from flask import session
 # from flask_session import SqlAlchemySessionInterface, current_app
 
+from version import version_code
 from engine import timestamp_now
+from version import migrate_loaded_save
 
 
 __villages_dir = "./villages"
@@ -63,8 +66,9 @@ def load_saved_villages():
         USERID = save["playerInfo"]["pid"]
         print("USERID:", USERID)
         __saves[str(USERID)] = save
-
-load_saved_villages()
+        modified = migrate_loaded_save(save) # check save version for migration
+        if modified:
+            save_session(USERID)
 
 # New village
 
@@ -75,8 +79,10 @@ def new_village() -> str:
     # Copy init
     village = copy.deepcopy(__initial_village)
     # Custom values
+    village["version"] = version_code
     village["playerInfo"]["pid"] = USERID
     village["maps"][0]["timestamp"] = timestamp_now()
+    village["privateState"]["dartsRandomSeed"] = abs(int((2**16 - 1) * random.random()))
     # Memory saves
     __saves[USERID] = village
     # Generate save file
@@ -91,7 +97,7 @@ def all_saves_userid() -> list:
     return list(__saves.keys())
 
 def all_userid() -> list:
-    "Returns a list of the USERID of every saved village."
+    "Returns a list of the USERID of every village."
     return list(__villages.keys()) + list(__saves.keys())
 
 def save_info(USERID: str) -> dict:

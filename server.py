@@ -9,15 +9,15 @@ from get_game_config import get_game_config
 
 print (" [+] Loading players...")
 from get_player_info import get_player_info
-from sessions import all_saves_userid, all_saves_info, save_info, new_village
+from sessions import load_saved_villages, all_saves_userid, all_saves_info, save_info, new_village
+load_saved_villages()
 
 print (" [+] Loading server...")
 from flask import Flask, render_template, send_from_directory, request, redirect, session
 from flask.debughelpers import attach_enctype_error_multidict
 from command import command
 from engine import timestamp_now
-
-version = "alpha 0.02-rc1"
+from version import version_name
 
 host = '127.0.0.1'
 port = 5050
@@ -44,7 +44,7 @@ def login():
     # Login page
     if request.method == 'GET':
         saves_info = all_saves_info()
-        return render_template("login.html", saves_info=saves_info, version=version)
+        return render_template("login.html", saves_info=saves_info, version=version_name)
 
 @app.route("/play.html")
 def play():
@@ -56,7 +56,7 @@ def play():
     
     USERID = session['USERID']
     print("[PLAY] USERID:", USERID)
-    return render_template("play.html", save_info=save_info(USERID), serverTime=timestamp_now(), version=version)
+    return render_template("play.html", save_info=save_info(USERID), serverTime=timestamp_now(), version=version_name)
 
 @app.route("/new.html")
 def new():
