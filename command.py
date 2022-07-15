@@ -387,6 +387,44 @@ def do_command(USERID, cmd, args):
         pState["monsterNumber"] += 1
         pState["timeStampTakeCareMonster"] = -1 # remove timer
 
+    elif cmd == Constant.CMD_WIN_BONUS:
+
+        # [coins, ?, hero, claimId, cash]
+        # gold/coins day1   -> win_bonus([250, 0, 0, 1, 0])
+        # hero / day2       -> win_bonus([0, 0, 535, 2, 0])
+        # cash / day3       -> win_bonus([0, 0, 0, 3, 1])
+        # hero / day4       -> win_bonus([0, 0, 533, 4, 0])
+        # cash / day5       -> win_bonus([0, 0, 0, 5, 3])
+
+        coins = args[0]
+        unknown = args[1]
+        hero = args[2]
+        claimId = args[3]
+        cash = args[4]
+
+        print("Claiming Win Bonus")
+        map = save["maps"][0]
+
+        if cash != 0:
+            save["playerInfo"]["cash"] = save["playerInfo"]["cash"] + cash
+            print("Added " + str(cash) + " Cash to players balance")
+
+        if coins != 0:
+            map["coins"] = map["coins"] + coins
+            print("Added " + str(coins) + " Gold to players balance")
+
+        if hero != 0:
+            length = len(save["privateState"]["gifts"])
+            if length <= hero:
+                for i in range(hero - length + 1):
+                    save["privateState"]["gifts"].append(0)
+            save["privateState"]["gifts"][hero] += 1
+            print("Added Hero ID=" + str(hero))
+
+        pState = save["privateState"]
+        pState["bonusNextId"] = claimId + 1
+        pState["timestampLastBonus"] = timestamp_now()
+
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
         return
