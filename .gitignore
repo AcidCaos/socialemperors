@@ -2,3 +2,4 @@ social-emperors_*.exe
 build/
 .venv/
 saves/
+.idea
