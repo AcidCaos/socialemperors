@@ -425,6 +425,13 @@ def do_command(USERID, cmd, args):
         pState["bonusNextId"] = claimId + 1
         pState["timestampLastBonus"] = timestamp_now()
 
+    elif cmd == Constant.CMD_ADMIN_ADD_ANIMAL:
+        # COMMAND: admin_add_animal([74, 1]) -> Unhandled command 'admin_add_animal' -> args [74, 1]
+        unknown1 = args[0]  # unitId?
+        unknown2 = args[1]  # amount?
+        # Todo
+
+
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
         return

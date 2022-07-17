@@ -3,3 +3,4 @@ build/
 .venv/
 saves/
 .idea
+__pycache__/
