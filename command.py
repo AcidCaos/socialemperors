@@ -159,9 +159,11 @@ def do_command(USERID, cmd, args):
         b_y = args[1]
         town_id = args[2]
         unit_id = args[3]
-        unit_x = args[4]
-        unit_y = args[5]
-        unit_frame = args[2]
+        place_popped_unit = len(args) > 4
+        if place_popped_unit:
+            unit_x = args[4]
+            unit_y = args[5]
+            unit_frame = args[6] # unknown use
         print("Pop", str(get_name_from_item_id(unit_id)), "from", f"({b_x},{b_y}).")
         map = save["maps"][town_id]
         # Remove unit from building
@@ -171,11 +173,12 @@ def do_command(USERID, cmd, args):
                     break
                 item[6].remove(unit_id)
                 break
-        # Spawn unit outside
-        collected_at_timestamp = timestamp_now()
-        level = 0 # TODO 
-        orientation = 0
-        map["items"] += [[unit_id, unit_x, unit_y, orientation, collected_at_timestamp, level]]
+        if place_popped_unit:
+            # Spawn unit outside
+            collected_at_timestamp = timestamp_now()
+            level = 0 # TODO 
+            orientation = 0
+            map["items"] += [[unit_id, unit_x, unit_y, orientation, collected_at_timestamp, level]]
     
     elif cmd == Constant.CMD_RT_LEVEL_UP:
         new_level = args[0]
@@ -388,22 +391,14 @@ def do_command(USERID, cmd, args):
         pState["timeStampTakeCareMonster"] = -1 # remove timer
 
     elif cmd == Constant.CMD_WIN_BONUS:
-
-        # [coins, ?, hero, claimId, cash]
-        # gold/coins day1   -> win_bonus([250, 0, 0, 1, 0])
-        # hero / day2       -> win_bonus([0, 0, 535, 2, 0])
-        # cash / day3       -> win_bonus([0, 0, 0, 3, 1])
-        # hero / day4       -> win_bonus([0, 0, 533, 4, 0])
-        # cash / day5       -> win_bonus([0, 0, 0, 5, 3])
-
         coins = args[0]
-        unknown = args[1]
+        town_id = args[1]
         hero = args[2]
         claimId = args[3]
         cash = args[4]
 
         print("Claiming Win Bonus")
-        map = save["maps"][0]
+        map = save["maps"][town_id]
 
         if cash != 0:
             save["playerInfo"]["cash"] = save["playerInfo"]["cash"] + cash
@@ -426,11 +421,13 @@ def do_command(USERID, cmd, args):
         pState["timestampLastBonus"] = timestamp_now()
 
     elif cmd == Constant.CMD_ADMIN_ADD_ANIMAL:
-        # COMMAND: admin_add_animal([74, 1]) -> Unhandled command 'admin_add_animal' -> args [74, 1]
-        unknown1 = args[0]  # unitId?
-        unknown2 = args[1]  # amount?
-        # Todo
-
+        subcatFunc = args[0]
+        toBeAdded = args[1]
+        print("Added", toBeAdded, get_attribute_from_item_id(subcatFunc, "subcat_functional"))
+        # TODO 
+        oAnimals = save["privateState"]["arrayAnimals"]
+        previous = oAnimals[subcatFunc] if subcatFunc in oAnimals else 0
+        oAnimals[subcatFunc] = previous + toBeAdded
 
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
