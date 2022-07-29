@@ -2,6 +2,32 @@ import json
 
 __game_config = json.load(open("./config/get_game_config.php_26_Aug_2012_no_hash.txt", 'r'))
 
+def patch_game_config():
+
+    # Patch Graveyard undefined global values
+
+    __game_config["globals"]["GRAVEYARD_POTIONS"] = {
+        "price": {
+            "c": 100
+        },
+        "amount": 1
+    }
+
+    # Patch Graveyard undefined locale strings
+
+    __game_config["localization_strings"] += [{
+        "id": 1564,
+        "name": "BUY_POTIONS_LABEL",
+        "text": "Buy #0# potions" # TODO
+    }]
+    __game_config["localization_strings"] += [{
+        "id": 1566,
+        "name": "GET_MORE_POTIONS",
+        "text": "Get more" # TODO
+    }]
+
+patch_game_config()
+
 def get_game_config() -> dict:
     return __game_config
 
