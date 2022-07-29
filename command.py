@@ -100,6 +100,8 @@ def do_command(USERID, cmd, args):
             price_multiplier = -0.05
             if get_attribute_from_item_id(id, "cost_type") != "c":
                 apply_cost(save["playerInfo"], save["maps"][town_id], id, price_multiplier)
+        if reason == 'KILL':
+            pass # TODO : add to graveyard
     
     elif cmd == Constant.CMD_KILL:
         x = args[0]
@@ -428,6 +430,38 @@ def do_command(USERID, cmd, args):
         oAnimals = save["privateState"]["arrayAnimals"]
         previous = oAnimals[subcatFunc] if subcatFunc in oAnimals else 0
         oAnimals[subcatFunc] = previous + toBeAdded
+    
+    elif cmd == Constant.CMD_GRAVEYARD_BUY_POTIONS:
+        # no args
+        print("Graveyard buy potion")
+        # info from config
+        graveyard_potions = get_game_config()["globals"]["GRAVEYARD_POTIONS"]
+        amount = graveyard_potions["amount"]
+        price_cash = graveyard_potions["price"]["c"]
+        # pay
+        save["playerInfo"]["cash"] = max(int(save["playerInfo"]["cash"] - price_cash), 0)
+        # add potion
+        save["privateState"]["potion"] += amount
+
+    elif cmd == Constant.CMD_RESURRECT_HERO:
+        unit_id = args[0]
+        x = args[1]
+        y = args[2]
+        town_id = args[3]
+        bool_used_potion = len(args) > 4 and args[4] == '1'
+        print("Resurrect", str(get_name_from_item_id(unit_id)), "from graveyard")
+        # pay
+        if bool_used_potion:
+            quantity = 1
+            save["privateState"]["potion"] = max(int(save["privateState"]["potion"] - quantity), 0)
+        else:
+            pass # TODO 
+        # Place unit
+        collected_at_timestamp = timestamp_now()
+        level = 0 # TODO 
+        orientation = 0
+        map["items"] += [[id, x, y, orientation, collected_at_timestamp, level]]
+
 
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
