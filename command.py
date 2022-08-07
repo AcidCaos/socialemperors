@@ -100,6 +100,8 @@ def do_command(USERID, cmd, args):
             price_multiplier = -0.05
             if get_attribute_from_item_id(id, "cost_type") != "c":
                 apply_cost(save["playerInfo"], save["maps"][town_id], id, price_multiplier)
+        if reason == 'KILL':
+            pass # TODO : add to graveyard
     
     elif cmd == Constant.CMD_KILL:
         x = args[0]
@@ -159,9 +161,11 @@ def do_command(USERID, cmd, args):
         b_y = args[1]
         town_id = args[2]
         unit_id = args[3]
-        unit_x = args[4]
-        unit_y = args[5]
-        unit_frame = args[2]
+        place_popped_unit = len(args) > 4
+        if place_popped_unit:
+            unit_x = args[4]
+            unit_y = args[5]
+            unit_frame = args[6] # unknown use
         print("Pop", str(get_name_from_item_id(unit_id)), "from", f"({b_x},{b_y}).")
         map = save["maps"][town_id]
         # Remove unit from building
@@ -171,11 +175,12 @@ def do_command(USERID, cmd, args):
                     break
                 item[6].remove(unit_id)
                 break
-        # Spawn unit outside
-        collected_at_timestamp = timestamp_now()
-        level = 0 # TODO 
-        orientation = 0
-        map["items"] += [[unit_id, unit_x, unit_y, orientation, collected_at_timestamp, level]]
+        if place_popped_unit:
+            # Spawn unit outside
+            collected_at_timestamp = timestamp_now()
+            level = 0 # TODO 
+            orientation = 0
+            map["items"] += [[unit_id, unit_x, unit_y, orientation, collected_at_timestamp, level]]
     
     elif cmd == Constant.CMD_RT_LEVEL_UP:
         new_level = args[0]
@@ -386,6 +391,77 @@ def do_command(USERID, cmd, args):
         pState["stepMonsterNumber"] = 0
         pState["monsterNumber"] += 1
         pState["timeStampTakeCareMonster"] = -1 # remove timer
+
+    elif cmd == Constant.CMD_WIN_BONUS:
+        coins = args[0]
+        town_id = args[1]
+        hero = args[2]
+        claimId = args[3]
+        cash = args[4]
+
+        print("Claiming Win Bonus")
+        map = save["maps"][town_id]
+
+        if cash != 0:
+            save["playerInfo"]["cash"] = save["playerInfo"]["cash"] + cash
+            print("Added " + str(cash) + " Cash to players balance")
+
+        if coins != 0:
+            map["coins"] = map["coins"] + coins
+            print("Added " + str(coins) + " Gold to players balance")
+
+        if hero != 0:
+            length = len(save["privateState"]["gifts"])
+            if length <= hero:
+                for i in range(hero - length + 1):
+                    save["privateState"]["gifts"].append(0)
+            save["privateState"]["gifts"][hero] += 1
+            print("Added Hero ID=" + str(hero))
+
+        pState = save["privateState"]
+        pState["bonusNextId"] = claimId + 1
+        pState["timestampLastBonus"] = timestamp_now()
+
+    elif cmd == Constant.CMD_ADMIN_ADD_ANIMAL:
+        subcatFunc = args[0]
+        toBeAdded = args[1]
+        print("Added", toBeAdded, get_attribute_from_item_id(subcatFunc, "subcat_functional"))
+        # TODO 
+        oAnimals = save["privateState"]["arrayAnimals"]
+        previous = oAnimals[subcatFunc] if subcatFunc in oAnimals else 0
+        oAnimals[subcatFunc] = previous + toBeAdded
+    
+    elif cmd == Constant.CMD_GRAVEYARD_BUY_POTIONS:
+        # no args
+        print("Graveyard buy potion")
+        # info from config
+        graveyard_potions = get_game_config()["globals"]["GRAVEYARD_POTIONS"]
+        amount = graveyard_potions["amount"]
+        price_cash = graveyard_potions["price"]["c"]
+        # pay
+        save["playerInfo"]["cash"] = max(int(save["playerInfo"]["cash"] - price_cash), 0)
+        # add potion
+        save["privateState"]["potion"] += amount
+
+    elif cmd == Constant.CMD_RESURRECT_HERO:
+        unit_id = args[0]
+        x = args[1]
+        y = args[2]
+        town_id = args[3]
+        bool_used_potion = len(args) > 4 and args[4] == '1'
+        print("Resurrect", str(get_name_from_item_id(unit_id)), "from graveyard")
+        # pay
+        if bool_used_potion:
+            quantity = 1
+            save["privateState"]["potion"] = max(int(save["privateState"]["potion"] - quantity), 0)
+        else:
+            pass # TODO 
+        # Place unit
+        collected_at_timestamp = timestamp_now()
+        level = 0 # TODO 
+        orientation = 0
+        map["items"] += [[id, x, y, orientation, collected_at_timestamp, level]]
+
 
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
