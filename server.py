@@ -73,13 +73,10 @@ def images(path):
 
 ## GAME STATIC
 
-@app.route("/default01.static.socialpointgames.com/static/socialempires/fonts/en_ErasBold.swf")
-def fake_fonts():
-    return send_from_directory("stub", "en_ErasBold.swf")
 
 @app.route("/default01.static.socialpointgames.com/static/socialempires/flash/SocialEmpires0910csec.swf")
 def game_swf():
-    return send_from_directory("flash", "SocialEmpires0926bsec_fonts.swf")
+    return send_from_directory("flash", "SocialEmpires0926bsec.swf")
 
 @app.route("/default01.static.socialpointgames.com/static/socialempires/flash/<path:path>")
 def flash_files(path):
