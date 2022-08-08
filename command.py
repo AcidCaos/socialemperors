@@ -462,7 +462,7 @@ def do_command(USERID, cmd, args):
         orientation = 0
         map["items"] += [[id, x, y, orientation, collected_at_timestamp, level]]
 
-    elif cmd == CMD_BUY_SUPER_OFFER_PACK:
+    elif cmd == Constant.CMD_BUY_SUPER_OFFER_PACK:
         town_id = args[0]
         unknown2 = args[1] # this is probably the super offer pack ID?
         items = args[2]
