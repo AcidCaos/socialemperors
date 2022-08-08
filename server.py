@@ -5,7 +5,9 @@ if os.name == 'nt':
     os.system("color")
 
 print (" [+] Loading game config...")
-from get_game_config import get_game_config
+from get_game_config import get_game_config, patch_game_config
+print (" [+] Applying config patches...")
+patch_game_config()
 
 print (" [+] Loading players...")
 from get_player_info import get_player_info

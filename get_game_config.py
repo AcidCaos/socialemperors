@@ -1,32 +1,17 @@
 import json
+import os
+import jsonpatch
 
 __game_config = json.load(open("./config/get_game_config.php_26_Aug_2012_no_hash.txt", 'r'))
 
 def patch_game_config():
-
-    # Patch Graveyard undefined global values
-
-    __game_config["globals"]["GRAVEYARD_POTIONS"] = {
-        "price": {
-            "c": 100
-        },
-        "amount": 1
-    }
-
-    # Patch Graveyard undefined locale strings
-
-    __game_config["localization_strings"] += [{
-        "id": 1564,
-        "name": "BUY_POTIONS_LABEL",
-        "text": "Buy #0# potions" # TODO
-    }]
-    __game_config["localization_strings"] += [{
-        "id": 1566,
-        "name": "GET_MORE_POTIONS",
-        "text": "Get more" # TODO
-    }]
-
-patch_game_config()
+    patch_dir = "./config/patch"
+    for patch_file in os.listdir(patch_dir):
+        if patch_file.endswith(".patch"):
+            f = os.path.join(patch_dir, patch_file)
+            patch = json.load(open(f, 'r'))
+            jsonpatch.apply_patch(__game_config, patch, in_place=True)
+            print(" * Patch applied:", patch_file)
 
 def get_game_config() -> dict:
     return __game_config
