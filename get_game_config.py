@@ -2,12 +2,12 @@ import json
 import os
 import jsonpatch
 
-__game_config = json.load(open("./config/get_game_config.php_26_Aug_2012_no_hash.txt", 'r'))
+__game_config = json.load(open("./config/main.json", 'r'))
 
 def patch_game_config():
     patch_dir = "./config/patch"
     for patch_file in os.listdir(patch_dir):
-        if patch_file.endswith(".patch"):
+        if patch_file.endswith(".json"):
             f = os.path.join(patch_dir, patch_file)
             patch = json.load(open(f, 'r'))
             jsonpatch.apply_patch(__game_config, patch, in_place=True)
