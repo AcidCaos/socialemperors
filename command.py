@@ -462,6 +462,26 @@ def do_command(USERID, cmd, args):
         orientation = 0
         map["items"] += [[id, x, y, orientation, collected_at_timestamp, level]]
 
+    elif cmd == CMD_BUY_SUPER_OFFER_PACK:
+        town_id = args[0]
+        unknown2 = args[1] # this is probably the super offer pack ID?
+        items = args[2]
+        cash_used = args[3]
+        
+        map = save["maps"][town_id]
+
+        item_array = items.split(',')
+        for item in item_array:
+            item_id = int(item)
+            length = len(save["privateState"]["gifts"])
+            if length <= item_id:
+                for i in range(item_id - length + 1):
+                    save["privateState"]["gifts"].append(0)
+            save["privateState"]["gifts"][item_id] += 1
+
+        save["playerInfo"]["cash"] = max(save["playerInfo"]["cash"] - cash_used, 0)#maybe make function for editing resources
+        print(f"Used {cash_used} cash to buy super offer pack!")
+
 
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
