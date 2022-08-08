@@ -208,7 +208,7 @@ def do_command(USERID, cmd, args):
             return
         # Substract resources
         expansion_prices = get_game_config()["expansion_prices"]
-        exp = expansion_prices[len(map["expansions"])]
+        exp = expansion_prices[len(map["expansions"]) - 1]
         if resource == "gold":
             to_substract = exp["coins"]
             save["maps"][town_id]["coins"] = max(save["maps"][town_id]["coins"] - to_substract, 0)
