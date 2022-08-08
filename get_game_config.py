@@ -13,6 +13,9 @@ def patch_game_config():
             jsonpatch.apply_patch(__game_config, patch, in_place=True)
             print(" * Patch applied:", patch_file)
 
+print (" [+] Applying config patches...")
+patch_game_config()
+
 def get_game_config() -> dict:
     return __game_config
 
