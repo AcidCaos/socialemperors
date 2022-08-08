@@ -6,3 +6,5 @@ saves/
 __pycache__/
 .DS_Store
 .vs/
+*.lnk
+download_assets/
