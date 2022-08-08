@@ -5,7 +5,7 @@
 		"value": 
 		{
 			"id": "2281",
-			"in_store": "0",
+			"in_store": "1",
 			"name": "Ancient Dragon",
 			"type": "u",
 			"cost": "5",
@@ -14,7 +14,7 @@
 			"groups": "dragon",
 			"trains": "0",
 			"upgrades_to": "0",
-			"display_order": "97",
+			"display_order": "0",
 			"activation": "0",
 			"expiration": "0",
 			"collect": "0",
@@ -130,7 +130,7 @@
 			"groups": "dragon",
 			"trains": "0",
 			"upgrades_to": "0",
-			"display_order": "97",
+			"display_order": "0",
 			"activation": "0",
 			"expiration": "0",
 			"collect": "0",
@@ -179,7 +179,7 @@
 		"value": 
 		{
 			"id": "2284",
-			"in_store": "0",
+			"in_store": "1",
 			"name": "Shaman Ancient Dragon",
 			"type": "u",
 			"cost": "5",
@@ -188,7 +188,7 @@
 			"groups": "dragon",
 			"trains": "0",
 			"upgrades_to": "0",
-			"display_order": "97",
+			"display_order": "1",
 			"activation": "0",
 			"expiration": "0",
 			"collect": "0",
