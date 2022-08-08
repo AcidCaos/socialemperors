@@ -113,9 +113,12 @@ def track_game_status_response():
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_game_config.php")
 def get_game_config_response():
+    spdebug = None
+
     USERID = request.values['USERID']
     user_key = request.values['user_key']
-    spdebug = request.values['spdebug']
+    if 'spdebug' in request.values:
+        spdebug = request.values['spdebug']
     language = request.values['language']
 
     print(f"get_game_config: USERID: {USERID}. --", request.values)
@@ -123,11 +126,16 @@ def get_game_config_response():
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_player_info.php", methods=['POST'])
 def get_player_info_response():
+    spdebug = None
+    neighbors = None
+
     USERID = request.values['USERID']
     user_key = request.values['user_key']
-    spdebug = request.values['spdebug']
+    if 'spdebug' in request.values:
+        spdebug = request.values['spdebug']
     language = request.values['language']
-    neighbors = request.values['neighbors']
+    if 'neighbors' in request.values:
+        neighbors = request.values['neighbors']
     client_id = request.values['client_id']
 
     print(f"get_player_info: USERID: {USERID}. --", request.values)
@@ -135,9 +143,12 @@ def get_player_info_response():
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/sync_error_track.php", methods=['POST'])
 def sync_error_track_response():
+    spdebug = None
+
     USERID = request.values['USERID']
     user_key = request.values['user_key']
-    spdebug = request.values['spdebug']
+    if 'spdebug' in request.values:
+        spdebug = request.values['spdebug']
     language = request.values['language']
     error = request.values['error']
     current_failed = request.values['current_failed']
@@ -166,9 +177,12 @@ def flash_sync_error_response():
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/command.php", methods=['POST'])
 def command_response():
+    spdebug = None
+
     USERID = request.values['USERID']
     user_key = request.values['user_key']
-    spdebug = request.values['spdebug']
+    if 'spdebug' in request.values:
+        spdebug = request.values['spdebug']
     language = request.values['language']
     client_id = request.values['client_id']
 
