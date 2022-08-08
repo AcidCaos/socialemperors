@@ -1,6 +1,7 @@
 print (" [+] Loading basics...")
 import os
 import json
+import urllib
 if os.name == 'nt':
     os.system("color")
 
