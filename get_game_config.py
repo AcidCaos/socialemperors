@@ -4,6 +4,31 @@ import jsonpatch
 
 __game_config = json.load(open("./config/main.json", 'r'))
 
+def remove_duplicate_items():
+    indexes = {}
+    items = __game_config["items"]
+    num_duplicate = 0
+
+    while True:
+        index = 0
+        duplicate = False
+        for item in items:
+            if item["id"] in indexes:
+                del items[indexes[item["id"]]]
+                indexes.clear()
+                duplicate = True
+                num_duplicate += 1
+                break
+
+            indexes[item["id"]] = index
+            index += 1
+
+        if duplicate:
+            continue
+
+        print(f" * Removed {num_duplicate} duplicate items from config patches")
+        break
+
 def patch_game_config():
     patch_dir = "./config/patch"
     for patch_file in os.listdir(patch_dir):
@@ -12,6 +37,8 @@ def patch_game_config():
             patch = json.load(open(f, 'r'))
             jsonpatch.apply_patch(__game_config, patch, in_place=True)
             print(" * Patch applied:", patch_file)
+
+    remove_duplicate_items()
 
 print (" [+] Applying config patches...")
 patch_game_config()
