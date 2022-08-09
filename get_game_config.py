@@ -29,14 +29,35 @@ def remove_duplicate_items():
         print(f" * Removed {num_duplicate} duplicate items from config patches")
         break
 
+def apply_config_patch(filename):
+    patch = json.load(open(filename, 'r'))
+    jsonpatch.apply_patch(__game_config, patch, in_place=True)
+
 def patch_game_config():
     patch_dir = "./config/patch"
+    mods_dir = "./mods"
+
     for patch_file in os.listdir(patch_dir):
         if patch_file.endswith(".json"):
             f = os.path.join(patch_dir, patch_file)
-            patch = json.load(open(f, 'r'))
-            jsonpatch.apply_patch(__game_config, patch, in_place=True)
-            print(" * Patch applied:", patch_file)
+            apply_config_patch(f)
+            print(" * Patch applied:", f)
+
+    if os.path.exists("./mods.txt"):
+        with open("./mods.txt", "r") as f:
+            lines = f.readlines()
+            f.close()
+
+        for line in lines:
+            mod = line.strip()
+            if mod.startswith("#"):
+                continue
+            if mod != "":
+                mod.replace(".json", "")
+                mod_path = f"{mods_dir}/{mod}.json"
+                if os.path.exists(mod_path):
+                    apply_config_patch(mod_path)
+                    print(" * Mod applied:", mod)
 
     remove_duplicate_items()
 
