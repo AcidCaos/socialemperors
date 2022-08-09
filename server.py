@@ -85,14 +85,6 @@ def images(path):
 ## GAME STATIC
 
 
-@app.route("/default01.static.socialpointgames.com/static/socialempires/flash/SocialEmpires0910csec.swf")
-def game_swf():
-    return send_from_directory("flash", "SocialEmpires0926bsec.swf")
-
-@app.route("/default01.static.socialpointgames.com/static/socialempires/flash/<path:path>")
-def flash_files(path):
-    return send_from_directory("flash", path)
-
 @app.route("/default01.static.socialpointgames.com/static/socialempires/swf/05122012_projectiles.swf")
 def similar_05122012_projectiles():
     return send_from_directory("assets/swf", "120615__projectiles.swf")
