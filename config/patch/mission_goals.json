@@ -1,0 +1,16 @@
+[
+    {
+        "op": "add",
+        "path": "/goals",
+        "value": [
+            {
+                "orders": 0
+            },
+            {
+                "orders": 1,
+                "types": "built_id",
+                "params": "{\"ids\": [1,2], \"ammount\": \"1\", \"upgrade_from\": 0}"
+            }
+        ]
+    }
+]
