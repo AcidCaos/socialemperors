@@ -1,13 +1,12 @@
 print (" [+] Loading basics...")
 import os
 import json
+import urllib
 if os.name == 'nt':
     os.system("color")
 
 print (" [+] Loading game config...")
 from get_game_config import get_game_config, patch_game_config
-print (" [+] Applying config patches...")
-patch_game_config()
 
 print (" [+] Loading players...")
 from get_player_info import get_player_info
@@ -38,10 +37,13 @@ print (" [+] Configuring server routes...")
 def login():
     # Log out previous session
     session.pop('USERID', default=None)
+    session.pop('GAMEVERSION', default=None)
     # If logging in, set session USERID, and go to play
     if request.method == 'POST':
         session['USERID'] = request.form['USERID']
+        session['GAMEVERSION'] = request.form['GAMEVERSION']
         print("[LOGIN] USERID:", request.form['USERID'])
+        print("[LOGIN] GAMEVERSION:", request.form['GAMEVERSION'])
         return redirect("/play.html")
     # Login page
     if request.method == 'GET':
@@ -50,19 +52,26 @@ def login():
 
 @app.route("/play.html")
 def play():
+    print(session)
+
     if 'USERID' not in session:
+        return redirect("/")
+    if 'GAMEVERSION' not in session:
         return redirect("/")
 
     if session['USERID'] not in all_saves_userid():
         return redirect("/")
     
     USERID = session['USERID']
+    GAMEVERSION = session['GAMEVERSION']
     print("[PLAY] USERID:", USERID)
-    return render_template("play.html", save_info=save_info(USERID), serverTime=timestamp_now(), version=version_name)
+    print("[PLAY] GAMEVERSION:", GAMEVERSION)
+    return render_template("play.html", save_info=save_info(USERID), serverTime=timestamp_now(), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host)
 
 @app.route("/new.html")
 def new():
     session['USERID'] = new_village()
+    session['GAMEVERSION'] = "SocialEmpires0926bsec.swf"
     return redirect("play.html")
 
 @app.route("/crossdomain.xml")
@@ -98,7 +107,32 @@ def similar_05122012_dynamic():
 
 @app.route("/default01.static.socialpointgames.com/static/socialempires/<path:path>")
 def static_assets_loader(path):
-    return send_from_directory("assets", path)
+    if not os.path.exists(f"assets/{path}"):
+        # File does not exists in provided assets
+        if not os.path.exists(f"download_assets/assets/{path}"):
+            # Download file from SP's CDN if it doesn't exist
+
+            # Make directory
+            directory = os.path.dirname(f"download_assets/assets/{path}")
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+
+            # Download File
+            URL = f"https://static.socialpointgames.com/static/socialempires/assets/{path}"
+            try:
+                response = urllib.request.urlretrieve(URL, f"download_assets/assets/{path}")
+            except urllib.error.HTTPError:
+                return ("", 404)
+
+            print(f"====== DOWNLOADED ASSET: {URL}")
+            return send_from_directory("download_assets/assets", path)
+        else:
+            # Use downloaded CDN asset
+            print(f"====== USING EXTERNAL: download_assets/assets/{path}")
+            return send_from_directory("download_assets/assets", path)
+    else:
+        # Use provided asset
+        return send_from_directory("assets", path)
 
 ## GAME DYNAMIC
 
@@ -113,9 +147,12 @@ def track_game_status_response():
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_game_config.php")
 def get_game_config_response():
+    spdebug = None
+
     USERID = request.values['USERID']
     user_key = request.values['user_key']
-    spdebug = request.values['spdebug']
+    if 'spdebug' in request.values:
+        spdebug = request.values['spdebug']
     language = request.values['language']
 
     print(f"get_game_config: USERID: {USERID}. --", request.values)
@@ -123,11 +160,16 @@ def get_game_config_response():
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_player_info.php", methods=['POST'])
 def get_player_info_response():
+    spdebug = None
+    neighbors = None
+
     USERID = request.values['USERID']
     user_key = request.values['user_key']
-    spdebug = request.values['spdebug']
+    if 'spdebug' in request.values:
+        spdebug = request.values['spdebug']
     language = request.values['language']
-    neighbors = request.values['neighbors']
+    if 'neighbors' in request.values:
+        neighbors = request.values['neighbors']
     client_id = request.values['client_id']
 
     print(f"get_player_info: USERID: {USERID}. --", request.values)
@@ -135,9 +177,12 @@ def get_player_info_response():
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/sync_error_track.php", methods=['POST'])
 def sync_error_track_response():
+    spdebug = None
+
     USERID = request.values['USERID']
     user_key = request.values['user_key']
-    spdebug = request.values['spdebug']
+    if 'spdebug' in request.values:
+        spdebug = request.values['spdebug']
     language = request.values['language']
     error = request.values['error']
     current_failed = request.values['current_failed']
@@ -166,9 +211,12 @@ def flash_sync_error_response():
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/command.php", methods=['POST'])
 def command_response():
+    spdebug = None
+
     USERID = request.values['USERID']
     user_key = request.values['user_key']
-    spdebug = request.values['spdebug']
+    if 'spdebug' in request.values:
+        spdebug = request.values['spdebug']
     language = request.values['language']
     client_id = request.values['client_id']
 
