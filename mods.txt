@@ -1,7 +1,7 @@
-# Mods are loaded from config/mods/ in the order provided below
+# Mods are loaded from the "mods" folder in the order provided below
 # You don't need to provide the .json extension here, just the name
 # If a line starts with #, it is ignored
 
-# nerroth_units
-# nerroth_riders
-# mod_venzkaizer
+nerroth_units
+nerroth_riders
+mod_venzkaizer
