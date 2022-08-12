@@ -4,6 +4,17 @@ from get_game_config import get_game_config, get_level_from_xp, get_name_from_it
 from constants import Constant
 from engine import apply_cost, apply_collect, apply_collect_xp, timestamp_now
 
+def get_strategy_type(id):
+    if id == 8:
+        return "Defensive"
+    if id == 9:
+        return "Mid Defensive"
+    if id == 7:
+        return "Mid Aggressive"
+    if id == 10:
+        return "Aggressive"
+    return "Unknown Strategy"
+
 def command(USERID, data):
     timestamp = data["ts"]
     first_number = data["first_number"]
@@ -482,6 +493,11 @@ def do_command(USERID, cmd, args):
         save["playerInfo"]["cash"] = max(save["playerInfo"]["cash"] - cash_used, 0)#maybe make function for editing resources
         print(f"Used {cash_used} cash to buy super offer pack!")
 
+    elif cmd == Constant.CMD_SET_STRATEGY:
+        strategy_type = args[0]
+        type_name = get_strategy_type(strategy_type)
+        save["privateState"]["strategy"] = strategy_type
+        print(f"Set defense strategy type to {type_name}")
 
     else:
         print(f"Unhandled command '{cmd}' -> args", args)

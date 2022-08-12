@@ -25,6 +25,7 @@ def migrate_loaded_save(save: dict) -> bool:
     # if save["version"] == "0.02a":
     #     save["version"] = "0.03a"
     #     save["privateState"]["arrayAnimals"] = {} # fix no animal spawning
+    #     save["privateState"]["strategy"] = 8 # fix crash when attacking a player
     #     print("   > migrated to 0.03a")
 
     return True

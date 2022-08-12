@@ -106,6 +106,7 @@
         "teams": {
             "tournament": null
         },
-        "arrayAnimals": {}
+        "arrayAnimals": {},
+        "strategy": 8
     }
 }
