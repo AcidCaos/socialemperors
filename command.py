@@ -1,6 +1,6 @@
 
 from sessions import session, save_session
-from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id
+from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional
 from constants import Constant
 from engine import apply_cost, apply_collect, apply_collect_xp, timestamp_now
 
@@ -434,13 +434,13 @@ def do_command(USERID, cmd, args):
         pState["timestampLastBonus"] = timestamp_now()
 
     elif cmd == Constant.CMD_ADMIN_ADD_ANIMAL:
-        subcatFunc = args[0]
-        toBeAdded = args[1]
-        print("Added", toBeAdded, get_attribute_from_item_id(subcatFunc, "subcat_functional"))
-        # TODO 
-        oAnimals = save["privateState"]["arrayAnimals"]
-        previous = oAnimals[subcatFunc] if subcatFunc in oAnimals else 0
-        oAnimals[subcatFunc] = previous + toBeAdded
+        subcatFunc = str(args[0])
+        toBeAdded = int(args[1])
+        print("Added", toBeAdded, get_item_from_subcat_functional(subcatFunc)["name"])
+
+        # TODO
+        oAnimals: dict = save["privateState"]["arrayAnimals"]
+        oAnimals[subcatFunc] = toBeAdded + (oAnimals[subcatFunc] if subcatFunc in oAnimals else 0)
     
     elif cmd == Constant.CMD_GRAVEYARD_BUY_POTIONS:
         # no args
