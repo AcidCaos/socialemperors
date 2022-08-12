@@ -20,6 +20,7 @@ from command import command
 from engine import timestamp_now
 from version import version_name
 from constants import Constant
+from quests import get_quest_map
 
 host = '127.0.0.1'
 port = 5050
@@ -155,8 +156,6 @@ def get_game_config_response():
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_player_info.php", methods=['POST'])
 def get_player_info_response():
-    spdebug = None
-    neighbors = None
 
     USERID = request.values['USERID']
     user_key = request.values['user_key']
@@ -169,15 +168,19 @@ def get_player_info_response():
 
     print(f"get_player_info: USERID: {USERID}. user: {user} --", request.values)
 
+    # Current Player
     if user is None:
         return (get_player_info(USERID), 200)
-
-    if user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_1 \
+    # Arthur
+    elif user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_1 \
     or user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_2 \
     or user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_3:
-        # TODO
-        return ("", 200)
-    else: # visiting a neighbor
+        return ("", 404) # TODO
+    # Quest
+    elif user.startswith("100000"): # Dirty but quick
+        return get_quest_map(user)
+    # Neighbor
+    else:
         return (get_neighbor_info(user, map), 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/sync_error_track.php", methods=['POST'])

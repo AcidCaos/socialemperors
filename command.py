@@ -1,3 +1,4 @@
+import json
 
 from sessions import session, save_session
 from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional
@@ -498,6 +499,41 @@ def do_command(USERID, cmd, args):
         type_name = get_strategy_type(strategy_type)
         save["privateState"]["strategy"] = strategy_type
         print(f"Set defense strategy type to {type_name}")
+
+    elif cmd == Constant.CMD_START_QUEST:
+        quest_id = args[0]
+        town_id = args[1]
+        print(f"Start quest {quest_id}")
+
+    elif cmd == Constant.CMD_END_QUEST:
+        data = json.loads(args[0])
+        town_id = data["map"]
+        gold_gained = data["resources"]["g"]
+        xp_gained = data["resources"]["x"]
+        units = data["units"]
+        win = data["win"] == 1
+        duration_sec = data["duration"]
+        voluntary_end = data["voluntary_end"] == 1
+        quest_id = data["quest_id"]
+        item_rewards = data["item_rewards"] if "item_rewards" in data else None
+        activators_left = data["activators_left"] if "activators_left" in data else None
+        difficulty = data["difficulty"]
+
+        # Resources
+        save["maps"][town_id]["coins"] += int(gold_gained)
+        save["maps"][town_id]["xp"] += int(xp_gained)
+
+        # Update quests data
+        save["privateState"]["unlockedQuestIndex"] += 1
+        # save["privateState"]["questsRank"] = TODO 
+        # save["maps"]["questTimes"] [quest_id] = TODO min (... , duration_sec)
+
+        print(f"Ended quest {quest_id}.")
+
+    elif cmd == Constant.CMD_ADD_COLLECTABLE:
+        collection_id = args[0]
+        collectible_id = args[1]
+        # TODO 
 
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
