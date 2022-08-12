@@ -127,6 +127,13 @@ def session(USERID: str) -> dict:
     assert(isinstance(USERID, str))
     return __saves[USERID] if USERID in __saves else None
 
+def neighbor_session(USERID: str) -> dict:
+    assert(isinstance(USERID, str))
+    if USERID in __saves:
+        return __saves[USERID]
+    if USERID in __villages:
+        return __villages[USERID]
+
 def neighbors(USERID: str):
     neighbors = []
     # static villages

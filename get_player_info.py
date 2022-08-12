@@ -1,4 +1,4 @@
-from sessions import session, neighbors
+from sessions import session, neighbor_session, neighbors
 from engine import timestamp_now
 
 def get_player_info(USERID):
@@ -16,6 +16,18 @@ def get_player_info(USERID):
         "neighbors": neighbors(USERID)
     }
     return player_info
+
+def get_neighbor_info(userid, map_number):
+    neighbor_info = {
+        "result": "ok",
+        "processed_errors": 0,
+        "timestamp": timestamp_now(),
+        "playerInfo": neighbor_session(userid)["playerInfo"],
+        "map": neighbor_session(userid)["maps"][map_number],
+        "privateState": neighbor_session(userid)["privateState"],
+        "neighbors": neighbors(userid)
+    }
+    return neighbor_info
 
 # old_player = {
 #     # - core.Base

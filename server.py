@@ -9,7 +9,7 @@ print (" [+] Loading game config...")
 from get_game_config import get_game_config, patch_game_config
 
 print (" [+] Loading players...")
-from get_player_info import get_player_info
+from get_player_info import get_player_info, get_neighbor_info
 from sessions import load_saved_villages, all_saves_userid, all_saves_info, save_info, new_village
 load_saved_villages()
 
@@ -19,6 +19,7 @@ from flask.debughelpers import attach_enctype_error_multidict
 from command import command
 from engine import timestamp_now
 from version import version_name
+from constants import Constant
 
 host = '127.0.0.1'
 port = 5050
@@ -159,15 +160,25 @@ def get_player_info_response():
 
     USERID = request.values['USERID']
     user_key = request.values['user_key']
-    if 'spdebug' in request.values:
-        spdebug = request.values['spdebug']
+    spdebug = request.values['spdebug'] if 'spdebug' in request.values else None
     language = request.values['language']
-    if 'neighbors' in request.values:
-        neighbors = request.values['neighbors']
+    neighbors = request.values['neighbors'] if 'neighbors' in request.values else None
     client_id = request.values['client_id']
+    user = request.values['user'] if 'user' in request.values else None
+    map = int(request.values['map']) if 'map' in request.values else None
 
-    print(f"get_player_info: USERID: {USERID}. --", request.values)
-    return (get_player_info(USERID), 200)
+    print(f"get_player_info: USERID: {USERID}. user: {user} --", request.values)
+
+    if user is None:
+        return (get_player_info(USERID), 200)
+
+    if user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_1 \
+    or user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_2 \
+    or user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_3:
+        # TODO
+        return ("", 200)
+    else: # visiting a neighbor
+        return (get_neighbor_info(user, map), 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/sync_error_track.php", methods=['POST'])
 def sync_error_track_response():
