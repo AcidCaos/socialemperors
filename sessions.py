@@ -39,6 +39,11 @@ __initial_village = json.load(open(os.path.join(__villages_dir, "initial.json"))
 # Load saved villages
 
 def load_saved_villages():
+    global __villages
+    global __saves
+    # Empty in memory
+    __villages = {}
+    __saves = {}
     # Saves dir check
     if not os.path.exists(__saves_dir):
         try:
@@ -62,7 +67,11 @@ def load_saved_villages():
     # Saves in /saves
     for file in os.listdir(__saves_dir):
         print(f" * Loading SAVE: village at {file}... ", end='')
-        save = json.load(open(os.path.join(__saves_dir, file)))
+        try:
+            save = json.load(open(os.path.join(__saves_dir, file)))
+        except json.decoder.JSONDecodeError as e:
+            print("Corrupted JSON.")
+            continue
         USERID = save["playerInfo"]["pid"]
         print("USERID:", USERID)
         __saves[str(USERID)] = save
