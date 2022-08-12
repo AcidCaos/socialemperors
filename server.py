@@ -226,6 +226,32 @@ def command_response():
     
     return ({"result": "success"}, 200)
 
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_continent_ranking.php")
+def get_continent_ranking_response():
+
+    USERID = request.values['USERID']
+    worldChange = request.values['worldChange']
+    if 'spdebug' in request.values:
+        spdebug = request.values['spdebug']
+    town_id = request.values['map']
+    user_key = request.values['user_key']
+
+    # TODO - stub
+    response = {
+        "world_id": 0,
+        "continent": [
+            {"posicion": 0, "nivel": 1, "user_id": 1111}, # villages/AcidCaos
+            {"posicion": 1, "nivel": 0},
+            {"posicion": 2, "nivel": 0},
+            {"posicion": 3, "nivel": 0},
+            {"posicion": 4, "nivel": 0},
+            {"posicion": 5, "nivel": 0},
+            {"posicion": 6, "nivel": 0},
+            {"posicion": 7, "nivel": 0}
+        ]
+    }
+    return(response)
+
 
 ########
 # MAIN #

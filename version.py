@@ -26,6 +26,7 @@ def migrate_loaded_save(save: dict) -> bool:
     #     save["version"] = "0.03a"
     #     save["privateState"]["arrayAnimals"] = {} # fix no animal spawning
     #     save["privateState"]["strategy"] = 8 # fix crash when attacking a player
+    #     save["maps"][0]["universAttackWin"] = [] # pvp current island progress
     #     print("   > migrated to 0.03a")
 
     return True
