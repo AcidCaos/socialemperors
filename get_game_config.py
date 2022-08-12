@@ -2,7 +2,7 @@ import json
 import os
 import jsonpatch
 
-__game_config = json.load(open("./config/main.json", 'r'))
+__game_config = json.load(open("./config/main.json", 'r', encoding='utf-8'))
 
 def remove_duplicate_items():
     indexes = {}
