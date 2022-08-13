@@ -514,7 +514,7 @@ def do_command(USERID, cmd, args):
         win = data["win"] == 1
         duration_sec = data["duration"]
         voluntary_end = data["voluntary_end"] == 1
-        quest_id = data["quest_id"]
+        quest_id = int(data["quest_id"])
         item_rewards = data["item_rewards"] if "item_rewards" in data else None
         activators_left = data["activators_left"] if "activators_left" in data else None
         difficulty = data["difficulty"]
@@ -524,9 +524,10 @@ def do_command(USERID, cmd, args):
         save["maps"][town_id]["xp"] += int(xp_gained)
 
         # Update quests data
-        save["privateState"]["unlockedQuestIndex"] += 1
+        save["privateState"]["unlockedQuestIndex"] = max(quest_id + 1, save["privateState"]["unlockedQuestIndex"], 0)
         # save["privateState"]["questsRank"] = TODO 
         # save["maps"]["questTimes"] [quest_id] = TODO min (... , duration_sec)
+        # save["maps"]["lastQuestTimes"] [quest_id] = TODO min (... , duration_sec)
 
         print(f"Ended quest {quest_id}.")
 

@@ -37,6 +37,8 @@
             "increasedPopulation": 0,
             "expirableUnitsTime": {},
             "universAttackWin": [],
+            "questTimes": [],
+            "lastQuestTimes": [],
             "__#__ITEMS_hint": ["item_id", "x", "y", "orientation", "collected_at_timestamp", "level", "units_array []", "attributes_dict {}"],
             "items": [
                 [26, 52, 52, 0, 0, 0, [], {}],
