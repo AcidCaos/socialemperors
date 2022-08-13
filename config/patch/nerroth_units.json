@@ -5,7 +5,7 @@
 		"value": 
 		{
 			"id": "2281",
-			"in_store": "1",
+			"in_store": "0",
 			"name": "Ancient Dragon",
 			"type": "u",
 			"cost": "5",
@@ -179,7 +179,7 @@
 		"value": 
 		{
 			"id": "2284",
-			"in_store": "1",
+			"in_store": "0",
 			"name": "Shaman Ancient Dragon",
 			"type": "u",
 			"cost": "5",
