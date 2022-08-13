@@ -1,11 +1,12 @@
 [
 	{
 		"op": "add",
-		"path": "/globals/DRAGONS",
-		"value": 
-		{
-			"2281": { "rider": "3", "tamedId": "2283" },
-			"2284": { "rider": "3", "tamedId": "2286" }
-		}
+		"path": "/globals/DRAGONS/2281",
+		"value": { "rider": "3", "tamedId": "2283" }
+	},
+	{
+		"op": "add",
+		"path": "/globals/DRAGONS/2284",
+		"value": { "rider": "3", "tamedId": "2286" }
 	}
 ]
