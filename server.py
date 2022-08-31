@@ -86,6 +86,10 @@ def crossdomain():
 def images(path):
     return send_from_directory("templates/img", path)
 
+@app.route("/css/<path:path>")
+def css(path):
+    return send_from_directory("templates/css", path)
+
 ## GAME STATIC
 
 

@@ -1,38 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Social Empires</title>
-        <link rel="shortcut icon" href="img/icon.gif"/>
-	    <link rel="icon" type="image/gif" href="img/icon.gif"/>
-    </head>
-    <body>
-    <center>
-        <img src="img/logo.png" style="width: 200px;"/>
-        <p style="margin: 2px 0px 15px 0px;">The Social Emperors team. ~ version {{version}}</p>
-        
-        <h1 style="font-family: Verdana, Tahoma;">Login</h1>
-		<div style="width: 760px; overflow: hidden; background-color: #e5e5e5; border-radius: 5px; padding: 15px;">
-			{% if saves_info %}
-			<form method="post">
-				<label>Select a village</label>
-				<select id="USERID" name="USERID" required>
-					{% for save in saves_info %}
-					<option value="{{save.userid}}" title="{{save.userid}}">{{save.name}} ~ level {{save.level}} ({{save.xp}} xp)</option>
-					{% endfor %}
-				</select>
-				<br/>
-				<label>Game Version</label>
-				<select id="GAMEVERSION" name="GAMEVERSION" required>
-					<option value="SocialEmpires0926bsec.swf" title="0.9.26b (Working)">0.9.26b (Working)</option>
-					<option value="SocialEmpires1.1.5sec.swf" title="1.1.5 (Broken)">1.1.5 (Broken)</option>
-				</select>
-				<button type="submit">Log in</button>
-			</form>
-			<br>
-			Or
-			{% endif %}
-			<a href="new.html">create a new village</a>
+	<head>
+		<!-- Meta -->
+		<meta charset="utf-8"/>
+		<!-- Title and Icon -->
+		<title id="pageTitle">Social Empires</title>
+		<link rel="shortcut icon" href="img/icon.gif"/>
+		<link rel="icon" type="image/png" href="img/icon.gif"/>
+		<!-- CSS -->
+		<link rel="stylesheet" href="css/facebook.css"/>
+	</head>
+	<body class="ego_wide canvas center_fixed_width_app fbx UIPage_LoggedOut liquid hideBanner Locale_en_US" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); overflow: auto;">
+		<center><img src="img/logo.png" style="width: 200px;"/></center>
+		<div class="mvl ptm uiInterstitial canvas_error_page uiInterstitialLarge uiBoxWhite">
+			<!-- HEAD TITLE -->
+			<div class="uiHeader uiHeaderBottomBorder mhl mts uiHeaderPage interstitialHeader">
+				<div class="clearfix uiHeaderTop">
+					<div>
+						<img src="img/sword.png" height="18px" style="margin-left: 5px;">
+						<h2 class="uiHeaderTitle" aria-hidden="true" style="margin-left: 2px; display: inline-block;">
+							<a href="/" style="text-decoration: none;">Social Empires </a>
+						</h2>
+						<p style="display: inline-block; margin: 0 0 4px 6px;">By the Social Emperors team ~ {{ version | default("?")}}</p>
+					</div>
+				</div>
+			</div>
+			<!-- LOGIN CONTENT -->
+			<div class="phl ptm uiInterstitialContent" style="overflow: auto; display: inblock;">
+				<br>
+				<div style="margin-left:20px; font-size:13px; float: left;">
+					{% if saves_info %}
+					<form method="post">
+						<!-- VILLAGE SELECTION -->
+						<b>Select a village</b>
+						<br><br>
+						<div style="float: left; margin-right: 4px;">
+							<img src="img/villager.png" style="height: 27px; margin-top: 0px;">
+						</div>
+						<div style="float: left">
+							<select id="USERID" name="USERID" style="height: 27px; min-width: 330px;" required>
+								{% for save in saves_info %}
+								<option value="{{save.userid}}" title="{{save.userid}}">{{save.name}} ~ level {{save.level}} ({{save.xp}} xp)</option>
+								{% endfor %}
+							</select>
+						</div>
+						<br><br>
+						<br>
+						<!-- RELEASE SELECTION -->
+						<b>Game version</b>
+						<br><br>
+						<div style="overflow: auto; display: inblock;">
+							<div style="float: left">
+								<div style="float: left; margin-right: 4px;">
+									<img src="img/knight.png" style="height: 27px; margin-top: 0px;">
+								</div>
+								<div style="float: left">
+									<select id="GAMEVERSION" name="GAMEVERSION" style="height: 24px;" required>
+										<option value="SocialEmpires0926bsec.swf">0.9.26b (Working)</option>
+										<option value="SocialEmpires1.1.5sec.swf">1.1.5 (Experimental)</option>
+										<option value="SocialEmpires1.4.07sec.swf">1.4.07 (Broken)</option>
+									</select>
+								</div>
+								<br><br> <i>Tip: 0.9.26b Contains legacy Troll Missions!</i>
+								<br><br>
+							</div>
+							<div style="float: right;">
+								<button type="submit" style="font-size:14px; height: 25px">Log in</button>
+							</div>
+						</div>
+					</form>
+					<br>
+					<!-- NEW VILLAGE -->
+					<p style="font-size:13px; display: inline;">Or </p>
+					{% endif %}
+					<p style="font-size:13px; display: inline;">
+						<b><a href="/new.html">Create a new empire</a></b>
+					</p>
+				</div>
+			</div>
 		</div>
-    </center>
-    </body>
+	</body>
 </html>
