@@ -5,6 +5,8 @@ import urllib
 if os.name == 'nt':
     os.system("color")
 
+os.system("title Social Empires Server")
+
 print (" [+] Loading game config...")
 from get_game_config import get_game_config, patch_game_config
 
@@ -21,11 +23,12 @@ from engine import timestamp_now
 from version import version_name
 from constants import Constant
 from quests import get_quest_map
+from bundle import ASSETS_DIR, STUB_DIR, TEMPLATES_DIR, BASE_DIR
 
 host = '127.0.0.1'
 port = 5050
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=TEMPLATES_DIR)
 
 print (" [+] Configuring server routes...")
 
@@ -80,59 +83,60 @@ def new():
 
 @app.route("/crossdomain.xml")
 def crossdomain():
-    return send_from_directory("stub", "crossdomain.xml")
+    return send_from_directory(STUB_DIR, "crossdomain.xml")
 
 @app.route("/img/<path:path>")
 def images(path):
-    return send_from_directory("templates/img", path)
+    return send_from_directory(TEMPLATES_DIR + "/img", path)
 
 @app.route("/css/<path:path>")
 def css(path):
-    return send_from_directory("templates/css", path)
+    return send_from_directory(TEMPLATES_DIR + "/css", path)
 
 ## GAME STATIC
 
 
 @app.route("/default01.static.socialpointgames.com/static/socialempires/swf/05122012_projectiles.swf")
 def similar_05122012_projectiles():
-    return send_from_directory("assets/swf", "120615__projectiles.swf")
+    return send_from_directory(ASSETS_DIR + "/swf", "20130417_projectiles.swf")
 
 @app.route("/default01.static.socialpointgames.com/static/socialempires/swf/05122012_magicParticles.swf")
 def similar_05122012_magicParticles():
-    return send_from_directory("assets/swf", "121009_magicParticles.swf")
+    return send_from_directory(ASSETS_DIR + "/swf", "20131010_magicParticles.swf")
 
 @app.route("/default01.static.socialpointgames.com/static/socialempires/swf/05122012_dynamic.swf")
 def similar_05122012_dynamic():
-    return send_from_directory("assets/swf", "120608_dynamic.swf")
+    return send_from_directory(ASSETS_DIR + "/swf", "120608_dynamic.swf")
 
 @app.route("/default01.static.socialpointgames.com/static/socialempires/<path:path>")
 def static_assets_loader(path):
-    if not os.path.exists(f"assets/{path}"):
+    # return send_from_directory(ASSETS_DIR, path)
+    if not os.path.exists(ASSETS_DIR + "/"+ path):
         # File does not exists in provided assets
-        if not os.path.exists(f"download_assets/assets/{path}"):
+        if not os.path.exists(f"{BASE_DIR}/download_assets/assets/{path}"):
             # Download file from SP's CDN if it doesn't exist
 
             # Make directory
-            directory = os.path.dirname(f"download_assets/assets/{path}")
+            directory = os.path.dirname(f"{BASE_DIR}/download_assets/assets/{path}")
             if not os.path.exists(directory):
                 os.makedirs(directory)
 
             # Download File
             URL = f"https://static.socialpointgames.com/static/socialempires/assets/{path}"
             try:
-                response = urllib.request.urlretrieve(URL, f"download_assets/assets/{path}")
+                response = urllib.request.urlretrieve(URL, f"{BASE_DIR}/download_assets/assets/{path}")
             except urllib.error.HTTPError:
                 return ("", 404)
 
             print(f"====== DOWNLOADED ASSET: {URL}")
-            return send_from_directory("download_assets/assets", path)
+            return send_from_directory("{BASE_DIR}/download_assets/assets", path)
         else:
             # Use downloaded CDN asset
             print(f"====== USING EXTERNAL: download_assets/assets/{path}")
-            return send_from_directory("download_assets/assets", path)
+            return send_from_directory("{BASE_DIR}/download_assets/assets", path)
     else:
         # Use provided asset
-        return send_from_directory("assets", path)
+        return send_from_directory(ASSETS_DIR, path)
 
 ## GAME DYNAMIC
 

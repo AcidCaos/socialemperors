@@ -1,8 +1,9 @@
 import json
 import os
 import jsonpatch
+from bundle import MODS_DIR, CONFIG_DIR, CONFIG_PATCH_DIR
 
-__game_config = json.load(open("./config/main.json", 'r', encoding='utf-8'))
+__game_config = json.load(open(os.path.join(CONFIG_DIR, "game_config_20120826.json"), 'r', encoding='utf-8'))
 
 def remove_duplicate_items():
     indexes = {}
@@ -25,8 +26,9 @@ def remove_duplicate_items():
 
         if duplicate:
             continue
-
-        print(f" * Removed {num_duplicate} duplicate items from config patches")
+        
+        if num_duplicate:
+            print(f" * Removed {num_duplicate} duplicate items from config patches")
         break
 
 def apply_config_patch(filename):
@@ -34,17 +36,20 @@ def apply_config_patch(filename):
     jsonpatch.apply_patch(__game_config, patch, in_place=True)
 
 def patch_game_config():
-    patch_dir = "./config/patch"
-    mods_dir = "./mods"
 
-    for patch_file in os.listdir(patch_dir):
+    # Apply patches
+
+    for patch_file in os.listdir(CONFIG_PATCH_DIR):
         if patch_file.endswith(".json"):
-            f = os.path.join(patch_dir, patch_file)
+            f = os.path.join(CONFIG_PATCH_DIR, patch_file)
             apply_config_patch(f)
-            print(" * Patch applied:", f)
+            patch = patch_file.replace(".json", "")
+            print(" * Patch applied:", patch)
 
-    if os.path.exists("./mods.txt"):
-        with open("./mods.txt", "r") as f:
+    # Apply mods
+
+    if os.path.exists(MODS_DIR + "/mods.txt"):
+        with open(MODS_DIR + "/mods.txt", "r") as f:
             lines = f.readlines()
             f.close()
 
@@ -54,14 +59,14 @@ def patch_game_config():
                 continue
             if mod != "":
                 mod.replace(".json", "")
-                mod_path = f"{mods_dir}/{mod}.json"
+                mod_path = f"{MODS_DIR}/{mod}.json"
                 if os.path.exists(mod_path):
                     apply_config_patch(mod_path)
                     print(" * Mod applied:", mod)
 
     remove_duplicate_items()
 
-print (" [+] Applying config patches...")
+print (" [+] Applying config patches and mods...")
 patch_game_config()
 
 def get_game_config() -> dict:

@@ -2,16 +2,18 @@ import random
 
 from engine import timestamp_now
 
-version_name = "alpha 0.02"
-version_code = "0.02a"
+version_name = "alpha 0.03"
+version_code = "0.03a"
 
 def migrate_loaded_save(save: dict) -> bool:
+
+    # discard current version saves
+    if save["version"] == version_code:
+        return False
+    
     # fix 0.01a saves
     if "version" not in save:
         save["version"] = "0.01a"
-    
-    # if save["version"] == version_code: # save is from the current version
-    #     return False
     
     # 0.01a -> 0.02a
     if save["version"] == "0.01a":
@@ -32,7 +34,7 @@ def migrate_loaded_save(save: dict) -> bool:
             save["maps"][0]["questTimes"] = [] # quests
         if "lastQuestTimes" not in save["maps"][0]:
             save["maps"][0]["lastQuestTimes"] = [] # 1.1.5 quests
-        # save["version"] = "0.03a"
+        save["version"] = "0.03a"
         print("   > migrated to 0.03a")
 
     return True

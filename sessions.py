@@ -10,9 +10,7 @@ from version import version_code
 from engine import timestamp_now
 from version import migrate_loaded_save
 
-
-__villages_dir = "./villages"
-__saves_dir = "./saves"
+from bundle import VILLAGES_DIR, SAVES_DIR
 
 __villages = {}  # ALL static neighbors
 '''__villages = {
@@ -34,7 +32,7 @@ __saves = {}  # ALL saved villages
     "USERID_2": {...}
 }'''
 
-__initial_village = json.load(open(os.path.join(__villages_dir, "initial.json")))
+__initial_village = json.load(open(os.path.join(VILLAGES_DIR, "initial.json")))
 
 # Load saved villages
 
@@ -45,35 +43,39 @@ def load_saved_villages():
     __villages = {}
     __saves = {}
     # Saves dir check
-    if not os.path.exists(__saves_dir):
+    if not os.path.exists(SAVES_DIR):
         try:
-            print(f"Creating '{__saves_dir}' folder...")
-            os.mkdir(__saves_dir)
+            print(f"Creating '{SAVES_DIR}' folder...")
+            os.mkdir(SAVES_DIR)
         except:
-            print(f"Could not create '{__saves_dir}' folder.")
+            print(f"Could not create '{SAVES_DIR}' folder.")
             exit(1)
-    if not os.path.isdir(__saves_dir):
-        print(f"'{__saves_dir}' is not a folder... Move the file somewhere else.")
+    if not os.path.isdir(SAVES_DIR):
+        print(f"'{SAVES_DIR}' is not a folder... Move the file somewhere else.")
         exit(1)
     # Static neighbors in /villages
-    for file in os.listdir(__villages_dir):
+    for file in os.listdir(VILLAGES_DIR):
         if file == "initial.json" or not file.endswith(".json"):
             continue
-        print(f" * Loading STATIC neighbor: village at {file}... ", end='')
-        village = json.load(open(os.path.join(__villages_dir, file)))
+        print(f" * Loading static neighbor {file}... ", end='')
+        village = json.load(open(os.path.join(VILLAGES_DIR, file)))
         USERID = village["playerInfo"]["pid"]
-        print("USERID:", USERID)
+        print("Ok.")
         __villages[str(USERID)] = village
     # Saves in /saves
-    for file in os.listdir(__saves_dir):
-        print(f" * Loading SAVE: village at {file}... ", end='')
+    for file in os.listdir(SAVES_DIR):
+        print(f" * Loading save at {file}... ", end='')
         try:
-            save = json.load(open(os.path.join(__saves_dir, file)))
+            save = json.load(open(os.path.join(SAVES_DIR, file)))
         except json.decoder.JSONDecodeError as e:
             print("Corrupted JSON.")
             continue
         USERID = save["playerInfo"]["pid"]
-        print("USERID:", USERID)
+        try:
+            map_name = save["playerInfo"]["map_names"][ save["playerInfo"]["default_map"] ]
+        except:
+            map_name = '?'
+        print(f"({map_name}) Ok.")
         __saves[str(USERID)] = save
         modified = migrate_loaded_save(save) # check save version for migration
         if modified:
@@ -174,6 +176,6 @@ def save_session(USERID: str):
     file = f"{USERID}.save.json"
     print(f" * Saving village at {file}... ", end='')
     village = session(USERID)
-    with open(os.path.join(__saves_dir, file), 'w') as f:
+    with open(os.path.join(SAVES_DIR, file), 'w') as f:
         json.dump(village, f, indent=4)
     print("Done.")
