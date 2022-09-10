@@ -8,3 +8,7 @@ __pycache__/
 .vs/
 *.lnk
 download_assets/
+Include/
+Lib/
+Scripts/
+pyvenv.cfg
