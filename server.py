@@ -183,7 +183,7 @@ def get_player_info_response():
     elif user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_1 \
     or user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_2 \
     or user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_3:
-        return ("", 404) # TODO
+        return (get_neighbor_info(user, map), 200)
     # Quest
     elif user.startswith("100000"): # Dirty but quick
         return get_quest_map(user)
