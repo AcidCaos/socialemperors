@@ -57,8 +57,11 @@ def load_saved_villages():
     for file in os.listdir(VILLAGES_DIR):
         if file == "initial.json" or not file.endswith(".json"):
             continue
-        print(f" * Loading static neighbor {file}... ", end='')
+        print(f" * Loading static neighbour {file}... ", end='')
         village = json.load(open(os.path.join(VILLAGES_DIR, file)))
+        if not is_valid_village(village):
+            print("Invalid neighbour")
+            continue
         USERID = village["playerInfo"]["pid"]
         print("Ok.")
         __villages[str(USERID)] = village
@@ -69,6 +72,9 @@ def load_saved_villages():
             save = json.load(open(os.path.join(SAVES_DIR, file)))
         except json.decoder.JSONDecodeError as e:
             print("Corrupted JSON.")
+            continue
+        if not is_valid_village(save):
+            print("Invalid Save.")
             continue
         USERID = save["playerInfo"]["pid"]
         try:
@@ -164,6 +170,25 @@ def neighbors(USERID: str):
             neigh["stone"] = vill["maps"][0]["stone"]
             neighbors += [neigh]
     return neighbors
+
+# Check for valid village
+# The reason why this was implemented is to warn the user if a save game from Social Wars was used by accident
+
+def is_valid_village(save: dict):
+    if "playerInfo" not in save or "maps" not in save or "privateState" not in save:
+        # These are obvious
+        return False
+    for map in save["maps"]:
+        if "oil" in map or "steel" in map:
+            return False
+        if "stone" not in map or "food" not in map:
+            return False
+        if "items" not in map:
+            return False
+        if type(map["items"]) != list:
+            return False
+
+    return True
 
 # Persistency
 
