@@ -1,5 +1,7 @@
 import json
-
+import time
+import datetime
+import os
 from sessions import session, save_session
 from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional
 from constants import Constant
@@ -195,6 +197,7 @@ def do_command(USERID, cmd, args):
             map["items"] += [[unit_id, unit_x, unit_y, orientation, collected_at_timestamp, level]]
     
     elif cmd == Constant.CMD_RT_LEVEL_UP:
+        
         new_level = args[0]
         print("Level Up!:", new_level)
         map = save["maps"][0] # TODO : xp must be general, since theres no given town_id
@@ -202,6 +205,9 @@ def do_command(USERID, cmd, args):
         current_xp = map["xp"]
         min_expected_xp = get_xp_from_level(max(0, new_level - 1))
         map["xp"] = max(min_expected_xp, current_xp) # try to fix problems with not counting XP... by keeping up with client-side level counting
+        current_cash = save['playerInfo']['cash']
+        current_cash += 1
+        save['playerInfo']['cash'] = current_cash
 
     elif cmd == Constant.CMD_RT_PUBLISH_SCORE:
         new_xp = args[0]
@@ -499,7 +505,16 @@ def do_command(USERID, cmd, args):
         type_name = get_strategy_type(strategy_type)
         save["privateState"]["strategy"] = strategy_type
         print(f"Set defense strategy type to {type_name}")
-
+    elif cmd == Constant.CMD_COLLECT_TREASURE:
+        current_time = time.time()
+        last_treasure_time = save['maps'][0]['timestampLastTreasure']
+        if current_time - last_treasure_time >= 4:
+        # Increment the idCurrentTreasure by 1
+         save['maps'][0]['idCurrentTreasure'] += 1
+        # Update the timestamp of the last treasure to the current time
+        save['maps'][0]['timestampLastTreasure'] = current_time
+        if current_time - last_treasure_time < 4:
+            save['maps'][0]['idCurrentTreasure'] += 0
     elif cmd == Constant.CMD_START_QUEST:
         quest_id = args[0]
         town_id = args[1]
