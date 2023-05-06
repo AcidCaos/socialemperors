@@ -508,13 +508,12 @@ def do_command(USERID, cmd, args):
     elif cmd == Constant.CMD_COLLECT_TREASURE:
         current_time = time.time()
         last_treasure_time = save['maps'][0]['timestampLastTreasure']
-        if current_time - last_treasure_time >= 4:
+        if current_time - last_treasure_time >= 4*60*60:
         # Increment the idCurrentTreasure by 1
          save['maps'][0]['idCurrentTreasure'] += 1
         # Update the timestamp of the last treasure to the current time
         save['maps'][0]['timestampLastTreasure'] = current_time
-        if current_time - last_treasure_time < 4:
-            save['maps'][0]['idCurrentTreasure'] += 0
+        
     elif cmd == Constant.CMD_START_QUEST:
         quest_id = args[0]
         town_id = args[1]
