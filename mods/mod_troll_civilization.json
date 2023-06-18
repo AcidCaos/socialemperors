@@ -1601,7 +1601,7 @@
         "path": "/items/-",
         "value": {
             "id": "584",
-            "in_store": "2",
+            "in_store": "3",
             "name": "Boar",
             "type": "u",
             "cost": "200",
@@ -1637,7 +1637,7 @@
             "population": "0",
             "gift_level": "8",
             "cost_unit_cash": "0",
-            "race": "t",
+            "race": "n",
             "flying": "0",
             "protect": "0",
             "potion": "1",
