@@ -2,4 +2,44 @@
 # You don't need to provide the .json extension here, just the name
 # If a line starts with #, it is ignored
 
-# mod_venzkaizer
+
+
+#mod_venzkaizer
+
+
+## adds time machine in the shop
+#mod_time_machine
+
+
+## adds trolls buildings on the shop for troll civilization 
+## for the mod to work properly youll have to got to the save file of your chosing
+## open it with (notepad) and change the race from "h" to "t"
+## this mod its meant to be played with (troll civilization.save)
+#mod_troll_civilization
+
+
+## gives access to all the buildings and units  on the game (including the hidden ones)
+#Master_Builder_Mod3.0 
+
+
+## adds troll faction on the shop 
+#mod_trolls_shop
+
+
+## Social Wars units on SE 
+## for the units to show properly you need to move the social wars assets and thumps to social empires
+#SW.soldiers 
+
+
+## adds gladiators faction on the shop 
+#Gladiator.Mod
+
+
+## adds more decorations in the shop 
+#More_Decorations_Mod 
+
+
+## add all the buildings of social wars to SE 
+## for the units to show properly you need to move the social wars assets and thumps to social empires
+## keep in mind most of the buildings like barracks dont work properly  
+#SE.SW
