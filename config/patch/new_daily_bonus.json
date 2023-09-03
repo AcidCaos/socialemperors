@@ -1,0 +1,16 @@
+[
+	{
+		"op": "add",
+		"path": "/daily_bonus",
+		"value":
+		[
+			{
+				"id": 1,
+				"reward_day": 1,
+				"reward": {},
+				"img": "temp.png"
+			}
+		]
+	}
+
+]
