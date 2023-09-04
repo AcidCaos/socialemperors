@@ -10,6 +10,7 @@ input_csv = "se_unit_patch.csv"
 # DO THE THING
 templates = json.load(open("unit_templates.json", 'r', encoding='utf-8'))
 
+num_units = 0
 lines = []
 patch = []
 storage = {}
@@ -25,6 +26,22 @@ def trimquotes(inputstr: str):
 	while not new.endswith("}"):
 		new = new [:-1]
 	return new
+
+def makeriderpatch(item_id, rider_tier, tamed_id):
+	# Create patch
+	p = {}
+	p["op"] = "add"
+	p["path"] = f"/globals/DRAGONS/{item_id}"
+
+	value = {}
+	value["rider"] = rider_tier
+	value["tamed_id"] = tamed_id
+
+	p["value"] = value
+
+	# Append to rider patch list
+	print(f"Created rider patch for {ITEM_NAME}")
+	patch.append(p)
 
 for line in lines:
 	col = line.split("\t")
@@ -46,13 +63,15 @@ for line in lines:
 	ITEM_FLYING = col[14]
 	ITEM_GROUPS = col[15]
 	ITEM_STORE_GROUPS = col[16]
+	ITEM_RIDER_TIER = col[17]
+	ITEM_TAMED_ID = col[18]
 
 	if ITEM_ASSET == "":
-		print(f"{ITEM_NAME} Failed - Asset missing")
+		print(f"FAILED: {ITEM_NAME} - Asset missing")
 		continue
 
 	if ITEM_GROUPS not in templates:
-		print(f"{ITEM_NAME} Failed - Template {ITEM_GROUPS} not found")
+		print(f"FAILED: {ITEM_NAME} - Template {ITEM_GROUPS} not found")
 		continue
 
 	# Fetch from template
@@ -86,16 +105,21 @@ for line in lines:
 
 	# Append to patch
 	patch.append(p)
+	num_units += 1
 	# Append to storage
 	storage[str(ITEM_ID)] = 1
 
-	print(f"Made patch for {ITEM_NAME}")
+	# If there's a rider unit make a patch
+	if ITEM_RIDER_TIER != "" and ITEM_TAMED_ID != "":
+		makeriderpatch(str(ITEM_ID), str(ITEM_RIDER_TIER), str(ITEM_TAMED_ID.replace('\n','')))
+
+	print(f"Made unit patch for {ITEM_NAME}")
 
 if len(patch) > 0:
 	with open(patch_filename, 'w') as f:
 		json.dump(patch, f)
 	# with open(output_storage, 'w') as f:
 	# 	json.dump(storage, f)
-		print(f"Created patch for {len(patch)} items to {patch_filename}!")
+		print(f"Created patch for {num_units} items to {patch_filename}!")
 else:
 	print("Patch creation failed!")
