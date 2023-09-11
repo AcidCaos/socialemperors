@@ -2,44 +2,83 @@
 # You don't need to provide the .json extension here, just the name
 # If a line starts with #, it is ignored
 
+#mod_venzkaizer  by (venzkaizer)
 
+## this mod allows you to change the amount of resources mines and mills give 
+## keep in mind the amount you put its going to be acordingly updated with the option you pick 
+## (Example) if you set to 2000  | 5min > 1000 | 1h > 2000 | 4h > 4000 | 8h > 6000| 
+## i hope its easy to understand  
+#farms
 
-#mod_venzkaizer
-
-
-## adds time machine in the shop
+## adds time machine in the shop   (by venzkaizer)
 #mod_time_machine
 
+## make the Cash Wonder faster to collect  (by venzkaizer)
+#CashWonder_Mod
 
-## adds trolls buildings on the shop for troll civilization 
+
+## adds trolls buildings on the shop for troll civilization  (by Neutral)
 ## for the mod to work properly youll have to got to the save file of your chosing
 ## open it with (notepad) and change the race from "h" to "t"
 ## this mod its meant to be played with (troll civilization.save)
 #mod_troll_civilization
 
 
-## gives access to all the buildings and units  on the game (including the hidden ones)
+## gives access to all the buildings and units  on the game (including the hidden ones) (by Neutral)
 #Master_Builder_Mod3.0 
 
 
-## adds troll faction on the shop 
+## adds troll faction on the shop   (by Neutral)
 #mod_trolls_shop
 
+==========================================================
 
-## Social Wars units on SE 
-## for the units to show properly you need to move the social wars assets and thumps to social empires
-#SW.soldiers 
+                    #(Factions)
 
-
-## adds gladiators faction on the shop 
-#Gladiator.Mod
+## adds gladiators faction on the shop  (by Neutral)
+#Gladiator_Mod
 
 
-## adds more decorations in the shop 
+## adds Atlantis Faction on the shop (by Neutral)
+#Atlantis_mod
+
+
+##adds Chinese Faction on the shop 
+#Chinese_Mod
+
+##adds Aztec Faction on the shop 
+#Aztec_Mod
+
+##adds Aztec Faction on the shop 
+#Vikings_Mod
+
+##adds Infernal Faction on the shop 
+#Infernal_mod
+
+## Add Elf Faction on the shop
+#Elf_Mod
+
+##adds Imperial Elf on the shop 
+#Imperial_Elf_Mod
+
+            (more are gonna bee added soon) 
+
+==========================================================
+
+## adds more decorations in the shop  (by Neutral)
 #More_Decorations_Mod 
 
+===========================================================================
 
-## add all the buildings of social wars to SE 
+                     (Bring Social Wars To Social Empires)
+
+## Social Wars units on SE   (by Neutral)
+## for the units to show properly you need to move the social wars assets and thumps to social empires
+#SW_soldiers 
+
+## add all the buildings of social wars to SE    (by Neutral)
 ## for the units to show properly you need to move the social wars assets and thumps to social empires
 ## keep in mind most of the buildings like barracks dont work properly  
-#SE.SW
+#SE_SW
+
+===========================================================================
