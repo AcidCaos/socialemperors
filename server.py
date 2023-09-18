@@ -75,6 +75,25 @@ def play():
     print("[PLAY] GAMEVERSION:", GAMEVERSION)
     return render_template("play.html", save_info=save_info(USERID), serverTime=timestamp_now(), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host)
 
+@app.route("/ruffle.html")
+def ruffle():
+    print(session)
+
+    if 'USERID' not in session:
+        return redirect("/")
+    if 'GAMEVERSION' not in session:
+        return redirect("/")
+
+    if session['USERID'] not in all_saves_userid():
+        return redirect("/")
+    
+    USERID = session['USERID']
+    GAMEVERSION = session['GAMEVERSION']
+    print("[RUFFLE] USERID:", USERID)
+    print("[RUFFLE] GAMEVERSION:", GAMEVERSION)
+    return render_template("ruffle.html", save_info=save_info(USERID), serverTime=timestamp_now(), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host)
+
+
 @app.route("/new.html")
 def new():
     session['USERID'] = new_village()
@@ -149,7 +168,7 @@ def track_game_status_response():
     print(f"track_game_status: status={status}, installId={installId}, user_id={user_id}. --", request.values)
     return ("", 200)
 
-@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_game_config.php")
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_game_config.php", methods=['GET','POST'])
 def get_game_config_response():
     spdebug = None
 

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Meta -->
+        <meta charset="utf-8"/>
+        <!-- Title and Icon -->
+        <title id="pageTitle">Social Empires</title>
+        <link rel="shortcut icon" href="img/icon.gif"/>
+        <link rel="icon" type="image/png" href="img/icon.gif"/>
+        <script src="https://unpkg.com/@ruffle-rs/ruffle/ruffle.js"></script>
+        <!--<script src="https://cdn.jsdelivr.net/npm/@ruffle-rs/ruffle/ruffle.js"></script>-->
+    </head>
+    <body style="font-family: 'lucida grande',tahoma,verdana,arial,sans-serif">
+    <center>
+        <!-- SESSION HEADER -->
+        <div id="header" style="width: 760px; margin-top: 50px;">
+            <div id="session" style="float: right;">
+                <p style="display:inline">Logged in as <b>{{save_info.name}}</b> lvl {{save_info.level}} (<a href="/">logout</a>)</p>
+            </div>
+        </div>
+        <br>
+        <!-- GAME BAR -->
+        <div id="gameBar" style="margin-top: 15px;">
+            <!-- GAME BAR TOP -->
+            <div id="gamebar_top" style="width: 760px; height: 90px;">
+                <div style="float: left; margin-left:155px; padding: 4px; font-size: 10pt">
+                    <!-- VERSION -->
+                    <br><br><br>
+                    <p style="display: inline">{{ version }}</p>
+                </div>
+            </div>
+            <!-- GAME BAR BUTTONS -->
+            <div id="gamebar_buttons" style="width: 760px;">
+                &nbsp;
+                <a class="gameBarButton" href="#"><div><img src="img/gift.png">Free Gifts</div></a>
+                <a class="gameBarButton gameBarButtonSelected" href="#"><div><img>Play</div></a>
+                <a class="gameBarButton" href="#"><div><img src="img/cash.png">Get Cash</div></a>
+                <a class="gameBarButton" href="https://discord.gg/zW5gSbQJBw" target="_blank"><div><img src="img/discord.png">Discord</div></a>
+                <a class="gameBarButton" href="https://github.com/AcidCaos/socialemperors#readme" target="_blank"><div><img src="img/github.png">GitHub</div></a>
+            </div>
+            <style>
+                #gameBar {
+                    text-align: left;
+                    width: 760px;
+                    margin-bottom: 0px;
+                    padding: 0px;
+                    background-color:rgb(137, 187, 15);
+                    background-image: url('img/Gamebar_byTrevo.png');
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    border-bottom: solid #6e5335 3px;
+                }
+                .gameBarButton {
+                    display: inline-block;
+                    height: 19px;
+                    color: black;
+                    border: solid 1.5px;
+                    border-color: #9e7747;
+                    background-color:rgb(255, 245, 131);
+                    border-top-left-radius: 5px;
+                    border-top-right-radius: 5px;
+                    cursor: pointer;
+                    text-decoration: none;
+                    font-size: 11pt;
+                    padding: 2px 3px 1px 3px; 
+                }
+
+                .gameBarButtonSelected {
+                    background-color:rgb(233, 221, 81);
+                }
+
+                .gameBarButton img {
+                    height: 17px;
+                    padding-right: 3px;
+                    vertical-align: middle;
+                }
+
+                .gameBarButton:hover {
+                    background-color:rgb(250, 237, 90);
+                    text-decoration: none;
+                }
+
+                .gameBarButtonSelected:hover {
+                    background-color:rgb(223, 212, 82);
+                }
+
+            </style>
+        </div>
+        <!-- EMBED GAME -->
+        <object>
+            <div id='ruffle'></div>
+            <script>
+                var ruffle = window.RufflePlayer.newest(),
+                player = Object.assign(document.getElementById("ruffle").appendChild(ruffle.createPlayer()), {
+                    width: 760,
+                    height: 600,
+                    style: 'width: 760px; height: 600px; background-color: #669C2C;',
+                });
+                player.load({ // https://ruffle.rs/js-docs/master/interfaces/URLLoadOptions.html
+                    url: "http://{{SERVERIP}}:5050/default01.static.socialpointgames.com/static/socialempires/flash/SELoader.swf?swftoload=http://{{SERVERIP}}:5050/default01.static.socialpointgames.com/static/socialempires/flash/{{GAMEVERSION}}",
+                    backgroundColor: "#669C2C",
+                    allowScriptAccess: false,
+                    autoplay: true,
+                    parameters: '\
+                        spdebug=notnull&brk=0\
+                        &staticUrl=http://{{SERVERIP}}:5050/default01.static.socialpointgames.com/static/socialempires/&brk=0\
+                        &dynamicUrl=http://{{SERVERIP}}:5050/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/&brk=0\
+                        &skiphash12341=notnull&brk=0\
+                        &fb_sig_user={{save_info.userid}}&brk=0\
+                        &user_key=123456789&brk=0\
+                        &language=en&brk=0\
+                        &accessToken=AAABbZAm0wdMUBALsOrR0Ho68CLjaOT8SV3vftKg9mbo1zZColaW5FljRVaLxPGxXXnm1M98mTZCAttcQ4GHwvSyXfsyxYmvKMH8Hmn5iliSPnjvIsZA6&brk=0\
+                        &sex=m&brk=0\
+                        &lastLoggedIn=1349266517&brk=0\
+                        &dailyBonus=0&brk=0\
+                        &friendsInfo[{"first_name":"AcidCaos","uid":"100000","pic_square":"http://{{SERVERIP}}:5050/img/profile/x.jpg"}}]&brk=0\
+                        &serverTime={{serverTime}}&brk=0\
+                        &forceSyncError=1&brk=0\
+                        &forceAttackReload=0&brk=0\
+                        &forceQuestReload=0&brk=0'
+                });
+            </script>
+        </object>
+    </center>
+    </body>
+</html>
