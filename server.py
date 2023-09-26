@@ -4,8 +4,10 @@ import json
 import urllib
 if os.name == 'nt':
     os.system("color")
-
-os.system("title Social Empires Server")
+    os.system("title Social Empires Server")
+else:
+    import sys
+    sys.stdout.write("\x1b]2;Social Empires Server\x07")
 
 print (" [+] Loading game config...")
 from get_game_config import get_game_config, patch_game_config
