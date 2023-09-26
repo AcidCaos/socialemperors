@@ -30,6 +30,16 @@ def command(USERID, data):
         do_command(USERID, cmd, args)
     save_session(USERID) # Save session
 
+
+def pay_cash(save, cost: int):
+    player_cash = save["playerInfo"]["cash"]
+    if player_cash >= cost:
+        save["playerInfo"]["cash"] -= cost
+        return True
+    return False
+    # TODO Error handling we return "success" for everything
+
+
 def do_command(USERID, cmd, args):
     save = session(USERID)
     print(" [+] COMMAND: ", cmd, "(", args, ") -> ", sep='', end='')
@@ -530,6 +540,21 @@ def do_command(USERID, cmd, args):
         # save["maps"]["lastQuestTimes"] [quest_id] = TODO min (... , duration_sec)
 
         print(f"Ended quest {quest_id}.")
+
+    elif cmd == Constant.CMD_BUY_STORED_ITEM_CASH:
+        # For some reason town id is passed but the bought units are saved in privateState`
+        [town_id, unit_id, cash_cost] = map(int, args)
+        if pay_cash(save, cash_cost):
+            save["privateState"]["boughtUnits"].append(unit_id)
+            print(f"Bought unit with id: {get_name_from_item_id(unit_id)}")
+        else:
+            print(f"Tried to buy unit {get_name_from_item_id(unit_id)} but not enough cash")
+
+    elif cmd == Constant.CMD_UNIT_COLLECTION_COMPLETED:
+        unit_completed = int(args[0])
+        save["privateState"]["unitCollectionsCompleted"].append(unit_completed)
+        save["playerInfo"]["cash"] += 1  # It's always 1
+        print(f"Completed unit set {unit_completed} add 1 cash")
 
     elif cmd == Constant.CMD_ADD_COLLECTABLE:
         collection_id = args[0]
