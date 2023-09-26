@@ -12,7 +12,7 @@ def migrate_loaded_save(save: dict) -> bool:
         return False
     
     # fix 0.01a saves
-    if "version" not in save:
+    if "version" not in save or save["version"] is None:
         save["version"] = "0.01a"
     
     # 0.01a -> 0.02a
