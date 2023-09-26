@@ -472,7 +472,7 @@ def do_command(USERID, cmd, args):
         collected_at_timestamp = timestamp_now()
         level = 0 # TODO 
         orientation = 0
-        # current_map["items"] += [[id, x, y, orientation, collected_at_timestamp, level]]
+        save["maps"][town_id]["items"] += [[unit_id, x, y, orientation, collected_at_timestamp, level]]
 
     elif cmd == Constant.CMD_BUY_SUPER_OFFER_PACK:
         town_id = args[0]
