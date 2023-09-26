@@ -536,6 +536,18 @@ def do_command(USERID, cmd, args):
         collectible_id = args[1]
         # TODO 
 
+    elif cmd == Constant.CMD_SET_VARIABLES:
+        [gold, cash, experience, level, stone, wood, food, town_id] = map(int, args)
+        town = save["maps"][town_id]
+        town["coins"] = gold
+        save["playerInfo"]["cash"] = cash
+        town["xp"] = experience
+        town["level"] = level
+        town["stone"] = stone
+        town["wood"] = wood
+        town["food"] = food
+        print(f"Set Resources Gold: {gold} Cash: {cash} XP: {experience} Level: {level} Stone: {stone} Wood: {wood}  Food: {food}")
+
     else:
         print(f"Unhandled command '{cmd}' -> args", args)
         return
