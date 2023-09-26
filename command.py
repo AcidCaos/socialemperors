@@ -32,7 +32,7 @@ def command(USERID, data):
 
 def do_command(USERID, cmd, args):
     save = session(USERID)
-    print (" [+] COMMAND: ", cmd, "(", args, ") -> ", sep='', end='')
+    print(" [+] COMMAND: ", cmd, "(", args, ") -> ", sep='', end='')
 
     if cmd == Constant.CMD_GAME_STATUS:
         print(" ".join(args))
@@ -50,12 +50,12 @@ def do_command(USERID, cmd, args):
         collected_at_timestamp = timestamp_now()
         level = 0 # TODO 
         orientation = 0
-        map = save["maps"][town_id]
+        current_map = save["maps"][town_id]
         if not bool_dont_modify_resources:
-            apply_cost(save["playerInfo"], map, id, price_multiplier)
+            apply_cost(save["playerInfo"], current_map, id, price_multiplier)
             xp = int(get_attribute_from_item_id(id, "xp"))
-            map["xp"] = map["xp"] + xp
-        map["items"] += [[id, x, y, orientation, collected_at_timestamp, level]]
+            current_map["xp"] = current_map["xp"] + xp
+        current_map["items"] += [[id, x, y, orientation, collected_at_timestamp, level]]
     
     elif cmd == Constant.CMD_COMPLETE_TUTORIAL:
         tutorial_step = args[0]
@@ -75,8 +75,8 @@ def do_command(USERID, cmd, args):
         town_id = args[6]
         reason = args[7] # "Unitat", "moveTo", "colisio", "MouseUsed"
         print("Move", str(get_name_from_item_id(id)), "from", f"({ix},{iy})", "to", f"({newx},{newy})")
-        map = save["maps"][town_id]
-        for item in map["items"]:
+        current_map = save["maps"][town_id]
+        for item in current_map["items"]:
             if item[0] == id and item[1] == ix and item[2] == iy:
                 item[1] = newx
                 item[2] = newy
@@ -91,8 +91,8 @@ def do_command(USERID, cmd, args):
         resource_multiplier = args[5]
         cash_to_substract = args[6]
         print("Collect", str(get_name_from_item_id(id)))
-        map = save["maps"][town_id]
-        apply_collect(save["playerInfo"], map, id, resource_multiplier)
+        current_map = save["maps"][town_id]
+        apply_collect(save["playerInfo"], current_map, id, resource_multiplier)
         save["playerInfo"]["cash"] = max(save["playerInfo"]["cash"] - cash_to_substract, 0)
     
     elif cmd == Constant.CMD_SELL:
@@ -103,10 +103,10 @@ def do_command(USERID, cmd, args):
         bool_dont_modify_resources = args[4]
         reason = args[5]
         print("Remove", str(get_name_from_item_id(id)), "from", f"({x},{y}). Reason: {reason}")
-        map = save["maps"][town_id]
-        for item in map["items"]:
+        current_map = save["maps"][town_id]
+        for item in current_map["items"]:
             if item[0] == id and item[1] == x and item[2] == y:
-                map["items"].remove(item)
+                current_map["items"].remove(item)
                 break
         if not bool_dont_modify_resources:
             price_multiplier = -0.05
@@ -122,11 +122,11 @@ def do_command(USERID, cmd, args):
         town_id = args[3]
         type = args[4]
         print("Kill", str(get_name_from_item_id(id)), "from", f"({x},{y}).")
-        map = save["maps"][town_id]
-        for item in map["items"]:
+        current_map = save["maps"][town_id]
+        for item in current_map["items"]:
             if item[0] == id and item[1] == x and item[2] == y:
-                apply_collect_xp(map, id)
-                map["items"].remove(item)
+                apply_collect_xp(current_map, id)
+                current_map["items"].remove(item)
                 break
     
     elif cmd == Constant.CMD_COMPLETE_MISSION:
@@ -154,18 +154,18 @@ def do_command(USERID, cmd, args):
         b_y = args[4]
         town_id = args[5]
         print("Push", str(get_name_from_item_id(unit_id)), "to", f"({b_x},{b_y}).")
-        map = save["maps"][town_id]
+        current_map = save["maps"][town_id]
         # Unit into building
-        for item in map["items"]:
+        for item in current_map["items"]:
             if item[1] == b_x and item[2] == b_y:
                 if len(item) < 7:
                     item += [[]]
                 item[6] += [unit_id]
                 break
         # Remove unit
-        for item in map["items"]:
+        for item in current_map["items"]:
             if item[0] == unit_id and item[1] == unit_x and item[2] == unit_y:
-                map["items"].remove(item)
+                current_map["items"].remove(item)
                 break
     
     elif cmd == Constant.CMD_POP_UNIT:
@@ -179,9 +179,9 @@ def do_command(USERID, cmd, args):
             unit_y = args[5]
             unit_frame = args[6] # unknown use
         print("Pop", str(get_name_from_item_id(unit_id)), "from", f"({b_x},{b_y}).")
-        map = save["maps"][town_id]
+        current_map = save["maps"][town_id]
         # Remove unit from building
-        for item in map["items"]:
+        for item in current_map["items"]:
             if item[1] == b_x and item[2] == b_y:
                 if len(item) < 7:
                     break
@@ -192,35 +192,35 @@ def do_command(USERID, cmd, args):
             collected_at_timestamp = timestamp_now()
             level = 0 # TODO 
             orientation = 0
-            map["items"] += [[unit_id, unit_x, unit_y, orientation, collected_at_timestamp, level]]
+            current_map["items"] += [[unit_id, unit_x, unit_y, orientation, collected_at_timestamp, level]]
     
     elif cmd == Constant.CMD_RT_LEVEL_UP:
         new_level = args[0]
         print("Level Up!:", new_level)
-        map = save["maps"][0] # TODO : xp must be general, since theres no given town_id
-        map["level"] = args[0]
-        current_xp = map["xp"]
+        current_map = save["maps"][0] # TODO : xp must be general, since theres no given town_id
+        current_map["level"] = args[0]
+        current_xp = current_map["xp"]
         min_expected_xp = get_xp_from_level(max(0, new_level - 1))
-        map["xp"] = max(min_expected_xp, current_xp) # try to fix problems with not counting XP... by keeping up with client-side level counting
+        current_map["xp"] = max(min_expected_xp, current_xp) # try to fix problems with not counting XP... by keeping up with client-side level counting
 
     elif cmd == Constant.CMD_RT_PUBLISH_SCORE:
         new_xp = args[0]
         print("xp set to", new_xp)
-        map = save["maps"][0] # TODO : xp must be general, since theres no given town_id
-        map["xp"] = new_xp
-        map["level"] = get_level_from_xp(new_xp)
+        current_map = save["maps"][0] # TODO : xp must be general, since theres no given town_id
+        current_map["xp"] = new_xp
+        current_map["level"] = get_level_from_xp(new_xp)
 
     elif cmd == Constant.CMD_EXPAND:
         land_id = args[0]
         resource = args[1]
         town_id = int(args[2])
         print("Expansion", land_id, "purchased")
-        map = save["maps"][town_id]
-        if land_id in map["expansions"]:
+        current_map = save["maps"][town_id]
+        if land_id in current_map["expansions"]:
             return
         # Substract resources
         expansion_prices = get_game_config()["expansion_prices"]
-        exp = expansion_prices[len(map["expansions"]) - 1]
+        exp = expansion_prices[len(current_map["expansions"]) - 1]
         if resource == "gold":
             to_substract = exp["coins"]
             save["maps"][town_id]["coins"] = max(save["maps"][town_id]["coins"] - to_substract, 0)
@@ -228,7 +228,7 @@ def do_command(USERID, cmd, args):
             to_substract = exp["cash"]
             save["playerInfo"]["cash"] = max(save["playerInfo"]["cash"] - to_substract, 0)
         # Add expansion
-        map["expansions"].append(land_id)
+        current_map["expansions"].append(land_id)
 
     elif cmd == Constant.CMD_NAME_MAP:
         town_id =int(args[0])
@@ -248,10 +248,10 @@ def do_command(USERID, cmd, args):
         town_id = int(args[2])
         item_id = args[3]
         print("Store", str(get_name_from_item_id(item_id)), "from", f"({x},{y})")
-        map = save["maps"][town_id]
-        for item in map["items"]:
+        current_map = save["maps"][town_id]
+        for item in current_map["items"]:
             if item[0] == item_id and item[1] == x and item[2] == y:
-                map["items"].remove(item)
+                current_map["items"].remove(item)
                 break
         length = len(save["privateState"]["gifts"])
         if length <= item_id:
@@ -295,8 +295,8 @@ def do_command(USERID, cmd, args):
         if currency == 'c':
             save["playerInfo"]["cash"] = max(int(save["playerInfo"]["cash"] - 50), 0)
         elif currency == 'g':
-            map = save["maps"]
-            map[0]["coins"] = max(int(map[0]["coins"] - 100000), 0)
+            current_map = save["maps"]
+            current_map[0]["coins"] = max(int(current_map[0]["coins"] - 100000), 0)
         save["privateState"]["dragonNestActive"] = 1
         save["privateState"]["timeStampTakeCare"] = -1 # remove timer if any
     
@@ -359,8 +359,8 @@ def do_command(USERID, cmd, args):
         new_orientation = args[2]
         town_id = args[3]
         print("Item at", f"({x},{y})", "changed to orientation", new_orientation)
-        map = save["maps"][town_id]
-        for item in map["items"]:
+        current_map = save["maps"][town_id]
+        for item in current_map["items"]:
             if item[1] == x and item[2] == y:
                 item[3] = new_orientation
                 break
@@ -377,8 +377,8 @@ def do_command(USERID, cmd, args):
         if currency == 'c':
             save["playerInfo"]["cash"] = max(int(save["playerInfo"]["cash"] - 50), 0)
         elif currency == 'g':
-            map = save["maps"]
-            map[0]["coins"] = max(int(map[0]["coins"] - 100000), 0)
+            current_map = save["maps"]
+            current_map[0]["coins"] = max(int(current_map[0]["coins"] - 100000), 0)
         save["privateState"]["monsterNestActive"] = 1
         save["privateState"]["timeStampTakeCareMonster"] = -1 # remove timer if any
     
@@ -412,14 +412,14 @@ def do_command(USERID, cmd, args):
         cash = args[4]
 
         print("Claiming Win Bonus")
-        map = save["maps"][town_id]
+        current_map = save["maps"][town_id]
 
         if cash != 0:
             save["playerInfo"]["cash"] = save["playerInfo"]["cash"] + cash
             print("Added " + str(cash) + " Cash to players balance")
 
         if coins != 0:
-            map["coins"] = map["coins"] + coins
+            current_map["coins"] = current_map["coins"] + coins
             print("Added " + str(coins) + " Gold to players balance")
 
         if hero != 0:
@@ -472,7 +472,7 @@ def do_command(USERID, cmd, args):
         collected_at_timestamp = timestamp_now()
         level = 0 # TODO 
         orientation = 0
-        map["items"] += [[id, x, y, orientation, collected_at_timestamp, level]]
+        # current_map["items"] += [[id, x, y, orientation, collected_at_timestamp, level]]
 
     elif cmd == Constant.CMD_BUY_SUPER_OFFER_PACK:
         town_id = args[0]
@@ -480,7 +480,7 @@ def do_command(USERID, cmd, args):
         items = args[2]
         cash_used = args[3]
         
-        map = save["maps"][town_id]
+        current_map = save["maps"][town_id]
 
         item_array = items.split(',')
         for item in item_array:
