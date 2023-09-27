@@ -1,7 +1,8 @@
 import json
 
 from sessions import session, save_session
-from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional
+from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, \
+    get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional, get_level_ranking_reward
 from constants import Constant
 from engine import apply_cost, apply_collect, apply_collect_xp, timestamp_now
 
@@ -205,13 +206,14 @@ def do_command(USERID, cmd, args):
             current_map["items"] += [[unit_id, unit_x, unit_y, orientation, collected_at_timestamp, level]]
     
     elif cmd == Constant.CMD_RT_LEVEL_UP:
-        new_level = args[0]
+        new_level = int(args[0])
         print("Level Up!:", new_level)
         current_map = save["maps"][0] # TODO : xp must be general, since theres no given town_id
-        current_map["level"] = args[0]
+        current_map["level"] = new_level
         current_xp = current_map["xp"]
         min_expected_xp = get_xp_from_level(max(0, new_level - 1))
         current_map["xp"] = max(min_expected_xp, current_xp) # try to fix problems with not counting XP... by keeping up with client-side level counting
+        save["playerInfo"]["cash"] += get_level_ranking_reward(new_level)
 
     elif cmd == Constant.CMD_RT_PUBLISH_SCORE:
         new_xp = args[0]

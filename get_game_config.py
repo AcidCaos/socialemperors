@@ -90,6 +90,12 @@ def get_level_from_xp(xp: int) -> int:
         i += 1
     return 0
 
+def get_level_ranking_reward(level: int) -> int:
+    for level_reward in __game_config["level_ranking_reward"]:
+        if level == level_reward["level"]:
+            return level_reward["cash"]  # Always seems to be 1 anyway
+    return 0
+
 #########
 # ITEMS #
 #########
