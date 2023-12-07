@@ -63,8 +63,11 @@ def load_saved_villages():
             print("Invalid neighbour")
             continue
         USERID = village["playerInfo"]["pid"]
-        print("Ok.")
-        __villages[str(USERID)] = village
+        if str(USERID) in __villages:
+            print(f"Ignored: duplicated PID '{USERID}'.")
+        else:
+            __villages[str(USERID)] = village
+            print("Ok.")
     # Saves in /saves
     for file in os.listdir(SAVES_DIR):
         print(f" * Loading save at {file}... ", end='')
