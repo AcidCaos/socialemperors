@@ -146,7 +146,36 @@ def neighbor_session(USERID: str) -> dict:
     if USERID in __villages:
         return __villages[USERID]
 
-def neighbors(USERID: str):
+def fb_friends_str(USERID: str) -> list:
+    DELETE_ME = [{"uid": "1111", "pic_square":"http://127.0.0.1:5050/img/profile/Paladin_Justiciero.jpg"},
+        {"uid": "aa_002", "pic_square":"/1025.png"}]
+    friends = []
+    # static villages
+    for key in __villages:
+        vill = __villages[key]
+        # Avoid Arthur being loaded as friend.
+        if vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_1 \
+        or vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_2 \
+        or vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_3:
+            continue
+        frie = {}
+        frie["uid"] = vill["playerInfo"]["pid"]
+        frie["pic_square"] = vill["playerInfo"]["pic"]
+        if not frie["pic_square"]: frie["pic_square"] = "/img/profile/1025.png"
+        friends += [frie]
+    # other players
+    for key in __saves:
+        vill = __saves[key]
+        if vill["playerInfo"]["pid"] == USERID:
+            continue
+        frie = {}
+        frie["uid"] = vill["playerInfo"]["pid"]
+        frie["pic_square"] = vill["playerInfo"]["pic"]
+        if not frie["pic_square"]: frie["pic_square"] = "/img/profile/1025.png"
+        friends += [frie]
+    return friends
+
+def neighbors(USERID: str) -> list:
     neighbors = []
     # static villages
     for key in __villages:
@@ -157,7 +186,6 @@ def neighbors(USERID: str):
         or vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_3:
             continue
         neigh = vill["playerInfo"]
-        neigh["pic"] = vill["maps"][0]["pic"] if "pic" in vill["maps"][0] else None
         neigh["coins"] = vill["maps"][0]["coins"]
         neigh["xp"] = vill["maps"][0]["xp"]
         neigh["level"] = vill["maps"][0]["level"]

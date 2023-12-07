@@ -2,8 +2,8 @@ import random
 
 from engine import timestamp_now
 
-version_name = "alpha 0.03"
-version_code = "0.03a"
+version_name = "alpha 0.04 (pre-release)"
+version_code = "0.04a-pre-release"
 
 def migrate_loaded_save(save: dict) -> bool:
 
@@ -36,5 +36,12 @@ def migrate_loaded_save(save: dict) -> bool:
             save["maps"][0]["lastQuestTimes"] = [] # 1.1.5 quests
         save["version"] = "0.03a"
         print("   > migrated to 0.03a")
+    
+    # 0.03a -> 0.04a
+    if save["version"] == "0.03a":
+        if "pic" not in save["playerInfo"].keys():
+            save["playerInfo"]["pic"] = ""
+        # save["version"] = "0.04a"
+        print("   > migrated to 0.04a")
 
     return True
