@@ -9,6 +9,7 @@ from flask import session
 from version import version_code
 from engine import timestamp_now
 from version import migrate_loaded_save
+from constants import Constant
 
 from bundle import VILLAGES_DIR, SAVES_DIR
 
@@ -150,7 +151,13 @@ def neighbors(USERID: str):
     # static villages
     for key in __villages:
         vill = __villages[key]
+        # Avoid Arthur being loaded as multiple neigtbors.
+        if vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_1 \
+        or vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_2 \
+        or vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_3:
+            continue
         neigh = vill["playerInfo"]
+        neigh["pic"] = vill["maps"][0]["pic"] if "pic" in vill["maps"][0] else None
         neigh["coins"] = vill["maps"][0]["coins"]
         neigh["xp"] = vill["maps"][0]["xp"]
         neigh["level"] = vill["maps"][0]["level"]
@@ -162,16 +169,17 @@ def neighbors(USERID: str):
     # other players
     for key in __saves:
         vill = __saves[key]
-        if vill["playerInfo"]["pid"] != USERID:
-            neigh = vill["playerInfo"]
-            neigh["coins"] = vill["maps"][0]["coins"]
-            neigh["xp"] = vill["maps"][0]["xp"]
-            neigh["level"] = vill["maps"][0]["level"]
-            neigh["stone"] = vill["maps"][0]["stone"]
-            neigh["wood"] = vill["maps"][0]["wood"]
-            neigh["food"] = vill["maps"][0]["food"]
-            neigh["stone"] = vill["maps"][0]["stone"]
-            neighbors += [neigh]
+        if vill["playerInfo"]["pid"] == USERID:
+            continue
+        neigh = vill["playerInfo"]
+        neigh["coins"] = vill["maps"][0]["coins"]
+        neigh["xp"] = vill["maps"][0]["xp"]
+        neigh["level"] = vill["maps"][0]["level"]
+        neigh["stone"] = vill["maps"][0]["stone"]
+        neigh["wood"] = vill["maps"][0]["wood"]
+        neigh["food"] = vill["maps"][0]["food"]
+        neigh["stone"] = vill["maps"][0]["stone"]
+        neighbors += [neigh]
     return neighbors
 
 # Check for valid village
