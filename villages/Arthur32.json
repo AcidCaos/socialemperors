@@ -1,19 +1,19 @@
 {
     "playerInfo": {
-        "pid": "100000030",
+        "pid": "100000032",
         "name": "Arthur",
         "pic": "",
         "cash": 15,
         "completed_tutorial": 1,
         "default_map": 0,
         "map_names": [
-            "Arthur's"
+            "Boss"
         ],
         "map_sizes": [
             0
         ],
-        "world_id": 100000030,
-        "sp_ref_uid": 100000030,
+        "world_id": 100000032,
+        "sp_ref_uid": 100000032,
         "sp_ref_cat_install": "ts",
         "last_logged_in": 1667321582
     },
@@ -3286,48 +3286,8 @@
     "privateState": {
         "gifts": [],
         "neighborAssists": {},
-        "completedMissions": [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            19,
-            8,
-            7,
-            24,
-            12,
-            26,
-            27,
-            13,
-            16,
-            11,
-            31,
-            32,
-            33
-        ],
-        "rewardedMissions": [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            19,
-            8,
-            7,
-            24,
-            12,
-            26,
-            27,
-            13,
-            16,
-            11,
-            31,
-            32,
-            33
-        ],
+        "completedMissions": [],
+        "rewardedMissions": [],
         "bonusNextId": 3,
         "timestampLastBonus": 1667317349,
         "attacksSent": [],
@@ -3369,11 +3329,7 @@
         "teams": {
             "tournament": null
         },
-        "arrayAnimals": {
-            "75": 20,
-            "74": 20,
-            "88": 20
-        },
+        "arrayAnimals": {},
         "strategy": 8
     }
 }

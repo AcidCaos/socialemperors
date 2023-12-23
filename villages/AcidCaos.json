@@ -2,11 +2,8 @@
     "playerInfo": {
         "pid": "1111",
         "name": "AcidCaos",
-        "pic": "",
+        "pic": "https://avatars.githubusercontent.com/u/11525599?s=100",
         "cash": 0,
-        "__#__coins": 0,
-        "__#__xp": 0,
-        "__#__level": 1,
         "completed_tutorial": 1,
         "default_map": 0,
         "map_names": [
@@ -15,9 +12,6 @@
         "map_sizes": [
             0
         ],
-        "__#__stone": 250,
-        "__#__wood": 850,
-        "__#__food": 700,
         "world_id": null,
         "sp_ref_uid": 1111,
         "sp_ref_cat_install": "ts",
