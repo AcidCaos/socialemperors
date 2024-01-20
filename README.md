@@ -1,30 +1,45 @@
 ![Social Empires](templates/img/logo.png "Social Empires logo")
 
-Social Empires preservation project.
+The Social Empires preservation project by the Social Emperors team.
+This project is dedicated to preserving this Flash game so that it's not lost to time.
 
-:speech_balloon: Check our [Discord group](https://discord.gg/zW5gSbQJBw)
+[![Downloads](https://img.shields.io/github/downloads/AcidCaos/socialemperors/total?label=downloads%40all)](../../releases/latest)
+[![Discord](https://img.shields.io/discord/984545703558783016?logo=discord&label=Discord&color=blue)](https://discord.gg/zW5gSbQJBw)
 
 ---
 
 ## Releases
 
-| Version | Release date | Download |
-| --- | --- | --- |
-| **alpha 0.03a** | September 10, 2022 | :ticket: [Launcher](../../releases/download/0.03a/social-emperors_0.03a.exe) |
-| alpha 0.02a     | July 14, 2022      | :package: [Bundle](../../releases/download/0.02a/social-emperors_0.02a.zip) |
-| pre-alpha 0.01a | June 18, 2022      | :package: [Bundle](../../releases/download/0.01a/social-emperors_0.01a.zip) |
+| Version | Release date | Source | Download |
+| --- | --- | --- | --- |
+| **alpha 0.03a** | September 10, 2022 | :label: [tag](../../releases/tag/0.03a) | :ticket: [Launcher](../../releases/download/0.03a/social-emperors_0.03a.exe) |
+| alpha 0.02a     | July 14, 2022      | :label: [tag](../../releases/tag/0.02a) | :package: [Bundle](../../releases/download/0.02a/social-emperors_0.02a.zip) |
+| pre-alpha 0.01a | June 18, 2022      | :label: [tag](../../releases/tag/0.01a) | :package: [Bundle](../../releases/download/0.01a/social-emperors_0.01a.zip) |
+
+## Reporting Bugs and Contacting
+
+:speech_balloon: Check our [Discord group](https://discord.gg/zW5gSbQJBw)
+
+:paw_prints: The project [Contributors](../../contributors)
 
 ## How to Install on Windows
 
-- Download a flash-compatible browser (unless you already have one). **Recommended:** [Chromium 82.0](https://chromium.en.uptodown.com/windows/download/2181158)
-- Download Flash Player for that browser. For Chromium: [Pepper Flash](https://archive.org/download/flashplayerarchive/pub/flashplayer/installers/archive/fp_32.0.0.371_archive.zip/32_0_r0_371%2Fflashplayer32_0r0_371_winpep.exe). For Firefox or Basilisk: [Flash NPAPI](https://archive.org/download/flashplayerarchive/pub/flashplayer/installers/archive/fp_32.0.0.371_archive.zip/32_0_r0_371%2Fflashplayer32_0r0_371_win.exe)
-- Download the latest released version from the Releases section.
-- Unzip the file to a suitable location.
+- Download a flash-compatible browser. :flashlight: **Recommended:** [Flash.pm Browser](https://flash.pm/browser/). Alternatives can be found [here](FLASH.md).
+- Download the latest Bundle version from the [Releases](#releases) section.
+- Extract the downloaded zip file to a suitable location.
 
 ## How to Play
 
-- Run the social-emperors executable. (It might take a couple of seconds to start)
+- Run the *social-emperors* executable.
 - Open your flash browser and navigate to `http://127.0.0.1:5050/`.
+
+:information_source: To play on GNU/Linux check [this page](LINUX.md).
+
+## Tools
+
+:penguin: [Social Empires on GNU/Linux](LINUX.md)
+
+:flashlight: [Flash Continuation](FLASH.md) documentation
 
 ## On archives and accessibility to digital heritage
 
