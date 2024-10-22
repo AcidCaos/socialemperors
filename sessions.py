@@ -71,6 +71,8 @@ def load_saved_villages():
             print("Ok.")
     # Saves in /saves
     for file in os.listdir(SAVES_DIR):
+        if file == ".DS_Store":
+            continue
         print(f" * Loading save at {file}... ", end='')
         try:
             save = json.load(open(os.path.join(SAVES_DIR, file)))
