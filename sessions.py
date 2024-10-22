@@ -88,8 +88,43 @@ def load_saved_villages():
         print(f"({map_name}) Ok.")
         __saves[str(USERID)] = save
         modified = migrate_loaded_save(save) # check save version for migration
-        if modified:
+        patched = patch_save(save)
+        if modified or patched:
             save_session(USERID)
+
+def patch_save(save: dict) -> bool:
+
+    # PATCH BEGIN: Survival Arena
+    modified = False
+    if("survivalVidaTimeStamp" not in save["privateState"]):
+        save["privateState"]["survivalVidaTimeStamp"] = []
+        modified = True
+    if("survivalVidasExtra" not in save["privateState"]):
+        save["privateState"]["survivalVidasExtra"] = 0
+        modified = True
+    if("survivalMaps" not in save["privateState"]):
+        save["privateState"]["survivalMaps"] = {
+            "100000035": {
+                "ts": 0,
+                "tp": 0
+            },
+            "100000036": {
+                "ts": 0,
+                "tp": 0
+            },
+            "100000037": {
+                "ts": 0,
+                "tp": 0
+            }
+        }
+        modified = True
+    # PATCH END: Survival Arena
+
+    if (modified):
+        print("   > patched")
+
+    return modified
+    
 
 # New village
 

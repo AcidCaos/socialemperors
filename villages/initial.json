@@ -110,6 +110,22 @@
             "tournament": null
         },
         "arrayAnimals": {},
-        "strategy": 8
+        "strategy": 8,
+        "survivalMaps": {
+            "100000035": {
+                "ts": 0,
+                "tp": 0
+            },
+            "100000036": {
+                "ts": 0,
+                "tp": 0
+            },
+            "100000037": {
+                "ts": 0,
+                "tp": 0
+            }
+        },
+        "survivalVidaTimeStamp": [],
+        "survivalVidasExtra": 0,
     }
 }
