@@ -71,6 +71,8 @@ def load_saved_villages():
             print("Ok.")
     # Saves in /saves
     for file in os.listdir(SAVES_DIR):
+        if not file.endswith(".save.json"):
+            continue
         print(f" * Loading save at {file}... ", end='')
         try:
             save = json.load(open(os.path.join(SAVES_DIR, file)))
@@ -90,6 +92,7 @@ def load_saved_villages():
         modified = migrate_loaded_save(save) # check save version for migration
         if modified:
             save_session(USERID)
+    
 
 # New village
 
