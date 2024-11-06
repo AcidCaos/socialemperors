@@ -41,6 +41,25 @@ def migrate_loaded_save(save: dict) -> bool:
     if save["version"] == "0.03a":
         if "pic" not in save["playerInfo"].keys():
             save["playerInfo"]["pic"] = ""
+        if("survivalVidaTimeStamp" not in save["privateState"]):
+            save["privateState"]["survivalVidaTimeStamp"] = []
+        if("survivalVidasExtra" not in save["privateState"]):
+            save["privateState"]["survivalVidasExtra"] = 0
+        if("survivalMaps" not in save["privateState"]):
+            save["privateState"]["survivalMaps"] = {
+                "100000035": {
+                    "ts": 0,
+                    "tp": 0
+                },
+                "100000036": {
+                    "ts": 0,
+                    "tp": 0
+                },
+                "100000037": {
+                    "ts": 0,
+                    "tp": 0
+                }
+            }
         # save["version"] = "0.04a"
         print("   > migrated to 0.04a")
 
