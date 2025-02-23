@@ -24,7 +24,7 @@ This project is dedicated to preserving this Flash game so that it's not lost to
 
 ## How to Install on Windows
 
-- Download a flash-compatible browser. :flashlight: **Recommended:** [Flash.pm Browser](https://flash.pm/browser/). Alternatives can be found [here](FLASH.md).
+- Download a flash-compatible browser. :flashlight: Options can be found [here](FLASH.md).
 - Download the latest Bundle version from the [Releases](#releases) section.
 - Extract the downloaded zip file to a suitable location.
 
