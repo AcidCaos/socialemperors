@@ -2,8 +2,8 @@ import random
 
 from engine import timestamp_now
 
-version_name = "alpha 0.04 (pre-release)"
-version_code = "0.04a-pre-release"
+version_name = "alpha 0.04"
+version_code = "0.04a"
 
 def migrate_loaded_save(save: dict) -> bool:
 
@@ -60,7 +60,12 @@ def migrate_loaded_save(save: dict) -> bool:
                     "tp": 0
                 }
             }
-        # save["version"] = "0.04a"
+        save["version"] = "0.04a"
         print("   > migrated to 0.04a")
+
+    # 0.04a -> 0.05a
+    #if save["version"] == "0.04a":
+    #    save["version"] = "0.05a"
+    #    print("   > migrated to 0.05a")
 
     return True

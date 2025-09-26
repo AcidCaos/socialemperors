@@ -1,33 +1,30 @@
 @echo off
-set NAME=social-emperors_0.04a
+set NAME=social-emperors_0.03a
 
 :main
 call :pyInstaller
-mkdir .\dist\%NAME%\saves
-echo [+] pyInstaller Done.
+echo [+] Building Done!
 pause>NUL
 exit
 
 :pyInstaller
 echo [+] Starting pyInstaller...
-pyinstaller ^
- --onedir ^
- --contents-directory "bundle" ^
+pyinstaller --onefile ^
  --console ^
- --noupx ^
- --noconfirm ^
  --add-data "..\..\assets;assets" ^
- --add-data "..\..\config;config" ^
  --add-data "..\..\stub;stub" ^
  --add-data "..\..\templates;templates" ^
  --add-data "..\..\villages;villages" ^
- --paths ..\. ^
+ --add-data "..\..\config;config" ^
+ --paths ..\..\. ^
  --workpath .\work ^
  --distpath .\dist ^
  --specpath .\bundle ^
+ --noconfirm ^
  --icon=..\icon.ico ^
  --name %NAME% ..\server.py
 REM --debug bootloader
+echo [+] pyInstaller Done.
 EXIT /B 0
 
 :clean

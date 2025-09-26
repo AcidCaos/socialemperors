@@ -12,7 +12,7 @@ This project is dedicated to preserving this Flash game so that it's not lost to
 
 | Version | Release date | Source | Download |
 | --- | --- | --- | --- |
-| **alpha 0.03a** | September 10, 2022 | :label: [tag](../../releases/tag/0.03a) | :ticket: [Launcher](../../releases/download/0.03a/social-emperors_0.03a.exe) |
+| **alpha 0.04a** | September 26, 2025 | :label: [tag](../../releases/tag/0.04a) | :package: [Bundle](../../releases/download/0.04a/social-emperors_0.04a.zip) |
 
 :information_source: For older versions check [this](RELEASES.md).
 
