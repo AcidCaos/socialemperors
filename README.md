@@ -8,13 +8,13 @@ This project is dedicated to preserving this Flash game so that it's not lost to
 
 ---
 
-## Releases
+## Latest Release
 
 | Version | Release date | Source | Download |
 | --- | --- | --- | --- |
 | **alpha 0.03a** | September 10, 2022 | :label: [tag](../../releases/tag/0.03a) | :ticket: [Launcher](../../releases/download/0.03a/social-emperors_0.03a.exe) |
-| alpha 0.02a     | July 14, 2022      | :label: [tag](../../releases/tag/0.02a) | :package: [Bundle](../../releases/download/0.02a/social-emperors_0.02a.zip) |
-| pre-alpha 0.01a | June 18, 2022      | :label: [tag](../../releases/tag/0.01a) | :package: [Bundle](../../releases/download/0.01a/social-emperors_0.01a.zip) |
+
+:information_source: For older versions check [this](RELEASES.md).
 
 ## Reporting Bugs and Contacting
 
@@ -24,8 +24,8 @@ This project is dedicated to preserving this Flash game so that it's not lost to
 
 ## How to Install on Windows
 
-- Download a flash-compatible browser. :flashlight: Options can be found [here](FLASH.md).
-- Download the latest Bundle version from the [Releases](#releases) section.
+- Download a flash-compatible browser. :flashlight: **Recommended:** [FlashBrowser](https://github.com/radubirsan/FlashBrowser/releases/latest). Alternatives can be found [here](FLASH.md).
+- Download the latest Bundle version from the [Latest Release](#latest-release) section.
 - Extract the downloaded zip file to a suitable location.
 
 ## How to Play

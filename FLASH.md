@@ -1,5 +1,11 @@
 ## Flash Continuation
-To play Social Empires you'll need the *Adobe Flash Player* and a *browser with Flash support*:
+To play Social Empires you'll need either a *flash-capable browser*, or the *Adobe Flash Player* and a *browser with Flash support*:
+
+:mag: **Flash-capable Browsers**
+
+> [FlashBrowser](https://github.com/radubirsan/FlashBrowser/releases/latest)
+> 
+> *Note:* Flash-capable browsers like FlashBrowser integrate a Flash Player and therefore do not require an *Adobe Flash Player* installation.
 
 :flashlight: **Adobe Flash Player**
 
