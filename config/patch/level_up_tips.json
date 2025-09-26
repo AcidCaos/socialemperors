@@ -2,50 +2,28 @@
 	{
 		"op": "add",
 		"path": "/level_up_tips",
-		"value":
-		[
-			"LEVELUP_TIP_2",
-			"LEVELUP_TIP_2",
-			"LEVELUP_TIP_2",
-			"LEVELUP_TIP_2",
-			"LEVELUP_TIP_4",
-			"LEVELUP_TIP_4",
-			"LEVELUP_TIP_6",
-			"LEVELUP_TIP_6",
-			"LEVELUP_TIP_8",
-			"LEVELUP_TIP_8",
-			"LEVELUP_TIP_10",
-			"LEVELUP_TIP_10",
-			"LEVELUP_TIP_10",
-			"LEVELUP_TIP_10",
-			"LEVELUP_TIP_10",
-			"LEVELUP_TIP_15",
-			"LEVELUP_TIP_15",
-			"LEVELUP_TIP_15",
-			"LEVELUP_TIP_15",
-			"LEVELUP_TIP_15",
-			"LEVELUP_TIP_15",
-			"LEVELUP_TIP_15",
-			"LEVELUP_TIP_15",
-			"LEVELUP_TIP_15",
-			"LEVELUP_TIP_15",
-			"LEVELUP_TIP_25",
-			"LEVELUP_TIP_25",
-			"LEVELUP_TIP_25",
-			"LEVELUP_TIP_25",
-			"LEVELUP_TIP_25",
-			"LEVELUP_TIP_30",
-			"LEVELUP_TIP_30",
-			"LEVELUP_TIP_30",
-			"LEVELUP_TIP_30",
-			"LEVELUP_TIP_34",
-			"LEVELUP_TIP_35",
-			"LEVELUP_TIP_35",
-			"LEVELUP_TIP_35",
-			"LEVELUP_TIP_35",
-			"LEVELUP_TIP_35",
-			"LEVELUP_TIP_40"
-		]
+		"value": [
+			{
+				"text": "you can do stuff for level 1",
+				"image": "level1.png"
+			},
+			{
+				"text": "you can do stuff for level 2",
+				"image": "level2.png"
+			},
+			{
+				"text": "you can do stuff for level 3",
+				"image": "level3.png"
+			},
+			{
+				"text": "you can do stuff for level 4",
+				"image": "level4.png"
+			},
+			{
+				"text": "you can do stuff for level 5",
+				"image": "level5.png"
+			}
+    	]
 	},
 	{
 		"op": "add",

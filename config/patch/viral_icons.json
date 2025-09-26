@@ -1,0 +1,96 @@
+[
+    {
+        "op": "add",
+        "path": "/viral_icons",
+        "value": [
+            {
+                "asclass": "FirstOfferButton",
+                "active": 0,
+                "swf": "first_offer_icon.swf",
+                "offset": { "x": 0, "y": 0 },
+                "scale": 1.0,
+                "priority": 1
+            },
+            {
+                "asclass": "CrossDCiViralIcon",
+                "active": 0,
+                "swf": "cross_dci_icon.swf",
+                "offset": { "x": 10, "y": 0 },
+                "scale": 1.0,
+                "priority": 2
+            },
+            {
+                "asclass": "RecruitmentTavernButton",
+                "active": 0,
+                "swf": "recruitment_tavern_icon.swf",
+                "offset": { "x": 20, "y": 0 },
+                "scale": 1.0,
+                "priority": 2
+            },
+            {
+                "asclass": "DailyBonusButton",
+                "active": 0,
+                "swf": "daily_bonus_icon.swf",
+                "offset": { "x": 30, "y": 0 },
+                "scale": 1.0,
+                "priority": 2
+            },
+            {
+                "asclass": "MobileGuiGiftButton",
+                "active": 0,
+                "swf": "mobile_gift_icon.swf",
+                "offset": { "x": 40, "y": 0 },
+                "scale": 1.0,
+                "priority": 2
+            },
+            {
+                "asclass": "comebackButtonViral",
+                "active": 0,
+                "swf": "comeback_icon.swf",
+                "offset": { "x": 50, "y": 0 },
+                "scale": 1.0,
+                "priority": 2
+            },
+            {
+                "asclass": "MondayBonusButton",
+                "active": 0,
+                "swf": "monday_bonus_icon.swf",
+                "offset": { "x": 60, "y": 0 },
+                "scale": 1.0,
+                "priority": 2
+            },
+            {
+                "asclass": "askForAchievementsButton",
+                "active": 0,
+                "swf": "ask_achievements_icon.swf",
+                "offset": { "x": 70, "y": 0 },
+                "scale": 1.0,
+                "priority": 2
+            },
+            {
+                "asclass": "specialDayOffer",
+                "active": 0,
+                "swf": null,
+                "offset": { "x": 80, "y": 0 },
+                "scale": 1.0,
+                "priority": 2
+            },
+            {
+                "asclass": "CrossViralIcon",
+                "active": 0,
+                "swf": "cross_viral_icon.swf",
+                "offset": { "x": 90, "y": 0 },
+                "scale": 1.0,
+                "priority": 2
+            },
+            {
+                "asclass": "FBLikeButton",
+                "active": 0,
+                "swf": "fb_like_icon.swf",
+                "offset": { "x": 100, "y": 0 },
+                "scale": 1.0,
+                "priority": 2
+            }
+        ]
+    }
+]
