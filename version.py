@@ -37,6 +37,14 @@ _quest_ids = [
     "100000092"
 ]
 
+def fix_variable(dictionary, key, expected):
+    if key not in dictionary:
+        dictionary[key] = expected
+    elif dictionary[key] == None:
+        dictionary[key] = expected
+    elif type(dictionary[key]) != type(expected):
+        dictionary[key] = expected
+
 def _fix_quest_ranks(ranks, quests):
     for quest in quests:
         if quest not in ranks:
@@ -46,17 +54,16 @@ def _safe_migrate_save(save):
     privateState = save["privateState"]
 
     # questsRank fix
-    if "questsRank" not in privateState:
-        privateState["questsRank"] = {}
-    if type(privateState["questsRank"]) != dict:
-        privateState["questsRank"] = {}
-
-    # team selection window fix
-    if "tournamentFormation" not in privateState:
-        privateState["tournamentFormation"] = 0
-    if type(privateState["tournamentFormation"]) != int:
-        privateState["tournamentFormation"] = 0
+    fix_variable(privateState, "questsRank", {})
     _fix_quest_ranks(privateState["questsRank"], _quest_ids)
+
+    # team selection window formations
+    fix_variable(privateState, "tournamentFormation", 0)
+
+    # pvp shields
+    fix_variable(privateState, "shieldEndTime", 0)
+    fix_variable(privateState, "shieldCooldown", 0)
+    fix_variable(privateState, "purchasedShields", [])
 
 def migrate_loaded_save(save: dict) -> bool:
 
