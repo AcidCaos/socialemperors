@@ -82,11 +82,11 @@ def migrate_loaded_save(save):
     # darts rng seed if missing
     fix_variable(privateState, "dartsRandomSeed", darts_seed)
 
-    fix_variable(privateState, "arrayAnimals", {})                # fix no animal spawning
-    fix_variable(privateState, "strategy", 8)                    # fix crash when attacking player
-    fix_variable(privateState, "universAttackWin", [])            # pvp current island progress (old game builds)
-    fix_variable(privateState, "questTimes", [])                # quests
-    fix_variable(privateState, "lastQuestTimes", [])            # 1.1.5 quests
+    fix_variable(privateState, "arrayAnimals", {})					# fix no animal spawning
+    fix_variable(privateState, "strategy", 8)						# fix crash when attacking player
+    fix_variable(privateState, "universAttackWin", [])				# pvp current island progress (old game builds)
+    fix_variable(privateState, "questTimes", [])					# quests
+    fix_variable(privateState, "lastQuestTimes", [])				# 1.1.5 quests
 
     # survival arena
     fix_variable(privateState, "survivalVidaTimeStamp", [])
