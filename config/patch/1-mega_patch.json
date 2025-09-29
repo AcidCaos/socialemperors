@@ -580,8 +580,15 @@
 		"path": "\/missions",
 		"value": [
 			{
+				"id": "1",
+				"description": "Farmland can provide food for your empire. Go to the shop to buy a farmland and place it near the town hall!",
+				"hint": "",
+				"title": "Establishing farmland",
+				"reward": "10"
+			},
+			{
 				"id": "2",
-				"description": "You need farmers to gather resources. Click your town hall, then click TRAIN in the bottom panel.",
+				"description": "You need farmers to gather resources. Click your town hall, then click TRAIN in the button panel at the bottom.",
 				"hint": "",
 				"title": "Recruit farmers",
 				"reward": "10"
@@ -602,21 +609,21 @@
 			},
 			{
 				"id": "5",
-				"description": "You get food, but you also need wood. Click a villager, then click a tree again. The villager will automatically cut down all surrounding trees!",
+				"description": "You'll get food, but you'll also need wood. Click a villager, then click a tree. The villager will automatically cut down all surrounding trees!",
 				"hint": "",
 				"title": "Chop trees for wood",
 				"reward": "10"
 			},
 			{
 				"id": "6",
-				"description": "Rotate your mouse wheel or click and drag the slider in the bottom right corner of the screen to zoom in\/out. It will help you spot buildings or units!",
+				"description": "Rotate your mouse wheel or click and drag the slider in the lower right corner of the screen to zoom in\/out. This will help you spot buildings or units!",
 				"hint": "",
 				"title": "Move (mouse wheel to zoom)",
 				"reward": "10"
 			},
 			{
 				"id": "7",
-				"description": "Farmland is essential for increasing your empire's resources because it provides you with food. Go to BUILD > Buildings > Resources and select to build farmland.",
+				"description": "Farm plots are essential for increasing your empire's resources because they provide you with food. Go to BUILD > Buildings > Resources and select to build farm plots.",
 				"hint": "",
 				"title": "Build a farm plot",
 				"reward": "12"
@@ -630,91 +637,91 @@
 			},
 			{
 				"id": "9",
-				"description": "You'll need an army for the upcoming battles! Click the \"Build\" button, select the \"Attack\" category, and finally click the Barracks building.",
+				"description": "You'll need an army for the coming battles! Click the \"Build\" button, select the \"Attack\" category, and finally click the Barracks building.",
 				"hint": "",
 				"title": "Build a barracks",
 				"reward": "16"
 			},
 			{
 				"id": "10",
-				"description": "Start building your army by recruiting some spearmen. Click the Barracks building, then click the TRAIN button in the bottom panel. Repeat three times. At the Town Hall, click the Cart button in the lower interface. Do this twice to train two villagers.",
+				"description": "Start building your army by recruiting some spearmen. Click the Barracks building, then click the Train button in the lower panel. Repeat three times.",
 				"hint": "",
 				"title": "Recruit 3 spearmen",
 				"reward": "18"
 			},
 			{
 				"id": "11",
-				"description": "A mill will provide you with food, like farmland. Go to Construction > Buildings > Resources to build a mill.",
+				"description": "At the Town Hall, click the Cart button in the lower panel. Do this twice to train two villagers.",
 				"hint": "",
 				"title": "Recruit 2 farmers",
 				"reward": "20"
 			},
 			{
 				"id": "12",
-				"description": "Mills don't work alone! They need farmers. Select a farmer and click the mill to place him inside.",
+				"description": "A mill will provide you with food, just like farmland. Go to Construction > Buildings > Resources to build a mill.",
 				"hint": "",
 				"title": "Build a mill",
 				"reward": "22"
 			},
 			{
 				"id": "13",
-				"description": "Select the quantity you want to start production.",
+				"description": "Mills don't work alone! They need farmers. Select a farmer and click the mill to place him.",
 				"hint": "",
 				"title": "Place farmers on the mill",
 				"reward": "24"
 			},
 			{
 				"id": "14",
-				"description": "To increase your food production, add another farmer to the mill! (If you don't have any farmers available, you can train them at the Town Hall.)",
+				"description": "Select an option and the quantity you would like to start production.",
 				"hint": "",
 				"title": "Select working hours",
 				"reward": "26"
 			},
 			{
 				"id": "15",
-				"description": "If you don't have resources, you can train farmers to get your buildings. Click your mill, then click a villager portrait under your farmer.",
+				"description": "Increase your food intake by adding another farmer to the mill! (If you don't have any farmers available, you can train them at the Town Hall.)",
 				"hint": "",
 				"title": "Place another farmer on the mill",
 				"reward": "28"
 			},
 			{
 				"id": "16",
-				"description": "Gold makes you stronger! It's used to train the best units. Select a villager and click a gold vein (explore the map to find gold veins).",
+				"description": "If you don't have any resources, training farmers will help you build your own. Click your mill, then click a villager portrait to get your farmer.",
 				"hint": "",
 				"title": "Remove farmers from the mill",
 				"reward": "30"
 			},
 			{
 				"id": "17",
-				"description": "Double-click once to select three and place them near the Town Hall fountain. Double-clicking is very useful!",
+				"description": "Gold makes you stronger! It's used to train the best units. Select a villager and click a gold vein (explore the map to find gold veins).",
 				"hint": "",
 				"title": "Collect 3 gold",
 				"reward": "32"
 			},
 			{
 				"id": "18",
-				"description": "Click the square in the lower right corner of the tool interface, then click and drag to select units. (You can also use <Space>, it's easier and faster!) Then attack the three trolls.",
+				"description": "Double-click once to select three and place them near the Town Hall fountain. Double-clicking is very useful!",
 				"hint": "",
 				"title": "Select double-click",
 				"reward": "34"
 			},
 			{
 				"id": "19",
-				"description": "Sheep are fun... and delicious! But they need a pasture! Build one by going to Build > Building > Resources. It will provide you with some food!",
+				"description": "Click the square tool in the lower right corner, then click and drag to select units. (You can also use <Space>, it's easier and faster!) Then attack 3 trolls.",
 				"hint": "",
 				"title": "Kill 3 trolls",
 				"reward": "36"
 			},
 			{
 				"id": "20",
-				"description": "Sheep are fun... and delicious! But they need a pasture! To build one, go to Build > Building > Resources. It will provide you with some food!",
+				"description": "Sheep are fun... and delicious! But they need a pasture! Build one by going to Build > Building > Resources. It will provide you with some food!",
 				"hint": "",
 				"title": "Build a sheep pasture",
 				"reward": "38"
 			},
 			{
 				"id": "21",
-				"description": "Okay. If you already have a pasture, go get some sheep now. Select a villager and click on the sheep to capture it.",
+				"description": "Okay. If you already have a pasture, go get some sheep now. Select a villager and click a sheep to catch it.",
 				"hint": "",
 				"title": "Capture sheep",
 				"reward": "40"
@@ -1208,6 +1215,13 @@
 				"hint": "",
 				"title": "Upgrade to Archery II",
 				"reward": "182"
+			},
+			{
+				"id": "92",
+				"description": "Train 8 Medium Archer... the danger is imminent!",
+				"hint": "",
+				"title": "Train 8 Medium Archer",
+				"reward": "184"
 			},
 			{
 				"id": "93",
@@ -1840,6 +1854,13 @@
 				"reward": "364"
 			},
 			{
+				"id": "183",
+				"description": "Build Archery Stables to train medium archer knights!",
+				"hint": "",
+				"title": "Build Archery Stables",
+				"reward": "366"
+			},
+			{
 				"id": "184",
 				"description": "Train 2 Archer Knights to increase the speed of your range units!",
 				"hint": "",
@@ -2153,27 +2174,6 @@
 				"hint": "",
 				"title": "Take care of the Dragon Egg!",
 				"reward": "14"
-			},
-			{
-				"id": "1",
-				"description": "Farmland can provide food for your empire. Go to the shop to buy a farmland and place it near the town hall!",
-				"hint": "",
-				"title": "Establishing farmland",
-				"reward": "10"
-			},
-			{
-				"id": "92",
-				"description": "Train 8 Medium Archer... the danger is imminent!",
-				"hint": "",
-				"title": "Train 8 Medium Archer",
-				"reward": "184"
-			},
-			{
-				"id": "183",
-				"description": "Build Archery Stables to train medium archer knights!",
-				"hint": "",
-				"title": "Build Archery Stables",
-				"reward": "366"
 			}
 		]
 	}
