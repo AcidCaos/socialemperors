@@ -5,6 +5,21 @@ from bundle import MODS_DIR, CONFIG_DIR, CONFIG_PATCH_DIR
 
 __game_config = json.load(open(os.path.join(CONFIG_DIR, "game_config_20120826.json"), 'r', encoding='utf-8'))
 
+# Since we use mega patches now, better to make sure any old patches don't load as they will load after and will mess things up!
+patch_ignore = [ 
+    "dragon_boss_fix",
+    "graveyard",
+    "level_up_tips",
+    "mission_goals",
+    "missions_0_1",
+    "new_daily_bonus",
+    "soulmixer_temp",
+    "unit_patch",
+    "viral_offers",
+    "viral_icons",
+    "unit_collections"
+]
+
 def remove_duplicate_items():
     indexes = {}
     items = __game_config["items"]
@@ -32,8 +47,11 @@ def remove_duplicate_items():
         break
 
 def apply_config_patch(filename):
-    patch = json.load(open(filename, 'r'))
-    jsonpatch.apply_patch(__game_config, patch, in_place=True)
+    fname = os.path.basename(filename).split(".")[0]
+    if fname.lower() not in patch_ignore:
+        patch = json.load(open(filename, 'r'))
+        jsonpatch.apply_patch(__game_config, patch, in_place=True)
+        print(f" * Patch applied:", fname)
 
 def patch_game_config():
 
@@ -43,8 +61,6 @@ def patch_game_config():
         if patch_file.endswith(".json"):
             f = os.path.join(CONFIG_PATCH_DIR, patch_file)
             apply_config_patch(f)
-            patch = patch_file.replace(".json", "")
-            print(" * Patch applied:", patch)
 
     # Apply mods
 
