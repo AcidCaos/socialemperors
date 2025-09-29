@@ -308,7 +308,7 @@
 		]
 	},
 	{
-		"_TITLE": "AcidCaos - Graveyard fixes",
+		"_TITLE": "AcidCaos/Nerroth - Graveyard fixes",
 		"op": "add",
 		"path": "/globals/GRAVEYARD_POTIONS",
 		"value": 
@@ -316,6 +316,20 @@
 			"price": { "c": 1 },
 			"amount": 10
 		}
+	},
+	{
+		"op": "add",
+		"path": "/globals/GRAVEYARD_CAPACITY",
+		"value": 
+		{
+			"price": { "c": 1 },
+			"amount": 5
+		}
+	},
+	{
+		"op": "add",
+		"path": "/globals/GRAVEYARD_MAX_CAPACITY",
+		"value": 20
 	},
 	{
 		"_TITLE": "AcidCaos - Goal fixes - I don't think this is necessary????",
