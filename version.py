@@ -37,6 +37,12 @@ _quest_ids = [
     "100000092"
 ]
 
+_survival_arenas = [
+    "100000035",
+    "100000036",
+    "100000037"
+]
+
 def fix_variable(dictionary, key, expected):
     if key not in dictionary:
         dictionary[key] = expected
@@ -50,9 +56,45 @@ def _fix_quest_ranks(ranks, quests):
         if quest not in ranks:
             ranks[quest] = None
 
-def _safe_migrate_save(save):
-    privateState = save["privateState"]
+def _fix_survival_maps(maps, arenas):
+    for arena in arenas:
+        if arena not in maps:
+            maps[arena] = { "ts": 0, "tp": 0 }
 
+def migrate_loaded_save(save):
+    # Migration always happens now, we check the data type this time and insert any new data if necessary
+    # This should make sure the save file isn't "half fixed"
+
+    playerInfo = save["playerInfo"]
+    privateState = save["privateState"]
+    maps = save["maps"]
+    ts_now = timestamp_now()
+    darts_seed = abs(int((2**16 - 1) * random.random()))
+
+    # OLD fixes --------------------------------------------------------------------------------------------------------------------------------------------------
+    # player avatar
+    fix_variable(playerInfo, "pic", "")
+
+    # timestamp fix in maps
+    for _map in maps:
+        fix_variable(_map, "timestamp", ts_now)
+
+    # darts rng seed if missing
+    fix_variable(privateState, "dartsRandomSeed", darts_seed)
+
+    fix_variable(privateState, "arrayAnimals", {})                # fix no animal spawning
+    fix_variable(privateState, "strategy", 8)                    # fix crash when attacking player
+    fix_variable(privateState, "universAttackWin", [])            # pvp current island progress (old game builds)
+    fix_variable(privateState, "questTimes", [])                # quests
+    fix_variable(privateState, "lastQuestTimes", [])            # 1.1.5 quests
+
+    # survival arena
+    fix_variable(privateState, "survivalVidaTimeStamp", [])
+    fix_variable(privateState, "survivalVidasExtra", 0)
+    fix_variable(privateState, "survivalMaps", {})
+    _fix_survival_maps(privateState["survivalMaps"], _survival_arenas)
+
+    # NEW fixes --------------------------------------------------------------------------------------------------------------------------------------------------
     # questsRank fix
     fix_variable(privateState, "questsRank", {})
     _fix_quest_ranks(privateState["questsRank"], _quest_ids)
@@ -65,71 +107,8 @@ def _safe_migrate_save(save):
     fix_variable(privateState, "shieldCooldown", 0)
     fix_variable(privateState, "purchasedShields", [])
 
-def migrate_loaded_save(save: dict) -> bool:
-
-    # Let's really make sure this migration happens or the save will never migrate correctly, way better than checking just one value which may be incorrectly set
-    # while the rest of the data may remain unmigrated and outdated making the game crash
-    _safe_migrate_save(save)
-
-    # discard current version saves
-    if save["version"] == version_code:
-        return False
-    
-    # fix 0.01a saves
-    if "version" not in save or save["version"] is None:
-        save["version"] = "0.01a"
-    
-    # 0.01a -> 0.02a
-    if save["version"] == "0.01a":
-        save["maps"][0]["timestamp"] = timestamp_now()
-        save["privateState"]["dartsRandomSeed"] = abs(int((2**16 - 1) * random.random()))
-        save["version"] = "0.02a"
-        print("   > migrated to 0.02a")
-    
-    # 0.02a -> 0.03a
-    if save["version"] == "0.02a":
-        if "arrayAnimals" not in save["privateState"]:
-            save["privateState"]["arrayAnimals"] = {} # fix no animal spawning
-        if "strategy" not in save["privateState"]:
-            save["privateState"]["strategy"] = 8 # fix crash when attacking a player
-        if "universAttackWin" not in save["maps"][0]:
-            save["maps"][0]["universAttackWin"] = [] # pvp current island progress
-        if "questTimes" not in save["maps"][0]:
-            save["maps"][0]["questTimes"] = [] # quests
-        if "lastQuestTimes" not in save["maps"][0]:
-            save["maps"][0]["lastQuestTimes"] = [] # 1.1.5 quests
-        save["version"] = "0.03a"
-        print("   > migrated to 0.03a")
-    
-    # 0.03a -> 0.04a
-    if save["version"] == "0.03a":
-        if "pic" not in save["playerInfo"].keys():
-            save["playerInfo"]["pic"] = ""
-        if("survivalVidaTimeStamp" not in save["privateState"]):
-            save["privateState"]["survivalVidaTimeStamp"] = []
-        if("survivalVidasExtra" not in save["privateState"]):
-            save["privateState"]["survivalVidasExtra"] = 0
-        if("survivalMaps" not in save["privateState"]):
-            save["privateState"]["survivalMaps"] = {
-                "100000035": {
-                    "ts": 0,
-                    "tp": 0
-                },
-                "100000036": {
-                    "ts": 0,
-                    "tp": 0
-                },
-                "100000037": {
-                    "ts": 0,
-                    "tp": 0
-                }
-            }
-        save["version"] = "0.04a"
-        print("   > migrated to 0.04a")
-
-    # 0.04a -> 0.05a
-    #if save["version"] == "0.04a":
-    #    save["version"] = "0.05a"
-    #    print("   > migrated to 0.05a")
+    # remove version tag as it's useless now
+    if "version" in save:
+        save.pop("version")
 
     return True
