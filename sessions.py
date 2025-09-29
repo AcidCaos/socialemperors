@@ -244,5 +244,5 @@ def save_session(USERID: str):
     print(f" * Saving village at {file}... ", end='')
     village = session(USERID)
     with open(os.path.join(SAVES_DIR, file), 'w') as f:
-        json.dump(village, f, indent=4)
+        json.dump(village, f, indent='\t')
     print("Done.")
