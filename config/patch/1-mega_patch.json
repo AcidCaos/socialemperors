@@ -61,20 +61,20 @@
 		"path": "/tournament_formations",
 		"value": [
 			{
-				"description":	1983,
-				"tip":			2100
+				"description":	"POPUP_TOURNAMENT_FORMATION_DESC_0",
+				"tip":			"POPUP_TOURNAMENT_FORMATION_0"
 			},
 			{
-				"description":	1983,
-				"tip":			2101
+				"description":	"POPUP_TOURNAMENT_FORMATION_DESC_1",
+				"tip":			"POPUP_TOURNAMENT_FORMATION_1"
 			},
 			{
-				"description":	1983,
-				"tip":			2102
+				"description":	"POPUP_TOURNAMENT_FORMATION_DESC_2",
+				"tip":			"POPUP_TOURNAMENT_FORMATION_2"
 			},
 			{
-				"description":	1983,
-				"tip":			2103
+				"description":	"POPUP_TOURNAMENT_FORMATION_DESC_3",
+				"tip":			"POPUP_TOURNAMENT_FORMATION_3"
 			}
 		]
 	},
