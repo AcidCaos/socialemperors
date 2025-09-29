@@ -58,6 +58,28 @@
 	},
 	{
 		"op": "add",
+		"path": "/tournament_formations",
+		"value": [
+			{
+				"description":	1983,
+				"tip":			2100
+			},
+			{
+				"description":	1983,
+				"tip":			2101
+			},
+			{
+				"description":	1983,
+				"tip":			2102
+			},
+			{
+				"description":	1983,
+				"tip":			2103
+			}
+		]
+	},
+	{
+		"op": "add",
 		"path": "/globals/TOWNHALL_HOUSE_LIMIT",
 		"value": {
 			"26": 100,

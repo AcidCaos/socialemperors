@@ -50,6 +50,12 @@ def _safe_migrate_save(save):
         privateState["questsRank"] = {}
     if type(privateState["questsRank"]) != dict:
         privateState["questsRank"] = {}
+
+    # team selection window fix
+    if "tournamentFormation" not in privateState:
+        privateState["tournamentFormation"] = 0
+    if type(privateState["tournamentFormation"]) != int:
+        privateState["tournamentFormation"] = 0
     _fix_quest_ranks(privateState["questsRank"], _quest_ids)
 
 def migrate_loaded_save(save: dict) -> bool:
