@@ -5,7 +5,58 @@ from engine import timestamp_now
 version_name = "alpha 0.04"
 version_code = "0.04a"
 
+_quest_ids = [
+    "100000006",
+    "100000007",
+    "100000008",
+    "100000012",
+    "100000002",
+    "100000021",
+    "100000022",
+    "100000003",
+    "100000027",
+    "100000028",
+    "100000014",
+    "100000013",
+    "100000020",
+    "100000015",
+    "100000023",
+    "100000019",
+    "100000018",
+    "100000011",
+    "100000033",
+    "100000041",
+    "100000042",
+    "100000043",
+    "100000044",
+    "100000045",
+    "100000046",
+    "100000047",
+    "100000090",
+    "100000091",
+    "100000092"
+]
+
+def _fix_quest_ranks(ranks, quests):
+    for quest in quests:
+        if quest not in ranks:
+            ranks[quest] = None
+
+def _safe_migrate_save(save):
+    privateState = save["privateState"]
+
+    # questsRank fix
+    if "questsRank" not in privateState:
+        privateState["questsRank"] = {}
+    if type(privateState["questsRank"]) != dict:
+        privateState["questsRank"] = {}
+    _fix_quest_ranks(privateState["questsRank"], _quest_ids)
+
 def migrate_loaded_save(save: dict) -> bool:
+
+    # Let's really make sure this migration happens or the save will never migrate correctly, way better than checking just one value which may be incorrectly set
+    # while the rest of the data may remain unmigrated and outdated making the game crash
+    _safe_migrate_save(save)
 
     # discard current version saves
     if save["version"] == version_code:

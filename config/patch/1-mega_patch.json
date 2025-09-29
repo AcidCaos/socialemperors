@@ -2,7 +2,7 @@
 	{
 		"_TITLE": "Nerroth/Vahzco - 1.4.07 MEGA PATCH",
 		"op": "add",
-		"path": "/globals/QUEST_GOLD_REWARD_MULTIPLIERS",
+		"path": "/globals/QUEST_GOLD_REWARD_MULTYPLIERS",
 		"value": [ 0.5, 0.75, 1.0 ]
 	},
 	{
