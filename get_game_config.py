@@ -3,7 +3,7 @@ import os
 import jsonpatch
 from bundle import MODS_DIR, CONFIG_DIR, CONFIG_PATCH_DIR
 
-__game_config = json.load(open(os.path.join(CONFIG_DIR, "game_config_20120826.json"), 'r', encoding='utf-8'))
+__game_config = json.load(open(os.path.join(CONFIG_DIR, "main.json"), 'r', encoding='utf-8'))
 
 # Since we use mega patches now, better to make sure any old patches don't load as they will load after and will mess things up!
 patch_ignore = [ 
@@ -49,7 +49,7 @@ def remove_duplicate_items():
 def apply_config_patch(filename):
     fname = os.path.basename(filename).split(".")[0]
     if fname.lower() not in patch_ignore:
-        patch = json.load(open(filename, 'r'))
+        patch = json.load(open(filename, 'r', encoding='utf-8'))
         jsonpatch.apply_patch(__game_config, patch, in_place=True)
         print(f" * Patch applied:", fname)
 
@@ -65,7 +65,7 @@ def patch_game_config():
     # Apply mods
 
     if os.path.exists(MODS_DIR + "/mods.txt"):
-        with open(MODS_DIR + "/mods.txt", "r") as f:
+        with open(MODS_DIR + "/mods.txt", "r", encoding='utf-8') as f:
             lines = f.readlines()
             f.close()
 
