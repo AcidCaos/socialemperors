@@ -17,7 +17,10 @@ patch_ignore = [
     "unit_patch",
     "viral_offers",
     "viral_icons",
-    "unit_collections"
+    "unit_collections",
+    "soulmixer_powerup_incremented_modified",
+    "soulmixer_items_data",
+    "soulmixer_item",
 ]
 
 def remove_duplicate_items():

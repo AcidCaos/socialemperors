@@ -347,6 +347,36 @@
 		]
 	},
 	{
+		"op": "add",
+		"path": "/globals/SOUL_MIXER_POWERUPS_LEVELS",
+		"value": [
+			{
+				"cash_cost": 1,
+				"order_increment": 1
+			},
+			{
+				"cash_cost": 2,
+				"order_increment": 2
+			},
+			{
+				"cash_cost": 4,
+				"order_increment": 4
+			},
+			{
+				"cash_cost": 8,
+				"order_increment": 8
+			},
+			{
+				"cash_cost": 15,
+				"order_increment": 15
+			},
+			{
+				"cash_cost": 20,
+				"order_increment": 20
+			}
+		]
+	},
+	{
 		"_TITLE": "Nerroth - Unit fixes patch'",
 		"op": "add",
 		"path": "/items/-",
@@ -434,7 +464,7 @@
 			"giftable": "0",
 			"img_name": "1529_soulMixer",
 			"elevation": "4",
-			"unit_capacity": "0",
+			"unit_capacity": "2",
 			"attack": "0",
 			"defense": "1",
 			"life": "5000",
