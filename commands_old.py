@@ -30,8 +30,7 @@ def command(USERID, data):
         do_command(USERID, cmd, args)
     save_session(USERID) # Save session
 
-def do_command(USERID, cmd, args):
-    save = session(USERID)
+def do_command(save, cmd, args):
     print (" [+] COMMAND: ", cmd, "(", args, ") -> ", sep='', end='')
 
     if cmd == Constant.CMD_GAME_STATUS:

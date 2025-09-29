@@ -1,14 +1,52 @@
 import json
 
 from sessions import session, save_session
-from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional
-from constants import Constant
-from engine import apply_cost, apply_collect, apply_collect_xp, timestamp_now
 from op import *
 from commands_old import do_command as do_old_command
 
 commands = {
-	"set_variables": cmd_set_variables
+	"set_variables":			cmd_set_variables,
+	"game_status":				cmd_game_status,
+	"buy":						UNKNOWN,
+	"complete_tutorial":		UNKNOWN,
+	"move":						UNKNOWN,
+	"collect_new":				UNKNOWN,
+	"sell":						UNKNOWN,
+	"kill":						UNKNOWN,
+	"complete_mission":			UNKNOWN,
+	"reward_mission":			UNKNOWN,
+	"push_unit":				UNKNOWN,
+	"pop_unit":					UNKNOWN,
+	"rt_level_up":				UNKNOWN,
+	"rt_publish_score":			UNKNOWN,
+	"expand":					UNKNOWN,
+	"name_map":					UNKNOWN,
+	"exchange_cash_new":		UNKNOWN,
+	"store_item":				UNKNOWN,
+	"place_gift":				UNKNOWN,
+	"sell_gift":				UNKNOWN,
+	"activate_dragon":			UNKNOWN,
+	"desactivate_dragon":		UNKNOWN,
+	"next_step":				UNKNOWN,
+	"next_dragon":				UNKNOWN,
+	"buy_step_cash":			UNKNOWN,
+	"rider_buy_step_cash":		UNKNOWN,
+	"rider_next_step":			UNKNOWN,
+	"rider_select":				UNKNOWN,
+	"orient":					UNKNOWN,
+	"buy_monster_step_cash":	UNKNOWN,
+	"activate_monster":			UNKNOWN,
+	"desactivate_monster":		UNKNOWN,
+	"next_monster_step":		UNKNOWN,
+	"next_monster":				UNKNOWN,
+	"win_bonus":				UNKNOWN,
+	"admin_add_animal":			UNKNOWN,
+	"graveyard_buy_potions":	UNKNOWN,
+	"buy_super_offer_pack":		UNKNOWN,
+	"buy_super_offer_pack":		UNKNOWN,
+	"set_strategy":				UNKNOWN,
+	"start_quest":				UNKNOWN,
+	"add_collectable":			UNKNOWN,
 }
 
 def get_strategy_type(id):
@@ -41,8 +79,8 @@ def do_command(USERID, cmd, args):
 	# print(" [+] COMMAND: ", cmd, "(", args, ") -> ", sep='', end='')
 
 	if cmd in commands:
-		commands[cmd](save, args)
+		commands[cmd](save, cmd, args)
 		return
 	else:
 		# print(f" [!] UNKNOWN COMMAND: {cmd} {args}")
-		do_old_command(USERID, cmd, args)
+		do_old_command(save, cmd, args)
