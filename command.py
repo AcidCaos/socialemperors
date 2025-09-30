@@ -4,49 +4,63 @@ from sessions import session, save_session
 from op import *
 from commands_old import do_command as do_old_command
 
+# command OK
+def _OK(cmd, args):
+	print(f" [C] OK: {cmd} {args}")
+
+def _NOTOK(cmd, args):
+	print(f" [C] FAILED: {cmd} {args}")
+
+def NOT_IMPLEMENTED(player, cmd, args):
+	print(f" [C] UNKNOWN: {cmd} {args}")
+
 commands = {
 	"set_variables":			cmd_set_variables,
 	"game_status":				cmd_game_status,
-	"buy":						UNKNOWN,
-	"complete_tutorial":		UNKNOWN,
-	"move":						UNKNOWN,
-	"collect_new":				UNKNOWN,
-	"sell":						UNKNOWN,
-	"kill":						UNKNOWN,
-	"complete_mission":			UNKNOWN,
-	"reward_mission":			UNKNOWN,
-	"push_unit":				UNKNOWN,
-	"pop_unit":					UNKNOWN,
-	"rt_level_up":				UNKNOWN,
-	"rt_publish_score":			UNKNOWN,
-	"expand":					UNKNOWN,
-	"name_map":					UNKNOWN,
-	"exchange_cash_new":		UNKNOWN,
-	"store_item":				UNKNOWN,
-	"place_gift":				UNKNOWN,
-	"sell_gift":				UNKNOWN,
-	"activate_dragon":			UNKNOWN,
-	"desactivate_dragon":		UNKNOWN,
-	"next_step":				UNKNOWN,
-	"next_dragon":				UNKNOWN,
-	"buy_step_cash":			UNKNOWN,
-	"rider_buy_step_cash":		UNKNOWN,
-	"rider_next_step":			UNKNOWN,
-	"rider_select":				UNKNOWN,
-	"orient":					UNKNOWN,
-	"buy_monster_step_cash":	UNKNOWN,
-	"activate_monster":			UNKNOWN,
-	"desactivate_monster":		UNKNOWN,
-	"next_monster_step":		UNKNOWN,
-	"next_monster":				UNKNOWN,
-	"win_bonus":				UNKNOWN,
-	"admin_add_animal":			UNKNOWN,
-	"graveyard_buy_potions":	UNKNOWN,
-	"buy_super_offer_pack":		UNKNOWN,
-	"buy_super_offer_pack":		UNKNOWN,
-	"set_strategy":				UNKNOWN,
-	"start_quest":				UNKNOWN,
-	"add_collectable":			UNKNOWN,
+
+	"buy":						cmd_buy,
+	"move":						cmd_move,
+	"orient":					cmd_orient,
+	"sell":						cmd_sell,
+	"kill":						cmd_kill,
+
+	"store_item":				cmd_store_item,
+	"store_item_frombug":		cmd_store_item_frombug,
+	"place_gift":				cmd_place_gift,
+
+	"complete_tutorial":		NOT_IMPLEMENTED,
+	"collect_new":				NOT_IMPLEMENTED,
+	"complete_mission":			NOT_IMPLEMENTED,
+	"reward_mission":			NOT_IMPLEMENTED,
+	"push_unit":				NOT_IMPLEMENTED,
+	"pop_unit":					NOT_IMPLEMENTED,
+	"rt_level_up":				NOT_IMPLEMENTED,
+	"rt_publish_score":			NOT_IMPLEMENTED,
+	"expand":					NOT_IMPLEMENTED,
+	"name_map":					NOT_IMPLEMENTED,
+	"exchange_cash_new":		NOT_IMPLEMENTED,
+	"sell_gift":				NOT_IMPLEMENTED,
+	"activate_dragon":			NOT_IMPLEMENTED,
+	"desactivate_dragon":		NOT_IMPLEMENTED,
+	"next_step":				NOT_IMPLEMENTED,
+	"next_dragon":				NOT_IMPLEMENTED,
+	"buy_step_cash":			NOT_IMPLEMENTED,
+	"rider_buy_step_cash":		NOT_IMPLEMENTED,
+	"rider_next_step":			NOT_IMPLEMENTED,
+	"rider_select":				NOT_IMPLEMENTED,
+	"buy_monster_step_cash":	NOT_IMPLEMENTED,
+	"activate_monster":			NOT_IMPLEMENTED,
+	"desactivate_monster":		NOT_IMPLEMENTED,
+	"next_monster_step":		NOT_IMPLEMENTED,
+	"next_monster":				NOT_IMPLEMENTED,
+	"win_bonus":				NOT_IMPLEMENTED,
+	"admin_add_animal":			NOT_IMPLEMENTED,
+	"graveyard_buy_potions":	NOT_IMPLEMENTED,
+	"buy_super_offer_pack":		NOT_IMPLEMENTED,
+	"buy_super_offer_pack":		NOT_IMPLEMENTED,
+	"set_strategy":				NOT_IMPLEMENTED,
+	"start_quest":				NOT_IMPLEMENTED,
+	"add_collectable":			NOT_IMPLEMENTED
 }
 
 def get_strategy_type(id):
@@ -79,8 +93,10 @@ def do_command(USERID, cmd, args):
 	# print(" [+] COMMAND: ", cmd, "(", args, ") -> ", sep='', end='')
 
 	if cmd in commands:
-		commands[cmd](save, cmd, args)
-		return
+		if commands[cmd](save, cmd, args):
+			_OK(cmd, args)
+		else:
+			_NOTOK(cmd, args)
 	else:
 		# print(f" [!] UNKNOWN COMMAND: {cmd} {args}")
 		do_old_command(save, cmd, args)
