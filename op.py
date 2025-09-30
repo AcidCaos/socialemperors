@@ -413,23 +413,23 @@ def cmd_start_quest(player, cmd, args):
 def cmd_end_quest(player, cmd, args):
 	# json
 	data = json.loads(args[0])
-	# print(json.dumps(data, indent='\t'))
+	print(json.dumps(data, indent='\t'))
 
 	privateState = player["privateState"]
 
 	units = data["units"]
 	quest_id = data["quest_id"]
 	next_index = None
+	set_unlocked_index = False
 	if "set_unlocked_index" in data:
-		next_index = data["set_unlocked_index"]
-	else:
-		next_index = get_quest_index(quest_id)
+		set_unlocked_index = data["set_unlocked_index"] == 1
+	next_index = get_quest_index(quest_id) + 1
 
 	win = False
-	if "voluntary_end" in data:
-		win = data["voluntary_end"] == 0
-	elif "win" in data:
+	if "win" in data:
 		win = data["win"] == 1
+	elif "voluntary_end" in data:
+		win = data["voluntary_end"] == 0
 
 	resources = data["resources"]
 	difficulty = data["difficulty"]
@@ -437,13 +437,13 @@ def cmd_end_quest(player, cmd, args):
 
 	_map = player["maps"][town_id]
 
-	
 	if win:
-		# if we won then unlock next quest
-		old_index = privateState["unlockedQuestIndex"]
-		if old_index == None:
-			old_index = -1
-		privateState["unlockedQuestIndex"] = max(next_index, old_index)
+		if set_unlocked_index == 1:
+			# if we won then unlock next quest
+			old_index = privateState["unlockedQuestIndex"]
+			if old_index == None:
+				old_index = -1
+			privateState["unlockedQuestIndex"] = max(next_index, old_index)
 
 		# if we won, also set quest rank
 		rank = privateState["questsRank"][str(quest_id)]
@@ -466,7 +466,7 @@ def cmd_end_quest(player, cmd, args):
 		if lost > 0:
 			player_lose_item(player, _map, uid, lost)
 
-	return False
+	return True
 
 def cmd_set_variables(player, cmd, args):
 	playerInfo = player["playerInfo"]

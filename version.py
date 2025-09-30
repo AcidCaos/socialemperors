@@ -44,8 +44,8 @@ _survival_arenas = [
 ]
 
 # this is in the game client, sorry about that!
-# 6 hours
-quest_entry_seconds = 6 * 3600
+# 6 hours * 3 attempts = 18 * 3600
+quest_entry_seconds = 6 * 3 * 3600
 
 def remove_variable(dictionary, key):
 	if key in dictionary:
@@ -160,8 +160,7 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "graveyardCapacity", 10)				# graveyard cap
 	fix_variable(privateState, "potionsReceived", {})				# graveyard potions received
 	fix_variable(privateState, "barracksQueues", {})				# unit queues (and soul mixer)
-
-	
+	fix_variable(privateState, "unlockedQuestIndex", 0)				# quest index
 
 	# SP's spaghetti is annoying
 	fix_variable(privateState, "deadHeroes", {})					# graveyard old version
