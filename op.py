@@ -199,6 +199,16 @@ def cmd_pop_queue_unit(player, cmd, args):
 
 	return True
 
+def cmd_sm_powerup(player, cmd, args):
+	# powerup_idx
+	powerup_idx = int(args[0])
+
+	powerup = get_game_config()["globals"]["SOUL_MIXER_POWERUPS_LEVELS"][powerup_idx]
+	if not pay_cash(player, powerup["cash_cost"]):
+		return False
+
+	return True
+
 def cmd_store_item(player, cmd, args):
 	# x, y, town_id, item_id
 	x = args[0]
