@@ -24,6 +24,7 @@ def USE_OLD(player, cmd, args):
 
 commands = {
 	"set_variables":			cmd_set_variables,
+	"fast_forward":				cmd_ff,
 	"game_status":				cmd_game_status,
 
 	"buy":						cmd_buy,

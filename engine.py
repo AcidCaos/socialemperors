@@ -310,6 +310,65 @@ def player_lose_item(player, map, item_id, amount):
 		del items[0]
 		amount -= 1
 
+def player_fast_forward(player, seconds):
+	maps = player["maps"]
+	privateState = player["privateState"]
+
+	for map in maps:
+		questTimes = map["questTimes"]
+		for quest in questTimes:
+			modify_ts(questTimes, quest, -seconds)
+
+		lastQuestTimes = map["lastQuestTimes"]
+		idx = len(lastQuestTimes) - 1
+		while idx >= 0:
+			modify_ts_array(lastQuestTimes, idx, -seconds)
+			idx -= 1
+
+		# TODO:
+		# item timers!
+
+	# TODO:
+	# privateState.timestampLastBonus
+	# privateState.kompuLastTimeStamp
+	# privateState.timeStampHeavySiegePeriod
+	# privateState.timeStampHeavySiegeAttack
+	# privateState.timeStampDartsReset
+	# privateState.timeStampDartsNewFree
+
+	# privateState.survivalVidaTimeStamp
+	survivalVidaTimeStamp = privateState["survivalVidaTimeStamp"]
+	idx = len(survivalVidaTimeStamp) - 1
+	while idx >= 0:
+		modify_ts_array(survivalVidaTimeStamp, idx, -seconds)
+		idx -= 1
+
+	# privateState.survivalMaps
+	survivalMaps = privateState["survivalMaps"]
+	for entry in survivalMaps:
+		data = survivalMaps[entry]
+		modify_ts(data, "ts", -seconds)
+
+	# privateState.barracksQueues
+	barracksQueues = privateState["barracksQueues"]
+	for queue in barracksQueues:
+		q = barracksQueues[queue]
+		modify_ts(q, "ts", -seconds)
+
+def modify_ts(dictionary, key, seconds):
+	if key not in dictionary:
+		dictionary[key] = 0
+	elif dictionary[key] == None:
+		dictionary[key] = 0
+	else:
+		dictionary[key] = max(dictionary[key] + seconds, 0)
+
+def modify_ts_array(arr, idx, seconds):
+	if arr[idx] == None:
+		arr[idx] = 0
+	else:
+		arr[idx] = max(arr[idx] + seconds, 0)
+
 def apply_xp_for_item(map, item_id):
 	amount = get_attribute_from_item_id(item_id, "xp")
 	if not amount:
