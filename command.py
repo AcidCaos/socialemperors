@@ -49,7 +49,7 @@ commands = {
 	"resurrect_hero":			cmd_resurrect_hero,
 	"graveyard_buy_potions":	cmd_graveyard_buy_potions,
 
-	"admin_add_animal":			NOT_IMPLEMENTED,
+	"admin_add_animal":			cmd_admin_add_animal,
 	"expand":					USE_OLD,
 	"name_map":					USE_OLD,
 	"set_strategy":				USE_OLD,

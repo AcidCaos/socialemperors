@@ -6,13 +6,9 @@ from constants import Constant
 from engine import *
 
 def cmd_nop(player, cmd, args):
-	# do nothing, command not implemented
-
 	return True
 
 def cmd_game_status(player, cmd, args):
-	print("GAME STATUS: " + " ".join(args))
-
 	return True
 
 def cmd_buy(player, cmd, args):
@@ -324,3 +320,16 @@ def cmd_set_variables(player, cmd, args):
 
 	return True
 
+def cmd_admin_add_animal(player, cmd, args):
+	# subcategory, amount
+	subcategory = str(args[0])
+	amount = int(args[1])
+
+	animals = player["privateState"]["arrayAnimals"]
+	prev = 0
+	if subcategory in animals:
+		prev = animals[subcategory]
+
+	animals[subcategory] = prev + amount
+
+	return True
