@@ -141,7 +141,7 @@ def cmd_set_variables(player, cmd, args):
 	town_id = args[7]
 
 	_map = player["maps"][town_id]
-	_map["gold"] = args[0]
+	_map["coins"] = args[0]
 	playerInfo["cash"] = args[1]
 	_map["xp"] = args[2]
 	_map["level"] = args[3]
