@@ -273,7 +273,7 @@ def cmd_graveyard_buy_potions(player, cmd, args):
 	price = int(potion_data["price"]["c"])
 
 	if pay_cash(player, price):
-		potion_add(player, potion_amount)
+		add_potions(player, potion_amount)
 		return True
 
 	return False
@@ -303,6 +303,64 @@ def cmd_resurrect_hero(player, cmd, args):
 	map_add_item(_map, item_id, x, y)
 	graveyard_remove(player, item_id)
 
+	return True
+
+def cmd_name_map(player, cmd, args):
+	# town_id, name
+	town_id = args[0]
+	name = str(args[1])
+
+	player["playerInfo"]["map_names"][town_id] = name
+
+	return True
+
+def cmd_set_strategy(player, cmd, args):
+	# strategy
+	strategy = args[0]
+
+	save["privateState"]["strategy"] = strategy
+
+	return True
+
+def cmd_exchange_cash(player, cmd, args):
+	town_id = args[0]
+
+	cfg_global = get_game_config()["globals"]
+	cash_amount = cfg_global["EXCHANGE_CASH"]
+	gold_amount = cfg_global["EXCHANGE_GOLD"]
+
+	_map = player["maps"][town_id]
+	if not pay_cash(player, cash_amount):
+		return False
+
+	add_map_currency(_map, "coins", gold_amount)
+
+	return True
+
+def cmd_expand(player, cmd, args):
+	# land_idx, currency_type, town_id
+	land_idx = args[0]
+	currency_type = args[1]
+	town_id = args[2]
+
+	_map = player["maps"][town_id]
+	expansions = _map["expansions"]
+	if land_idx in expansions:
+		return False
+
+	prices = get_game_config()["expansion_prices"]
+	price = prices[len(expansions) - 1]
+
+	if currency_type == "cash":
+		if not pay_cash(player, price["cash"]):
+			return False
+	elif currency_type == "gold":
+		if not pay_map_currency(_map, "coins", price["coins"]):
+			return False
+	else:
+		return False
+
+	expansions.append(land_idx)
 	return True
 
 def cmd_set_variables(player, cmd, args):

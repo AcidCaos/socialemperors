@@ -50,9 +50,10 @@ commands = {
 	"graveyard_buy_potions":	cmd_graveyard_buy_potions,
 
 	"admin_add_animal":			cmd_admin_add_animal,
-	"expand":					USE_OLD,
-	"name_map":					USE_OLD,
-	"set_strategy":				USE_OLD,
+	"expand":					cmd_expand,
+	"name_map":					cmd_name_map,
+	"set_strategy":				cmd_set_strategy,
+	"exchange_cash_new":		cmd_exchange_cash,
 
 	"start_quest":				USE_OLD,
 	"complete_tutorial":		USE_OLD,
@@ -61,7 +62,6 @@ commands = {
 	"add_collectable":			USE_OLD,
 	"collect_new":				USE_OLD,
 	"win_bonus":				USE_OLD,
-	"exchange_cash_new":		USE_OLD,
 
 	"activate_dragon":			USE_OLD,
 	"desactivate_dragon":		USE_OLD,
