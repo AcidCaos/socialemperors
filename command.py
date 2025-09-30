@@ -35,6 +35,7 @@ commands = {
 	"push_unit":				cmd_push_unit,
 	"pop_unit":					cmd_pop_unit,
 	"push_queue_unit":			cmd_push_queue_unit,
+	"speed_up_queue":			cmd_speed_up_queue,
 	"pop_queue_unit":			cmd_pop_queue_unit,
 
 	"store_item":				cmd_store_item,

@@ -1,4 +1,5 @@
 import time
+import math
 
 from get_game_config import *
 from constants import *
@@ -33,6 +34,7 @@ resurrectable_heroes = [
 
 # sell divisor (divides by 20 in game for 5% sell value, negative so we refund)
 SELL_DIVISOR = -1.0 / 20.0
+SPEEDUP_COST_PER_HOUR = 1
 
 def timestamp_now():
 	return int(time.time())
@@ -84,6 +86,17 @@ def map_get_item(map, x, y, item_id = None):
 				found.append(item)
 	return found
 
+def player_get_item_with_bq(player, bq):
+	found = []
+	maps = player["maps"]
+	for map in maps:
+		for item in map["items"]:
+			if "bq" in item[7]:
+				if item[7]["bq"] == bq:
+					found.append(item)
+
+	return found
+
 def map_move_item(map, item_id, x1, y1, x2, y2, orientation):
 	items = map_get_item(map, x1, y1, item_id)
 	for item in items:
@@ -126,6 +139,38 @@ def player_push_queue_unit(player, building, item_id, bq, is_soulmixer):
 		attr["ts"] = timestamp_now()
 
 		raise Exception("crash please")
+
+def player_speed_up_queue(player, building, bq, new_ts = 0):
+	queue = get_unit_queue(player, bq)
+	if not queue:
+		return False
+
+	is_soulmixer = building[0] == Constant.ID_BUILDING_SOUL_MIXER
+
+	training_key = "training_time" # not sure if correct
+	if is_soulmixer:
+		training_key = "sm_training_time"
+	training_time = get_attribute_from_item_id(queue["unit"], training_key)
+
+	if training_time:
+		time_left = queue["ts"] + int(training_time) - timestamp_now()
+		hours_left = int(math.ceil(time_left / 3600))
+		cash_cost = hours_left * SPEEDUP_COST_PER_HOUR
+
+		if not pay_cash(player, cash_cost):
+			return False
+	else:
+		return False
+	
+	queue["ts"] = new_ts
+	return True
+
+def get_unit_queue(player, queue_id):
+	barracksQueues = player["privateState"]["barracksQueues"]
+	if not str(queue_id) in barracksQueues:
+		return None
+
+	return barracksQueues[str(queue_id)]
 
 def push_queued_unit(player, queue_id, unit_id, amount = 1):
 	barracksQueues = player["privateState"]["barracksQueues"]

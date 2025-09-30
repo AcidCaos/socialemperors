@@ -164,6 +164,16 @@ def cmd_push_queue_unit(player, cmd, args):
 		return False	# well damn
 
 	return True
+
+def cmd_speed_up_queue(player, cmd, args):
+	# bq
+	bq = args[0]
+
+	building = player_get_item_with_bq(player, bq)
+	if len(building) != 1:
+		return False	# map error, multiple buildings in same location
+
+	return player_speed_up_queue(player, building[0], bq)
 	
 def cmd_pop_queue_unit(player, cmd, args):
 	return False
