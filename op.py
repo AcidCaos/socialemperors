@@ -103,6 +103,44 @@ def cmd_kill(player, cmd, args):
 	
 	return True
 
+def cmd_push_unit(player, cmd, args):
+	# ux, uy, uitem_id, bx, by, town_id
+	ux = args[0]
+	uy = args[1]
+	uitem_id = args[2]
+	bx = args[3]
+	by = args[4]
+	town_id = args[5]
+
+	_map = player["maps"][town_id]
+	building = map_get_item(_map, bx, by)
+	unit = map_get_item(_map, ux, uy, uitem_id)
+	if len(building) != 1 or len(unit) != 1:
+		return False	# map error, multiple units or buildings in same location
+
+	map_push_unit(_map, unit[0], building[0])
+
+	return True
+
+def cmd_pop_unit(player, cmd, args):
+	# bx, by, town_id, uitem_id, ux, uy, uorientation
+	bx = args[0]
+	by = args[1]
+	town_id = args[2]
+	uitem_id = args[3]
+	ux = args[4]
+	uy = args[5]
+	uorientation = args[6]
+
+	_map = player["maps"][town_id]
+	building = map_get_item(_map, bx, by)
+	if len(building) != 1:
+		return False	# map error, multiple buildings in same location
+	if not map_pop_unit(_map, building[0], uitem_id, ux, uy, uorientation):
+		return False	# unit was never in this building
+
+	return True
+
 def cmd_store_item(player, cmd, args):
 	# x, y, town_id, item_id
 	x = args[0]

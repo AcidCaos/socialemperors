@@ -84,17 +84,30 @@ def map_get_item(map, x, y, item_id = None):
 				found.append(item)
 	return found
 
-def map_move_item(_map, item_id, x1, y1, x2, y2, orientation):
-	items = map_get_item(_map, x1, y1, item_id)
+def map_move_item(map, item_id, x1, y1, x2, y2, orientation):
+	items = map_get_item(map, x1, y1, item_id)
 	for item in items:
 		item[1] = x2
 		item[2] = y2
 		item[3] = orientation
 
-def map_orient_item(_map, x, y, orientation):
-	items = map_get_item(_map, x, y)
+def map_orient_item(map, x, y, orientation):
+	items = map_get_item(map, x, y)
 	for item in items:
 		item[3] = orientation
+
+def map_push_unit(map, unit, building, remove = True):
+	building[6].append(unit[0]) # append unit id to building store
+	if remove:
+		map["items"].remove(unit)
+
+def map_pop_unit(map, building, item_id, x, y, orientation):
+	if item_id not in building[6]:
+		return False
+	
+	building[6].remove(item_id)
+	map_add_item(map, item_id, x, y, orientation)
+	return True
 
 def add_store_item(player, item, quantity = 1):
 	itemstr = str(item)

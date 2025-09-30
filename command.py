@@ -32,8 +32,8 @@ commands = {
 	"sell":						cmd_sell,
 	"kill":						cmd_kill,
 	
-	"push_unit":				NOT_IMPLEMENTED,
-	"pop_unit":					NOT_IMPLEMENTED,
+	"push_unit":				cmd_push_unit,
+	"pop_unit":					cmd_pop_unit,
 
 	"store_item":				cmd_store_item,
 	"store_item_frombug":		cmd_store_item_frombug,
