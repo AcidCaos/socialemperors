@@ -109,6 +109,9 @@ def remove_store_item(player, item, quantity = 1):
 		else:
 			player["privateState"]["gifts"][itemstr] = new_quantity
 
+def potion_add(player, amount = 1):
+	player["privateState"]["potion"] += amount
+
 def try_push_graveyard(player, item_id, amount = 1):
 	# Based on game checks
 	
@@ -229,3 +232,17 @@ def apply_collect_xp(map, item_id):
 	print("applied collext xp for item {str(get_name_from_item_id(item_id))}")
 
 	map["xp"] += int(amount)
+
+def pay_cash(player, amount):
+	if player["playerInfo"]["cash"] < int(amount):
+		# not enough cash, stranger...
+		return False
+	player["playerInfo"]["cash"] -= int(amount)
+	return True
+	
+def pay_potions(player, amount):
+	if player["privateState"]["potion"] < int(amount):
+		return False
+
+	player["privateState"]["potion"] -= int(amount)
+	return True

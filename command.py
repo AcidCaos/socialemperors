@@ -16,6 +16,7 @@ def _NOTOK(cmd, args):
 
 def NOT_IMPLEMENTED(player, cmd, args):
 	print(f" [C] UNKNOWN: {cmd} {args}")
+	return True
 
 def USE_OLD(player, cmd, args):
 	do_old_command(player, cmd, args)
@@ -34,6 +35,9 @@ commands = {
 	"store_item":				cmd_store_item,
 	"store_item_frombug":		cmd_store_item_frombug,
 	"place_gift":				cmd_place_gift,
+
+	"resurrect_hero":			cmd_resurrect_hero,
+	"graveyard_buy_potions":	cmd_graveyard_buy_potions,
 
 	"complete_tutorial":		USE_OLD,
 	"collect_new":				USE_OLD,
@@ -62,7 +66,6 @@ commands = {
 	"next_monster":				USE_OLD,
 	"win_bonus":				USE_OLD,
 	"admin_add_animal":			NOT_IMPLEMENTED,
-	"graveyard_buy_potions":	NOT_IMPLEMENTED,
 	"buy_super_offer_pack":		USE_OLD,
 	"buy_super_offer_pack":		USE_OLD,
 	"set_strategy":				USE_OLD,

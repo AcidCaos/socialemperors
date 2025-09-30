@@ -135,6 +135,43 @@ def cmd_place_gift(player, cmd, args):
 
 	return True
 
+def cmd_graveyard_buy_potions(player, cmd, args):
+	potion_data = get_game_config()["globals"]["GRAVEYARD_POTIONS"]
+	potion_amount = int(potion_data["amount"])
+	price = int(potion_data["price"]["c"])
+
+	if pay_cash(player, price):
+		potion_add(player, potion_amount)
+		return True
+
+	return False
+
+def cmd_resurrect_hero(player, cmd, args):
+	# item_id, x, y, town_id, [used_potion]
+	item_id = args[0]
+	x = args[1]
+	y = args[2]
+	town_id = args[3]
+	used_potion = False
+	if len(args) >= 4:
+		used_potion = args[4]
+
+	if used_potion:
+		potion_price = get_attribute_from_item_id(item_id, "potion")
+		if not potion_price:
+			return False
+		if not pay_potions(player, potion_price):
+			return False
+	else:
+		print("cmd_resurrect_hero EDGE CASE NOT IMPLEMENTED!")
+		return False
+		# TODO: resurrected a dead hero instead? idk
+
+	_map = player["maps"][town_id]
+	map_add_item(_map, item_id, x, y)
+	graveyard_remove(player, item_id)
+
+	return True
 
 def cmd_set_variables(player, cmd, args):
 	playerInfo = player["playerInfo"]
