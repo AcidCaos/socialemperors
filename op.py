@@ -176,7 +176,28 @@ def cmd_speed_up_queue(player, cmd, args):
 	return player_speed_up_queue(player, building[0], bq)
 	
 def cmd_pop_queue_unit(player, cmd, args):
-	return False
+	# bq, ux, uy, bitem_id
+	bq = args[0]
+	ux = args[1]
+	uy = args[2]
+	bitem_id = args[3]
+
+	# no support for other town IDs, sad :(
+	town_id = 0
+	_map = player["maps"][town_id]
+
+	building = player_get_item_with_bq(player, bq)
+	if len(building) != 1:
+		return False	# map error, multiple buildings in same location
+
+	result = player_pop_queue_unit(player, building[0], bq)
+	if not result:
+		return False
+	unit_id = result[0]
+	is_soulmixer = result[1]
+	map_add_item(_map, unit_id, ux, uy)
+
+	return True
 
 def cmd_store_item(player, cmd, args):
 	# x, y, town_id, item_id

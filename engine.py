@@ -126,7 +126,7 @@ def player_push_queue_unit(player, building, item_id, bq, is_soulmixer):
 	attr = building[7]
 
 	if is_soulmixer:
-		attr["bq"] = bq
+		attr["bq"] = str(bq)
 		push_queued_unit(player, bq, item_id, 1)
 
 		return True
@@ -165,12 +165,35 @@ def player_speed_up_queue(player, building, bq, new_ts = 0):
 	queue["ts"] = new_ts
 	return True
 
+def player_pop_queue_unit(player, building, bq):
+	queue = get_unit_queue(player, bq)
+	if not queue:
+		return None
+
+	is_soulmixer = building[0] == Constant.ID_BUILDING_SOUL_MIXER
+
+	unit_id = queue["unit"]
+	queue["amount"] -= 1
+	if queue["amount"] <= 0:
+		# remove queue
+		remove_unit_queue(player, bq)
+		del building[7]["bq"]
+
+	return [ unit_id, is_soulmixer ]
+
 def get_unit_queue(player, queue_id):
 	barracksQueues = player["privateState"]["barracksQueues"]
 	if not str(queue_id) in barracksQueues:
 		return None
 
 	return barracksQueues[str(queue_id)]
+
+def remove_unit_queue(player, queue_id):
+	barracksQueues = player["privateState"]["barracksQueues"]
+	if not str(queue_id) in barracksQueues:
+		return
+
+	del barracksQueues[str(queue_id)]
 
 def push_queued_unit(player, queue_id, unit_id, amount = 1):
 	barracksQueues = player["privateState"]["barracksQueues"]
