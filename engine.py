@@ -369,3 +369,21 @@ def pay_potions(player, amount):
 
 	player["privateState"]["potion"] -= int(amount)
 	return True
+
+def give_levelup_reward(player, map, level):
+	reward_type = level["reward_type"]
+	reward_amount = level["reward_amount"]
+
+	give_resource_type(player["playerInfo"], map, reward_type, reward_amount)
+
+def give_resource_type(playerInfo, map, resource, amount):
+	if resource == "w":
+		map["wood"] += amount
+	elif resource == "g":
+		map["coins"] += amount
+	elif resource == "c":
+		playerInfo["cash"] += amount
+	elif resource == "s":
+		map["stone"] += amount
+	elif resource == "f":
+		map["food"] += amount

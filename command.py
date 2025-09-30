@@ -49,11 +49,13 @@ commands = {
 	"resurrect_hero":			cmd_resurrect_hero,
 	"graveyard_buy_potions":	cmd_graveyard_buy_potions,
 
-	"admin_add_animal":			cmd_admin_add_animal,
 	"expand":					cmd_expand,
 	"name_map":					cmd_name_map,
 	"set_strategy":				cmd_set_strategy,
 	"exchange_cash_new":		cmd_exchange_cash,
+	"rt_level_up":				cmd_rt_level_up,
+	"rt_publish_score":			cmd_rt_publish_score,
+	"admin_add_animal":			cmd_admin_add_animal,
 
 	"start_quest":				USE_OLD,
 	"complete_tutorial":		USE_OLD,
@@ -79,10 +81,7 @@ commands = {
 	"next_monster_step":		USE_OLD,
 
 	"buy_monster_step_cash":	USE_OLD,
-	"buy_super_offer_pack":		USE_OLD,
-
-	"rt_level_up":				USE_OLD,
-	"rt_publish_score":			USE_OLD
+	"buy_super_offer_pack":		USE_OLD
 }
 
 def get_strategy_type(id):

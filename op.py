@@ -363,6 +363,40 @@ def cmd_expand(player, cmd, args):
 	expansions.append(land_idx)
 	return True
 
+def cmd_rt_level_up(player, cmd, args):
+	# level_now
+	level_now = int(args[0])
+
+	# no support for other town IDs, sad :(
+	town_id = 0
+	_map = player["maps"][town_id]
+	level_old = _map["level"]
+
+	gained = max(0, level_now - level_old)
+
+	levels = get_game_config()["levels"]
+	level_data = levels[level_now - 1]
+
+	give_levelup_reward(player, _map, level_data)
+
+	_map["level"] = level_now
+	_map["xp"] = max(get_xp_from_level(max(0, level_now - 1)), _map["xp"])
+
+	return True
+
+def cmd_rt_publish_score(player, cmd, args):
+	# xp_now 
+	xp_now = int(args[0])
+
+	# no support for other town IDs, sad :(
+	town_id = 0
+	_map = player["maps"][town_id]
+
+	_map["xp"] = xp_now
+	_map["level"] = get_level_from_xp(xp_now)
+
+	return True
+
 def cmd_set_variables(player, cmd, args):
 	playerInfo = player["playerInfo"]
 	town_id = args[7]
