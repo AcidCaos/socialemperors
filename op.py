@@ -397,6 +397,77 @@ def cmd_rt_publish_score(player, cmd, args):
 
 	return True
 
+def cmd_start_quest(player, cmd, args):
+	# quest_id, town_id
+	quest_id = args[0]
+	town_id = args[1]
+
+	ts_now = timestamp_now()
+	_map = player["maps"][town_id]
+
+	_map["questTimes"][str(quest_id)] = ts_now
+	_map["lastQuestTimes"].append(ts_now)
+
+	return True
+
+def cmd_end_quest(player, cmd, args):
+	# json
+	data = json.loads(args[0])
+	# print(json.dumps(data, indent='\t'))
+
+	privateState = player["privateState"]
+
+	units = data["units"]
+	quest_id = data["quest_id"]
+	next_index = None
+	if "set_unlocked_index" in data:
+		next_index = data["set_unlocked_index"]
+	else:
+		next_index = get_quest_index(quest_id)
+
+	win = False
+	if "voluntary_end" in data:
+		win = data["voluntary_end"] == 0
+	elif "win" in data:
+		win = data["win"] == 1
+
+	resources = data["resources"]
+	difficulty = data["difficulty"]
+	town_id = data["map"]
+
+	_map = player["maps"][town_id]
+
+	
+	if win:
+		# if we won then unlock next quest
+		old_index = privateState["unlockedQuestIndex"]
+		if old_index == None:
+			old_index = -1
+		privateState["unlockedQuestIndex"] = max(next_index, old_index)
+
+		# if we won, also set quest rank
+		rank = privateState["questsRank"][str(quest_id)]
+		if rank == None:
+			rank = 0
+		privateState["questsRank"][str(quest_id)] = max(difficulty, rank)
+
+	# give player gold and xp
+	add_map_currency(_map, "coins", resources["g"])
+	add_map_currency(_map, "xp", resources["x"])
+
+	# remove lost units and send them to graveyard
+	for unit in units:
+		uid = unit[0]
+		entered = unit[1]
+		died = unit[2]
+		recovered = unit[3]
+		lost = died - recovered
+
+		if lost > 0:
+			player_lose_item(player, _map, uid, lost)
+
+	return False
+
 def cmd_set_variables(player, cmd, args):
 	playerInfo = player["playerInfo"]
 	town_id = args[7]

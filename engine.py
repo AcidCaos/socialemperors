@@ -86,6 +86,13 @@ def map_get_item(map, x, y, item_id = None):
 				found.append(item)
 	return found
 
+def map_get_items_of_id(map, item_id):
+	found = []
+	for item in map["items"]:
+		if item[0] == item_id:
+			found.append(item)
+	return found
+
 def player_get_item_with_bq(player, bq):
 	found = []
 	maps = player["maps"]
@@ -295,6 +302,14 @@ def spaghetti_resurrected_units(privateState, deadunits):
 
 	privateState["resurrectableUnits"] = cringe
 
+def player_lose_item(player, map, item_id, amount):
+	items = map_get_items_of_id(map, item_id)
+	while len(items) > 0 and amount > 0:
+		try_push_graveyard(player, item_id)
+		map["items"].remove(items[0])
+		del items[0]
+		amount -= 1
+
 def apply_xp_for_item(map, item_id):
 	amount = get_attribute_from_item_id(item_id, "xp")
 	if not amount:
@@ -387,3 +402,11 @@ def give_resource_type(playerInfo, map, resource, amount):
 		map["stone"] += amount
 	elif resource == "f":
 		map["food"] += amount
+
+def get_quest_index(quest_id):
+	quests = get_game_config()["globals"]["ISLE_ORDER"]
+
+	try:
+		return quests.index(quest_id)
+	except:
+		return None

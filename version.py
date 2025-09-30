@@ -43,6 +43,16 @@ _survival_arenas = [
 	"100000037"
 ]
 
+# this is in the game client, sorry about that!
+# 6 hours
+quest_entry_seconds = 6 * 3600
+
+def remove_variable(dictionary, key):
+	if key in dictionary:
+		del dictionary[key]
+		return True
+	return False
+
 def fix_variable(dictionary, key, expected):
 	if key not in dictionary:
 		dictionary[key] = expected
@@ -103,6 +113,17 @@ def array_to_dict(items, remove_zero = False):
 
 	return fixed
 
+def check_quest_times(times, ts_now):
+	# removes any quest timestamps after X hours passed
+	idx = 0
+	num = len(times)
+	while idx < num:
+		if abs(ts_now - times[idx]) > quest_entry_seconds:
+			del times[idx]
+			idx -= 1
+			num -= 1
+		idx += 1
+
 def migrate_loaded_save(save):
 	# Migration always happens now, we check the data type this time and insert any new data if necessary
 	# This should make sure the save file isn't "half fixed"
@@ -113,13 +134,22 @@ def migrate_loaded_save(save):
 	ts_now = timestamp_now()
 	darts_seed = abs(int((2**16 - 1) * random.random()))
 
-	# OLD fixes --------------------------------------------------------------------------------------------------------------------------------------------------
+	# whoops, these go into maps
+	remove_variable(privateState, "questTimes")
+	remove_variable(privateState, "lastQuestTimes")
+
 	# player avatar
 	fix_variable(playerInfo, "pic", "")
 
-	# timestamp fix in maps
+	# fixes for maps
 	for _map in maps:
+		remove_variable(_map, "__#__ITEMS_hint")
 		fix_variable(_map, "timestamp", ts_now)
+		fix_variable(_map, "questTimes", {})
+		fix_variable(_map, "lastQuestTimes", [])
+
+		# make sure very old timestamps are removed
+		check_quest_times(_map["lastQuestTimes"], ts_now)
 
 	# darts rng seed if missing
 	fix_variable(privateState, "dartsRandomSeed", darts_seed)
@@ -127,11 +157,11 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "arrayAnimals", {})					# fix no animal spawning
 	fix_variable(privateState, "strategy", 8)						# fix crash when attacking player
 	fix_variable(privateState, "universAttackWin", [])				# pvp current island progress (old game builds)
-	fix_variable(privateState, "questTimes", [])					# quests
-	fix_variable(privateState, "lastQuestTimes", [])				# 1.1.5 quests
 	fix_variable(privateState, "graveyardCapacity", 10)				# graveyard cap
 	fix_variable(privateState, "potionsReceived", {})				# graveyard potions received
 	fix_variable(privateState, "barracksQueues", {})				# unit queues (and soul mixer)
+
+	
 
 	# SP's spaghetti is annoying
 	fix_variable(privateState, "deadHeroes", {})					# graveyard old version
@@ -144,7 +174,6 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "survivalMaps", {})
 	_fix_survival_maps(privateState["survivalMaps"], _survival_arenas)
 
-	# NEW fixes --------------------------------------------------------------------------------------------------------------------------------------------------
 	# questsRank fix
 	fix_variable(privateState, "questsRank", {})
 	_fix_quest_ranks(privateState["questsRank"], _quest_ids)

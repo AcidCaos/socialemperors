@@ -57,7 +57,9 @@ commands = {
 	"rt_publish_score":			cmd_rt_publish_score,
 	"admin_add_animal":			cmd_admin_add_animal,
 
-	"start_quest":				USE_OLD,
+	"start_quest":				cmd_start_quest,
+	"end_quest":				cmd_end_quest,
+
 	"complete_tutorial":		USE_OLD,
 	"complete_mission":			USE_OLD,
 	"reward_mission":			USE_OLD,
@@ -122,5 +124,4 @@ def do_command(USERID, cmd, args):
 		else:
 			_NOTOK(cmd, args)
 	else:
-		# print(f" [!] UNKNOWN COMMAND: {cmd} {args}")
-		do_old_command(save, cmd, args)
+		NOT_IMPLEMENTED(save, cmd, args)
