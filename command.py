@@ -63,8 +63,8 @@ commands = {
 	"end_quest":				cmd_end_quest,
 
 	"complete_tutorial":		USE_OLD,
-	"complete_mission":			USE_OLD,
-	"reward_mission":			USE_OLD,
+	"complete_mission":			NOT_IMPLEMENTED,
+	"reward_mission":			NOT_IMPLEMENTED,
 	"add_collectable":			USE_OLD,
 	"collect_new":				USE_OLD,
 	"win_bonus":				USE_OLD,
