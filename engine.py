@@ -109,6 +109,32 @@ def map_pop_unit(map, building, item_id, x, y, orientation):
 	map_add_item(map, item_id, x, y, orientation)
 	return True
 
+def player_push_queue_unit(player, building, item_id, bq, is_soulmixer):
+	attr = building[7]
+
+	if is_soulmixer:
+		attr["bq"] = bq
+		push_queued_unit(player, bq, item_id, 1)
+
+		return True
+	else:
+		# TODO: VERIFY
+		if "nu" in attr:
+			attr["nu"] += 1
+		else:
+			attr["nu"] = 1
+		attr["ts"] = timestamp_now()
+
+		raise Exception("crash please")
+
+def push_queued_unit(player, queue_id, unit_id, amount = 1):
+	barracksQueues = player["privateState"]["barracksQueues"]
+	barracksQueues[str(queue_id)] = {
+		"ts":		timestamp_now(),
+		"amount":	amount,
+		"unit":		unit_id
+	}
+
 def add_store_item(player, item, quantity = 1):
 	itemstr = str(item)
 	if itemstr not in player["privateState"]["gifts"]:

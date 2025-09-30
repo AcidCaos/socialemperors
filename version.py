@@ -131,6 +131,7 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "lastQuestTimes", [])				# 1.1.5 quests
 	fix_variable(privateState, "graveyardCapacity", 10)				# graveyard cap
 	fix_variable(privateState, "potionsReceived", {})				# graveyard potions received
+	fix_variable(privateState, "barracksQueues", {})				# unit queues (and soul mixer)
 
 	# SP's spaghetti is annoying
 	fix_variable(privateState, "deadHeroes", {})					# graveyard old version

@@ -141,6 +141,33 @@ def cmd_pop_unit(player, cmd, args):
 
 	return True
 
+def cmd_push_queue_unit(player, cmd, args):
+	# bx, by, bitem_id, uitem_id, bq, not_soulmixer
+	bx = args[0]
+	by = args[1]
+	bitem_id = args[2]
+	uitem_id = args[3]
+	bq = args[4]
+	not_soulmixer = True
+	if len(args) >= 5:
+		not_soulmixer = args[5]
+
+	# no support for other town IDs, sad :(
+	town_id = 0
+	_map = player["maps"][town_id]
+
+	building = map_get_item(_map, bx, by)
+	if len(building) != 1:
+		return False	# map error, multiple buildings in same location
+
+	if not player_push_queue_unit(player, building[0], uitem_id, bq, not not_soulmixer):
+		return False	# well damn
+
+	return True
+	
+def cmd_pop_queue_unit(player, cmd, args):
+	return False
+
 def cmd_store_item(player, cmd, args):
 	# x, y, town_id, item_id
 	x = args[0]
