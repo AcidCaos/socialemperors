@@ -31,6 +31,9 @@ resurrectable_heroes = [
 	Constant.ID_UNIT_HIGHELF
 ]
 
+# sell divisor (divides by 20 in game for 5% sell value, negative so we refund)
+SELL_DIVISOR = -1.0 / 20.0
+
 def timestamp_now():
 	return int(time.time())
 

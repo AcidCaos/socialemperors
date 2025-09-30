@@ -84,7 +84,7 @@ def cmd_sell(player, cmd, args):
 	if not is_free:
 		if get_attribute_from_item_id(item_id, "cost_type") != "c":
 			# you sell at 5% value
-			apply_cost(player["playerInfo"], _map, item_id, -0.05)
+			apply_cost(player["playerInfo"], _map, item_id, -SELL_DIVISOR)
 	if resurrectable:
 		try_push_graveyard(player, item_id)
 
@@ -114,6 +114,36 @@ def cmd_store_item(player, cmd, args):
 
 	map_remove_item(_map, x, y, item_id)
 	add_store_item(player, item_id, 1)
+
+	return True
+
+def cmd_sell_gift(player, cmd, args):
+	# item_id, town_id
+	item_id	= args[0]
+	town_id = args[1]
+	
+	_map = player["maps"][town_id]
+
+	remove_store_item(player, item_id, 1)
+
+	# not sure if gifts should give resources when selling but lets leave it like this
+	if get_attribute_from_item_id(item_id, "cost_type") != "c":
+		# you sell at 5% value
+		apply_cost(player["playerInfo"], _map, item_id, -SELL_DIVISOR)
+
+	return True
+
+def cmd_sell_stored_item(player, cmd, args):
+	# item_id, town_id
+	item_id	= args[0]
+	town_id = args[1]
+	
+	_map = player["maps"][town_id]
+
+	remove_store_item(player, item_id, 1)
+	if get_attribute_from_item_id(item_id, "cost_type") != "c":
+		# you sell at 5% value
+		apply_cost(player["playerInfo"], _map, item_id, -SELL_DIVISOR)
 
 	return True
 
