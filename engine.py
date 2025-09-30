@@ -336,6 +336,10 @@ def player_fast_forward(player, seconds):
 	# privateState.timeStampDartsReset
 	# privateState.timeStampDartsNewFree
 
+	# shields
+	modify_ts(privateState, "shieldEndTime", -seconds)
+	modify_ts(privateState, "shieldCooldown", -seconds)
+
 	# privateState.survivalVidaTimeStamp
 	survivalVidaTimeStamp = privateState["survivalVidaTimeStamp"]
 	idx = len(survivalVidaTimeStamp) - 1
@@ -469,3 +473,11 @@ def get_quest_index(quest_id):
 		return quests.index(quest_id)
 	except:
 		return None
+
+def get_shield_data(shield_id):
+	shields = get_game_config()["pvp_shields"]
+	for shield in shields:
+		if shield["id"] == shield_id:
+			return shield
+
+	return None

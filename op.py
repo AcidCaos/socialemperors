@@ -468,6 +468,65 @@ def cmd_end_quest(player, cmd, args):
 
 	return True
 
+def cmd_buy_shield(player, cmd, args):
+	# shield_id
+	shield_id = args[0]
+
+	town_id = 0
+	_map = player["maps"][town_id]
+	privateState = player["privateState"]
+
+	shield = get_shield_data(shield_id)
+	if not shield:
+		return False
+
+	price = shield["price"]
+	price_type = shield["price_type"]
+	if price_type == "c":
+		if not pay_cash(player, shield["price"]):
+			return False
+	else:
+		return False
+
+	# SP SERVER BUG ---------------------------------------------------------------------------------------------
+	# So back in the day, SP had a bug where if you bought a shield
+	# Went to visit a friend's empire and came back to your own empire
+	# you permanently gained the same amount of cash spent on the shields, basically -10 cash but gain +20 cash
+	# This bug was NEVER fixed so I will leave this as a feature for anyone
+	# who wishes to get themselves free 80 cash every day
+	# for 80 cash every day, buy all 3 shields right to left then next day repeat it
+
+	# Yes this was an actual bug, I am not making this up
+	# Go dig up old facebook comments on the official SE page and you'll find someone
+	# talking about this!
+	player["playerInfo"]["cash"] += int(shield["price"]) << 1
+
+	# This implementation however doesn't require you to do the step of visiting your friend's empire
+	# -----------------------------------------------------------------------------------------------------------
+
+	shield_duration = shield["protection_time"]
+	shield_cooldown = shield["cooldown"]
+
+	bought = privateState["purchasedShields"]
+	if not shield_id in bought:
+		bought.append(shield_id)
+	
+	end_time = privateState["shieldEndTime"]
+	cooldown = privateState["shieldCooldown"]
+
+	ts_now = timestamp_now()
+	if ts_now >= end_time:
+		end_time = ts_now + shield_duration
+	else:
+		end_time += shield_duration
+	privateState["shieldEndTime"] = end_time
+
+	# If you buy shields right to left, you can get 1d cooldown on all
+	# I don't care, this feature was broken to begin with so it will work like this
+	privateState["shieldCooldown"] = ts_now + shield_cooldown
+	
+	return True
+
 def cmd_set_variables(player, cmd, args):
 	playerInfo = player["playerInfo"]
 	town_id = args[7]
@@ -480,6 +539,13 @@ def cmd_set_variables(player, cmd, args):
 	_map["stone"] = args[4]
 	_map["wood"] = args[5]
 	_map["food"] = args[6]
+
+	return True
+
+def cmd_ff(player, cmd, args):
+	# seconds
+	seconds = args[0]
+	player_fast_forward(player, int(seconds))
 
 	return True
 

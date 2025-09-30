@@ -124,6 +124,11 @@ def check_quest_times(times, ts_now):
 			num -= 1
 		idx += 1
 
+def check_shield_times(privateState, ts_now):
+	if ts_now >= privateState["shieldCooldown"]:
+		privateState["shieldCooldown"] = 0
+		privateState["purchasedShields"] = []
+
 def migrate_loaded_save(save):
 	# Migration always happens now, we check the data type this time and insert any new data if necessary
 	# This should make sure the save file isn't "half fixed"
@@ -184,6 +189,8 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "shieldEndTime", 0)
 	fix_variable(privateState, "shieldCooldown", 0)
 	fix_variable(privateState, "purchasedShields", [])
+
+	check_shield_times(privateState, ts_now)
 
 	# gifts convert to dict
 	if type(privateState["gifts"]) != dict:

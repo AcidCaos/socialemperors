@@ -54,6 +54,7 @@ commands = {
 	"name_map":					cmd_name_map,
 	"set_strategy":				cmd_set_strategy,
 	"exchange_cash_new":		cmd_exchange_cash,
+	"buy_shield":				cmd_buy_shield,
 	"rt_level_up":				cmd_rt_level_up,
 	"rt_publish_score":			cmd_rt_publish_score,
 	"admin_add_animal":			cmd_admin_add_animal,
