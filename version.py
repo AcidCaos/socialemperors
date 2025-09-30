@@ -55,6 +55,20 @@ def fix_variable(dictionary, key, expected):
 		return True
 	return False
 
+def fix_variable_array(arr, idx, expected):
+	if idx >= len(arr):
+		while idx >= len(arr):
+			arr.append(None)
+		arr[idx] = expected
+		return True
+	elif arr[idx] == None:
+		arr[idx] = expected
+		return True
+	elif type(arr[idx]) != type(expected):
+		arr[idx] = expected
+		return True
+	return False
+
 def _fix_quest_ranks(ranks, quests):
 	for quest in quests:
 		if quest not in ranks:
@@ -64,6 +78,16 @@ def _fix_survival_maps(maps, arenas):
 	for arena in arenas:
 		if arena not in maps:
 			maps[arena] = { "ts": 0, "tp": 0 }
+
+def _fix_map_items(maps):
+	ts_now = timestamp_now()
+	for map in maps:
+		items = map["items"]
+		for item in items:
+			item[4] = ts_now
+			item[5] = 0
+			fix_variable_array(item, 6, [])
+			fix_variable_array(item, 7, {})
 
 def array_to_dict(items, remove_zero = False):
 	fixed = {}
@@ -138,6 +162,7 @@ def migrate_loaded_save(save):
 
 	# remove version tag as it's useless now
 	if "version" in save:
+		_fix_map_items(maps)
 		save.pop("version")
 
 	return True
