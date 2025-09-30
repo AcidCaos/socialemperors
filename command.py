@@ -5,6 +5,9 @@ from op import *
 from commands_old import do_command as do_old_command
 
 # command OK
+def _OKOLD(cmd, args):
+	print(f" [C] USING OLD: {cmd} {args}")
+
 def _OK(cmd, args):
 	print(f" [C] OK: {cmd} {args}")
 
@@ -13,6 +16,10 @@ def _NOTOK(cmd, args):
 
 def NOT_IMPLEMENTED(player, cmd, args):
 	print(f" [C] UNKNOWN: {cmd} {args}")
+
+def USE_OLD(player, cmd, args):
+	do_old_command(player, cmd, args)
+	return 2
 
 commands = {
 	"set_variables":			cmd_set_variables,
@@ -28,39 +35,39 @@ commands = {
 	"store_item_frombug":		cmd_store_item_frombug,
 	"place_gift":				cmd_place_gift,
 
-	"complete_tutorial":		NOT_IMPLEMENTED,
-	"collect_new":				NOT_IMPLEMENTED,
-	"complete_mission":			NOT_IMPLEMENTED,
-	"reward_mission":			NOT_IMPLEMENTED,
+	"complete_tutorial":		USE_OLD,
+	"collect_new":				USE_OLD,
+	"complete_mission":			USE_OLD,
+	"reward_mission":			USE_OLD,
 	"push_unit":				NOT_IMPLEMENTED,
 	"pop_unit":					NOT_IMPLEMENTED,
-	"rt_level_up":				NOT_IMPLEMENTED,
-	"rt_publish_score":			NOT_IMPLEMENTED,
-	"expand":					NOT_IMPLEMENTED,
-	"name_map":					NOT_IMPLEMENTED,
-	"exchange_cash_new":		NOT_IMPLEMENTED,
+	"rt_level_up":				USE_OLD,
+	"rt_publish_score":			USE_OLD,
+	"expand":					USE_OLD,
+	"name_map":					USE_OLD,
+	"exchange_cash_new":		USE_OLD,
 	"sell_gift":				NOT_IMPLEMENTED,
-	"activate_dragon":			NOT_IMPLEMENTED,
-	"desactivate_dragon":		NOT_IMPLEMENTED,
-	"next_step":				NOT_IMPLEMENTED,
-	"next_dragon":				NOT_IMPLEMENTED,
-	"buy_step_cash":			NOT_IMPLEMENTED,
-	"rider_buy_step_cash":		NOT_IMPLEMENTED,
-	"rider_next_step":			NOT_IMPLEMENTED,
-	"rider_select":				NOT_IMPLEMENTED,
-	"buy_monster_step_cash":	NOT_IMPLEMENTED,
-	"activate_monster":			NOT_IMPLEMENTED,
-	"desactivate_monster":		NOT_IMPLEMENTED,
-	"next_monster_step":		NOT_IMPLEMENTED,
-	"next_monster":				NOT_IMPLEMENTED,
-	"win_bonus":				NOT_IMPLEMENTED,
+	"activate_dragon":			USE_OLD,
+	"desactivate_dragon":		USE_OLD,
+	"next_step":				USE_OLD,
+	"next_dragon":				USE_OLD,
+	"buy_step_cash":			USE_OLD,
+	"rider_buy_step_cash":		USE_OLD,
+	"rider_next_step":			USE_OLD,
+	"rider_select":				USE_OLD,
+	"buy_monster_step_cash":	USE_OLD,
+	"activate_monster":			USE_OLD,
+	"desactivate_monster":		USE_OLD,
+	"next_monster_step":		USE_OLD,
+	"next_monster":				USE_OLD,
+	"win_bonus":				USE_OLD,
 	"admin_add_animal":			NOT_IMPLEMENTED,
 	"graveyard_buy_potions":	NOT_IMPLEMENTED,
-	"buy_super_offer_pack":		NOT_IMPLEMENTED,
-	"buy_super_offer_pack":		NOT_IMPLEMENTED,
-	"set_strategy":				NOT_IMPLEMENTED,
-	"start_quest":				NOT_IMPLEMENTED,
-	"add_collectable":			NOT_IMPLEMENTED
+	"buy_super_offer_pack":		USE_OLD,
+	"buy_super_offer_pack":		USE_OLD,
+	"set_strategy":				USE_OLD,
+	"start_quest":				USE_OLD,
+	"add_collectable":			USE_OLD
 }
 
 def get_strategy_type(id):
@@ -93,7 +100,10 @@ def do_command(USERID, cmd, args):
 	# print(" [+] COMMAND: ", cmd, "(", args, ") -> ", sep='', end='')
 
 	if cmd in commands:
-		if commands[cmd](save, cmd, args):
+		result = commands[cmd](save, cmd, args)
+		if result == 2:
+			_OKOLD(cmd, args)
+		elif result == True:
 			_OK(cmd, args)
 		else:
 			_NOTOK(cmd, args)

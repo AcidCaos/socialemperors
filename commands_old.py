@@ -31,7 +31,7 @@ def command(USERID, data):
     save_session(USERID) # Save session
 
 def do_command(save, cmd, args):
-    print (" [+] COMMAND: ", cmd, "(", args, ") -> ", sep='', end='')
+    # print (" [+] COMMAND: ", cmd, "(", args, ") -> ", sep='', end='')
 
     if cmd == Constant.CMD_GAME_STATUS:
         print(" ".join(args))
