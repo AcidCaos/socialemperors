@@ -96,17 +96,19 @@ def load_saved_villages():
 
 # New village
 
-def new_village() -> str:
+def new_village():
     # Generate USERID
     USERID: str = str(uuid.uuid4())
     assert USERID not in all_userid()
     # Copy init
     village = copy.deepcopy(__initial_village)
     # Custom values
-    village["version"] = version_code
+    village["version"] = "migrateme"
     village["playerInfo"]["pid"] = USERID
     village["maps"][0]["timestamp"] = timestamp_now()
     village["privateState"]["dartsRandomSeed"] = abs(int((2**16 - 1) * random.random()))
+    # fix stuff
+    migrate_loaded_save(village)
     # Memory saves
     __saves[USERID] = village
     # Generate save file
@@ -126,6 +128,7 @@ def all_userid() -> list:
 
 def save_info(USERID: str) -> dict:
     save = __saves[USERID]
+    migrate_loaded_save(save)
     default_map = save["playerInfo"]["default_map"]
     empire_name = str(save["playerInfo"]["map_names"][default_map])
     xp = save["maps"][default_map]["xp"]
