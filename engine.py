@@ -115,28 +115,17 @@ def try_push_graveyard(player, item_id, amount = 1):
 	item = get_item_from_id(item_id)
 	if item == None:
 		return False
-
-	name = item["name"]
-	print(f"trying to push {name} to graveyard")
-
 	if item_id in resurrectable_items_blocklist:
-		print(f"no push, is blacklisted item")
 		return False
-
 	if item["race"] in resurrectable_race_blocklist:
-		print(f"no push, is blacklisted race")
 		return False
-
 	if int(item["subcat_functional"]) in resurrectable_sub_blocklist:
-		print(f"no push, is blacklisted subcat_functional")
 		return False
 	
 	if item_id in resurrectable_heroes:
-		print(f"yes push, is hero")
 		graveyard_set(player, item_id, 1)
 		return True
 
-	print(f"yes push, allowed {name}")
 	graveyard_add(player, item_id)
 	return True
 
