@@ -25,6 +25,7 @@ quest_ids = [
 	"100000018",
 	"100000011",
 	"100000033",
+	"100000040",	# arena
 	"100000041",
 	"100000042",
 	"100000043",
@@ -32,12 +33,17 @@ quest_ids = [
 	"100000045",
 	"100000046",
 	"100000047",
-	"100000090",
+	"100000051",	# forge island
+	"100000052",
+	"100000053",
+	"100000054",
+	"100000055",
+	"100000090",	# gods
 	"100000091",
-	"100000092"
+	"100000092",
 ]
 
-_survival_arenas = [
+survival_arenas = [
 	"100000035",
 	"100000036",
 	"100000037"
@@ -181,7 +187,7 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "survivalVidaTimeStamp", [])
 	fix_variable(privateState, "survivalVidasExtra", 0)
 	fix_variable(privateState, "survivalMaps", {})
-	_fix_survival_maps(privateState["survivalMaps"], _survival_arenas)
+	_fix_survival_maps(privateState["survivalMaps"], survival_arenas)
 
 	# questsRank fix
 	fix_variable(privateState, "questsRank", {})

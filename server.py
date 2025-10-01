@@ -22,7 +22,7 @@ from flask import Flask, render_template, send_from_directory, request, redirect
 from flask.debughelpers import attach_enctype_error_multidict
 from command import command
 from engine import timestamp_now
-from version import version_name, quest_ids
+from version import version_name, quest_ids, survival_arenas
 from constants import Constant
 from bundle import ASSETS_DIR, STUB_DIR, TEMPLATES_DIR, BASE_DIR
 
@@ -205,7 +205,7 @@ def get_player_info_response():
     or user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_3:
         return (get_neighbor_info(user, map), 200)
     # Quest
-    elif user in quest_ids: # Dirty but quick
+    elif user in quest_ids or user in survival_arenas: # Dirty but quick
         return get_quest_info(user)
     # Neighbor
     else:
