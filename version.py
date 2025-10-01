@@ -162,7 +162,9 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "arrayAnimals", {})					# fix no animal spawning
 	fix_variable(privateState, "strategy", 8)						# fix crash when attacking player
 	fix_variable(privateState, "universAttackWin", [])				# pvp current island progress (old game builds)
-	fix_variable(privateState, "graveyardCapacity", 10)				# graveyard cap
+	fix_variable(privateState, "graveyardCapacity", 10000)			# graveyard cap
+	if privateState["graveyardCapacity"] != 10000:
+		privateState["graveyardCapacity"] = 10000
 	fix_variable(privateState, "potionsReceived", {})				# graveyard potions received
 	fix_variable(privateState, "barracksQueues", {})				# unit queues (and soul mixer)
 	fix_variable(privateState, "unlockedQuestIndex", 0)				# quest index

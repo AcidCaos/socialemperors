@@ -285,9 +285,12 @@ def graveyard_add(player, item_id):
 def _graveyard_add(player, item_id):
 	resunits = player["privateState"]["resurrectableUnits"]
 
-	# respect the damn cap
-	if len(resunits) >= player["privateState"]["graveyardCapacity"]:
-		return
+	# no way to expand graveyard capacity
+	# do not use
+
+	# # respect the damn cap
+	# if len(resunits) >= player["privateState"]["graveyardCapacity"]:
+	# 	return
 
 	resunits.append(item_id)
 
