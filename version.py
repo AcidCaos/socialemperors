@@ -1,6 +1,7 @@
 import random
 
 from engine import timestamp_now, spaghetti_resurrected_units
+from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional
 
 version_name = "alpha 0.04"
 version_code = "0.04a"
@@ -52,6 +53,8 @@ survival_arenas = [
 # this is in the game client, sorry about that!
 # 6 hours * 3 attempts = 18 * 3600
 quest_entry_seconds = 6 * 3 * 3600
+
+_warehouse_default_cap = get_game_config()["globals"]["WAREHOUSE_CAPACITIES"][0]
 
 def remove_variable(dictionary, key):
 	if key in dictionary:
@@ -161,6 +164,8 @@ def migrate_loaded_save(save):
 		fix_variable(_map, "timestamp", ts_now)
 		fix_variable(_map, "questTimes", {})
 		fix_variable(_map, "lastQuestTimes", [])
+		fix_variable(_map, "warehouseAditionalCapacitySingle", _warehouse_default_cap)
+		fix_variable(_map, "warehousedUnits", {})
 
 		# make sure very old timestamps are removed
 		check_quest_times(_map["lastQuestTimes"], ts_now)

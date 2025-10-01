@@ -353,6 +353,70 @@ def cmd_resurrect_hero(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_add_warehoused_item(player, cmd, args, gameversion):
+	# ux, uy, town_id, uitem_id
+	ux = args[0]
+	uy = args[1]
+	town_id = args[2]
+	uitem_id = args[3]
+
+	_map = player["maps"][town_id]
+
+	items = map_get_item(_map, ux, uy, uitem_id)
+	if len(items) > 1:
+		return False
+	
+	warehouse_add(_map, items[0])
+
+	return True
+
+def cmd_place_warehoused_item(player, cmd, args, gameversion):
+	# uitem_id, ux, uy, 0, town_id
+	uitem_id = args[0]
+	ux = args[1]
+	uy = args[2]
+	zero = args[3]	# always 0
+	town_id = args[4]
+
+	_map = player["maps"][town_id]
+
+	if not warehouse_remove(_map, uitem_id):
+		return False
+
+	map_add_item(_map, uitem_id, ux, uy)
+
+	return True
+
+def cmd_buy_warehouse_capacity(player, cmd, args, gameversion):
+	# town_id
+	town_id = args[0]
+
+	_map = player["maps"][town_id]
+
+	cfg_globals = get_game_config()["globals"]
+	cost = cfg_globals["WAREHOUSE_CAPACITY_INCREASE_PRICE_SINGLE"]
+	cap = cfg_global["WAREHOUSE_MAX_CAPACITY"]
+
+	# can't go over the cap
+	if _map["warehouseAditionalCapacitySingle"] >= cap:
+		return False
+	if not pay_cash(player, cost):
+		return False
+
+	_map["warehouseAditionalCapacitySingle"] = min(cap, _map["warehouseAditionalCapacitySingle"] + 1)
+
+	return True
+
+def cmd_reset_warehouse(player, cmd, args, gameversion):
+	# town_id
+	town_id = args[0]
+
+	_map = player["maps"][town_id]
+	_map["warehouseAditionalCapacitySingle"] = get_game_config()["globals"]["WAREHOUSE_CAPACITIES"][0]
+	_map["warehousedUnits"] = {}
+
+	return True
+
 def cmd_name_map(player, cmd, args, gameversion):
 	# town_id, name
 	town_id = args[0]

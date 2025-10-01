@@ -381,6 +381,26 @@ def player_fast_forward(player, seconds):
 		q = barracksQueues[queue]
 		modify_ts(q, "ts", -seconds)
 
+def warehouse_add(map, item):
+	item_id = str(item[0])
+	if item_id not in map["warehousedUnits"]:
+		map["warehousedUnits"][item_id] = 1
+	else:
+		map["warehousedUnits"][item_id] += 1
+
+	map["items"].remove(item)
+
+def warehouse_remove(map, item_id):
+	item_id = str(item_id)
+	if item_id not in map["warehousedUnits"]:
+		return False
+
+	map["warehousedUnits"][item_id] -= 1
+	if map["warehousedUnits"][item_id] <= 0:
+		del map["warehousedUnits"][item_id]
+
+	return True
+
 def modify_ts(dictionary, key, seconds):
 	if key not in dictionary:
 		dictionary[key] = 0
