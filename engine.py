@@ -463,8 +463,6 @@ def apply_collect_xp(map, item_id):
 	if not amount:
 		return
 
-	print("applied collext xp for item {str(get_name_from_item_id(item_id))}")
-
 	map["xp"] += int(amount)
 
 def add_cash(player, amount):
