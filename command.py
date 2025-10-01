@@ -38,6 +38,7 @@ commands = {
 	"push_queue_unit":			cmd_push_queue_unit,
 	"speed_up_queue":			cmd_speed_up_queue,
 	"pop_queue_unit":			cmd_pop_queue_unit,
+	"unqueue_unit":				cmd_unqueue_unit,
 	"buy_powerups":				cmd_sm_powerup,			# soul mixer powerup
 
 	"store_item":				cmd_store_item,

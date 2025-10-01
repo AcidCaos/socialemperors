@@ -143,7 +143,7 @@ def cmd_push_queue_unit(player, cmd, args, gameversion):
 	by = args[1]
 	bitem_id = args[2]
 	uitem_id = args[3]
-	bq = args[4]
+	bq = str(args[4])
 	not_soulmixer = True
 	if len(args) >= 5:
 		not_soulmixer = args[5]
@@ -156,6 +156,24 @@ def cmd_push_queue_unit(player, cmd, args, gameversion):
 	if len(building) != 1:
 		return False	# map error, multiple buildings in same location
 
+	if not_soulmixer:
+		# charge for training costs
+		item_data = get_item_from_id(uitem_id)
+		cost = int(item_data["cost"])
+		cost_type = item_data["cost_type"]
+		cost_food = cost << 1			# x2 food
+
+		refund_res =  pay_resource_type(_map, cost_type, cost)
+		if not refund_res:
+			# not paid, no stealing!!!!
+			return False
+
+		if not pay_resource_type(_map, "f", cost_food):
+			if refund_res and cost_type != "c":
+				# lets not steal resources for no reason
+				give_resource_type(player["playerInfo"], _map, cost_type, cost_food)
+			return False
+
 	if not player_push_queue_unit(player, building[0], uitem_id, bq, not not_soulmixer):
 		return False	# well damn
 
@@ -163,7 +181,7 @@ def cmd_push_queue_unit(player, cmd, args, gameversion):
 
 def cmd_speed_up_queue(player, cmd, args, gameversion):
 	# bq
-	bq = args[0]
+	bq = str(args[0])
 
 	building = player_get_item_with_bq(player, bq)
 	if len(building) != 1:
@@ -173,7 +191,7 @@ def cmd_speed_up_queue(player, cmd, args, gameversion):
 	
 def cmd_pop_queue_unit(player, cmd, args, gameversion):
 	# bq, ux, uy, bitem_id
-	bq = args[0]
+	bq = str(args[0])
 	ux = args[1]
 	uy = args[2]
 	bitem_id = args[3]
@@ -194,6 +212,36 @@ def cmd_pop_queue_unit(player, cmd, args, gameversion):
 	map_add_item(_map, unit_id, ux, uy)
 
 	return True
+
+def cmd_unqueue_unit(player, cmd, args, gameversion):
+	# bq, bitem_id
+	bq = str(args[0])
+	bitem_id = args[1]
+
+	# no support for other town IDs, sad :(
+	town_id = 0
+	_map = player["maps"][town_id]
+
+	building = player_get_item_with_bq(player, bq)
+	print(building)
+	if len(building) != 1:
+		return False	# map error, multiple buildings in same location
+
+	# result is None if fail or unit_id that was unqueued
+	unit_id = player_unqueue_unit(player, building[0], bq)
+	if not unit_id:
+		return False
+
+	item_data = get_item_from_id(unit_id)
+	cost = int(item_data["cost"])
+	cost_type = item_data["cost_type"]
+	cost_food = cost << 1			# x2 food
+
+	# refund
+	give_resource_type(player["playerInfo"], _map, cost_type, cost)
+	give_resource_type(player["playerInfo"], _map, "f", cost_food)
+
+	return False
 
 def cmd_sm_powerup(player, cmd, args, gameversion):
 	# powerup_idx

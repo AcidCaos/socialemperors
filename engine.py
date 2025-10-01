@@ -138,7 +138,6 @@ def player_push_queue_unit(player, building, item_id, bq, is_soulmixer):
 
 		return True
 	else:
-		# seems to do the exact same as soul mixer
 		attr["bq"] = str(bq)
 		push_queued_unit(player, bq, item_id, 1)
 
@@ -185,6 +184,22 @@ def player_pop_queue_unit(player, building, bq):
 
 	return [ unit_id, is_soulmixer ]
 
+def player_unqueue_unit(player, building, bq):
+	queue = get_unit_queue(player, bq)
+	if not queue:
+		return None
+
+	unit_id = queue["unit"]
+	queue["amount"] -= 1
+	if queue["amount"] <= 0:
+		# remove queue
+		remove_unit_queue(player, bq)
+		del building[7]["bq"]
+
+	# refund resources
+
+	return unit_id
+
 def get_unit_queue(player, queue_id):
 	barracksQueues = player["privateState"]["barracksQueues"]
 	if not str(queue_id) in barracksQueues:
@@ -204,6 +219,9 @@ def push_queued_unit(player, queue_id, unit_id, amount = 1):
 	if str(queue_id) in barracksQueues:
 		q = barracksQueues[str(queue_id)]
 		q["amount"] += amount
+
+		# SP butchered this code hard, so don't extend timestamp
+		# after a reload you can train 5 at the time of 1
 	else:
 		barracksQueues[str(queue_id)] = {
 			"ts":		timestamp_now(),
@@ -466,6 +484,17 @@ def give_resource_type(playerInfo, map, resource, amount):
 		map["stone"] += amount
 	elif resource == "f":
 		map["food"] += amount
+
+def pay_resource_type(map, resource, amount):
+	if resource == "w":
+		return pay_map_currency(map, "wood", amount)
+	elif resource == "g":
+		return pay_map_currency(map, "coins", amount)
+	elif resource == "s":
+		return pay_map_currency(map, "stone", amount)
+	elif resource == "f":
+		return pay_map_currency(map, "food", amount)
+	return False
 
 def get_quest_index(quest_id):
 	quests = get_game_config()["globals"]["ISLE_ORDER"]
