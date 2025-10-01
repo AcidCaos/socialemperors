@@ -21,6 +21,8 @@ patch_ignore = [
     "soulmixer_powerup_incremented_modified",
     "soulmixer_items_data",
     "soulmixer_item",
+    "3-unit_fusion",
+    "fusion_output"
 ]
 
 def remove_duplicate_items():

@@ -164,6 +164,6 @@ for index, item in enumerate(config["items"]):
 patch_str += "\n\n]"
 
 # write patch file
-fd = open("../config/patch/3-unit_fusion.json", 'w')
+fd = open("../fusion-output.json", 'w')
 fd.write(patch_str)
 fd.close()

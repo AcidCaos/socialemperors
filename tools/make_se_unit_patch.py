@@ -1,9 +1,11 @@
 import os
 import json
 import copy
+import jsonpatch
+import math
 
 # CONFIG
-patch_filename = "../config/patch/unit_patch.json"
+patch_filename = "../config/patch/2-unit_patch.json"
 # patch_filename = "unit_patch.json"
 input_csv = "se_unit_patch.csv"
 
@@ -43,6 +45,8 @@ def makeriderpatch(item_id, rider_tier, tamed_id):
 	print(f"Created rider patch for {ITEM_NAME}")
 	patch.append(p)
 
+print("Patch phase 1 ----------------------------------------------------------")
+
 for line in lines:
 	col = line.split("\t")
 
@@ -65,6 +69,7 @@ for line in lines:
 	ITEM_STORE_GROUPS = col[16]
 	ITEM_RIDER_TIER = col[17]
 	ITEM_TAMED_ID = col[18]
+	ITEM_TRAIN_TIME = col[19]
 
 	if ITEM_ASSET == "":
 		print(f"FAILED: {ITEM_NAME} - Asset missing")
@@ -96,6 +101,7 @@ for line in lines:
 	item["cost_type"] = str(ITEM_COST_TYPE)
 	item["groups"] = str(ITEM_GROUPS)
 	item["store_groups"] = str(ITEM_STORE_GROUPS)
+	item["training_time"] = str(ITEM_TRAIN_TIME).strip()
 
 	# Create patch
 	p = {}
@@ -115,11 +121,92 @@ for line in lines:
 
 	print(f"Made unit patch for {ITEM_NAME}")
 
+def load_config(filename):
+	print(f"loading config {filename}...")
+	return json.load(open(filename, 'r', encoding='utf-8'))
+
+def load_patches(config, patches):
+	for p in patches:
+		apply_patch(config, p)
+
+def apply_patch(config, filename):
+	print(f"applying patch {filename}...")
+	_apply_patch(config, json.load(open(filename, 'r', encoding='utf-8')))
+
+def _apply_patch(data, p):
+	jsonpatch.apply_patch(data, p, in_place = True)
+
+def remove_duplicate_items(config):
+	indexes = {}
+	items = config["items"]
+	num_duplicate = 0
+
+	while True:
+		index = 0
+		duplicate = False
+		for item in items:
+			if item["id"] in indexes:
+				del items[indexes[item["id"]]]
+				indexes.clear()
+				duplicate = True
+				num_duplicate += 1
+				break
+
+			indexes[item["id"]] = index
+			index += 1
+
+		if duplicate:
+			continue
+		break
+
+	print(f"removed {num_duplicate} duplicate items")
+
+def set_training_time(life):
+	amount = int(life)
+	if amount < 1000:
+		return math.ceil(amount / 100) * 5
+	return math.ceil(amount / 100) * 30
+
+def make_final(config, patch, sm_patch):
+	print(f"applying phase 1 patch...")
+	jsonpatch.apply_patch(config, patch, in_place = True)
+
+	# apply soul mixer patch
+	apply_patch(config, sm_patch)
+
+	# remove duplicates
+	remove_duplicate_items(config)
+
+	# now define training time for units
+	items = config["items"]
+	num = 0
+	for item in items:
+		if item["type"] == "u":
+			if "training_time" not in item:
+				life = item["life"]
+				item["training_time"] = set_training_time(life)
+				num += 1
+	print(f"set training times for {num} units")
+
+	# build final patch
+	final = []
+	final.append({
+		"op": "replace",
+		"path": "/items",
+		"value": items
+	})
+	return final
+
+print("Patch phase 2 ----------------------------------------------------------")
+patches = [ "../config/patch/0-language_en.json", "../config/patch/1-mega_patch.json" ]
+sm_patch = "fusion_output.json"
+config = load_config("../config/main.json")
+load_patches(config, patches)
+patch_final = make_final(config, patch, sm_patch)
+
 if len(patch) > 0:
 	with open(patch_filename, 'w') as f:
-		json.dump(patch, f)
-	# with open(output_storage, 'w') as f:
-	# 	json.dump(storage, f)
-		print(f"Created patch for {num_units} items to {patch_filename}!")
+		json.dump(patch_final, f)
+		print(f"Created final patch to {patch_filename}!")
 else:
 	print("Patch creation failed!")
