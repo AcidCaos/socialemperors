@@ -160,6 +160,33 @@ def static_assets_loader(path):
 
 ## GAME DYNAMIC
 
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/enemy", methods=['POST'])
+# http://127.0.0.1:5050/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/enemy?
+def pvp_lookup():
+    USERID = request.values['USERID']
+    user_key = request.values['user_key']
+    if 'spdebug' in request.values:
+        spdebug = request.values['spdebug']
+    language = request.values['language']
+    data = request.values['data']
+    
+    some_hash = data[:data.index(";")-1]
+    data = json.loads(data[data.index(";")+1:])
+    #print(json.dumps(request.values, indent='\t'))
+    #print(json.dumps(data, indent='\t'))    
+
+    # TODO: reverse engineer the HMAC hashing from game client so it can work without client modification
+
+    return (some_hash + ";" + json.dumps(get_enemy_info(USERID)), 200)
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/attack/begin", methods=['POST'])
+def pvp_begin():
+    return ("", 200)
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/attack/end", methods=['POST'])
+def pvp_end():
+    return ("", 200)
+
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/track_game_status.php", methods=['POST'])
 def track_game_status_response():
     status = request.values['status']
@@ -199,6 +226,10 @@ def get_player_info_response():
     # Current Player
     if user is None:
         return (get_player_info(USERID), 200)
+    # PVP RANDOM
+    # TODO: Send a random save
+    if user == "undefined":
+        return (get_neighbor_info(USERID, 0), 200)
     # Arthur
     elif user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_1 \
     or user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_2 \

@@ -18,7 +18,9 @@ def get_player_info(USERID):
     }
     return player_info
 
-def get_neighbor_info(userid, map_number):
+def get_neighbor_info(userid, map_number = 0):
+    enemy = neighbor_session(userid)
+
     neighbor_info = {
         "result": "ok",
         "processed_errors": 0,
@@ -29,6 +31,14 @@ def get_neighbor_info(userid, map_number):
         "neighbors": neighbors(userid)
     }
     return neighbor_info
+
+def get_enemy_info(userid):
+	enemy_info = {
+		"id": userid,
+		"result": "ok",
+		"data": {}
+	}
+	return enemy_info
 
 def get_quest_info(quest_id, map_number = 0):
     quest_data = get_quest_map(quest_id)
