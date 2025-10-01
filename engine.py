@@ -401,6 +401,13 @@ def warehouse_remove(map, item_id):
 
 	return True
 
+def warehouse_reset(player, map):
+	# push all units from warehouse to storage
+	warehoused = map["warehousedUnits"]
+	for item_id in warehoused:
+		add_store_item(player, item_id, warehoused[item_id])
+	map["warehousedUnits"] = {}
+
 def modify_ts(dictionary, key, seconds):
 	if key not in dictionary:
 		dictionary[key] = 0

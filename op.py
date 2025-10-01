@@ -395,7 +395,7 @@ def cmd_buy_warehouse_capacity(player, cmd, args, gameversion):
 
 	cfg_globals = get_game_config()["globals"]
 	cost = cfg_globals["WAREHOUSE_CAPACITY_INCREASE_PRICE_SINGLE"]
-	cap = cfg_global["WAREHOUSE_MAX_CAPACITY"]
+	cap = cfg_globals["WAREHOUSE_MAX_CAPACITY"]
 
 	# can't go over the cap
 	if _map["warehouseAditionalCapacitySingle"] >= cap:
@@ -412,8 +412,7 @@ def cmd_reset_warehouse(player, cmd, args, gameversion):
 	town_id = args[0]
 
 	_map = player["maps"][town_id]
-	_map["warehouseAditionalCapacitySingle"] = get_game_config()["globals"]["WAREHOUSE_CAPACITIES"][0]
-	_map["warehousedUnits"] = {}
+	warehouse_reset(player, _map)
 
 	return True
 
