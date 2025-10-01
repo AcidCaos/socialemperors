@@ -363,7 +363,9 @@ def cmd_add_warehoused_item(player, cmd, args, gameversion):
 	_map = player["maps"][town_id]
 
 	items = map_get_item(_map, ux, uy, uitem_id)
-	if len(items) > 1:
+	if len(items) <= 0:	# teleporting units are broken
+		items = map_get_items_of_id(_map, uitem_id)
+	if len(items) <= 0:
 		return False
 	
 	warehouse_add(_map, items[0])

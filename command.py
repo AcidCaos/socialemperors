@@ -13,6 +13,7 @@ def _OK(cmd, args):
 
 def _NOTOK(cmd, args):
 	print(f" [C] FAILED: {cmd} {args}")
+	raise Exception(f"Illegal server command")
 
 def NOT_IMPLEMENTED(player, cmd, args, gameversion):
 	print(f" [C] UNKNOWN: {cmd} {args}")
