@@ -167,6 +167,13 @@ def set_training_time(life):
 		return math.ceil(amount / 100) * 5
 	return math.ceil(amount / 100) * 30
 
+def get_item(items, item_id):
+	item_id = str(item_id)
+	for item in items:
+		if item["id"] == item_id:
+			return item
+	return None
+
 def make_final(config, patch, sm_patch):
 	print(f"applying phase 1 patch...")
 	jsonpatch.apply_patch(config, patch, in_place = True)
@@ -187,6 +194,14 @@ def make_final(config, patch, sm_patch):
 				item["training_time"] = set_training_time(life)
 				num += 1
 	print(f"set training times for {num} units")
+
+	# fix sky tower 2 incorrect size
+	item = get_item(items, 1360)
+	if item:
+		item["width"] = 2
+		item["height"] = 2
+		name = item["name"]
+		print(f"applied size fix to {name}")
 
 	# build final patch
 	final = []
