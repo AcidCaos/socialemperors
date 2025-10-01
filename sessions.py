@@ -244,8 +244,6 @@ def backup_session(USERID: str):
 def save_session(USERID: str):
     # TODO 
     file = f"{USERID}.save.json"
-    print(f" * Saving village at {file}... ", end='')
     village = session(USERID)
     with open(os.path.join(SAVES_DIR, file), 'w') as f:
         json.dump(village, f, indent='\t')
-    print("Done.")

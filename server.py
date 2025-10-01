@@ -2,6 +2,9 @@ print (" [+] Loading basics...")
 import os
 import json
 import urllib
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 if os.name == 'nt':
     os.system("color")
     os.system("title Social Empires Server")

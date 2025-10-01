@@ -526,7 +526,7 @@ def cmd_start_quest(player, cmd, args, gameversion):
 def cmd_end_quest(player, cmd, args, gameversion):
 	# json
 	data = json.loads(args[0])
-	print(json.dumps(data, indent='\t'))
+	#print(json.dumps(data, indent='\t'))
 
 	privateState = player["privateState"]
 
