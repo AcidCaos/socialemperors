@@ -67,7 +67,7 @@ commands = {
 	"reward_mission":			USE_OLD,
 	"add_collectable":			USE_OLD,
 	"collect_new":				USE_OLD,
-	"win_bonus":				USE_OLD,
+	"win_bonus":				NOT_IMPLEMENTED,
 
 	"activate_dragon":			USE_OLD,
 	"desactivate_dragon":		USE_OLD,

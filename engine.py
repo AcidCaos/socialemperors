@@ -138,14 +138,11 @@ def player_push_queue_unit(player, building, item_id, bq, is_soulmixer):
 
 		return True
 	else:
-		# TODO: VERIFY
-		if "nu" in attr:
-			attr["nu"] += 1
-		else:
-			attr["nu"] = 1
-		attr["ts"] = timestamp_now()
+		# seems to do the exact same as soul mixer
+		attr["bq"] = str(bq)
+		push_queued_unit(player, bq, item_id, 1)
 
-		raise Exception("crash please")
+		return True
 
 def player_speed_up_queue(player, building, bq, new_ts = 0):
 	queue = get_unit_queue(player, bq)
@@ -204,11 +201,15 @@ def remove_unit_queue(player, queue_id):
 
 def push_queued_unit(player, queue_id, unit_id, amount = 1):
 	barracksQueues = player["privateState"]["barracksQueues"]
-	barracksQueues[str(queue_id)] = {
-		"ts":		timestamp_now(),
-		"amount":	amount,
-		"unit":		unit_id
-	}
+	if str(queue_id) in barracksQueues:
+		q = barracksQueues[str(queue_id)]
+		q["amount"] += amount
+	else:
+		barracksQueues[str(queue_id)] = {
+			"ts":		timestamp_now(),
+			"amount":	amount,
+			"unit":		unit_id
+		}
 
 def add_store_item(player, item, quantity = 1):
 	itemstr = str(item)
