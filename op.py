@@ -438,12 +438,12 @@ def cmd_end_quest(player, cmd, args, gameversion):
 	_map = player["maps"][town_id]
 
 	if win:
-		if set_unlocked_index == 1:
-			# if we won then unlock next quest
-			old_index = privateState["unlockedQuestIndex"]
-			if old_index == None:
-				old_index = -1
-			privateState["unlockedQuestIndex"] = max(next_index, old_index)
+		#if set_unlocked_index == 1:
+		# if we won then unlock next quest
+		old_index = privateState["unlockedQuestIndex"]
+		if old_index == None:
+			old_index = -1
+		privateState["unlockedQuestIndex"] = max(next_index, old_index)
 
 		# if we won, also set quest rank
 		rank = privateState["questsRank"][str(quest_id)]
