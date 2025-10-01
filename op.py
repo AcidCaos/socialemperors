@@ -491,7 +491,8 @@ def cmd_end_quest(player, cmd, args, gameversion):
 		old_index = privateState["unlockedQuestIndex"]
 		if old_index == None:
 			old_index = -1
-		privateState["unlockedQuestIndex"] = max(next_index, old_index)
+		if next_index - old_index <= 1:
+			privateState["unlockedQuestIndex"] = max(next_index, old_index)
 
 		# if we won, also set quest rank
 		rank = privateState["questsRank"][str(quest_id)]
