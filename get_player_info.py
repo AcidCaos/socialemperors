@@ -1,3 +1,4 @@
+from quests import get_quest_map
 from sessions import session, neighbor_session, neighbors
 from engine import timestamp_now
 
@@ -28,3 +29,16 @@ def get_neighbor_info(userid, map_number):
         "neighbors": neighbors(userid)
     }
     return neighbor_info
+
+def get_quest_info(quest_id, map_number = 0):
+    quest_data = get_quest_map(quest_id)
+    quest_info = {
+        "result": "ok",
+        "processed_errors": 0,
+        "timestamp": timestamp_now(),
+        "playerInfo": quest_data["playerInfo"],
+        "map": quest_data["maps"][map_number],
+        "privateState": quest_data["privateState"],
+        "neighbors": []
+    }
+    return quest_info

@@ -13,7 +13,7 @@ print (" [+] Loading game config...")
 from get_game_config import get_game_config, patch_game_config
 
 print (" [+] Loading players...")
-from get_player_info import get_player_info, get_neighbor_info
+from get_player_info import *
 from sessions import load_saved_villages, all_saves_userid, all_saves_info, save_info, new_village, fb_friends_str
 load_saved_villages()
 
@@ -22,9 +22,8 @@ from flask import Flask, render_template, send_from_directory, request, redirect
 from flask.debughelpers import attach_enctype_error_multidict
 from command import command
 from engine import timestamp_now
-from version import version_name
+from version import version_name, quest_ids
 from constants import Constant
-from quests import get_quest_map
 from bundle import ASSETS_DIR, STUB_DIR, TEMPLATES_DIR, BASE_DIR
 
 host = '127.0.0.1'
@@ -206,8 +205,8 @@ def get_player_info_response():
     or user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_3:
         return (get_neighbor_info(user, map), 200)
     # Quest
-    elif user.startswith("100000"): # Dirty but quick
-        return get_quest_map(user)
+    elif user in quest_ids: # Dirty but quick
+        return get_quest_info(user)
     # Neighbor
     else:
         return (get_neighbor_info(user, map), 200)

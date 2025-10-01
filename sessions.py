@@ -129,7 +129,7 @@ def all_userid() -> list:
 def save_info(USERID: str) -> dict:
     save = __saves[USERID]
     migrate_loaded_save(save)
-    default_map = save["playerInfo"]["default_map"]
+    default_map = int(save["playerInfo"]["default_map"])
     empire_name = str(save["playerInfo"]["map_names"][default_map])
     xp = save["maps"][default_map]["xp"]
     level = save["maps"][default_map]["level"]

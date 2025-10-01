@@ -5,7 +5,7 @@ from engine import timestamp_now, spaghetti_resurrected_units
 version_name = "alpha 0.04"
 version_code = "0.04a"
 
-_quest_ids = [
+quest_ids = [
 	"100000006",
 	"100000007",
 	"100000008",
@@ -95,7 +95,7 @@ def _fix_map_items(maps):
 		items = map["items"]
 		for item in items:
 			item[4] = ts_now
-			item[5] = 0
+			fix_variable_array(item, 5, 0)
 			fix_variable_array(item, 6, [])
 			fix_variable_array(item, 7, {})
 
@@ -145,6 +145,9 @@ def migrate_loaded_save(save):
 
 	# player avatar
 	fix_variable(playerInfo, "pic", "")
+	remove_variable(playerInfo, "__#__coins")
+	remove_variable(playerInfo, "__#__xp")
+	remove_variable(playerInfo, "__#__level")
 
 	# fixes for maps
 	for _map in maps:
@@ -182,7 +185,7 @@ def migrate_loaded_save(save):
 
 	# questsRank fix
 	fix_variable(privateState, "questsRank", {})
-	_fix_quest_ranks(privateState["questsRank"], _quest_ids)
+	_fix_quest_ranks(privateState["questsRank"], quest_ids)
 
 	# team selection window formations
 	fix_variable(privateState, "tournamentFormation", 0)
