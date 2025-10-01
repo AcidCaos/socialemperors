@@ -5,13 +5,13 @@ from get_game_config import get_game_config, get_level_from_xp, get_name_from_it
 from constants import Constant
 from engine import *
 
-def cmd_nop(player, cmd, args):
+def cmd_nop(player, cmd, args, gameversion):
 	return True
 
-def cmd_game_status(player, cmd, args):
+def cmd_game_status(player, cmd, args, gameversion):
 	return True
 
-def cmd_buy(player, cmd, args):
+def cmd_buy(player, cmd, args, gameversion):
 	# item_id, x, y, orientation, town_id, is_free, price_multiplier, reason
 	item_id = args[0]
 	x = args[1]
@@ -31,7 +31,7 @@ def cmd_buy(player, cmd, args):
 
 	return True
 
-def cmd_move(player, cmd, args):
+def cmd_move(player, cmd, args, gameversion):
 	# x1, y1, item_id, x2, y2, orientation, town_id, reason
 	# reason varies from  "Unitat", "moveTo", "colisio", "MouseUsed"
 	x1 = args[0]
@@ -48,7 +48,7 @@ def cmd_move(player, cmd, args):
 
 	return True
 
-def cmd_orient(player, cmd, args):
+def cmd_orient(player, cmd, args, gameversion):
 	# x, y, orientation, town_id
 	x = args[0]
 	y = args[1]
@@ -60,7 +60,7 @@ def cmd_orient(player, cmd, args):
 
 	return True
 
-def cmd_sell(player, cmd, args):
+def cmd_sell(player, cmd, args, gameversion):
 	# x, y, item_id, town_id, is_free, reason
 	
 	x = args[0]
@@ -86,7 +86,7 @@ def cmd_sell(player, cmd, args):
 
 	return True
 
-def cmd_kill(player, cmd, args):
+def cmd_kill(player, cmd, args, gameversion):
 	# x, y, item_id, town_id, item_type
 	x = args[0]
 	y = args[1]
@@ -99,7 +99,7 @@ def cmd_kill(player, cmd, args):
 	
 	return True
 
-def cmd_push_unit(player, cmd, args):
+def cmd_push_unit(player, cmd, args, gameversion):
 	# ux, uy, uitem_id, bx, by, town_id
 	ux = args[0]
 	uy = args[1]
@@ -118,7 +118,7 @@ def cmd_push_unit(player, cmd, args):
 
 	return True
 
-def cmd_pop_unit(player, cmd, args):
+def cmd_pop_unit(player, cmd, args, gameversion):
 	# bx, by, town_id, uitem_id, ux, uy, uorientation
 	bx = args[0]
 	by = args[1]
@@ -137,7 +137,7 @@ def cmd_pop_unit(player, cmd, args):
 
 	return True
 
-def cmd_push_queue_unit(player, cmd, args):
+def cmd_push_queue_unit(player, cmd, args, gameversion):
 	# bx, by, bitem_id, uitem_id, bq, not_soulmixer
 	bx = args[0]
 	by = args[1]
@@ -161,7 +161,7 @@ def cmd_push_queue_unit(player, cmd, args):
 
 	return True
 
-def cmd_speed_up_queue(player, cmd, args):
+def cmd_speed_up_queue(player, cmd, args, gameversion):
 	# bq
 	bq = args[0]
 
@@ -171,7 +171,7 @@ def cmd_speed_up_queue(player, cmd, args):
 
 	return player_speed_up_queue(player, building[0], bq)
 	
-def cmd_pop_queue_unit(player, cmd, args):
+def cmd_pop_queue_unit(player, cmd, args, gameversion):
 	# bq, ux, uy, bitem_id
 	bq = args[0]
 	ux = args[1]
@@ -195,7 +195,7 @@ def cmd_pop_queue_unit(player, cmd, args):
 
 	return True
 
-def cmd_sm_powerup(player, cmd, args):
+def cmd_sm_powerup(player, cmd, args, gameversion):
 	# powerup_idx
 	powerup_idx = int(args[0])
 
@@ -205,7 +205,7 @@ def cmd_sm_powerup(player, cmd, args):
 
 	return True
 
-def cmd_store_item(player, cmd, args):
+def cmd_store_item(player, cmd, args, gameversion):
 	# x, y, town_id, item_id
 	x = args[0]
 	y = args[1]
@@ -219,7 +219,7 @@ def cmd_store_item(player, cmd, args):
 
 	return True
 
-def cmd_sell_gift(player, cmd, args):
+def cmd_sell_gift(player, cmd, args, gameversion):
 	# item_id, town_id
 	item_id	= args[0]
 	town_id = args[1]
@@ -235,7 +235,7 @@ def cmd_sell_gift(player, cmd, args):
 
 	return True
 
-def cmd_sell_stored_item(player, cmd, args):
+def cmd_sell_stored_item(player, cmd, args, gameversion):
 	# item_id, town_id
 	item_id	= args[0]
 	town_id = args[1]
@@ -249,10 +249,10 @@ def cmd_sell_stored_item(player, cmd, args):
 
 	return True
 
-def cmd_store_item_frombug(player, cmd, args):
+def cmd_store_item_frombug(player, cmd, args, gameversion):
 	return cmd_store_item(player, cmd, args)
 
-def cmd_place_gift(player, cmd, args):
+def cmd_place_gift(player, cmd, args, gameversion):
 	# item_id, x, y, orientation, town_id
 	item_id = args[0]
 	x = args[1]
@@ -267,7 +267,7 @@ def cmd_place_gift(player, cmd, args):
 
 	return True
 
-def cmd_graveyard_buy_potions(player, cmd, args):
+def cmd_graveyard_buy_potions(player, cmd, args, gameversion):
 	potion_data = get_game_config()["globals"]["GRAVEYARD_POTIONS"]
 	potion_amount = int(potion_data["amount"])
 	price = int(potion_data["price"]["c"])
@@ -278,7 +278,7 @@ def cmd_graveyard_buy_potions(player, cmd, args):
 
 	return False
 
-def cmd_resurrect_hero(player, cmd, args):
+def cmd_resurrect_hero(player, cmd, args, gameversion):
 	# item_id, x, y, town_id, [used_potion]
 	item_id = args[0]
 	x = args[1]
@@ -305,7 +305,7 @@ def cmd_resurrect_hero(player, cmd, args):
 
 	return True
 
-def cmd_name_map(player, cmd, args):
+def cmd_name_map(player, cmd, args, gameversion):
 	# town_id, name
 	town_id = args[0]
 	name = str(args[1])
@@ -314,7 +314,7 @@ def cmd_name_map(player, cmd, args):
 
 	return True
 
-def cmd_set_strategy(player, cmd, args):
+def cmd_set_strategy(player, cmd, args, gameversion):
 	# strategy
 	strategy = args[0]
 
@@ -322,7 +322,7 @@ def cmd_set_strategy(player, cmd, args):
 
 	return True
 
-def cmd_exchange_cash(player, cmd, args):
+def cmd_exchange_cash(player, cmd, args, gameversion):
 	town_id = args[0]
 
 	cfg_global = get_game_config()["globals"]
@@ -337,7 +337,7 @@ def cmd_exchange_cash(player, cmd, args):
 
 	return True
 
-def cmd_expand(player, cmd, args):
+def cmd_expand(player, cmd, args, gameversion):
 	# land_idx, currency_type, town_id
 	land_idx = args[0]
 	currency_type = args[1]
@@ -363,7 +363,7 @@ def cmd_expand(player, cmd, args):
 	expansions.append(land_idx)
 	return True
 
-def cmd_rt_level_up(player, cmd, args):
+def cmd_rt_level_up(player, cmd, args, gameversion):
 	# level_now
 	level_now = int(args[0])
 
@@ -384,7 +384,7 @@ def cmd_rt_level_up(player, cmd, args):
 
 	return True
 
-def cmd_rt_publish_score(player, cmd, args):
+def cmd_rt_publish_score(player, cmd, args, gameversion):
 	# xp_now 
 	xp_now = int(args[0])
 
@@ -397,7 +397,7 @@ def cmd_rt_publish_score(player, cmd, args):
 
 	return True
 
-def cmd_start_quest(player, cmd, args):
+def cmd_start_quest(player, cmd, args, gameversion):
 	# quest_id, town_id
 	quest_id = args[0]
 	town_id = args[1]
@@ -410,7 +410,7 @@ def cmd_start_quest(player, cmd, args):
 
 	return True
 
-def cmd_end_quest(player, cmd, args):
+def cmd_end_quest(player, cmd, args, gameversion):
 	# json
 	data = json.loads(args[0])
 	print(json.dumps(data, indent='\t'))
@@ -468,7 +468,7 @@ def cmd_end_quest(player, cmd, args):
 
 	return True
 
-def cmd_buy_shield(player, cmd, args):
+def cmd_buy_shield(player, cmd, args, gameversion):
 	# shield_id
 	shield_id = args[0]
 
@@ -527,7 +527,7 @@ def cmd_buy_shield(player, cmd, args):
 	
 	return True
 
-def cmd_set_variables(player, cmd, args):
+def cmd_set_variables(player, cmd, args, gameversion):
 	playerInfo = player["playerInfo"]
 	town_id = args[7]
 
@@ -542,14 +542,14 @@ def cmd_set_variables(player, cmd, args):
 
 	return True
 
-def cmd_ff(player, cmd, args):
+def cmd_ff(player, cmd, args, gameversion):
 	# seconds
 	seconds = args[0]
 	player_fast_forward(player, int(seconds))
 
 	return True
 
-def cmd_admin_add_animal(player, cmd, args):
+def cmd_admin_add_animal(player, cmd, args, gameversion):
 	# subcategory, amount
 	subcategory = str(args[0])
 	amount = int(args[1])

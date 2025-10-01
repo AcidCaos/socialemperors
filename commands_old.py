@@ -30,7 +30,7 @@ def command(USERID, data):
         do_command(USERID, cmd, args)
     save_session(USERID) # Save session
 
-def do_command(save, cmd, args):
+def do_command(save, cmd, args, gameversion):
     # print (" [+] COMMAND: ", cmd, "(", args, ") -> ", sep='', end='')
 
     if cmd == Constant.CMD_GAME_STATUS:
@@ -129,6 +129,9 @@ def do_command(save, cmd, args):
                 break
     
     elif cmd == Constant.CMD_COMPLETE_MISSION:
+        if "0926" not in gameversion:
+            # game incorrectly sends this command due to missing goals in newer clients
+            return
         mission_id = args[0]
         skipped_with_cash = bool(args[1])
         print("Complete mission", mission_id, ":", str(get_attribute_from_mission_id(mission_id, "title")))
@@ -138,6 +141,10 @@ def do_command(save, cmd, args):
         save["privateState"]["completedMissions"] += [mission_id]
     
     elif cmd == Constant.CMD_REWARD_MISSION:
+        if "0926" not in gameversion:
+            # game incorrectly sends this command due to missing goals in newer clients
+            return
+
         town_id = args[0]
         mission_id = args[1]
         print("Reward mission", mission_id, ":", str(get_attribute_from_mission_id(mission_id, "title")))

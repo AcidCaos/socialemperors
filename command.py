@@ -14,12 +14,12 @@ def _OK(cmd, args):
 def _NOTOK(cmd, args):
 	print(f" [C] FAILED: {cmd} {args}")
 
-def NOT_IMPLEMENTED(player, cmd, args):
+def NOT_IMPLEMENTED(player, cmd, args, gameversion):
 	print(f" [C] UNKNOWN: {cmd} {args}")
 	return True
 
-def USE_OLD(player, cmd, args):
-	do_old_command(player, cmd, args)
+def USE_OLD(player, cmd, args, gameversion):
+	do_old_command(player, cmd, args, gameversion)
 	return 2
 
 commands = {
@@ -63,8 +63,8 @@ commands = {
 	"end_quest":				cmd_end_quest,
 
 	"complete_tutorial":		USE_OLD,
-	"complete_mission":			NOT_IMPLEMENTED,
-	"reward_mission":			NOT_IMPLEMENTED,
+	"complete_mission":			USE_OLD,
+	"reward_mission":			USE_OLD,
 	"add_collectable":			USE_OLD,
 	"collect_new":				USE_OLD,
 	"win_bonus":				USE_OLD,
@@ -99,7 +99,7 @@ def get_strategy_type(id):
 		return "Aggressive"
 	return "Unknown Strategy"
 
-def command(USERID, data):
+def command(USERID, data, gameversion):
 	timestamp = data["ts"]
 	first_number = data["first_number"]
 	accessToken = data["accessToken"]
@@ -110,15 +110,15 @@ def command(USERID, data):
 	for i, comm in enumerate(commands):
 		cmd = comm["cmd"]
 		args = comm["args"]
-		do_command(USERID, cmd, args)
+		do_command(USERID, cmd, args, gameversion)
 	save_session(USERID) # Save session
 
-def do_command(USERID, cmd, args):
+def do_command(USERID, cmd, args, gameversion):
 	save = session(USERID)
 	# print(" [+] COMMAND: ", cmd, "(", args, ") -> ", sep='', end='')
 
 	if cmd in commands:
-		result = commands[cmd](save, cmd, args)
+		result = commands[cmd](save, cmd, args, gameversion)
 		if result == 2:
 			_OKOLD(cmd, args)
 		elif result == True:
@@ -126,4 +126,4 @@ def do_command(USERID, cmd, args):
 		else:
 			_NOTOK(cmd, args)
 	else:
-		NOT_IMPLEMENTED(save, cmd, args)
+		NOT_IMPLEMENTED(save, cmd, args, gameversion)

@@ -329,7 +329,7 @@
 		"value": 20
 	},
 	{
-		"_TITLE": "AcidCaos - Goal fixes - I don't think this is necessary????",
+		"_TITLE": "AcidCaos - Goal not working fixes - 1.1.5+",
 		"op": "add",
 		"path": "/goals",
 		"value": [

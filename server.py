@@ -265,7 +265,7 @@ def command_response():
     data_payload = data_str[65:]
     data = json.loads(data_payload)
 
-    command(USERID, data)
+    command(USERID, data, session["GAMEVERSION"])
     
     return ({"result": "success"}, 200)
 
