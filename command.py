@@ -22,6 +22,9 @@ def USE_OLD(player, cmd, args, gameversion):
 	do_old_command(player, cmd, args, gameversion)
 	return 2
 
+def EXCEPTION(player, cmd, args, gameversion):
+	raise Exception(f" [C] EXCEPTION: {cmd} {args}")
+
 commands = {
 	"set_variables":					cmd_set_variables,
 	"fast_forward":						cmd_ff,
@@ -44,6 +47,7 @@ commands = {
 	"store_item":						cmd_store_item,
 	"store_item_frombug":				cmd_store_item_frombug,
 	"place_gift":						cmd_place_gift,
+	"place_stored_item":				cmd_place_gift,
 	"sell_gift":						cmd_sell_gift,
 	"sell_stored_item":					cmd_sell_stored_item,
 	"sell_iphone_item":					cmd_sell_stored_item,	# this should modify a different thing perhaps?
