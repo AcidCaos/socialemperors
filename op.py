@@ -241,7 +241,7 @@ def cmd_unqueue_unit(player, cmd, args, gameversion):
 	give_resource_type(player["playerInfo"], _map, cost_type, cost)
 	give_resource_type(player["playerInfo"], _map, "f", cost_food)
 
-	return False
+	return True
 
 def cmd_sm_powerup(player, cmd, args, gameversion):
 	# powerup_idx
