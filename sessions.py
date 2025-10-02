@@ -187,6 +187,14 @@ def pvp_pool_add(userid, village, session_type, town_id = 0):
 	if "userid" not in __pvp_pool:
 		__pvp_pool.append(userid)
 
+# modifies stored PVP data for player
+def pvp_pool_modify(player, town_id = 0):
+	userid = player["playerInfo"]["pid"]
+	if not pvp_pool_allowed(userid, player, town_id):
+		return
+
+	pvp_data_update(userid, player, town_id)
+
 def pvp_pool_allowed(userid, village, town_id = 0):
 	# pvp not allowed until level 8
 	if village["maps"][town_id]["level"] < 8:
@@ -227,8 +235,8 @@ def pvp_enemy(my_userid, town_id):
 	range_max = level + 5
 	retries = 0
 	retries_level = 0
-	while retries < 1000:
-		if retries_level > 50:
+	while retries < 1100:
+		if retries_level >= 50:
 			retries_level = 0
 			range_min -= 5
 			range_max += 5
@@ -265,6 +273,11 @@ def pvp_data(player, session_type, town_id = 0):
 	}
 	return data
 
+def pvp_data_update(userid, player, town_id = 0):
+	data = __pvp_data[userid]
+	data["level"] = player["maps"][town_id]["level"]
+	data["shield"] = player["privateState"]["shieldEndTime"]
+
 def get_pvp_session(userid):
 	if userid in __pvp_data:
 		data = __pvp_data[userid]
@@ -277,6 +290,15 @@ def get_pvp_session(userid):
 			return __saves[userid]
 
 	return None
+
+def get_target_session(userid):
+	result = get_pvp_session(userid)
+	if not result:
+		if userid in __villages:
+			result = __villages[userid]
+		elif userid in __saves:
+			result = __saves[userid]
+	return result
 
 def all_saves_userid() -> list:
 	"Returns a list of the USERID of every saved village."

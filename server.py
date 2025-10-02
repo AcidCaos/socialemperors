@@ -252,13 +252,13 @@ def get_player_info_response():
     elif user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_1 \
     or user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_2 \
     or user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_3:
-        return (get_neighbor_info(user, map), 200)
+        return (get_target_info(user, map), 200)
     # Quest
     elif user in quest_ids or user in survival_arenas: # Dirty but quick
         return get_quest_info(user)
     # Neighbor
     else:
-        return (get_neighbor_info(user, map), 200)
+        return (get_target_info(user, map), 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/sync_error_track.php", methods=['POST'])
 def sync_error_track_response():

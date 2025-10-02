@@ -1,6 +1,6 @@
 import json
 
-from sessions import session, save_session
+from sessions import session, save_session, pvp_pool_modify
 from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional
 from constants import Constant
 from engine import *
@@ -594,6 +594,15 @@ def cmd_end_quest(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_reset_shield(player, cmd, args, gameversion):
+	# disables player shield without resetting cooldown
+	privateState = player["privateState"]
+	privateState["shieldEndTime"] = 0
+
+	pvp_pool_modify(player)
+
+	return True
+
 def cmd_buy_shield(player, cmd, args, gameversion):
 	# shield_id
 	shield_id = args[0]
@@ -650,6 +659,8 @@ def cmd_buy_shield(player, cmd, args, gameversion):
 	# If you buy shields right to left, you can get 1d cooldown on all
 	# I don't care, this feature was broken to begin with so it will work like this
 	privateState["shieldCooldown"] = ts_now + shield_cooldown
+
+	pvp_pool_modify(player)
 	
 	return True
 
