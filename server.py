@@ -3,8 +3,7 @@ import os
 import json
 import urllib
 import logging
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
+
 if os.name == 'nt':
     os.system("color")
     os.system("title Social Empires Server")
@@ -33,6 +32,18 @@ host = '127.0.0.1'
 port = 5050
 
 app = Flask(__name__, template_folder=TEMPLATES_DIR)
+
+# SILENCE FLASK BUT NOT SERVER LOGGER
+logging.getLogger('werkzeug').disabled = True		# False enables flask logging
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.INFO)
+log.propagate = False
+
+h = logging.StreamHandler()
+h.setLevel(logging.INFO)
+h.setFormatter(logging.Formatter('[%(asctime)s] %(levelname)s %(message)s', "%Y-%m-%d %H:%M:%S"))
+log.addHandler(h)
 
 print (" [+] Configuring server routes...")
 

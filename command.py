@@ -6,26 +6,21 @@ from sessions import session, save_session
 from op import *
 from commands_old import do_command as do_old_command
 
-def get_time():
-	return datetime.fromtimestamp(timestamp_now()).strftime("%m/%d/%Y, %H:%M:%S")
+log = logging.getLogger('__main__')
 
 # command OK
 def _OKOLD(cmd, args):
-	ts = get_time()
-	print(f"[{ts}][C] USING OLD: {cmd} {args}")
+	log.info(f"[C] USING OLD: {cmd} {args}")
 
 def _OK(cmd, args):
-	ts = get_time()
-	print(f"[{ts}][C] OK: {cmd} {args}")
+	log.info(f"[C] OK: {cmd} {args}")
 
 def _NOTOK(cmd, args):
-	ts = get_time()
-	print(f"[{ts}][C] FAILED: {cmd} {args}")
+	log.info(f"[C] FAILED: {cmd} {args}")
 	raise Exception(f"Illegal server command")
 
 def NOT_IMPLEMENTED(player, cmd, args, gameversion):
-	ts = get_time()
-	print(f"[{ts}][C] UNKNOWN: {cmd} {args}")
+	log.info(f"[C] UNKNOWN: {cmd} {args}")
 	return True
 
 def USE_OLD(player, cmd, args, gameversion):
@@ -33,7 +28,7 @@ def USE_OLD(player, cmd, args, gameversion):
 	return 2
 
 def EXCEPTION(player, cmd, args, gameversion):
-	raise Exception(f" [C] EXCEPTION: {cmd} {args}")
+	raise Exception("Command exception")
 
 commands = {
 	"set_variables":					cmd_set_variables,
