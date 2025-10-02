@@ -308,7 +308,16 @@
 		"_TITLE": "Nerroth - PVP Fixes",
 		"op": "add",
 		"path": "/globals/PVP_SEARCH_ENEMY_COST",
-		"value": 0
+		"value": {
+			"0": { "g": "25" },
+			"11": { "g": "50" },
+			"21": { "g": "100" },
+			"31": { "g": "250" },
+			"41": { "g": "500" },
+			"51": { "g": "1000" },
+			"61": { "g": "2500" },
+			"71": { "g": "5000" }
+		}
 	},
 	{
 		"_TITLE": "AcidCaos/Nerroth - Graveyard fixes",

@@ -70,8 +70,6 @@ commands = {
 	"name_map":							cmd_name_map,
 	"set_strategy":						cmd_set_strategy,
 	"exchange_cash_new":				cmd_exchange_cash,
-	"buy_shield":						cmd_buy_shield,
-	"reset_shield":						cmd_reset_shield,
 	"rt_level_up":						cmd_rt_level_up,
 	"rt_publish_score":					cmd_rt_publish_score,
 	"admin_add_animal":					cmd_admin_add_animal,
@@ -79,6 +77,10 @@ commands = {
 	"set_attack_team":					cmd_set_attack_team,
 	"start_quest":						cmd_start_quest,
 	"end_quest":						cmd_end_quest,
+
+	"buy_shield":						cmd_buy_shield,
+	"reset_shield":						cmd_reset_shield,
+	"get_enemy_new":					cmd_pvp_get_enemy_new,
 
 	"complete_tutorial":				USE_OLD,
 	"complete_mission":					USE_OLD,

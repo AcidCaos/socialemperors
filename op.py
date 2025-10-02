@@ -611,6 +611,7 @@ def cmd_buy_shield(player, cmd, args, gameversion):
 	# shield_id
 	shield_id = args[0]
 
+	# no support for other town IDs, sad :(
 	town_id = 0
 	_map = player["maps"][town_id]
 	privateState = player["privateState"]
@@ -667,6 +668,21 @@ def cmd_buy_shield(player, cmd, args, gameversion):
 	pvp_pool_modify(player)
 	
 	return True
+
+def cmd_pvp_get_enemy_new(player, cmd, args, gameversion):
+	# cost, searches_before_attack
+	cost = args[0]
+	searches = args[1]
+
+	# no support for other town IDs, sad :(
+	town_id = 0
+	_map = player["maps"][town_id]
+
+	if not pay_map_currency(_map, "coins", cost):
+		return False
+
+	return True
+
 
 def cmd_set_variables(player, cmd, args, gameversion):
 	playerInfo = player["playerInfo"]
