@@ -105,7 +105,11 @@ def load_enemies():
 		if file == "initial.json" or not file.endswith(".json"):
 			continue
 		# print(f" * Loading static enemy {file}... ", end='')
-		village = json.load(open(os.path.join(ENEMIES_DIR, file)))
+		try:
+			village = json.load(open(os.path.join(ENEMIES_DIR, file)))
+		except json.decoder.JSONDecodeError as e:
+			print(f"Corrupt enemy {file}")
+			continue
 		if not is_valid_village(village):
 			print(f"Invalid enemy {file}")
 			continue
@@ -113,6 +117,13 @@ def load_enemies():
 		if str(USERID) in __enemies:
 			print(f"Ignored: duplicated enemy PID '{USERID}'.")
 		else:
+			# migrate pvp save
+			if "version" in village:
+				print(f"migrating enemy file for {USERID}...")
+				migrate_loaded_save(village)
+				with open(os.path.join(ENEMIES_DIR, file), 'w') as f:
+					json.dump(village, f, indent='\t')
+
 			__enemies[str(USERID)] = village
 			__pvp_pool.append(str(USERID))
 
