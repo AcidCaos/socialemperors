@@ -191,7 +191,7 @@ def pvp_lookup():
 
     # TODO: reverse engineer the HMAC hashing from game client so it can work without client modification
 
-    return (some_hash + ";" + json.dumps(get_enemy_info(USERID)), 200)
+    return (some_hash + ";" + json.dumps(get_enemy_info(USERID, 0)), 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/attack/begin", methods=['POST'])
 def pvp_begin():
@@ -243,7 +243,7 @@ def get_player_info_response():
     # PVP RANDOM
     # TODO: Send a random save
     if user == "undefined":
-        enemy = get_random_enemy(USERID, map)
+        enemy = get_pvp_search_result(USERID, map)
         if not enemy:
             # TODO: handle no players found
             return ("", 404)

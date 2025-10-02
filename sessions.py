@@ -19,6 +19,7 @@ __saves = {}  # ALL saved villages
 # PVP pool data
 __pvp_data = {}
 __pvp_pool = []
+__pvp_search_result = {}
 
 __initial_village = json.load(open(os.path.join(VILLAGES_DIR, "initial.json")))
 
@@ -36,6 +37,7 @@ def load_saved_villages():
 	global __pvp_data
 	global __saves
 	global __pvp_pool
+	global __pvp_search_result
 	# Empty in memory
 	__villages = {}
 	__saves = {}
@@ -178,16 +180,16 @@ def new_village():
 
 # Access functions
 def pvp_pool_add(userid, village, session_type, town_id = 0):
-	__pvp_data[userid] = pvp_data(village, session_type, town_id)
 	if not pvp_pool_allowed(userid, village, town_id):
 		return
 
+	__pvp_data[userid] = pvp_data(village, session_type, town_id)
 	if "userid" not in __pvp_pool:
 		__pvp_pool.append(userid)
 
 def pvp_pool_allowed(userid, village, town_id = 0):
-	# pvp not allowed until level 6
-	if village["maps"][town_id]["level"] < 6:
+	# pvp not allowed until level 8
+	if village["maps"][town_id]["level"] < 8:
 		return False
 	# pvp not allowed for these saves
 	if userid in _pvp_pool_blacklist:
@@ -195,19 +197,62 @@ def pvp_pool_allowed(userid, village, town_id = 0):
 
 	return True
 
+# set pvp enemy search result for this user
+def set_pvp_enemy_for(userid, enemyid):
+	if not enemyid:
+		del __pvp_search_result[userid]
+		return
+
+	__pvp_search_result[userid] = enemyid
+
+# get search result
+def get_pvp_enemy_for(userid):
+	if userid not in __pvp_search_result:
+		return None
+
+	enemyid = __pvp_search_result[userid]
+	del __pvp_search_result[userid]
+	return enemyid
+
+# get random pvp enemy
 def pvp_enemy(my_userid, town_id):
 	me = session(my_userid)
 	level = me["maps"][town_id]["level"]
+	ts_now = timestamp_now()
 
+	# search favors players around your level
+	# if pvp shield is on, the enemy is skipped
+
+	range_min = level - 5
+	range_max = level + 5
 	retries = 0
-	while retries < 10000:
+	retries_level = 0
+	while retries < 1000:
+		if retries_level > 50:
+			retries_level = 0
+			range_min -= 5
+			range_max += 5
+
 		retries += 1
+		retries_level += 1
 
 		user = random.choice(__pvp_pool)
-		if user != my_userid:
-			# TODO: try and match similar level
-			print(f"Enemy found after! retries: {retries} - {user}")
-			return user
+		if user == my_userid:
+			continue
+
+		data = __pvp_data[user]
+
+		# check if shield is on and level is in range
+		if ts_now < data["shield"]:
+			continue
+		if data["level"] < range_min or data["level"] > range_max:
+			continue
+
+		print(json.dumps(data, indent="\t"))
+
+		# TODO: try and match similar level
+		print(f"PVP enemy found after {retries} retries: {user}")
+		return user
 
 	print("No enemy found! :(")
 	return None

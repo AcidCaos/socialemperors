@@ -1,6 +1,6 @@
 import os
 from quests import get_quest_map
-from sessions import session, neighbor_session, neighbors, pvp_enemy, get_pvp_session
+from sessions import session, neighbor_session, neighbors, pvp_enemy, get_pvp_session, set_pvp_enemy_for, get_pvp_enemy_for
 from engine import timestamp_now
 
 def get_player_info(USERID, town_id = 0):
@@ -37,8 +37,21 @@ def get_neighbor_info(userid, town_id = 0):
 		"neighbors": friends
 	}
 	return response
+	
+def get_enemy_info(userid, town_id = 0):
+	enemy_id = pvp_enemy(userid, town_id)
+	if not enemy_id:
+		set_pvp_enemy_for(userid, None)
+		# no enemy found
+		# TODO: send valid no enemies found
+		response = {
+			"id": None,
+			"result": "ok",
+			"data": None
+		}
+		return response
 
-def get_enemy_info(userid):
+	set_pvp_enemy_for(userid, enemy_id)
 	response = {
 		"id": userid,
 		"result": "ok",
@@ -46,8 +59,8 @@ def get_enemy_info(userid):
 	}
 	return response
 
-def get_random_enemy(userid, town_id):
-	enemy_id = pvp_enemy(userid, town_id)
+def get_pvp_search_result(userid, town_id):
+	enemy_id = get_pvp_enemy_for(userid)
 	if not enemy_id:
 		return None
 
