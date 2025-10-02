@@ -20,15 +20,27 @@ __saves = {}  # ALL saved villages
 # friend info
 __friend_info = {}
 
+# PVP ---------------------------------------------------------------------------
+# PVP SEARCH SETTINGS
+_PVP_SEARCH_MAX_RETRIES = 2200
+_PVP_SEARCH_RETRIES_BEFORE_EXPAND = 200
+_PVP_SEARCH_LEVEL_RANGE = 10 # -that, +that
+
+# Any saves under this are excluded from search
+# This is because PVP unlocks at level 8 in the game client
+_PVP_MIN_LEVEL = 8 
+
 # PVP pool data
 __pvp_data = {}
 __pvp_pool = []
 __pvp_search_result = {}
 
+# PVP blacklist - arthur maps
+_pvp_pool_blacklist = [ "100000030", "100000031", "100000032" ]
+# -------------------------------------------------------------------------------
+
 __initial_village = json.load(open(os.path.join(VILLAGES_DIR, "initial.json")))
 
-# pvp blacklist - arthur
-_pvp_pool_blacklist = [ "100000030", "100000031", "100000032" ]
 
 SESSION_SAVE = 0		# player save
 SESSION_VILLAGE = 1		# arthur
@@ -286,15 +298,15 @@ def pvp_enemy(my_userid, town_id):
 	# search favors players around your level
 	# if pvp shield is on, the enemy is skipped
 
-	range_min = max(8, level - 5)
-	range_max = level + 5
+	range_min = max(_PVP_MIN_LEVEL, level - _PVP_SEARCH_LEVEL_RANGE)
+	range_max = level + _PVP_SEARCH_LEVEL_RANGE
 	retries = 0
 	retries_level = 0
-	while retries < 1100:
-		if retries_level >= 50:
+	while retries < _PVP_SEARCH_MAX_RETRIES:
+		if retries_level >= _PVP_SEARCH_RETRIES_BEFORE_EXPAND:
 			retries_level = 0
-			range_min = max(8, range_min - 5)
-			range_max += 5
+			range_min = max(8, range_min - _PVP_SEARCH_LEVEL_RANGE)
+			range_max += _PVP_SEARCH_LEVEL_RANGE
 
 		retries += 1
 		retries_level += 1
