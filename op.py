@@ -505,7 +505,6 @@ def cmd_rt_publish_score(player, cmd, args, gameversion):
 	_map = player["maps"][town_id]
 
 	_map["xp"] = xp_now
-	_map["level"] = get_level_from_xp(xp_now)
 
 	pvp_pool_modify(player)
 
@@ -586,15 +585,7 @@ def cmd_end_quest(player, cmd, args, gameversion):
 	add_map_currency(_map, "xp", resources["x"])
 
 	# remove lost units and send them to graveyard
-	for unit in units:
-		uid = unit[0]
-		entered = unit[1]
-		died = unit[2]
-		recovered = unit[3]
-		lost = died - recovered
-
-		if lost > 0:
-			player_lose_item(player, _map, uid, lost)
+	handle_unit_loss(player, _map, units)
 
 	return True
 
@@ -683,6 +674,94 @@ def cmd_pvp_get_enemy_new(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_pvp_end_attack_new(player, cmd, args, gameversion):
+	# g, f, w, s, eid, uid, ulevel, ts, winner_id, voluntary_end, attack_is_reply, dmg > shield% limit, damage_pct, xp 
+	gold = args[0]
+	food = args[1]
+	wood = args[2]
+	stone = args[3]
+	enemy_id = args[4]
+	user_id = args[5]
+	user_level = args[6]
+	ts = args[7]
+	winner_id = args[8]
+	voluntary_end = args[9]
+	attack_is_reply = args[10] # revenge flag or what?
+	damage_is_over_shield_percentage = args[11] # damage (0-100) over some shield%
+	damage_pct = args[12] # (0-100) how much damage was done
+	xp = args[13]
+
+	if player["playerInfo"]["pid"] != user_id:
+		# what are you doing!?
+		return False
+
+	# no support for other town IDs, sad :(
+	town_id = 0
+	_map = player["maps"][town_id]
+
+	add_map_currency(_map, "coins", gold)
+	add_map_currency(_map, "food", food)
+	add_map_currency(_map, "wood", wood)
+	add_map_currency(_map, "stone", stone)
+	add_map_currency(_map, "xp", xp)
+
+	# TODO: ATTACK LOG
+
+	pvp_pool_modify(player)
+	return True
+
+def cmd_pvp_end_attack(player, cmd, args, gameversion):
+	# data
+	data = json.loads(args[0])
+	
+	# data.townhall_gold -> int
+	# data.duration -> int
+	# data.attacker_units -> array [ id, entered, died, recovered ]
+	# data.attacker -> dict
+	#	race
+	#	level
+	#	world_id
+	#	name
+	#	map -> town_id
+	#	user_id -> player user id
+	# data.victim -> dict
+	#	pic -> image url
+	#	unitsToHide -> { index, life }
+	#	map -> town_id
+	#	level
+	#	resources -> { s, f, g, w, wood, gold, stone, food }
+	#	name
+	#	race
+	#	user_id -> enemy user id
+	# resources -> { x, s, f, w, g } -> the gained stuff
+	# resources_victim -> { g } -> idk?
+	# honor -> int -> honor gained
+	# voluntary_end -> int
+	# victim_units -> array [ id, entered, died, recovered ] -> do not use 
+	# win -> int -> did user win against enemy win?
+
+	town_id = data["attacker"]["map"]
+	_map = player["maps"][town_id]
+
+	if player["playerInfo"]["pid"] != data["attacker"]["user_id"]:
+		# what are you doing!?
+		return False
+
+	add_map_currency(_map, "coins", data["resources"]["g"])
+	add_map_currency(_map, "food", data["resources"]["f"])
+	add_map_currency(_map, "wood", data["resources"]["w"])
+	add_map_currency(_map, "stone", data["resources"]["s"])
+	add_map_currency(_map, "xp", data["resources"]["x"])
+
+	# remove lost units and send them to graveyard
+	handle_unit_loss(player, _map, data["attacker_units"])
+
+	# TODO: ATTACK LOG
+	# TODO: TRIGGER 1 DAY PVP SHIELD ON VICTIM
+
+	pvp_pool_modify(player)
+
+	return True
 
 def cmd_set_variables(player, cmd, args, gameversion):
 	playerInfo = player["playerInfo"]

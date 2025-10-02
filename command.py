@@ -81,6 +81,8 @@ commands = {
 	"buy_shield":						cmd_buy_shield,
 	"reset_shield":						cmd_reset_shield,
 	"get_enemy_new":					cmd_pvp_get_enemy_new,
+	"end_attack":						cmd_pvp_end_attack,
+	"end_attack_new":					cmd_pvp_end_attack_new,
 
 	"complete_tutorial":				USE_OLD,
 	"complete_mission":					USE_OLD,

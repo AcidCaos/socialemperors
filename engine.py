@@ -540,3 +540,14 @@ def get_shield_data(shield_id):
 			return shield
 
 	return None
+
+def handle_unit_loss(player, map, units):
+	for unit in units:
+		uid = unit[0]
+		entered = unit[1]
+		died = unit[2]
+		recovered = unit[3]
+		lost = died - recovered
+
+		if lost > 0:
+			player_lose_item(player, map, uid, lost)
