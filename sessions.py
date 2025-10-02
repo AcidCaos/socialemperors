@@ -311,7 +311,7 @@ def pvp_enemy(my_userid, town_id):
 		if data["level"] < range_min or data["level"] > range_max:
 			continue
 
-		print(json.dumps(data, indent="\t"))
+		# print(json.dumps(data, indent="\t"))
 
 		# TODO: try and match similar level
 		print(f"PVP enemy found after {retries} retries: {user}")

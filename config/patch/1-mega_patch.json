@@ -320,6 +320,21 @@
 		}
 	},
 	{
+		"_TITLE": "Nerroth - PVP Fixes",
+		"op": "add",
+		"path": "/globals/PVP_MAX_RESOURCES",
+		"value": {
+			"0": { "g": "500" },
+			"11": { "g": "1000" },
+			"21": { "g": "2000" },
+			"31": { "g": "5000" },
+			"41": { "g": "10000" },
+			"51": { "g": "20000" },
+			"61": { "g": "50000" },
+			"71": { "g": "100000" }
+		}
+	},
+	{
 		"_TITLE": "AcidCaos/Nerroth - Graveyard fixes",
 		"op": "add",
 		"path": "/globals/GRAVEYARD_POTIONS",
