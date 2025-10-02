@@ -111,7 +111,7 @@ def cmd_push_unit(player, cmd, args, gameversion):
 	_map = player["maps"][town_id]
 	building = map_get_item(_map, bx, by)
 	unit = map_get_item(_map, ux, uy, uitem_id)
-	if len(building) != 1 or len(unit) != 1:
+	if len(building) != 1 or len(unit) <= 0:
 		return False	# map error, multiple units or buildings in same location
 
 	map_push_unit(_map, unit[0], building[0])

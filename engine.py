@@ -80,8 +80,9 @@ def map_get_item(map, x, y, item_id = None):
 	found = []
 	for item in map["items"]:
 		if item[1] == x and item[2] == y:
-			if item_id and item[0] == item_id:
-				found.append(item)
+			if item_id:
+				if item_id == item[0]:
+					found.append(item)
 			else:
 				found.append(item)
 	return found
