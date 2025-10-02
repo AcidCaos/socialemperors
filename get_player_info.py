@@ -1,5 +1,6 @@
+import os
 from quests import get_quest_map
-from sessions import session, neighbor_session, neighbors, pvp_enemy
+from sessions import session, neighbor_session, neighbors, pvp_enemy, get_pvp_session
 from engine import timestamp_now
 
 def get_player_info(USERID, town_id = 0):
@@ -50,7 +51,7 @@ def get_random_enemy(userid, town_id):
 	if not enemy_id:
 		return None
 
-	save = neighbor_session(enemy_id)
+	save = get_pvp_session(enemy_id)
 
 	response = {
 		"result": "ok",

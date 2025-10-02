@@ -15,17 +15,25 @@ from bundle import VILLAGES_DIR, SAVES_DIR, ENEMIES_DIR
 
 __villages = {}  # ALL static neighbors
 __saves = {}  # ALL saved villages
-__enemies = {}  # ALL enemy villages
 
-__pvp_pool = [] # ALL players that can be searched for PVP
+# PVP pool data
+__pvp_data = {}
+__pvp_pool = []
 
 __initial_village = json.load(open(os.path.join(VILLAGES_DIR, "initial.json")))
+
+# pvp blacklist - arthur
+_pvp_pool_blacklist = [ "100000030", "100000031", "100000032" ]
+
+SESSION_SAVE = 0
+SESSION_VILLAGE = 1
+SESSION_ENEMY = 2
 
 # Load saved villages
 
 def load_saved_villages():
 	global __villages
-	global __enemies
+	global __pvp_data
 	global __saves
 	global __pvp_pool
 	# Empty in memory
@@ -76,7 +84,7 @@ def load_static_villages(add_to_pvp = False):
 		else:
 			__villages[str(USERID)] = village
 			if add_to_pvp:
-				__pvp_pool.append(str(USERID))
+				pvp_pool_add(USERID, village, SESSION_VILLAGE, 0)
 			print("Ok.")
 
 def load_saves(add_to_pvp = False):
@@ -101,7 +109,7 @@ def load_saves(add_to_pvp = False):
 		print(f"({map_name}) Ok.")
 		__saves[str(USERID)] = save
 		if add_to_pvp:
-			__pvp_pool.append(str(USERID))
+			pvp_pool_add(USERID, save, SESSION_SAVE, 0)
 		modified = migrate_loaded_save(save) # check save version for migration
 		if modified:
 			save_session(USERID)
@@ -125,7 +133,7 @@ def load_enemies(add_to_pvp = False):
 			print(f"Invalid enemy {file}")
 			continue
 		USERID = village["playerInfo"]["pid"]
-		if str(USERID) in __enemies:
+		if str(USERID) in __pvp_data:
 			print(f"Ignored: duplicated enemy PID '{USERID}'.")
 		else:
 			# migrate pvp save
@@ -135,9 +143,16 @@ def load_enemies(add_to_pvp = False):
 				with open(os.path.join(ENEMIES_DIR, file), 'w') as f:
 					json.dump(village, f, indent='\t')
 
-			__enemies[str(USERID)] = village
 			if add_to_pvp:
-				__pvp_pool.append(str(USERID))
+				pvp_pool_add(USERID, village, SESSION_ENEMY, 0)
+
+def get_enemy_save(userid):
+	path = os.path.join(ENEMIES_DIR, userid)
+	if os.path.exists(path + ".save.json"):
+		return json.load(open(path + ".save.json"))
+	if os.path.exists(path + ".json"):
+		return json.load(open(path + ".json"))
+	return None
 
 # New village
 def new_village():
@@ -155,13 +170,30 @@ def new_village():
 	migrate_loaded_save(village)
 	# Memory saves
 	__saves[USERID] = village
-	__pvp_pool.append(str(USERID))
+	pvp_pool_add(USERID, village, SESSION_SAVE, 0)
 	# Generate save file
 	save_session(USERID)
 	print("Done.")
 	return USERID
 
 # Access functions
+def pvp_pool_add(userid, village, session_type, town_id = 0):
+	__pvp_data[userid] = pvp_data(village, session_type, town_id)
+	if not pvp_pool_allowed(userid, village, town_id):
+		return
+
+	if "userid" not in __pvp_pool:
+		__pvp_pool.append(userid)
+
+def pvp_pool_allowed(userid, village, town_id = 0):
+	# pvp not allowed until level 6
+	if village["maps"][town_id]["level"] < 6:
+		return False
+	# pvp not allowed for these saves
+	if userid in _pvp_pool_blacklist:
+		return False
+
+	return True
 
 def pvp_enemy(my_userid, town_id):
 	me = session(my_userid)
@@ -174,10 +206,31 @@ def pvp_enemy(my_userid, town_id):
 		user = random.choice(__pvp_pool)
 		if user != my_userid:
 			# TODO: try and match similar level
-			print(f"Enemy found after! retries: {retries}")
+			print(f"Enemy found after! retries: {retries} - {user}")
 			return user
 
 	print("No enemy found! :(")
+	return None
+
+def pvp_data(player, session_type, town_id = 0):
+	data = {
+		"level": player["maps"][town_id]["level"],
+		"shield": player["privateState"]["shieldEndTime"],
+		"type": session_type,
+	}
+	return data
+
+def get_pvp_session(userid):
+	if userid in __pvp_data:
+		data = __pvp_data[userid]
+		session_type = data["type"]
+		if session_type == SESSION_ENEMY:
+			return get_enemy_save(userid)
+		elif session_type == SESSION_VILLAGE:
+			return __villages[userid]
+		else:
+			return __saves[userid]
+
 	return None
 
 def all_saves_userid() -> list:
@@ -209,8 +262,8 @@ def session(USERID: str) -> dict:
 
 def neighbor_session(USERID: str) -> dict:
 	assert(isinstance(USERID, str))
-	if USERID in __enemies:
-		return __enemies[USERID]
+	if USERID in __pvp_data:
+		return __pvp_data[USERID]
 	if USERID in __saves:
 		return __saves[USERID]
 	if USERID in __villages:
