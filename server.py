@@ -17,7 +17,7 @@ from get_game_config import get_game_config, patch_game_config
 
 print (" [+] Loading players...")
 from get_player_info import *
-from sessions import load_saved_villages, all_saves_userid, all_saves_info, save_info, new_village, fb_friends_str, pvp_enemy
+from sessions import load_saved_villages, reload_saves, all_saves_userid, all_saves_info, save_info, new_village, fb_friends_str, pvp_enemy
 load_saved_villages()
 
 print (" [+] Loading server...")
@@ -48,7 +48,7 @@ def login():
     session.pop('USERID', default=None)
     session.pop('GAMEVERSION', default=None)
     # Reload saves. Allows saves modification without server reset
-    load_saved_villages()
+    reload_saves()
     # If logging in, set session USERID, and go to play
     if request.method == 'POST':
         session['USERID'] = request.form['USERID']

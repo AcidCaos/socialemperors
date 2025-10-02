@@ -32,6 +32,17 @@ def load_saved_villages():
 	__villages = {}
 	__saves = {}
 	__pvp_pool = []
+
+	load_saves(True)
+	load_static_villages(True)
+	load_enemies(True)
+
+	pvp_pool_size = len(__pvp_pool)
+	print(f" [*] PVP pool size: {pvp_pool_size}")
+
+def reload_saves():
+	__saves = {}
+
 	# Saves dir check
 	if not os.path.exists(SAVES_DIR):
 		try:
@@ -45,13 +56,11 @@ def load_saved_villages():
 		exit(1)
 	
 	load_saves()
-	load_static_villages()
-	load_enemies()
 
 	pvp_pool_size = len(__pvp_pool)
 	print(f" [*] PVP pool size: {pvp_pool_size}")
 
-def load_static_villages():
+def load_static_villages(add_to_pvp = False):
 	# Static neighbors in /villages
 	for file in os.listdir(VILLAGES_DIR):
 		if file == "initial.json" or not file.endswith(".json"):
@@ -66,10 +75,11 @@ def load_static_villages():
 			print(f"Ignored: duplicated PID '{USERID}'.")
 		else:
 			__villages[str(USERID)] = village
-			__pvp_pool.append(str(USERID))
+			if add_to_pvp:
+				__pvp_pool.append(str(USERID))
 			print("Ok.")
 
-def load_saves():
+def load_saves(add_to_pvp = False):
 	# Saves in /saves
 	for file in os.listdir(SAVES_DIR):
 		if not file.endswith(".save.json"):
@@ -90,12 +100,13 @@ def load_saves():
 			map_name = '?'
 		print(f"({map_name}) Ok.")
 		__saves[str(USERID)] = save
-		__pvp_pool.append(str(USERID))
+		if add_to_pvp:
+			__pvp_pool.append(str(USERID))
 		modified = migrate_loaded_save(save) # check save version for migration
 		if modified:
 			save_session(USERID)
 
-def load_enemies():
+def load_enemies(add_to_pvp = False):
 	# Static enemies in /enemy
 	print(" * Loading enemies...")
 	if not os.path.exists(ENEMIES_DIR):
@@ -125,7 +136,8 @@ def load_enemies():
 					json.dump(village, f, indent='\t')
 
 			__enemies[str(USERID)] = village
-			__pvp_pool.append(str(USERID))
+			if add_to_pvp:
+				__pvp_pool.append(str(USERID))
 
 # New village
 def new_village():
