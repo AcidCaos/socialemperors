@@ -20,3 +20,4 @@ BASE_DIR = "."
 MODS_DIR = os.path.join(BASE_DIR, "mods")
 SAVES_DIR = os.path.join(BASE_DIR, "saves")
 ENEMIES_DIR = os.path.join(BASE_DIR, "enemy")
+FRIENDS_DIR = os.path.join(BASE_DIR, "friend")

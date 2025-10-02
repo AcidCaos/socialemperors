@@ -3,8 +3,8 @@ import random
 from engine import timestamp_now, spaghetti_resurrected_units
 from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional
 
-version_name = "alpha 0.04"
-version_code = "0.04a"
+version_name = "nerroth rewrite - beyond 0.04a"
+version_code = ""
 
 quest_ids = [
 	"100000006",
@@ -154,9 +154,17 @@ def migrate_loaded_save(save):
 
 	# player avatar
 	fix_variable(playerInfo, "pic", "")
+
 	remove_variable(playerInfo, "__#__coins")
 	remove_variable(playerInfo, "__#__xp")
 	remove_variable(playerInfo, "__#__level")
+	# neighbor mistake cleanup
+	remove_variable(playerInfo, "coins")
+	remove_variable(playerInfo, "xp")
+	remove_variable(playerInfo, "level")
+	remove_variable(playerInfo, "stone")
+	remove_variable(playerInfo, "wood")
+	remove_variable(playerInfo, "food")
 
 	# fixes for maps
 	for _map in maps:

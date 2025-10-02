@@ -1,6 +1,7 @@
 import json
 import os
 import copy
+import shutil
 import uuid
 import random
 from flask import session
@@ -11,10 +12,13 @@ from engine import timestamp_now
 from version import migrate_loaded_save
 from constants import Constant
 
-from bundle import VILLAGES_DIR, SAVES_DIR, ENEMIES_DIR
+from bundle import VILLAGES_DIR, SAVES_DIR, ENEMIES_DIR, FRIENDS_DIR
 
-__villages = {}  # ALL static neighbors
+__villages = {}  # ALL static neighbors (excluding friend/ and enemy/)
 __saves = {}  # ALL saved villages
+
+# friend info
+__friend_info = {}
 
 # PVP pool data
 __pvp_data = {}
@@ -26,25 +30,25 @@ __initial_village = json.load(open(os.path.join(VILLAGES_DIR, "initial.json")))
 # pvp blacklist - arthur
 _pvp_pool_blacklist = [ "100000030", "100000031", "100000032" ]
 
-SESSION_SAVE = 0
-SESSION_VILLAGE = 1
-SESSION_ENEMY = 2
+SESSION_SAVE = 0		# player save
+SESSION_VILLAGE = 1		# arthur
+SESSION_ENEMY = 2		# enemy folder 
+SESSION_FRIEND = 3		# friend folder
 
-# Load saved villages
-
+# Intially load saved villages
 def load_saved_villages():
 	global __villages
-	global __pvp_data
 	global __saves
+	global __friend_info
+
+	global __pvp_data
 	global __pvp_pool
 	global __pvp_search_result
-	# Empty in memory
-	__villages = {}
-	__saves = {}
-	__pvp_pool = []
 
 	load_saves(True)
 	load_static_villages(True)
+	copy_static_friends()
+	load_friends(True)
 	load_enemies(True)
 
 	pvp_pool_size = len(__pvp_pool)
@@ -116,8 +120,54 @@ def load_saves(add_to_pvp = False):
 		if modified:
 			save_session(USERID)
 
+def copy_static_friends():
+	# Copy from villages/friend_static to /friend if it's not there!
+	if not os.path.exists(FRIENDS_DIR):
+		os.mkdir(FRIENDS_DIR)
+
+	path1 = VILLAGES_DIR + "/friend_static/"
+	for file in os.listdir(path1):
+		dest = os.path.join(FRIENDS_DIR, file)
+		if os.path.exists(dest):
+			continue
+
+		shutil.copy(os.path.join(path1, file), dest)
+
+def load_friends(add_to_pvp = False):
+	# Friends in /friend
+	print(" * Loading friends...")
+	if not os.path.exists(FRIENDS_DIR):
+		os.mkdir(FRIENDS_DIR)
+
+	for file in os.listdir(FRIENDS_DIR):
+		if file == "initial.json" or not file.endswith(".json"):
+			continue
+		# print(f" * Loading static enemy {file}... ", end='')
+		try:
+			village = json.load(open(os.path.join(FRIENDS_DIR, file)))
+		except json.decoder.JSONDecodeError as e:
+			print(f"Corrupt friends {file}")
+			continue
+		if not is_valid_village(village):
+			print(f"Invalid friends {file}")
+			continue
+		USERID = village["playerInfo"]["pid"]
+		if str(USERID) in __pvp_data:
+			print(f"Ignored: duplicated friends PID '{USERID}'.")
+		else:
+			# migrate pvp save
+			if "version" in village:
+				print(f"migrating friends file for {USERID}...")
+				migrate_loaded_save(village)
+				with open(os.path.join(FRIENDS_DIR, file), 'w') as f:
+					json.dump(village, f, indent='\t')
+
+			__friend_info[USERID] = neighbor_data(village)
+			if add_to_pvp:
+				pvp_pool_add(USERID, village, SESSION_FRIEND, 0)
+
 def load_enemies(add_to_pvp = False):
-	# Static enemies in /enemy
+	# Enemies in /enemy
 	print(" * Loading enemies...")
 	if not os.path.exists(ENEMIES_DIR):
 		os.mkdir(ENEMIES_DIR)
@@ -147,6 +197,14 @@ def load_enemies(add_to_pvp = False):
 
 			if add_to_pvp:
 				pvp_pool_add(USERID, village, SESSION_ENEMY, 0)
+
+def get_friend_save(userid):
+	path = os.path.join(FRIENDS_DIR, userid)
+	if os.path.exists(path + ".save.json"):
+		return json.load(open(path + ".save.json"))
+	if os.path.exists(path + ".json"):
+		return json.load(open(path + ".json"))
+	return None
 
 def get_enemy_save(userid):
 	path = os.path.join(ENEMIES_DIR, userid)
@@ -281,6 +339,8 @@ def get_pvp_session(userid):
 		session_type = data["type"]
 		if session_type == SESSION_ENEMY:
 			return get_enemy_save(userid)
+		elif session_type == SESSION_FRIEND:
+			return get_friend_save(userid)
 		elif session_type == SESSION_VILLAGE:
 			return __villages[userid]
 		else:
@@ -297,15 +357,15 @@ def get_target_session(userid):
 			result = __saves[userid]
 	return result
 
-def all_saves_userid() -> list:
+def all_saves_userid():
 	"Returns a list of the USERID of every saved village."
 	return list(__saves.keys())
 
-def all_userid() -> list:
+def all_userid():
 	"Returns a list of the USERID of every village."
 	return list(__villages.keys()) + list(__saves.keys())
 
-def save_info(USERID: str) -> dict:
+def save_info(USERID: str):
 	save = __saves[USERID]
 	migrate_loaded_save(save)
 	default_map = int(save["playerInfo"]["default_map"])
@@ -314,17 +374,17 @@ def save_info(USERID: str) -> dict:
 	level = save["maps"][default_map]["level"]
 	return{"userid": USERID, "name": empire_name, "xp": xp, "level": level}
 
-def all_saves_info() -> list:
+def all_saves_info():
 	saves_info = []
 	for userid in __saves:
 		saves_info.append(save_info(userid))
 	return list(saves_info)
 
-def session(USERID: str) -> dict:
+def session(USERID: str):
 	assert(isinstance(USERID, str))
 	return __saves[USERID] if USERID in __saves else None
 
-def neighbor_session(USERID: str) -> dict:
+def neighbor_session(USERID: str):
 	assert(isinstance(USERID, str))
 	if USERID in __pvp_data:
 		return __pvp_data[USERID]
@@ -333,7 +393,7 @@ def neighbor_session(USERID: str) -> dict:
 	if USERID in __villages:
 		return __villages[USERID]
 
-def fb_friends_str(USERID: str) -> list:
+def fb_friends_str(USERID: str):
 	DELETE_ME = [{"uid": "1111", "pic_square":"http://127.0.0.1:5050/img/profile/Paladin_Justiciero.jpg"},
 		{"uid": "aa_002", "pic_square":"/1025.png"}]
 	friends = []
@@ -350,6 +410,10 @@ def fb_friends_str(USERID: str) -> list:
 		frie["pic_square"] = vill["playerInfo"]["pic"]
 		if not frie["pic_square"]: frie["pic_square"] = "/img/profile/1025.png"
 		friends += [frie]
+	# Friends
+	for key in __friend_info:
+		f = __friend_info[key]
+		friends += [{ "uid": f["pid"], "pic_square": f["pic"] }]
 	# other players
 	for key in __saves:
 		vill = __saves[key]
@@ -362,7 +426,7 @@ def fb_friends_str(USERID: str) -> list:
 		friends += [frie]
 	return friends
 
-def neighbors(USERID: str) -> list:
+def neighbors(USERID):
 	neighbors = []
 	# static villages
 	for key in __villages:
@@ -372,30 +436,34 @@ def neighbors(USERID: str) -> list:
 		or vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_2 \
 		or vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_3:
 			continue
-		neigh = vill["playerInfo"]
-		neigh["coins"] = vill["maps"][0]["coins"]
-		neigh["xp"] = vill["maps"][0]["xp"]
-		neigh["level"] = vill["maps"][0]["level"]
-		neigh["stone"] = vill["maps"][0]["stone"]
-		neigh["wood"] = vill["maps"][0]["wood"]
-		neigh["food"] = vill["maps"][0]["food"]
-		neigh["stone"] = vill["maps"][0]["stone"]
-		neighbors += [neigh]
+		
+		neighbors += [neighbor_data(vill, 0)]
+	# friends
+	for key in __friend_info:
+		neighbors += [__friend_info[key]]
 	# other players
 	for key in __saves:
 		vill = __saves[key]
 		if vill["playerInfo"]["pid"] == USERID:
 			continue
-		neigh = vill["playerInfo"]
-		neigh["coins"] = vill["maps"][0]["coins"]
-		neigh["xp"] = vill["maps"][0]["xp"]
-		neigh["level"] = vill["maps"][0]["level"]
-		neigh["stone"] = vill["maps"][0]["stone"]
-		neigh["wood"] = vill["maps"][0]["wood"]
-		neigh["food"] = vill["maps"][0]["food"]
-		neigh["stone"] = vill["maps"][0]["stone"]
-		neighbors += [neigh]
+		neighbors += [neighbor_data(vill, 0)]
 	return neighbors
+
+def neighbor_data(player, town_id = 0):
+	_map = player["maps"][town_id]
+
+	info = copy.deepcopy(player["playerInfo"])
+	info["coins"] = _map["coins"]
+	info["xp"] = _map["xp"]
+	info["level"] = _map["level"]
+	info["stone"] = _map["stone"]
+	info["wood"] = _map["wood"]
+	info["food"] = _map["food"]
+	info["stone"] = _map["stone"]
+	info["uid"] = info["pid"]
+	info["pic_square"] = info["pic"]
+	
+	return info 
 
 # Check for valid village
 # The reason why this was implemented is to warn the user if a save game from Social Wars was used by accident
