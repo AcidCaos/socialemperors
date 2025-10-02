@@ -1,22 +1,31 @@
 import json
+import logging
 
+from datetime import datetime
 from sessions import session, save_session
 from op import *
 from commands_old import do_command as do_old_command
 
+def get_time():
+	return datetime.fromtimestamp(timestamp_now()).strftime("%m/%d/%Y, %H:%M:%S")
+
 # command OK
 def _OKOLD(cmd, args):
-	print(f" [C] USING OLD: {cmd} {args}")
+	ts = get_time()
+	print(f"[{ts}][C] USING OLD: {cmd} {args}")
 
 def _OK(cmd, args):
-	print(f" [C] OK: {cmd} {args}")
+	ts = get_time()
+	print(f"[{ts}][C] OK: {cmd} {args}")
 
 def _NOTOK(cmd, args):
-	print(f" [C] FAILED: {cmd} {args}")
+	ts = get_time()
+	print(f"[{ts}][C] FAILED: {cmd} {args}")
 	raise Exception(f"Illegal server command")
 
 def NOT_IMPLEMENTED(player, cmd, args, gameversion):
-	print(f" [C] UNKNOWN: {cmd} {args}")
+	ts = get_time()
+	print(f"[{ts}][C] UNKNOWN: {cmd} {args}")
 	return True
 
 def USE_OLD(player, cmd, args, gameversion):

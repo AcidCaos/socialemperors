@@ -305,6 +305,12 @@
 		]
 	},
 	{
+		"_TITLE": "Nerroth - PVP Fixes",
+		"op": "add",
+		"path": "/globals/PVP_SEARCH_ENEMY_COST",
+		"value": 0
+	},
+	{
 		"_TITLE": "AcidCaos/Nerroth - Graveyard fixes",
 		"op": "add",
 		"path": "/globals/GRAVEYARD_POTIONS",

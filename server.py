@@ -17,7 +17,7 @@ from get_game_config import get_game_config, patch_game_config
 
 print (" [+] Loading players...")
 from get_player_info import *
-from sessions import load_saved_villages, all_saves_userid, all_saves_info, save_info, new_village, fb_friends_str
+from sessions import load_saved_villages, all_saves_userid, all_saves_info, save_info, new_village, fb_friends_str, pvp_enemy
 load_saved_villages()
 
 print (" [+] Loading server...")
@@ -222,7 +222,7 @@ def get_player_info_response():
     neighbors = request.values['neighbors'] if 'neighbors' in request.values else None
     client_id = request.values['client_id']
     user = request.values['user'] if 'user' in request.values else None
-    map = int(request.values['map']) if 'map' in request.values else None
+    map = int(request.values['map']) if 'map' in request.values else 0
 
     print(f"get_player_info: USERID: {USERID}. user: {user} --", request.values)
 
@@ -232,7 +232,11 @@ def get_player_info_response():
     # PVP RANDOM
     # TODO: Send a random save
     if user == "undefined":
-        return (get_neighbor_info(USERID, 0), 200)
+        enemy = get_random_enemy(USERID, map)
+        if not enemy:
+            # TODO: handle no players found
+            return ("", 404)
+        return (enemy, 200)
     # Arthur
     elif user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_1 \
     or user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_2 \
@@ -334,6 +338,8 @@ def get_continent_ranking_response():
 ########
 
 print (" [+] Running server...")
+
+#print(pvp_enemy("Nerroth", 0))
 
 if __name__ == '__main__':
     app.secret_key = 'SECRET_KEY'
