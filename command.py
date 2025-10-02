@@ -80,6 +80,7 @@ commands = {
 	"rt_publish_score":					cmd_rt_publish_score,
 	"admin_add_animal":					cmd_admin_add_animal,
 
+	"set_attack_team":					cmd_set_attack_team,
 	"start_quest":						cmd_start_quest,
 	"end_quest":						cmd_end_quest,
 

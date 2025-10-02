@@ -507,6 +507,21 @@ def cmd_rt_publish_score(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_set_attack_team(player, cmd, args, gameversion):
+	# team_name, team_units, formation
+	team_name = args[0]
+	team_units = args[1]
+	formation = None
+	if len(args) >= 2:
+		formation = args[2]
+
+	privateState = player["privateState"]
+	privateState["teams"][team_name] = json.loads(team_units)
+	if formation:
+		privateState["tournamentFormation"] = formation
+
+	return True
+
 def cmd_start_quest(player, cmd, args, gameversion):
 	# quest_id, town_id
 	quest_id = args[0]
