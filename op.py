@@ -297,9 +297,6 @@ def cmd_sell_stored_item(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_store_item_frombug(player, cmd, args, gameversion):
-	return cmd_store_item(player, cmd, args)
-
 def cmd_place_gift(player, cmd, args, gameversion):
 	# item_id, x, y, orientation, town_id
 	item_id = args[0]

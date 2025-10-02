@@ -55,7 +55,7 @@ commands = {
 	"buy_powerups":						cmd_sm_powerup,			# soul mixer powerup
 
 	"store_item":						cmd_store_item,
-	"store_item_frombug":				cmd_store_item_frombug,
+	"store_item_frombug":				cmd_store_item,
 	"place_gift":						cmd_place_gift,
 	"place_stored_item":				cmd_place_gift,
 	"sell_gift":						cmd_sell_gift,
