@@ -2,6 +2,8 @@ social-emperors_*.exe
 build/
 .venv/
 saves/
+enemy/
+friend/
 .idea
 __pycache__/
 .DS_Store

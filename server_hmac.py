@@ -3,6 +3,8 @@ import hashlib
 import json
 from typing import Optional, Dict, Any
 
+# SPECIAL THANKS TO: wireframe_0
+
 _SERVER_KEY = "3m0d3pwiupoetn7ysa02"
 
 def string_to_bytes(s): # -> bytes:

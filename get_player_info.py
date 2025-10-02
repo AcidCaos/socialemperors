@@ -40,12 +40,10 @@ def get_target_info(userid, town_id = 0):
 def get_enemy_info(userid, town_id = 0):
 	enemy_id = pvp_enemy(userid, town_id)
 	if not enemy_id:
-		set_pvp_enemy_for(userid, None)
-		# no enemy found
-		# TODO: send valid no enemies found
+		# TODO: see if there's a better way of telling the game client we found nobody
 		response = {
 			"id": None,
-			"result": "ok",
+			"result": "error",
 			"data": None
 		}
 		return response
