@@ -27,6 +27,7 @@ from engine import timestamp_now
 from version import version_name, quest_ids, survival_arenas
 from constants import Constant
 from bundle import ASSETS_DIR, STUB_DIR, TEMPLATES_DIR, BASE_DIR
+from server_hmac import construct_hash_and_payload
 
 host = '127.0.0.1'
 port = 5050
@@ -184,14 +185,12 @@ def pvp_lookup():
     language = request.values['language']
     data = request.values['data']
     
-    some_hash = data[:data.index(";")-1]
+    hmac_hash = data[:data.index(";")-1]
     data = json.loads(data[data.index(";")+1:])
     #print(json.dumps(request.values, indent='\t'))
     #print(json.dumps(data, indent='\t'))    
 
-    # TODO: reverse engineer the HMAC hashing from game client so it can work without client modification
-
-    return (some_hash + ";" + json.dumps(get_enemy_info(USERID, 0)), 200)
+    return (construct_hash_and_payload(get_enemy_info(USERID, 0)), 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/attack/begin", methods=['POST'])
 def pvp_begin():

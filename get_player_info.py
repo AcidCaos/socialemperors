@@ -53,7 +53,7 @@ def get_enemy_info(userid, town_id = 0):
 	set_pvp_enemy_for(userid, enemy_id)
 	response = {
 		"id": userid,
-		"result": "ok",
+		"result": "success",
 		"data": {}
 	}
 	return response
