@@ -492,6 +492,8 @@ def cmd_rt_level_up(player, cmd, args, gameversion):
 	_map["level"] = level_now
 	_map["xp"] = max(get_xp_from_level(max(0, level_now - 1)), _map["xp"])
 
+	pvp_pool_modify(player)
+
 	return True
 
 def cmd_rt_publish_score(player, cmd, args, gameversion):
@@ -504,6 +506,8 @@ def cmd_rt_publish_score(player, cmd, args, gameversion):
 
 	_map["xp"] = xp_now
 	_map["level"] = get_level_from_xp(xp_now)
+
+	pvp_pool_modify(player)
 
 	return True
 
@@ -677,12 +681,16 @@ def cmd_set_variables(player, cmd, args, gameversion):
 	_map["wood"] = args[5]
 	_map["food"] = args[6]
 
+	pvp_pool_modify(player)
+
 	return True
 
 def cmd_ff(player, cmd, args, gameversion):
 	# seconds
 	seconds = args[0]
 	player_fast_forward(player, int(seconds))
+
+	pvp_pool_modify(player)
 
 	return True
 
