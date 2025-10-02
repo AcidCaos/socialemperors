@@ -196,9 +196,6 @@ def pvp_pool_modify(player, town_id = 0):
 	pvp_data_update(userid, player, town_id)
 
 def pvp_pool_allowed(userid, village, town_id = 0):
-	# pvp not allowed until level 8
-	if village["maps"][town_id]["level"] < 8:
-		return False
 	# pvp not allowed for these saves
 	if userid in _pvp_pool_blacklist:
 		return False
@@ -231,14 +228,14 @@ def pvp_enemy(my_userid, town_id):
 	# search favors players around your level
 	# if pvp shield is on, the enemy is skipped
 
-	range_min = level - 5
+	range_min = max(8, level - 5)
 	range_max = level + 5
 	retries = 0
 	retries_level = 0
 	while retries < 1100:
 		if retries_level >= 50:
 			retries_level = 0
-			range_min -= 5
+			range_min = max(8, range_min - 5)
 			range_max += 5
 
 		retries += 1
