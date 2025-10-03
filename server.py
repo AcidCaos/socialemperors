@@ -16,7 +16,7 @@ from get_game_config import get_game_config, patch_game_config
 
 print (" [+] Loading players...")
 from get_player_info import *
-from sessions import load_saved_villages, reload_saves, all_saves_userid, all_saves_info, save_info, new_village, fb_friends_str, pvp_enemy
+from sessions import *
 load_saved_villages()
 
 print (" [+] Loading server...")
@@ -208,11 +208,16 @@ def pvp_begin():
     #    name -> attacker name
     #    user_id -> user_id
     #    attacked_level_id -> enemy level
+    #    [reply] -> 0 if attack is revenge
 
     if not correct:
         return ("", 403)
 
-    # TODO: ATTACK LOG
+    is_revenge = False
+    if "reply" in data:
+        is_revenge = data["reply"] == 0
+
+    pvp_begin_attack(data, is_revenge)
 
     return ("", 200)
 
@@ -241,8 +246,6 @@ def pvp_end():
         return ("", 403)
 
     pvp_modify_victim(data, 0)
-
-    # TODO: ATTACK LOG
 
     return ("", 200)
 
@@ -286,7 +289,6 @@ def get_player_info_response():
     if user is None:
         return (get_player_info(USERID), 200)
     # PVP RANDOM
-    # TODO: Send a random save
     if user == "undefined":
         enemy = get_pvp_search_result(USERID, map)
         if not enemy:

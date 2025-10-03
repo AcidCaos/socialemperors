@@ -8,7 +8,7 @@ from flask import session
 # from flask_session import SqlAlchemySessionInterface, current_app
 
 from version import version_code
-from engine import timestamp_now, pvp_steal_resources
+from engine import *
 from version import migrate_loaded_save
 from constants import Constant
 
@@ -38,6 +38,7 @@ _PVP_SHIELD_AFTER_ATTACK = int(0.5 * 86400)
 __pvp_data = {}
 __pvp_pool = []
 __pvp_search_result = {}
+__pvp_active_data = {}
 
 # PVP blacklist - arthur maps
 _pvp_pool_blacklist = [ "100000030", "100000031", "100000032" ]
@@ -60,6 +61,7 @@ def load_saved_villages():
 	global __pvp_data
 	global __pvp_pool
 	global __pvp_search_result
+	global __pvp_active_data
 
 	check_saves()
 	load_saves(True)
@@ -217,19 +219,25 @@ def load_enemies(add_to_pvp = False):
 
 def get_friend_save(userid):
 	path = os.path.join(FRIENDS_DIR, userid)
+	data = None
 	if os.path.exists(path + ".save.json"):
-		return json.load(open(path + ".save.json"))
+		data = json.load(open(path + ".save.json"))
 	if os.path.exists(path + ".json"):
-		return json.load(open(path + ".json"))
-	return None
+		data = json.load(open(path + ".json"))
+	if data:
+		migrate_loaded_save(data)
+	return data
 
 def get_enemy_save(userid):
 	path = os.path.join(ENEMIES_DIR, userid)
+	data = None
 	if os.path.exists(path + ".save.json"):
-		return json.load(open(path + ".save.json"))
+		data = json.load(open(path + ".save.json"))
 	if os.path.exists(path + ".json"):
-		return json.load(open(path + ".json"))
-	return None
+		data = json.load(open(path + ".json"))
+	if data:
+		migrate_loaded_save(data)
+	return data
 
 # New village
 def new_village():
@@ -276,6 +284,22 @@ def pvp_pool_allowed(userid, village, town_id = 0):
 		return False
 
 	return True
+
+# set pvp attack begin/end state
+def pvp_begin_attack(request, is_revenge = False):
+	userid = request["user_id"]
+	__pvp_active_data[userid] ={
+		"revenge": is_revenge,
+		"target": request["attacked_id"]
+	}
+
+def pvp_end_attack(userid):
+	if userid not in __pvp_active_data:
+		return None
+
+	data = __pvp_active_data[userid]
+	del __pvp_active_data[userid]
+	return data
 
 # set pvp enemy search result for this user
 def set_pvp_enemy_for(userid, enemyid):
@@ -330,7 +354,6 @@ def pvp_enemy(my_userid, town_id):
 
 		# print(json.dumps(data, indent="\t"))
 
-		# TODO: try and match similar level
 		print(f"PVP enemy found after {retries} retries: {user}")
 		return user
 
@@ -377,7 +400,6 @@ def pvp_data_update(userid, player, town_id = 0):
 def pvp_modify_victim(request, town_id = 0):
 	userid = request["attacked_id"]
 	resources = request["resources"]
-	winner = request["winnerId"]
 
 	if userid not in __pvp_data:
 		return
@@ -397,17 +419,22 @@ def pvp_modify_victim(request, town_id = 0):
 
 	ts_now = timestamp_now()
 
+	# grab some extra data
+	extra = pvp_end_attack(request["user_id"])
+
 	# give PVP shield to victim
 	save["privateState"]["shieldEndTime"] = int(ts_now + _PVP_SHIELD_AFTER_ATTACK)
 
 	# steal resources if allowed (saves only)
 	if stealing_allowed:
 		pvp_steal_resources(save, town_id, resources)
-	
+
 	# update pool data
 	pvp_pool_modify(save, town_id)
 
-	# TODO: ATTACK LOG
+	# update attack log
+	pvp_push_attack_log(save, request, extra, get_target_session(request["user_id"]))
+
 	save_target_session(userid, save, session_type)
 
 def get_pvp_session(userid):

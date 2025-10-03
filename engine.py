@@ -559,3 +559,38 @@ def pvp_steal_resources(player, town_id, resources):
 		map["coins"] = max(0, map["coins"] - resources["g"])
 		map["stone"] = max(0, map["stone"] - resources["s"])
 		map["food"] = max(0, map["food"] - resources["f"])
+
+def pvp_push_attack_log(player, request, extra_data, attacker):
+	attack_log = player["privateState"]["PVPattacksReceived"]
+	next_id = len(attack_log)
+
+	# handle revenge attacks
+	is_reply = 0
+	if extra_data:
+		if extra_data["revenge"]:
+			pvp_disable_revenge(attacker, request)
+			is_reply = 1
+
+	# get next available ID
+	while str(next_id) in attack_log:
+		next_id += 1
+
+	entry = {
+		"name": request["name"],
+		"level": request["level"],
+		"id": request["user_id"],
+		"attackWinner": request["winnerId"],
+		"reply": is_reply,
+		"attackResourcesLost": request["resources"],
+		"attackTime": timestamp_now()
+	}
+
+	attack_log[str(next_id)] = entry
+
+def pvp_disable_revenge(player, request):
+	enemy_id = request["attacked_id"]
+	attack_log = player["privateState"]["PVPattacksReceived"]
+	for eid in attack_log:
+		entry = attack_log[eid]
+		if entry["id"] == enemy_id:
+			entry["reply"] = 1

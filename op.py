@@ -691,7 +691,7 @@ def cmd_pvp_end_attack_new(player, cmd, args, gameversion):
 	wood = args[2]
 	stone = args[3]
 	enemy_id = args[4]
-	user_id = args[5]
+	user_id = args[5]	# game sends the wrong thing here
 	user_level = args[6]
 	ts = args[7]
 	winner_id = args[8]
@@ -701,9 +701,9 @@ def cmd_pvp_end_attack_new(player, cmd, args, gameversion):
 	damage_pct = args[12] # (0-100) how much damage was done
 	xp = args[13]
 
-	if player["playerInfo"]["pid"] != user_id:
-		# what are you doing!?
-		return False
+	#if player["playerInfo"]["pid"] != user_id:
+	#	# what are you doing!?
+	#	return False
 
 	# no support for other town IDs, sad :(
 	town_id = 0
@@ -752,9 +752,9 @@ def cmd_pvp_end_attack(player, cmd, args, gameversion):
 	town_id = data["attacker"]["map"]
 	_map = player["maps"][town_id]
 
-	if player["playerInfo"]["pid"] != data["attacker"]["user_id"]:
-		# what are you doing!?
-		return False
+	#if player["playerInfo"]["pid"] != data["attacker"]["user_id"]:
+	#	# what are you doing!?
+	#	return False
 
 	add_map_currency(_map, "coins", data["resources"]["g"])
 	add_map_currency(_map, "food", data["resources"]["f"])

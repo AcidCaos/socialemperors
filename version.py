@@ -190,6 +190,7 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "potionsReceived", {})				# graveyard potions received
 	fix_variable(privateState, "barracksQueues", {})				# unit queues (and soul mixer)
 	fix_variable(privateState, "unlockedQuestIndex", 0)				# quest index
+	fix_variable(privateState, "PVPattacksReceived", {})			# PVP attack log
 
 	# SP's spaghetti is annoying
 	fix_variable(privateState, "deadHeroes", {})					# graveyard old version
