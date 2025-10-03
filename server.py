@@ -269,7 +269,7 @@ def get_game_config_response():
     language = request.values['language']
 
     #print(f"get_game_config: USERID: {USERID}. --", request.values)
-    return get_game_config()
+    return construct_hash_and_payload(get_game_config())
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_player_info.php", methods=['POST'])
 def get_player_info_response():
@@ -294,18 +294,18 @@ def get_player_info_response():
         if not enemy:
             # TODO: handle no players found
             return ("", 404)
-        return (enemy, 200)
+        return (construct_hash_and_payload(enemy), 200)
     # Arthur
     elif user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_1 \
     or user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_2 \
     or user == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_3:
-        return (get_target_info(user, map), 200)
+        return (construct_hash_and_payload(get_target_info(user, map)), 200)
     # Quest
     elif user in quest_ids or user in survival_arenas: # Dirty but quick
-        return get_quest_info(user)
+        return construct_hash_and_payload(get_quest_info(user))
     # Neighbor
     else:
-        return (get_target_info(user, map), 200)
+        return (construct_hash_and_payload(get_target_info(user, map)), 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/sync_error_track.php", methods=['POST'])
 def sync_error_track_response():
@@ -388,7 +388,7 @@ def get_continent_ranking_response():
             {"posicion": 7, "nivel": 0}
         ]
     }
-    return(response)
+    return(construct_hash_and_payload(response))
 
 
 ########
