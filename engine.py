@@ -149,8 +149,6 @@ def building_collect(player, _map, item, vills = 1, res_multiplier = 1.0):
 		# amount based on cp
 		if "cp" in item[7]:
 			amount *= collect_multiplier[int(item[7]["cp"])]
-		else:
-			return False
 
 	# amount based on vills
 	if vills > 1:
