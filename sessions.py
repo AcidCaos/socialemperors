@@ -57,6 +57,7 @@ def load_saved_villages():
 	global __pvp_pool
 	global __pvp_search_result
 
+	check_saves()
 	load_saves(True)
 	load_static_villages(True)
 	copy_static_friends()
@@ -66,10 +67,7 @@ def load_saved_villages():
 	pvp_pool_size = len(__pvp_pool)
 	print(f" [*] PVP pool size: {pvp_pool_size}")
 
-def reload_saves():
-	__saves = {}
-
-	# Saves dir check
+def check_saves():
 	if not os.path.exists(SAVES_DIR):
 		try:
 			print(f"Creating '{SAVES_DIR}' folder...")
@@ -80,7 +78,10 @@ def reload_saves():
 	if not os.path.isdir(SAVES_DIR):
 		print(f"'{SAVES_DIR}' is not a folder... Move the file somewhere else.")
 		exit(1)
-	
+
+def reload_saves():
+	__saves = {}
+
 	load_saves()
 
 	pvp_pool_size = len(__pvp_pool)
