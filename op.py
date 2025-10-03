@@ -120,6 +120,33 @@ def cmd_activate(player, cmd, args, gameversion):
 	building_activate(item[0], toggle)
 	return True
 
+def cmd_collect_new(player, cmd, args, gameversion):
+	# bx, by, town_id, bitem_id, num_vills, resource_multipler, cash_spent
+	# bx, by, town_id, bitem_id
+	bx = args[0]
+	by = args[1]
+	town_id = args[2]
+	bitem_id = args[3]
+	if len(args) >= 4:
+		vills = args[4]
+		res_multiplier = args[5]
+		cash_spent = args[6]
+
+		_map = player["maps"][town_id]
+		item = map_get_item(_map, bx, by, bitem_id)
+
+		if len(item) <= 0:
+			return False
+
+		if cash_spent > 0:
+			if not pay_cash(player, cash_spent):
+				return False
+
+		building_collect(player, _map, item[0], vills, res_multiplier)
+		return True
+	else:
+		return False
+
 def cmd_push_unit(player, cmd, args, gameversion):
 	# ux, uy, uitem_id, bx, by, town_id
 	ux = args[0]

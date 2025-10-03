@@ -43,6 +43,7 @@ commands = {
 	"kill":								cmd_kill,
 
 	"activate":							cmd_activate,
+	"collect_new":						cmd_collect_new,
 	
 	"push_unit":						cmd_push_unit,
 	"pop_unit":							cmd_pop_unit,
@@ -94,7 +95,6 @@ commands = {
 	"complete_mission":					USE_OLD,
 	"reward_mission":					USE_OLD,
 	"add_collectable":					USE_OLD,
-	"collect_new":						USE_OLD,
 	"win_bonus":						NOT_IMPLEMENTED,
 
 	"activate_dragon":					USE_OLD,

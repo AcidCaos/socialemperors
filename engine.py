@@ -32,6 +32,15 @@ resurrectable_heroes = [
 	Constant.ID_UNIT_HIGHELF
 ]
 
+# collect multipliers
+collect_multiplier = [
+	0.0,
+	0.5,
+	1.0,
+	2.0,
+	3.0
+]
+
 # sell divisor (divides by 20 in game for 5% sell value, negative so we refund)
 SELL_DIVISOR = -1.0 / 20.0
 SPEEDUP_COST_PER_HOUR = 1
@@ -124,6 +133,33 @@ def building_activate(item, toggle):
 	else:
 		item[4] = timestamp_now()
 		del item[7]["cp"]
+
+def building_collect(player, _map, item, vills = 1, res_multiplier = 1.0):
+	item_id = item[0]
+	data = get_item_from_id(item_id)
+	if not data:
+		return
+
+	amount = int(data["collect"])
+	resource_type = data["collect_type"]
+	xp = int(data["xp"])
+
+	# amount based on cp
+	if "cp" in item[7]:
+		amount *= collect_multiplier[int(item[7]["cp"])]
+	else:
+		return
+
+	# amount based on vills
+	if vills > 1:
+		amount *= 1.0 + (vills - 1) * 0.2
+
+	# resource multiplier in command
+	amount = int(amount * res_multiplier)
+
+	give_resource_type(player["playerInfo"], _map, resource_type, amount)
+	add_map_currency(_map, "xp", xp)
+
 
 def map_push_unit(map, unit, building, remove = True):
 	building[6].append(unit[0]) # append unit id to building store
