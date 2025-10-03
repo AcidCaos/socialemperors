@@ -1,16 +1,14 @@
 import hmac
 import hashlib
 import json
-from typing import Optional, Dict, Any
 
 # SPECIAL THANKS TO: wireframe_0
-
 _SERVER_KEY = "3m0d3pwiupoetn7ysa02"
 
-def hash_(payload: str, key: str = _SERVER_KEY):
+def hash_(payload, key = _SERVER_KEY):
 	return hmac.new(key.encode("utf-8"), payload.encode("utf-8"), hashlib.sha256).digest()
 
-def construct_hash_and_payload(payload, key: str = _SERVER_KEY):
+def construct_hash_and_payload(payload, key = _SERVER_KEY):
 	payload = json.dumps(payload)
 	return f"{hash_(payload, key).hex()};{payload}"
 
