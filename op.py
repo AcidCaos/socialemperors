@@ -425,6 +425,35 @@ def cmd_name_map(player, cmd, args, gameversion):
 	name = str(args[1])
 
 	player["playerInfo"]["map_names"][town_id] = name
+	player["playerInfo"]["name"] = name # allow renaming of profile too
+
+	return True
+
+def cmd_unlock_skin(player, cmd, args, gameversion):
+	# skin_id
+	skin_id = str(args[0])
+
+	privateState = player["privateState"]
+	if skin_id not in privateState["unlockedSkins"] and skin_id != "0":
+		skin_cost = get_game_config()["globals"]["COST_UNLOCK_SKIN"]
+		if not pay_cash(player, skin_cost):
+			return False
+
+	privateState["unlockedSkins"][skin_id] = True
+
+	return True
+
+def cmd_set_skin(player, cmd, args, gameversion):
+	# town_id, skin_id
+	town_id = args[0]
+	skin_id = str(args[1])
+
+	privateState = player["privateState"]
+	if skin_id not in privateState["unlockedSkins"] and skin_id != "0":
+		return False
+
+	_map = player["maps"][town_id]
+	_map["skin"] = skin_id
 
 	return True
 

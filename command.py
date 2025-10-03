@@ -69,6 +69,8 @@ commands = {
 
 	"expand":							cmd_expand,
 	"name_map":							cmd_name_map,
+	"unlock_skin":						cmd_unlock_skin,
+	"set_skin":							cmd_set_skin,
 	"set_strategy":						cmd_set_strategy,
 	"exchange_cash_new":				cmd_exchange_cash,
 	"rt_level_up":						cmd_rt_level_up,
