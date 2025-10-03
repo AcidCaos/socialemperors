@@ -41,6 +41,8 @@ commands = {
 	"orient":							cmd_orient,
 	"sell":								cmd_sell,
 	"kill":								cmd_kill,
+
+	"activate":							cmd_activate,
 	
 	"push_unit":						cmd_push_unit,
 	"pop_unit":							cmd_pop_unit,

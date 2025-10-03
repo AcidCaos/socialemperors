@@ -117,6 +117,14 @@ def map_orient_item(map, x, y, orientation):
 	for item in items:
 		item[3] = orientation
 
+def building_activate(item, toggle):
+	if toggle > 0:
+		item[4] = timestamp_now()
+		item[7]["cp"] = toggle
+	else:
+		item[4] = timestamp_now()
+		del item[7]["cp"]
+
 def map_push_unit(map, unit, building, remove = True):
 	building[6].append(unit[0]) # append unit id to building store
 	if remove:
@@ -348,8 +356,8 @@ def player_fast_forward(player, seconds):
 			modify_ts_array(lastQuestTimes, idx, -seconds)
 			idx -= 1
 
-		# TODO:
-		# item timers!
+		for item in map["items"]:
+			modify_ts_array(item, 4, -seconds)
 
 	# TODO:
 	# privateState.timestampLastBonus
