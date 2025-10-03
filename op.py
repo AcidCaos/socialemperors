@@ -957,4 +957,10 @@ def cmd_admin_add_animal(player, cmd, args, gameversion):
 
 def cmd_set_help_map(player, cmd, args, gameversion):
 	# key
+	key = str(args[0])
+
+	help_map = player["privateState"]["helpMap"]
+	if key not in help_map:
+		help_map.append(key)
+
 	return True

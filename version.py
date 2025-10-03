@@ -195,6 +195,7 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "countTimePacket", [])				# time machine
 	if len(privateState["countTimePacket"]) < 6:
 		privateState["countTimePacket"] = [ 0, 0, 0, 0, 0, 0 ]
+	fix_variable(privateState, "helpMap", [])						# shown help pages
 
 	# SP's spaghetti is annoying
 	fix_variable(privateState, "deadHeroes", {})					# graveyard old version
