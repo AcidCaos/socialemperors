@@ -56,15 +56,11 @@ def map_add_item(map, item, x, y, orientation = 0, timestamp = None, attr = None
 	if not timestamp:
 		timestamp = timestamp_now()
 
-	# TODO: GET THIS WORKING
 	# # properties
-	# properties = get_attribute_from_item_id(item, "properties")
-	# # enable SI (Socially In Construction), because the game expects it
-	# if properties:
-	# 	properties = json.loads(properties)
-	# 	if "friend_assistable" in properties:
-	# 		if int(properties["friend_assistable"]) > 0:
-	# 			attr["si"] = []
+	si_info = get_si_info(int(item))
+	# enable SI (Socially In Construction), because the game expects it
+	if si_info:
+		attr["si"] = [ "0" ]
 	# # click to build
 	# click_to_build = get_attribute_from_item_id(item, "clicks_to_build")
 	# if click_to_build:
@@ -548,6 +544,16 @@ def pay_potions(player, amount):
 
 	player["privateState"]["potion"] -= int(amount)
 	return True
+
+def push_si(item, friend):
+	if "si" not in item[7]:
+		return
+	item[7]["si"].append(str(friend))
+
+def finish_si(item):
+	if "si" not in item[7]:
+		return
+	del item[7]["si"]
 
 def give_levelup_reward(player, map, level):
 	reward_type = level["reward_type"]

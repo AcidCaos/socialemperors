@@ -44,6 +44,8 @@ commands = {
 
 	"activate":							cmd_activate,
 	"collect_new":						cmd_collect_new,
+	"buy_si_help":						cmd_buy_si_help,
+	"finish_si":						cmd_finish_si,
 	
 	"push_unit":						cmd_push_unit,
 	"pop_unit":							cmd_pop_unit,

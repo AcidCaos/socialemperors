@@ -1,7 +1,7 @@
 import json
 
 from sessions import session, save_session, pvp_pool_modify, pvp_modify_victim
-from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional
+from get_game_config import *
 from constants import Constant
 from engine import *
 
@@ -145,6 +145,46 @@ def cmd_collect_new(player, cmd, args, gameversion):
 		return building_collect(player, _map, item[0], vills, res_multiplier)
 	else:
 		return False
+
+def cmd_buy_si_help(player, cmd, args, gameversion):
+	# bx, by, town_id, bitem_id
+	bx = args[0]
+	by = args[1]
+	town_id = args[2]
+	bitem_id = args[3]
+
+	_map = player["maps"][town_id]
+	item = map_get_item(_map, bx, by, bitem_id)
+
+	if len(item) <= 0:
+		return False
+
+	si_info = get_si_info(int(bitem_id))
+	if not si_info:
+		return False
+	if not pay_cash(player, si_info["worker_cost"]):
+		return False
+
+	push_si(item[0], "0")
+
+	return True
+
+def cmd_finish_si(player, cmd, args, gameversion):
+	# bx, by, town_id, bitem_id
+	bx = args[0]
+	by = args[1]
+	town_id = args[2]
+	bitem_id = args[3]
+
+	_map = player["maps"][town_id]
+	item = map_get_item(_map, bx, by, bitem_id)
+
+	if len(item) <= 0:
+		return False
+
+	finish_si(item[0])
+
+	return True
 
 def cmd_push_unit(player, cmd, args, gameversion):
 	# ux, uy, uitem_id, bx, by, town_id

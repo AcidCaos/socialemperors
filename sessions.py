@@ -529,13 +529,20 @@ def fb_friends_str(USERID: str):
 			continue
 		frie = {}
 		frie["uid"] = vill["playerInfo"]["pid"]
+		frie["first_name"] = vill["playerInfo"]["name"]
+		frie["name"] = vill["playerInfo"]["name"]
 		frie["pic_square"] = vill["playerInfo"]["pic"]
 		if not frie["pic_square"]: frie["pic_square"] = "/img/profile/1025.png"
 		friends += [frie]
 	# Friends
 	for key in __friend_info:
 		f = __friend_info[key]
-		friends += [{ "uid": f["pid"], "pic_square": f["pic"] }]
+		friends += [{
+			"uid": f["pid"],
+			"pic_square": f["pic"],	# not gonna work in SI, it loads from graph.facebook.com!
+			"name": f["name"],
+			"first_name": f["first_name"],
+		}]
 	# other players
 	for key in __saves:
 		vill = __saves[key]
@@ -543,9 +550,12 @@ def fb_friends_str(USERID: str):
 			continue
 		frie = {}
 		frie["uid"] = vill["playerInfo"]["pid"]
+		frie["first_name"] = vill["playerInfo"]["name"]
 		frie["pic_square"] = vill["playerInfo"]["pic"]
+		frie["name"] = vill["playerInfo"]["name"]
 		if not frie["pic_square"]: frie["pic_square"] = "/img/profile/1025.png"
 		friends += [frie]
+
 	return friends
 
 def neighbors(USERID):
@@ -584,6 +594,8 @@ def neighbor_data(player, town_id = 0):
 	info["stone"] = _map["stone"]
 	info["uid"] = info["pid"]
 	info["pic_square"] = info["pic"]
+	info["first_name"] = info["name"]
+	info["name"] = info["name"]
 	
 	return info 
 
