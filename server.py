@@ -27,7 +27,7 @@ from engine import timestamp_now
 from version import version_name, quest_ids, survival_arenas
 from constants import Constant
 from bundle import ASSETS_DIR, STUB_DIR, TEMPLATES_DIR, BASE_DIR
-from server_hmac import construct_hash_and_payload
+from server_hmac import construct_hash_and_payload, check_hmac
 
 host = '127.0.0.1'
 port = 5050
@@ -176,7 +176,6 @@ def static_assets_loader(path):
 ## GAME DYNAMIC
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/enemy", methods=['POST'])
-# http://127.0.0.1:5050/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/enemy?
 def pvp_lookup():
     USERID = request.values['USERID']
     user_key = request.values['user_key']
@@ -184,11 +183,10 @@ def pvp_lookup():
         spdebug = request.values['spdebug']
     language = request.values['language']
     data = request.values['data']
-    
-    hmac_hash = data[:data.index(";")-1]
-    data = json.loads(data[data.index(";")+1:])
-    #print(json.dumps(request.values, indent='\t'))
-    #print(json.dumps(data, indent='\t'))    
+
+    data, correct = check_hmac(request.values['data'])
+    if not correct: # Invalid HMAC
+        return ("", 403)
 
     return (construct_hash_and_payload(get_enemy_info(USERID, 0)), 200)
 
