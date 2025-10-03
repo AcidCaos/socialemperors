@@ -34,6 +34,7 @@ commands = {
 	"set_variables":					cmd_set_variables,
 	"fast_forward":						cmd_ff,
 	"game_status":						cmd_game_status,
+	"ping":								cmd_ping,
 
 	"buy":								cmd_buy,
 	"move":								cmd_move,
@@ -81,6 +82,7 @@ commands = {
 	"buy_shield":						cmd_buy_shield,
 	"reset_shield":						cmd_reset_shield,
 	"get_enemy_new":					cmd_pvp_get_enemy_new,
+	"begin_attack_new":					cmd_pvp_begin_attack_new,
 	"end_attack":						cmd_pvp_end_attack,
 	"end_attack_new":					cmd_pvp_end_attack_new,
 

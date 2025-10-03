@@ -35,7 +35,7 @@ port = 5050
 app = Flask(__name__, template_folder=TEMPLATES_DIR)
 
 # SILENCE FLASK BUT NOT SERVER LOGGER
-logging.getLogger('werkzeug').disabled = True		# False enables flask logging
+logging.getLogger('werkzeug').disabled = True        # False enables flask logging
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
@@ -182,7 +182,6 @@ def pvp_lookup():
     if 'spdebug' in request.values:
         spdebug = request.values['spdebug']
     language = request.values['language']
-    data = request.values['data']
 
     data, correct = check_hmac(request.values['data'])
     if not correct: # Invalid HMAC
@@ -192,10 +191,59 @@ def pvp_lookup():
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/attack/begin", methods=['POST'])
 def pvp_begin():
+    USERID = request.values['USERID']
+    user_key = request.values['user_key']
+    if 'spdebug' in request.values:
+        spdebug = request.values['spdebug']
+    language = request.values['language']
+
+    #print("request: "+json.dumps(request.values, indent='\t'))
+    data, correct = check_hmac(request.values['data'])
+    #print("data: "+json.dumps(data, indent='\t'))
+
+    # data -> dict
+    #    attacked_id -> enemy_id
+    #    rival_name -> enemy name
+    #    level -> attacker level
+    #    name -> attacker name
+    #    user_id -> user_id
+    #    attacked_level_id -> enemy level
+
+    if not correct:
+        return ("", 403)
+
+    # TODO: ATTACK LOG
+
     return ("", 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/attack/end", methods=['POST'])
 def pvp_end():
+    USERID = request.values['USERID']
+    user_key = request.values['user_key']
+    if 'spdebug' in request.values:
+        spdebug = request.values['spdebug']
+    language = request.values['language']
+
+    #print("request: "+json.dumps(request.values, indent='\t'))
+    data, correct = check_hmac(request.values['data'])
+    #print("data: "+json.dumps(data, indent='\t'))
+
+    # data -> dict
+    #    user_id -> user_id
+    #    percentage -> damage% (0-1)
+    #    level -> attacker level
+    #    winnerId -> winner_id
+    #    attacked_id -> enemy_id
+    #    name -> attacker name
+    #    resources -> stolen resources { s, f, g, w }
+
+    if not correct:
+        return ("", 403)
+
+    pvp_modify_victim(data, 0)
+
+    # TODO: ATTACK LOG
+
     return ("", 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/track_game_status.php", methods=['POST'])

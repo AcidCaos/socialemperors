@@ -8,6 +8,10 @@ from engine import *
 def cmd_nop(player, cmd, args, gameversion):
 	return True
 
+def cmd_ping(player, cmd, args, gameversion):
+	# id
+	return True
+
 def cmd_game_status(player, cmd, args, gameversion):
 	return True
 
@@ -674,6 +678,12 @@ def cmd_pvp_get_enemy_new(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_pvp_begin_attack_new(player, cmd, args, gameversion):
+	# timestamp
+	ts = args[0]
+
+	return True
+
 def cmd_pvp_end_attack_new(player, cmd, args, gameversion):
 	# g, f, w, s, eid, uid, ulevel, ts, winner_id, voluntary_end, attack_is_reply, dmg > shield% limit, damage_pct, xp 
 	gold = args[0]
@@ -705,17 +715,7 @@ def cmd_pvp_end_attack_new(player, cmd, args, gameversion):
 	add_map_currency(_map, "stone", stone)
 	add_map_currency(_map, "xp", xp)
 
-	# TODO: ATTACK LOG
-
 	pvp_pool_modify(player)
-
-	resources = {
-		"g": gold,
-		"f": food,
-		"w": wood,
-		"s": stone
-	}
-	pvp_modify_victim(enemy_id, resources, town_id)
 
 	return True
 
@@ -764,8 +764,6 @@ def cmd_pvp_end_attack(player, cmd, args, gameversion):
 
 	# remove lost units and send them to graveyard
 	handle_unit_loss(player, _map, data["attacker_units"])
-
-	# TODO: ATTACK LOG
 
 	pvp_pool_modify(player)
 

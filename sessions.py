@@ -374,7 +374,11 @@ def pvp_data_update(userid, player, town_id = 0):
 	data["level"] = player["maps"][town_id]["level"]
 	data["shield"] = player["privateState"]["shieldEndTime"]
 
-def pvp_modify_victim(userid, resources, town_id = 0):
+def pvp_modify_victim(request, town_id = 0):
+	userid = request["attacked_id"]
+	resources = request["resources"]
+	winner = request["winnerId"]
+
 	if userid not in __pvp_data:
 		return
 	data = __pvp_data[userid]
