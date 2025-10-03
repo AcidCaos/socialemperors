@@ -1,6 +1,6 @@
 import json
 
-from sessions import session, save_session, pvp_pool_modify
+from sessions import session, save_session, pvp_pool_modify, pvp_modify_victim
 from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional
 from constants import Constant
 from engine import *
@@ -708,6 +708,15 @@ def cmd_pvp_end_attack_new(player, cmd, args, gameversion):
 	# TODO: ATTACK LOG
 
 	pvp_pool_modify(player)
+
+	resources = {
+		"g": gold,
+		"f": food,
+		"w": wood,
+		"s": stone
+	}
+	pvp_modify_victim(enemy_id, resources, town_id)
+
 	return True
 
 def cmd_pvp_end_attack(player, cmd, args, gameversion):
@@ -757,7 +766,6 @@ def cmd_pvp_end_attack(player, cmd, args, gameversion):
 	handle_unit_loss(player, _map, data["attacker_units"])
 
 	# TODO: ATTACK LOG
-	# TODO: TRIGGER 1 DAY PVP SHIELD ON VICTIM
 
 	pvp_pool_modify(player)
 

@@ -551,3 +551,11 @@ def handle_unit_loss(player, map, units):
 
 		if lost > 0:
 			player_lose_item(player, map, uid, lost)
+
+def pvp_steal_resources(player, town_id, resources):
+	map = player["maps"][town_id]
+	for res in resources:
+		map["wood"] = max(0, map["wood"] - resources["w"])
+		map["coins"] = max(0, map["coins"] - resources["g"])
+		map["stone"] = max(0, map["stone"] - resources["s"])
+		map["food"] = max(0, map["food"] - resources["f"])

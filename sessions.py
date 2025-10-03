@@ -8,7 +8,7 @@ from flask import session
 # from flask_session import SqlAlchemySessionInterface, current_app
 
 from version import version_code
-from engine import timestamp_now
+from engine import timestamp_now, pvp_steal_resources
 from version import migrate_loaded_save
 from constants import Constant
 
@@ -346,6 +346,38 @@ def pvp_data_update(userid, player, town_id = 0):
 	data["level"] = player["maps"][town_id]["level"]
 	data["shield"] = player["privateState"]["shieldEndTime"]
 
+def pvp_modify_victim(userid, resources, town_id = 0):
+	if userid not in __pvp_data:
+		return
+	data = __pvp_data[userid]
+	session_type = data["type"]
+
+	save = get_target_session(userid)
+	if not save:
+		return
+
+	stealing_allowed = False
+
+	if session_type == SESSION_VILLAGE:		# not allowed for static!
+		return
+	if session_type == SESSION_SAVE:
+		stealing_allowed = True
+
+	ts_now = timestamp_now()
+
+	# give 24h shield to victim
+	save["privateState"]["shieldEndTime"] = ts_now + 86400
+
+	# steal resources if allowed (saves only)
+	if stealing_allowed:
+		pvp_steal_resources(save, town_id, resources)
+	
+	# update pool data
+	pvp_pool_modify(save, town_id)
+
+	# TODO: ATTACK LOG
+	save_target_session(userid, save, session_type)
+
 def get_pvp_session(userid):
 	if userid in __pvp_data:
 		data = __pvp_data[userid]
@@ -369,6 +401,24 @@ def get_target_session(userid):
 		elif userid in __saves:
 			result = __saves[userid]
 	return result
+
+def get_target_path(session_type):
+	if session_type == SESSION_SAVE:
+		return SAVES_DIR
+	if session_type == SESSION_ENEMY:
+		return ENEMIES_DIR
+	if session_type == SESSION_FRIEND:
+		return FRIENDS_DIR
+
+	# not allowed for static!
+	return None	
+
+def save_target_session(userid, save, session_type):
+	path = get_target_path(session_type)
+	if not path:
+		return
+
+	save_session_path(userid, save, path)
 
 def all_saves_userid():
 	"Returns a list of the USERID of every saved village."
@@ -509,3 +559,9 @@ def save_session(USERID: str):
 	village = session(USERID)
 	with open(os.path.join(SAVES_DIR, file), 'w') as f:
 		json.dump(village, f, indent='\t')
+
+def save_session_path(USERID: str, save: dict, path: str):
+	# TODO 
+	file = f"{USERID}.save.json"
+	with open(os.path.join(path, file), 'w') as f:
+		json.dump(save, f, indent='\t')
