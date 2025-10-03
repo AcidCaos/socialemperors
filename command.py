@@ -31,22 +31,23 @@ def EXCEPTION(player, cmd, args, gameversion):
 	raise Exception("Command exception")
 
 commands = {
+	# utils ---------------------------------------------------------------------------------------------------
 	"set_variables":					cmd_set_variables,
 	"fast_forward":						cmd_ff,
 	"game_status":						cmd_game_status,
 	"ping":								cmd_ping,
-
+	# map item placement --------------------------------------------------------------------------------------
 	"buy":								cmd_buy,
 	"move":								cmd_move,
 	"orient":							cmd_orient,
 	"sell":								cmd_sell,
 	"kill":								cmd_kill,
-
+	# production buildings ------------------------------------------------------------------------------------
 	"activate":							cmd_activate,
 	"collect_new":						cmd_collect_new,
 	"buy_si_help":						cmd_buy_si_help,
 	"finish_si":						cmd_finish_si,
-	
+	# building queues and soul mixer --------------------------------------------------------------------------
 	"push_unit":						cmd_push_unit,
 	"pop_unit":							cmd_pop_unit,
 	"push_queue_unit":					cmd_push_queue_unit,
@@ -54,7 +55,7 @@ commands = {
 	"pop_queue_unit":					cmd_pop_queue_unit,
 	"unqueue_unit":						cmd_unqueue_unit,
 	"buy_powerups":						cmd_sm_powerup,			# soul mixer powerup
-
+	# item storage --------------------------------------------------------------------------------------------
 	"store_item":						cmd_store_item,
 	"store_item_frombug":				cmd_store_item,
 	"place_gift":						cmd_place_gift,
@@ -62,37 +63,42 @@ commands = {
 	"sell_gift":						cmd_sell_gift,
 	"sell_stored_item":					cmd_sell_stored_item,
 	"sell_iphone_item":					cmd_sell_stored_item,	# this should modify a different thing perhaps?
-
+	# warehouse -----------------------------------------------------------------------------------------------
 	"add_unit_warehouse":				cmd_add_warehoused_item,
 	"place_warehoused_item":			cmd_place_warehoused_item,
 	"buy_warehouse_capacity":			NOT_IMPLEMENTED,	# not used
 	"buy_warehouse_capacity_single":	cmd_buy_warehouse_capacity,
 	"reset_warehouse":					cmd_reset_warehouse,
-
+	# graveyard -----------------------------------------------------------------------------------------------
 	"resurrect_hero":					cmd_resurrect_hero,
 	"graveyard_buy_potions":			cmd_graveyard_buy_potions,
-
-	"expand":							cmd_expand,
-	"name_map":							cmd_name_map,
+	# weather machine -----------------------------------------------------------------------------------------
 	"unlock_skin":						cmd_unlock_skin,
 	"set_skin":							cmd_set_skin,
+	# time machine --------------------------------------------------------------------------------------------
+	"buy_time_packet":					cmd_tm_buy_packet,
+	"time_ff":							cmd_tm_use_packet,
+	# player general ------------------------------------------------------------------------------------------
+	"expand":							cmd_expand,
+	"name_map":							cmd_name_map,
 	"set_strategy":						cmd_set_strategy,
 	"exchange_cash_new":				cmd_exchange_cash,
 	"rt_level_up":						cmd_rt_level_up,
 	"rt_publish_score":					cmd_rt_publish_score,
+	"set_help_map":						cmd_set_help_map,
 	"admin_add_animal":					cmd_admin_add_animal,
-
+	# quests, tournament --------------------------------------------------------------------------------------
 	"set_attack_team":					cmd_set_attack_team,
 	"start_quest":						cmd_start_quest,
 	"end_quest":						cmd_end_quest,
-
+	# pvp -----------------------------------------------------------------------------------------------------
 	"buy_shield":						cmd_buy_shield,
 	"reset_shield":						cmd_reset_shield,
 	"get_enemy_new":					cmd_pvp_get_enemy_new,
 	"begin_attack_new":					cmd_pvp_begin_attack_new,
 	"end_attack":						cmd_pvp_end_attack,
 	"end_attack_new":					cmd_pvp_end_attack_new,
-
+	# old -----------------------------------------------------------------------------------------------------
 	"complete_tutorial":				USE_OLD,
 	"complete_mission":					USE_OLD,
 	"reward_mission":					USE_OLD,

@@ -399,6 +399,40 @@ def cmd_place_gift(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_tm_buy_packet(player, cmd, args, gameversion):
+	# packet_id
+	packet_id = int(args[0])
+	packet = get_time_machine_packet(packet_id)
+
+	if not packet:
+		return False
+
+	cost = packet["price"]
+	if not pay_cash(player, cost):
+		return False
+
+	player["privateState"]["countTimePacket"][packet_id] += 1
+
+	return True
+
+def cmd_tm_use_packet(player, cmd, args, gameversion):
+	# packet_id
+	packet_id = int(args[0])
+	packet = get_time_machine_packet(packet_id)
+
+	if not packet:
+		return False
+
+	packets = player["privateState"]["countTimePacket"]
+	if packets[packet_id] <= 0:
+		return False
+
+	packets[packet_id] -= 1
+
+	player_fast_forward(player, int(packet["hours"] * 3600), True)
+
+	return True
+
 def cmd_graveyard_buy_potions(player, cmd, args, gameversion):
 	potion_data = get_game_config()["globals"]["GRAVEYARD_POTIONS"]
 	potion_amount = int(potion_data["amount"])
@@ -919,4 +953,8 @@ def cmd_admin_add_animal(player, cmd, args, gameversion):
 
 	animals[subcategory] = prev + amount
 
+	return True
+
+def cmd_set_help_map(player, cmd, args, gameversion):
+	# key
 	return True

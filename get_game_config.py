@@ -111,12 +111,6 @@ def get_level_from_xp(xp: int):
 		i += 1
 	return 0
 
-#########
-# ITEMS #
-#########
-
-# ID
-
 items_dict_id_to_items_index = {int(item["id"]): i for i, item in enumerate(__game_config["items"])}
 
 def get_item_from_id(id: int):
@@ -130,24 +124,11 @@ def get_attribute_from_item_id(id: int, attribute_name: str):
 def get_name_from_item_id(id: int):
 	return get_attribute_from_item_id(id, "name")
 
-# subcat_functional
-
 items_dict_subcat_functional_to_items_index = {int(item["subcat_functional"]): i for i, item in enumerate(__game_config["items"])}
-
-# SI
-def get_si_info(item_id):
-	for si in __game_config["social_items"]:
-		if si["id"] == item_id:
-			return si
-	return None
 
 def get_item_from_subcat_functional(subcat_functional: int):
 	items_index = items_dict_subcat_functional_to_items_index[int(subcat_functional)] if int(subcat_functional) in items_dict_subcat_functional_to_items_index else None
 	return __game_config["items"][items_index] if items_index is not None else None
-
-############
-# MISSIONS #
-############
 
 missions_dict_id_to_missions_index = {int(item["id"]): i for i, item in enumerate(__game_config["missions"])}
 
@@ -158,3 +139,17 @@ def get_mission_from_id(id: int):
 def get_attribute_from_mission_id(id: int, attribute_name: str):
 	mission = get_mission_from_id(id)
 	return mission[attribute_name] if mission and attribute_name in mission else None
+
+
+def get_si_info(item_id):
+	for si in __game_config["social_items"]:
+		if si["id"] == item_id:
+			return si
+	return None
+
+def get_time_machine_packet(idx):
+	packets = __game_config["globals"]["TIME_MACHINE"]
+	if idx >= 0 and idx < len(packets):
+		return packets[idx]
+
+	return None

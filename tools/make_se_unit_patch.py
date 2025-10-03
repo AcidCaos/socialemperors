@@ -203,6 +203,13 @@ def make_final(config, patch, sm_patch):
 		name = item["name"]
 		print(f"applied size fix to {name}")
 
+	# fix sky tower 2 incorrect size
+	item = get_item(items, 1463)
+	if item:
+		item["in_store"] = "1"
+		name = item["name"]
+		print(f"enabled buying of {name}")
+
 	# build final patch
 	final = []
 	final.append({

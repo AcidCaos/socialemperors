@@ -380,7 +380,7 @@ def player_lose_item(player, map, item_id, amount):
 		del items[0]
 		amount -= 1
 
-def player_fast_forward(player, seconds):
+def player_fast_forward(player, seconds, time_machine = False):
 	maps = player["maps"]
 	privateState = player["privateState"]
 
@@ -407,8 +407,9 @@ def player_fast_forward(player, seconds):
 	# privateState.timeStampDartsNewFree
 
 	# shields
-	modify_ts(privateState, "shieldEndTime", -seconds)
-	modify_ts(privateState, "shieldCooldown", -seconds)
+	if not time_machine:
+		modify_ts(privateState, "shieldEndTime", -seconds)
+		modify_ts(privateState, "shieldCooldown", -seconds)
 
 	# privateState.survivalVidaTimeStamp
 	survivalVidaTimeStamp = privateState["survivalVidaTimeStamp"]

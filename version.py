@@ -192,6 +192,9 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "unlockedQuestIndex", 0)				# quest index
 	fix_variable(privateState, "PVPattacksReceived", {})			# PVP attack log
 	fix_variable(privateState, "unlockedSkins", {})					# weather machine
+	fix_variable(privateState, "countTimePacket", [])				# time machine
+	if len(privateState["countTimePacket"]) < 6:
+		privateState["countTimePacket"] = [ 0, 0, 0, 0, 0, 0 ]
 
 	# SP's spaghetti is annoying
 	fix_variable(privateState, "deadHeroes", {})					# graveyard old version
