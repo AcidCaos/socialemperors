@@ -30,6 +30,10 @@ _PVP_SEARCH_LEVEL_RANGE = 10 # -that, +that
 # This is because PVP unlocks at level 8 in the game client
 _PVP_MIN_LEVEL = 8 
 
+# How long the PVP Shield will be enabled on the player you attack
+# after finishing the attack. Set to 0 to disable, default is 12h (0.5 days)
+_PVP_SHIELD_AFTER_ATTACK = int(0.5 * 86400)
+
 # PVP pool data
 __pvp_data = {}
 __pvp_pool = []
@@ -333,6 +337,25 @@ def pvp_enemy(my_userid, town_id):
 	print("No enemy found! :(")
 	return None
 
+def pvp_simulate_resources(save, userid, town_id = 0):
+	pool_data = get_pvp_data(userid)
+	if pool_data:
+		session_type = pool_data["type"]
+
+	# if in friend/ or enemy/, simulate resources being lost and gained over time
+	if session_type == SESSION_FRIEND or session_type == SESSION_ENEMY:
+		hours = int((timestamp_now() - save["privateState"]["shieldEndTime"]) / 3600)
+		#print(f"hours since last shield: {hours}")
+		res_multiplier = min(1.0, max(0.125, float(hours) / (24 * 2)))	# 2 days to recharge
+		#print(f"res_multiplier = {res_multiplier}")
+		_map = save["maps"][town_id]
+
+		# this does not modify the save, it's just client side
+		_map["coins"] = max(0, int(_map["coins"] * res_multiplier))
+		_map["food"] = max(0, int(_map["food"] * res_multiplier))
+		_map["wood"] = max(0, int(_map["wood"] * res_multiplier))
+		_map["stone"] = max(0, int(_map["stone"] * res_multiplier))
+
 def pvp_data(player, session_type, town_id = 0):
 	data = {
 		"level": player["maps"][town_id]["level"],
@@ -340,6 +363,11 @@ def pvp_data(player, session_type, town_id = 0):
 		"type": session_type,
 	}
 	return data
+
+def get_pvp_data(userid):
+	if userid in __pvp_pool:
+		return __pvp_data[userid]
+	return None
 
 def pvp_data_update(userid, player, town_id = 0):
 	data = __pvp_data[userid]
@@ -365,8 +393,8 @@ def pvp_modify_victim(userid, resources, town_id = 0):
 
 	ts_now = timestamp_now()
 
-	# give 24h shield to victim
-	save["privateState"]["shieldEndTime"] = ts_now + 86400
+	# give PVP shield to victim
+	save["privateState"]["shieldEndTime"] = int(ts_now + _PVP_SHIELD_AFTER_ATTACK)
 
 	# steal resources if allowed (saves only)
 	if stealing_allowed:

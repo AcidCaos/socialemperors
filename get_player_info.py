@@ -25,6 +25,7 @@ def get_player_info(USERID, town_id = 0):
 
 def get_target_info(userid, town_id = 0):
 	save = get_target_session(userid)
+	pvp_simulate_resources(save, userid, town_id)
 
 	response = {
 		"result": "ok",
@@ -62,7 +63,8 @@ def get_pvp_search_result(userid, town_id):
 		return None
 
 	save = get_pvp_session(enemy_id)
-
+	pvp_simulate_resources(save, enemy_id, town_id)
+	
 	response = {
 		"result": "ok",
 		"processed_errors": 0,
