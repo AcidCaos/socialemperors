@@ -144,11 +144,17 @@ def building_collect(player, _map, item, vills = 1, res_multiplier = 1.0):
 	resource_type = data["collect_type"]
 	xp = int(data["xp"])
 
-	# amount based on cp
-	if "cp" in item[7]:
-		amount *= collect_multiplier[int(item[7]["cp"])]
+	if int(data["subcat_functional"]) == Constant.SUBCATFUNC_BUILDING_FARM:
+		# farms cost 1/3rd of the amount collected in wood
+		wood_cost = int(round(amount / 3))
+		if not pay_map_currency(_map, "wood", wood_cost):
+			return False
 	else:
-		return
+		# amount based on cp
+		if "cp" in item[7]:
+			amount *= collect_multiplier[int(item[7]["cp"])]
+		else:
+			return False
 
 	# amount based on vills
 	if vills > 1:
@@ -160,6 +166,9 @@ def building_collect(player, _map, item, vills = 1, res_multiplier = 1.0):
 	give_resource_type(player["playerInfo"], _map, resource_type, amount)
 	add_map_currency(_map, "xp", xp)
 
+	item[4] = timestamp_now()
+
+	return True
 
 def map_push_unit(map, unit, building, remove = True):
 	building[6].append(unit[0]) # append unit id to building store

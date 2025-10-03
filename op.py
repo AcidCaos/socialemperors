@@ -142,8 +142,7 @@ def cmd_collect_new(player, cmd, args, gameversion):
 			if not pay_cash(player, cash_spent):
 				return False
 
-		building_collect(player, _map, item[0], vills, res_multiplier)
-		return True
+		return building_collect(player, _map, item[0], vills, res_multiplier)
 	else:
 		return False
 
