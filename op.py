@@ -248,7 +248,10 @@ def cmd_push_queue_unit(player, cmd, args, gameversion):
 		item_data = get_item_from_id(uitem_id)
 		cost = int(item_data["cost"])
 		cost_type = item_data["cost_type"]
-		cost_food = cost << 1			# x2 food
+
+		cost_food = 0
+		if cost_type != "f":
+			cost_food = cost << 1			# x2 food
 
 		refund_res =  pay_resource_type(_map, cost_type, cost)
 		if not refund_res:
