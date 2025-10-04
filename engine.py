@@ -177,6 +177,13 @@ def map_pop_unit(map, building, item_id, x, y, orientation):
 	map_add_item(map, item_id, x, y, orientation)
 	return True
 
+def map_pop_unit_short(map, building, item_id):
+	if item_id not in building[6]:
+		return False
+	
+	building[6].remove(item_id)
+	return True
+
 def player_push_queue_unit(player, building, item_id, bq, is_soulmixer):
 	attr = building[7]
 

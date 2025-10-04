@@ -211,16 +211,24 @@ def cmd_pop_unit(player, cmd, args, gameversion):
 	by = args[1]
 	town_id = args[2]
 	uitem_id = args[3]
-	ux = args[4]
-	uy = args[5]
-	uorientation = args[6]
+	if len(args) > 4:
+		ux = args[4]
+		uy = args[5]
+		uorientation = args[6]
 
-	_map = player["maps"][town_id]
-	building = map_get_item(_map, bx, by)
-	if len(building) <= 0:
-		return False	# map error, multiple buildings in same location
-	if not map_pop_unit(_map, building[0], uitem_id, ux, uy, uorientation):
-		return False	# unit was never in this building
+		_map = player["maps"][town_id]
+		building = map_get_item(_map, bx, by)
+		if len(building) <= 0:
+			return False	# map error, multiple buildings in same location
+		if not map_pop_unit(_map, building[0], uitem_id, ux, uy, uorientation):
+			return False	# unit was never in this building
+	else:
+		_map = player["maps"][town_id]
+		building = map_get_item(_map, bx, by)
+		if len(building) <= 0:
+			return False	# map error, multiple buildings in same location
+		if not map_pop_unit_short(_map, building[0], uitem_id):
+			return False	# unit was never in this building
 
 	return True
 

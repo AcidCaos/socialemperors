@@ -1,5 +1,6 @@
 import json
 import logging
+import traceback
 
 from datetime import datetime
 from sessions import session, save_session
@@ -154,7 +155,13 @@ def do_command(USERID, cmd, args, gameversion):
 	# print(" [+] COMMAND: ", cmd, "(", args, ") -> ", sep='', end='')
 
 	if cmd in commands:
-		result = commands[cmd](save, cmd, args, gameversion)
+		try:
+			result = commands[cmd](save, cmd, args, gameversion)
+		except:
+			traceback.print_exc()
+			_NOTOK(cmd, args)
+			return
+
 		if result == 2:
 			_OKOLD(cmd, args)
 		elif result == True:
