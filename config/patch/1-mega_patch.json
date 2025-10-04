@@ -31,7 +31,7 @@
 			"QUEST_ISLA_TROLLS_4":		{ "g": 9000 },
 			"QUEST_ISLA_VIKINGO":		{ "g": 8000 },
 			"QUEST_ISLA_EGYPT":			{ "g": 4000 },
-			"QUEST_ISLA_GOLEM":			{ "g": 16000 },
+			"QUEST_BOSS_GOLEM":			{ "g": 16000 },
 			"QUEST_ISLA_DRAGON":		{ "g": 17500 },
 			"QUEST_ISLA_AZTECAS":		{ "g": 10000 },
 			"QUEST_ISLA_CHINOS":		{ "g": 8000 },

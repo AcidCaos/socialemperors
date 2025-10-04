@@ -2,6 +2,7 @@ import json
 import os
 import jsonpatch
 from bundle import MODS_DIR, CONFIG_DIR, CONFIG_PATCH_DIR
+from constants import Constant
 
 __game_config = json.load(open(os.path.join(CONFIG_DIR, "main.json"), 'r', encoding='utf-8'))
 
