@@ -20,6 +20,10 @@ def _NOTOK(cmd, args):
 	log.info(f"[C] FAILED: {cmd} {args}")
 	raise Exception(f"Illegal server command")
 
+def _ERROR(cmd, args):
+	log.info(f"[C] CRASH: {cmd} {args}")
+	raise Exception(f"Illegal server command")
+
 def NOT_IMPLEMENTED(player, cmd, args, gameversion):
 	log.info(f"[C] UNKNOWN: {cmd} {args}")
 	return True
@@ -152,14 +156,13 @@ def command(USERID, data, gameversion):
 
 def do_command(USERID, cmd, args, gameversion):
 	save = session(USERID)
-	# print(" [+] COMMAND: ", cmd, "(", args, ") -> ", sep='', end='')
 
 	if cmd in commands:
 		try:
 			result = commands[cmd](save, cmd, args, gameversion)
 		except:
 			traceback.print_exc()
-			_NOTOK(cmd, args)
+			_ERROR(cmd, args)
 			return
 
 		if result == 2:
