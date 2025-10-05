@@ -189,9 +189,19 @@ def units_pack_get_data():
     print("data: "+json.dumps(data, indent='\t'))
     print("-----------------------------------")
     if not correct: # Invalid HMAC
-        return ("", 403)
+        return (construct_hash_and_payload({
+            "result": "error"
+        }), 403)
 
-    return (construct_hash_and_payload({}), 200)
+    # data -> dict:
+    #    n -> int, number of packs bought
+    
+    #    if n is between >= 2 and < 8, apply 10% discount (* 0.9)
+    #    if n is between >= 8, apply 15% discount (* 0.85)
+
+    return (construct_hash_and_payload({
+        "result": "success"
+    }), 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/enemy", methods=['POST'])
 def pvp_lookup():

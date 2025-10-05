@@ -79,6 +79,12 @@
 		]
 	},
 	{
+		"_TITLE": "Nerroth - Unit Packs",
+		"op": "add",
+		"path": "/globals/MAX_PACKS_ALLOWED_TO_BUY",
+		"value": 8
+	},
+	{
 		"op": "add",
 		"path": "/unit_packs",
 		"value": [
@@ -229,12 +235,12 @@
 				"data": "Nothing to see here, move along, buying it will crash the game",
 				"help_text": "HELP_TEXT_PACK_1",
 				"units_given": 1,
-				"pack_num": [
-
-				],
-				"pack_category": [
-
-				],
+				"pack_num": {
+					"1": "1"
+				},
+				"pack_category": {
+					"1": "custom"
+				},
 				"pack_custom": [
 					{ "id": 875, "chances": 100 },
 					{ "id": 877, "chances": 100 }
