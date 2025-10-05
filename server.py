@@ -175,6 +175,24 @@ def static_assets_loader(path):
 
 ## GAME DYNAMIC
 
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_up_data.php", methods=['POST'])
+def units_pack_get_data():
+    USERID = request.values['USERID']
+    user_key = request.values['user_key']
+    if 'spdebug' in request.values:
+        spdebug = request.values['spdebug']
+    language = request.values['language']
+
+    print("UNIT PACKS HANDLER ----------------")
+    print("request: "+json.dumps(request.values, indent='\t'))
+    data, correct = check_hmac(request.values['data'])
+    print("data: "+json.dumps(data, indent='\t'))
+    print("-----------------------------------")
+    if not correct: # Invalid HMAC
+        return ("", 403)
+
+    return (construct_hash_and_payload({}), 200)
+
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/enemy", methods=['POST'])
 def pvp_lookup():
     USERID = request.values['USERID']

@@ -218,13 +218,31 @@
 				"duration": 0,
 				"starts_at": 0,
 				"max_purchable": 0,
-				"price": { "c": 100000 },
-
+				"price": { "c": 1 },
+				
+				"banner": "PLACEHOLDER\nPLACEHOLDER",
 				"name": "Temporary Pack",
 				"tooltip": "Unit Pack Tooltip",
 				"img": "bahamut_dragon.png",
+
 				"description": "Unit Pack Description",
-				"banner": "PLACEHOLDER\nPLACEHOLDER"
+				"data": "Unit Pack Data",
+				"help_text": "HELP_TEXT_PACK_1",
+				"units_given": 1,
+				"pack_num": [
+
+				],
+				"pack_category": [
+
+				],
+				"pack_custom": [
+					{ "id": 875, "chances": 100 },
+					{ "id": 877, "chances": 100 }
+				],
+				"carrusel": [ 
+					{ "id": 875, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 877, "scale": 1.0, "orientation": "4", "offset": -40 }
+				]
 			}
 		]
 	},
