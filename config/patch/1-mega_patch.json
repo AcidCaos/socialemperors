@@ -80,6 +80,156 @@
 	},
 	{
 		"op": "add",
+		"path": "/unit_packs",
+		"value": [
+			{
+				"id": 1,
+				"slot_priority": 1,
+				"store_order": 1,
+				"in_store": 1,
+				"min_level": 0,
+				"max_level": 45,
+				"duration": 0,
+				"starts_at": 0,
+				"max_purchable": 1,
+				"price": { "g": 50 },
+
+				"name": "The Guardian",
+				"tooltip": "Unit Pack Tooltip",
+				"img": "first.png",
+				"description": "Unit Pack Description",
+				"banner": "The First Guardian"
+			},
+			{
+				"id": 2,
+				"slot_priority": 2,
+				"store_order": 2,
+				"in_store": 1,
+				"min_level": 0,
+				"max_level": 100,
+				"duration": 0,
+				"starts_at": 0,
+				"max_purchable": 4,
+				"price": { "g": 20000 },
+
+				"name": "Hardcore Pack",
+				"tooltip": "Unit Pack Tooltip",
+				"img": "hardcore.png",
+				"description": "Unit Pack Description",
+				"banner": "x5 Skilled Units Change"
+			},
+			{
+				"id": 3,
+				"slot_priority": 3,
+				"store_order": 3,
+				"in_store": 1,
+				"min_level": 0,
+				"max_level": 100,
+				"duration": 0,
+				"starts_at": 0,
+				"max_purchable": 0,
+				"price": { "c": 6 },
+
+				"name": "Gladiators Pack",
+				"tooltip": "Unit Pack Tooltip",
+				"img": "gladiators.png",
+				"description": "Unit Pack Description",
+				"banner": "Gladiators Included"
+			},
+			{
+				"id": 4,
+				"slot_priority": 4,
+				"store_order": 4,
+				"in_store": 1,
+				"min_level": 0,
+				"max_level": 100,
+				"duration": 0,
+				"starts_at": 0,
+				"max_purchable": 0,
+				"price": { "c": 100000 },
+
+				"name": "Social World Pack",
+				"tooltip": "Unit Pack Tooltip",
+				"img": "bahamut_dragon.png",
+				"description": "Unit Pack Description",
+				"banner": "PLACEHOLDER\nPLACEHOLDER"
+			},
+			{
+				"id": 5,
+				"slot_priority": 5,
+				"store_order": 5,
+				"in_store": 1,
+				"min_level": 0,
+				"max_level": 100,
+				"duration": 0,
+				"starts_at": 0,
+				"max_purchable": 0,
+				"price": { "c": 25 },
+
+				"name": "Furious Dragons Pack",
+				"tooltip": "Unit Pack Tooltip",
+				"img": "furious_dragon.png",
+				"description": "Unit Pack Description",
+				"banner": "x10 Dragons Chance"
+			},
+			{
+				"id": 6,
+				"slot_priority": 6,
+				"store_order": 6,
+				"in_store": 1,
+				"min_level": 0,
+				"max_level": 100,
+				"duration": 0,
+				"starts_at": 0,
+				"max_purchable": 0,
+				"price": { "c": 38 },
+
+				"name": "Epic Dragons Pack",
+				"tooltip": "Unit Pack Tooltip",
+				"img": "epic_dragons.png",
+				"description": "Unit Pack Description",
+				"banner": "x24 Epics Chance"
+			},
+			{
+				"id": 7,
+				"slot_priority": 7,
+				"store_order": 7,
+				"in_store": 1,
+				"min_level": 0,
+				"max_level": 100,
+				"duration": 0,
+				"starts_at": 0,
+				"max_purchable": 0,
+				"price": { "c": 40 },
+
+				"name": "Savage & Ancients Pack",
+				"tooltip": "Unit Pack Tooltip",
+				"img": "savage_ancient_dragons.png",
+				"description": "Unit Pack Description",
+				"banner": "x24 Epics Chance\nx8 Ancients Chance"
+			},
+			{
+				"id": 8,
+				"slot_priority": 8,
+				"store_order": 8,
+				"in_store": 1,
+				"min_level": 0,
+				"max_level": 100,
+				"duration": 0,
+				"starts_at": 0,
+				"max_purchable": 0,
+				"price": { "c": 100000 },
+
+				"name": "Temporary Pack",
+				"tooltip": "Unit Pack Tooltip",
+				"img": "bahamut_dragon.png",
+				"description": "Unit Pack Description",
+				"banner": "PLACEHOLDER\nPLACEHOLDER"
+			}
+		]
+	},
+	{
+		"op": "add",
 		"path": "/kompu_offers",
 		"value": []
 	},
