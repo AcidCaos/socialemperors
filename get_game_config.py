@@ -256,3 +256,10 @@ def get_time_machine_packet(idx):
 		return packets[idx]
 
 	return None
+
+def get_offer_pack_id(pack_id):
+	offers = __game_config["offer_packs"]
+	for pack in offers:
+		if pack["id"] == pack_id:
+			return pack
+	return None

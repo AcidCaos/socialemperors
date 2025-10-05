@@ -103,6 +103,8 @@ commands = {
 	"begin_attack_new":					cmd_pvp_begin_attack_new,
 	"end_attack":						cmd_pvp_end_attack,
 	"end_attack_new":					cmd_pvp_end_attack_new,
+	# shop ----------------------------------------------------------------------------------------------------
+	"buy_super_offer_pack":				cmd_buy_super_offer_pack,
 	# old -----------------------------------------------------------------------------------------------------
 	"complete_tutorial":				USE_OLD,
 	"complete_mission":					USE_OLD,
@@ -126,7 +128,6 @@ commands = {
 	"next_monster_step":				USE_OLD,
 
 	"buy_monster_step_cash":			USE_OLD,
-	"buy_super_offer_pack":				USE_OLD
 }
 
 def get_strategy_type(id):

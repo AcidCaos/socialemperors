@@ -531,6 +531,15 @@ def pay_cash(player, amount):
 	player["playerInfo"]["cash"] -= int(amount)
 	return True
 
+def add_mana(player, amount):
+	player["privateState"]["mana"] += int(amount)
+
+def pay_mana(player, amount):
+	if player["privateState"]["mana"] < int(amount):
+		return False
+	player["privateState"]["mana"] -= int(amount)
+	return True
+
 def add_map_currency(map, currency, amount):
 	map[currency] += int(amount)
 

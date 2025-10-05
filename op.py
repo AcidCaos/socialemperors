@@ -925,6 +925,53 @@ def cmd_pvp_end_attack(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_buy_super_offer_pack(player, cmd, args, gameversion):
+	# town_id, pack_id, items, cost
+	town_id = args[0]
+	pack_id = args[1]
+	items = args[2]
+	cost = args[3]
+
+	_map = player["maps"][town_id]
+
+	items = items.split(",")
+	pack = get_offer_pack_id(pack_id)
+
+	if not pack:
+		return False
+	if pack["enabled"] == 0:
+		return False
+
+	for item_id in items:
+		_id = int(item_id)
+		found = False
+		for thing in pack["items"]:
+			if type(thing) == list:
+				if _id in thing:
+					found = True
+					break
+			elif _id == thing:
+				found = True
+				break
+
+		if not found:
+			return False
+
+	if not pay_cash(player, cost):
+		return False
+
+	add_map_currency(_map, "coins", pack["gold"])
+	add_map_currency(_map, "food", pack["food"])
+	add_map_currency(_map, "wood", pack["wood"])
+	add_map_currency(_map, "stone", pack["stone"])
+	add_map_currency(_map, "xp", pack["xp"])
+	add_mana(player, pack["mana"])
+
+	for item_id in items:
+		add_store_item(player, item_id)
+
+	return True
+
 def cmd_set_variables(player, cmd, args, gameversion):
 	playerInfo = player["playerInfo"]
 	town_id = args[7]
