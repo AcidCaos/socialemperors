@@ -220,13 +220,13 @@
 				"max_purchable": 0,
 				"price": { "c": 1 },
 				
-				"banner": "PLACEHOLDER\nPLACEHOLDER",
-				"name": "Temporary Pack",
-				"tooltip": "Unit Pack Tooltip",
-				"img": "bahamut_dragon.png",
+				"banner": "TEST PACK\nWORK IN PROGRESS",
+				"name": "Test Pack",
+				"tooltip": "Nerroth Test in progress",
+				"img": "advanced_dragon.png",
 
-				"description": "Unit Pack Description",
-				"data": "Unit Pack Data",
+				"description": "This is just a non working test unit pack",
+				"data": "Nothing to see here, move along, buying it will crash the game",
 				"help_text": "HELP_TEXT_PACK_1",
 				"units_given": 1,
 				"pack_num": [
