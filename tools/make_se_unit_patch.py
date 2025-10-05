@@ -143,6 +143,7 @@ def make_shop_rotation(items, csv, filename):
 		"full_random": False,
 		"spooktober": True,
 		"factions": factions,
+		"always_enabled": []
 	}
 
 	with open(filename, 'w') as f:

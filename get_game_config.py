@@ -86,8 +86,9 @@ def apply_shop_rotation(ts):
 	now = datetime.datetime.today()
 	is_spooktober = now.month == 10 and now.day == 31
 
+	factions = __rotation["factions"]
+
 	if __rotation["full_random"]:
-		factions = __rotation["factions"]
 		max_items = __rotation["max_items_full_random"]
 
 		all_items = []
@@ -121,7 +122,6 @@ def apply_shop_rotation(ts):
 
 		print(f" * Shop: Enabled {max_items} random things in shop!")
 	else:
-		factions = __rotation["factions"]
 		faction_names = list(factions.keys())
 		random.shuffle(faction_names)
 		if spooktober:
@@ -149,6 +149,18 @@ def apply_shop_rotation(ts):
 					continue
 
 				item["in_store"] = "1"
+				
+	if "always_enabled" in __rotation:
+		force_enable = __rotation["always_enabled"]
+		for name in force_enable:
+			if name in factions:
+				print(f" * Shop: FORCE-ENABLED Faction {name}!")
+				for item_id in factions[name]:
+					item = get_item(item_id)
+					if not item:
+						continue
+
+					item["in_store"] = "1"
 
 	random.setstate(_rng)
 
