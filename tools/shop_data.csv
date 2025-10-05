@@ -1,76 +1,76 @@
-472	1	YES	YES	Skeleton	Castles	Black Castle	Allowed
-102	1	YES	YES		Trees	Happy Tree	Allowed
-106	1	YES	YES		Trees	Red Tree	Allowed
-125	1	YES	YES		Statues	Soldier Statue	Allowed
-127	1	YES	YES		Statues	Soldier Statue	Allowed
-100	1	YES	YES		Trees	Yellow Tree	Allowed
-422	1	YES	YES	Atlantis Archer	Limited Edition	Atlantis Archery	Atlantis
-420	1	YES	YES		Limited Edition	Atlantis Decoration	Atlantis
-427	1	YES	YES		Limited Edition	Atlantis Field	Atlantis
-428	1	YES	YES		Limited Edition	Atlantis Mill	Atlantis
-421	1	YES	YES	Atlantis Warrior	Limited Edition	Atlantis Quarters	Atlantis
-426	1	YES	YES		Limited Edition	Atlantis Tower	Atlantis
-425	1	YES	YES		Limited Edition	Atlantis Wall	Atlantis
-423	1	YES	YES	Crab Knight	Limited Edition	Crab Stables	Atlantis
-418	1	YES	YES		Limited Edition	Dolphin Fountain	Atlantis
-417	1	YES	YES		Limited Edition	Hermit	Atlantis
-419	1	YES	YES		Limited Edition	Leviathan	Atlantis
-430	1	YES	YES	Neptune	Specials	Neptune's Palace	Atlantis
-424	1	YES	YES	Seahorse	Limited Edition	Seahorse Stables	Atlantis
-276	1	YES			Limited Edition	Aztec Ball Field	Aztec
-274	1	YES			Limited Edition	Aztec Boss	Aztec
-280	1	YES	YES		Limited Edition	Aztec Calendar	Aztec
-281	1	YES	YES		Limited Edition	Aztec Decoration	Aztec
-272	1	YES	YES		Limited Edition	Aztec Field	Aztec
-267	1	YES	YES		Limited Edition	Aztec House	Aztec
-271	1	YES	YES		Limited Edition	Aztec Mill	Aztec
-268	1	YES		Aztec Warrior	Limited Edition	Aztec Quarters	Aztec
-282	1	YES	YES		Limited Edition	Aztec Temple	Aztec
-270	1	YES			Turrets	Aztec Tower	Aztec
-269	1	YES			Limited Edition	Aztec Wall	Aztec
-275	1	YES			Limited Edition	Quetzacoatl	Aztec
-277	1	YES	YES		Limited Edition	Skull Statue	Aztec
-273	1	YES			Limited Edition	Snake Statue	Aztec
-279	1	YES	YES		Limited Edition	Solar Structure	Aztec
-1235	1	YES	YES	Avenging Paladin	Limited Edition	Avenging Paladin Barracks	Celestial
-1216	1	YES	YES	Celestial Archer	Limited Edition	Celestial Archery	Celestial
-1217	1	YES	YES	Celestial Soldier	Limited Edition	Celestial Barracks	Celestial
-1228	1	YES	YES		Limited Edition	Celestial Cloud	Celestial
-1220	1	YES	YES		Limited Edition	Celestial Field	Celestial
-1227	1	YES	YES		Limited Edition	Celestial Garden	Celestial
-1221	1	YES	YES		Limited Edition	Celestial House	Celestial
-1226	1	YES	YES		Limited Edition	Celestial Mill	Celestial
-1215	1	YES	YES	Celestial Priest	Limited Edition	Celestial Shrine	Celestial
-1229	1	YES	YES		Limited Edition	Celestial Statue	Celestial
-1219	1	YES	YES		Limited Edition	Celestial Tower	Celestial
-1218	1	YES	YES		Limited Edition	Celestial Wall	Celestial
-1223	1	YES	YES	Gryphon Knight	Limited Edition	Gryphon Barracks	Celestial
-1225	1	YES	YES	Celestial Lancer	Limited Edition	Lancer Barracks	Celestial
-1222	1	YES	YES	Celestial Mech	Limited Edition	Mecha Barrack	Celestial
-1526	1	YES	YES	Punisher Knight	Limited Edition	Punisher Knight Barrack	Celestial
-1224	1	YES	YES	Celestial Reaper	Limited Edition	Reaper Barracks	Celestial
-1345	1	YES	YES		Miscellaneous	Rider Academy	Celestial
-1232	1	YES	YES	Celestial Supreme	Limited Edition	Supreme Barracks	Celestial
-1274	1	YES	YES	Valkyr	Limited Edition	Valkyr Barracks	Celestial
-244	1	YES	YES		Limited Edition	Bamboo Mill	Chinese
-255	1	YES	YES		Limited Edition	Buddha	Chinese
-241	1	YES		Chinese Archer	Limited Edition	Chinese Archery	Chinese
-487	1	YES				Chinese Festival	Chinese
-245	1	YES	YES		Limited Edition	Chinese Field	Chinese
-240	1	YES	YES		Limited Edition	Chinese House	Chinese
-249	1	YES			Limited Edition	Chinese Temple	Chinese
-243	1	YES			Limited Edition	Chinese Tower	Chinese
-103	1	YES			Trees	Chinese Tree	Chinese
-253	1	YES	YES		Limited Edition	Chinese Tree	Chinese
-57	1	YES			Wonders	Chinese Wall	Chinese
-242	1	YES			Limited Edition	Chinese Wall	Chinese
-254	1	YES	YES		Limited Edition	Dragon	Chinese
-252	1	YES	YES		Limited Edition	Drum	Chinese
-247	1	YES			Limited Edition	Geisha	Chinese
-248	1	YES			Limited Edition	Kite	Chinese
-250	1	YES	YES		Limited Edition	Maneki Neko	Chinese
-251	1	YES	YES		Limited Edition	Noodles	Chinese
-246	1	YES			Limited Edition	Panda	Chinese
+472	1	YES	YES	Skeleton	Castles	Black Castle	Always
+106	1	YES	YES		Trees	Red Tree	Always
+125	1	YES	YES		Statues	Soldier Statue	Always
+127	1	YES	YES		Statues	Soldier Statue	Always
+1463	1	YES	YES		Wonders	Time Machine	Always
+100	1	YES	YES		Trees	Yellow Tree	Always
+422		YES	YES	Atlantis Archer	Limited Edition	Atlantis Archery	Atlantis
+420		YES	YES		Limited Edition	Atlantis Decoration	Atlantis
+427		YES	YES		Limited Edition	Atlantis Field	Atlantis
+428		YES	YES		Limited Edition	Atlantis Mill	Atlantis
+421		YES	YES	Atlantis Warrior	Limited Edition	Atlantis Quarters	Atlantis
+426		YES	YES		Limited Edition	Atlantis Tower	Atlantis
+425		YES	YES		Limited Edition	Atlantis Wall	Atlantis
+423		YES	YES	Crab Knight	Limited Edition	Crab Stables	Atlantis
+418		YES	YES		Limited Edition	Dolphin Fountain	Atlantis
+417		YES	YES		Limited Edition	Hermit	Atlantis
+419		YES	YES		Limited Edition	Leviathan	Atlantis
+430		YES	YES	Neptune	Specials	Neptune's Palace	Atlantis
+424		YES	YES	Seahorse	Limited Edition	Seahorse Stables	Atlantis
+276		YES			Limited Edition	Aztec Ball Field	Aztec
+274		YES			Limited Edition	Aztec Boss	Aztec
+280		YES	YES		Limited Edition	Aztec Calendar	Aztec
+281		YES	YES		Limited Edition	Aztec Decoration	Aztec
+272		YES	YES		Limited Edition	Aztec Field	Aztec
+267		YES	YES		Limited Edition	Aztec House	Aztec
+271		YES	YES		Limited Edition	Aztec Mill	Aztec
+268		YES		Aztec Warrior	Limited Edition	Aztec Quarters	Aztec
+282		YES	YES		Limited Edition	Aztec Temple	Aztec
+270		YES			Turrets	Aztec Tower	Aztec
+269		YES			Limited Edition	Aztec Wall	Aztec
+275		YES			Limited Edition	Quetzacoatl	Aztec
+277		YES	YES		Limited Edition	Skull Statue	Aztec
+273		YES			Limited Edition	Snake Statue	Aztec
+279		YES	YES		Limited Edition	Solar Structure	Aztec
+1235		YES	YES	Avenging Paladin	Limited Edition	Avenging Paladin Barracks	Celestial
+1216		YES	YES	Celestial Archer	Limited Edition	Celestial Archery	Celestial
+1217		YES	YES	Celestial Soldier	Limited Edition	Celestial Barracks	Celestial
+1228		YES	YES		Limited Edition	Celestial Cloud	Celestial
+1220		YES	YES		Limited Edition	Celestial Field	Celestial
+1227		YES	YES		Limited Edition	Celestial Garden	Celestial
+1221		YES	YES		Limited Edition	Celestial House	Celestial
+1226		YES	YES		Limited Edition	Celestial Mill	Celestial
+1215		YES	YES	Celestial Priest	Limited Edition	Celestial Shrine	Celestial
+1229		YES	YES		Limited Edition	Celestial Statue	Celestial
+1219		YES	YES		Limited Edition	Celestial Tower	Celestial
+1218		YES	YES		Limited Edition	Celestial Wall	Celestial
+1223		YES	YES	Gryphon Knight	Limited Edition	Gryphon Barracks	Celestial
+1225		YES	YES	Celestial Lancer	Limited Edition	Lancer Barracks	Celestial
+1222		YES	YES	Celestial Mech	Limited Edition	Mecha Barrack	Celestial
+1526		YES	YES	Punisher Knight	Limited Edition	Punisher Knight Barrack	Celestial
+1224		YES	YES	Celestial Reaper	Limited Edition	Reaper Barracks	Celestial
+1345		YES	YES		Miscellaneous	Rider Academy	Celestial
+1232		YES	YES	Celestial Supreme	Limited Edition	Supreme Barracks	Celestial
+1274		YES	YES	Valkyr	Limited Edition	Valkyr Barracks	Celestial
+244		YES	YES		Limited Edition	Bamboo Mill	Chinese
+255		YES	YES		Limited Edition	Buddha	Chinese
+241		YES		Chinese Archer	Limited Edition	Chinese Archery	Chinese
+487		YES				Chinese Festival	Chinese
+245		YES	YES		Limited Edition	Chinese Field	Chinese
+240		YES	YES		Limited Edition	Chinese House	Chinese
+249		YES			Limited Edition	Chinese Temple	Chinese
+243		YES			Limited Edition	Chinese Tower	Chinese
+103		YES			Trees	Chinese Tree	Chinese
+253		YES	YES		Limited Edition	Chinese Tree	Chinese
+57		YES			Wonders	Chinese Wall	Chinese
+242		YES			Limited Edition	Chinese Wall	Chinese
+254		YES	YES		Limited Edition	Dragon	Chinese
+252		YES	YES		Limited Edition	Drum	Chinese
+247		YES			Limited Edition	Geisha	Chinese
+248		YES			Limited Edition	Kite	Chinese
+250		YES	YES		Limited Edition	Maneki Neko	Chinese
+251		YES	YES		Limited Edition	Noodles	Chinese
+246		YES			Limited Edition	Panda	Chinese
 206		YES	YES		Statues	Crocodile Pit	CollectionReward
 180		YES	YES		Flags	Frozen Mammoth	CollectionReward
 178		YES	YES		Flags	Garden	CollectionReward
@@ -79,236 +79,235 @@
 207		YES	YES		Statues	Life Tree	CollectionReward
 209		YES	YES		Statues	Prison	CollectionReward
 176		YES	YES		Flags	Pyramid	CollectionReward
-1371	1	YES	YES		Limited Edition	Abu Simbel Statue	Egyptian
-1382	1	YES	YES	Anubis God	Limited Edition	Anubis God Barracks	Egyptian
-400	1	YES	YES		Limited Edition	Anubis Statue	Egyptian
-406	1	YES	YES		Limited Edition	Anubis Statue	Egyptian
-393	1	YES	YES	Anubis Avatar	Limited Edition	Anubis Temple	Egyptian
-407	1	YES	YES		Limited Edition	Black Anubis	Egyptian
-399	1	YES	YES		Limited Edition	Camel	Egyptian
-410	1	YES	YES	Camel Rider	Limited Edition	Camel Stables	Egyptian
-401	1	YES	YES		Limited Edition	Cat Statue	Egyptian
-398	1	YES	YES		Limited Edition	Cleopatra	Egyptian
-1381	1	YES	YES	Cobra Rider	Limited Edition	Cobra Rider Barracks	Egyptian
-396	1	YES	YES		Limited Edition	Egyptian Field	Egyptian
-411	1	YES	YES		Limited Edition	Egyptian House	Egyptian
-397	1	YES	YES		Limited Edition	Egyptian Mine	Egyptian
-409	1	YES	YES	Egyptian Warrior	Limited Edition	Egyptian Quarters	Egyptian
-395	1	YES	YES		Limited Edition	Egyptian Tower	Egyptian
-394	1	YES	YES		Limited Edition	Egyptian Wall	Egyptian
-404	1	YES	YES		Limited Edition	Goat Sphynx	Egyptian
-1363	1	YES	YES	Guardian Archer	Limited Edition	Guardian Archer Barracks	Egyptian
-1379	1	YES	YES	Guardian Axe	Limited Edition	Guardian Axe Barracks	Egyptian
-1362	1	YES	YES	Guardian Swordsman	Limited Edition	Guardian Swordman Barracks	Egyptian
-1380	1	YES	YES	Horus Gryphon	Limited Edition	Horus Gryphon Barracks	Egyptian
-1365	1	YES	YES	Horus Herald	Limited Edition	Horus Herald Barracks	Egyptian
-1364	1	YES	YES	Isis Healer	Limited Edition	Isis Healer Barracks	Egyptian
-1369	1	YES	YES		Limited Edition	Isis Statue	Egyptian
-1370	1	YES	YES		Limited Edition	Keops Pyramid	Egyptian
-415	1	YES	YES	Mummy	Specials	Mummy Pyramid	Egyptian
-408	1	YES	YES		Limited Edition	Pharaoh	Egyptian
-1375	1	YES	YES		Limited Edition	Pharaohs Field	Egyptian
-1372	1	YES	YES		Limited Edition	Pharaohs Gold Mine	Egyptian
-1376	1	YES	YES		Limited Edition	Pharaohs House	Egyptian
-1374	1	YES	YES		Limited Edition	Pharaohs Tower	Egyptian
-1373	1	YES	YES		Limited Edition	Pharaohs Wall	Egyptian
-405	1	YES	YES		Limited Edition	Ra Sphynx	Egyptian
-402	1	YES	YES		Limited Edition	Ra Statue	Egyptian
-1366	1	YES	YES	Ramses II	Limited Edition	Ramses II Barracks	Egyptian
-1368	1	YES	YES		Limited Edition	Sarcophagus	Egyptian
-1396	1	YES	YES	Scarab Rider	Limited Edition	Scarab Rider Barracks	Egyptian
-1367	1	YES	YES	Sphinx	Limited Edition	Sphinx Barracks	Egyptian
-403	1	YES	YES		Limited Edition	Sphynx	Egyptian
-1383	1	YES	YES	Tuthankamon	Limited Edition	Tutankamon Barracks	Egyptian
-466	1	YES	YES	Elf Druid	Limited Edition	Druid's Hut	Elven
-444	1	YES	YES	Elf Druid	Limited Edition	Druids' Council	Elven
-443	1	YES	YES	Elf Archer	Limited Edition	Elf Archer	Elven
-1398	1	YES	YES	Imperial Elf Archer	Limited Edition	Elf Archer Barracks	Elven
-1414	1	YES	YES	Imperial Elf Axe	Limited Edition	Elf Axe Barracks	Elven
-442	1	YES	YES	Elf Warrior	Limited Edition	Elf Barracks	Elven
-1416	1	YES	YES	Imperial Elf Catapult	Limited Edition	Elf Catapult Barracks	Elven
-451	1	YES	YES		Limited Edition	Elf Eagle Aviary	Elven
-448	1	YES	YES		Limited Edition	Elf Field	Elven
-441	1	YES	YES		Limited Edition	Elf Fountain	Elven
-1402	1	YES	YES		Limited Edition	Elf Fountain	Elven
-439	1	YES	YES		Limited Edition	Elf Gazebo	Elven
-1415	1	YES	YES	Imperial Elf Gryphon	Limited Edition	Elf Gryphon Barracks	Elven
-440	1	YES	YES		Limited Edition	Elf Hero Statue	Elven
-450	1	YES	YES		Limited Edition	Elf House	Elven
-1400	1	YES	YES	Imperial Elf Knight	Limited Edition	Elf Knight Barracks	Elven
-438	1	YES	YES		Limited Edition	Elf Life Tree	Elven
-449	1	YES	YES		Limited Edition	Elf Mill	Elven
-1399	1	YES	YES	Elf Priest	Limited Edition	Elf Priest Barracks	Elven
-1401	1	YES	YES	Reptile Knight	Limited Edition	Elf Reptile Barracks	Elven
-445	1	YES	YES	Elf Tiger	Limited Edition	Elf Stables	Elven
-1397	1	YES	YES	Imperial Elf Sword	Limited Edition	Elf Swordman Barracks	Elven
-447	1	YES	YES		Limited Edition	Elf Tower	Elven
-446	1	YES	YES		Limited Edition	Elf Wall	Elven
-468	1	YES	YES	Elf Ballista	Limited Edition	Elf Workshop	Elven
-1424	1	YES	YES	Elven Crossbow	Limited Edition	Elven Crossbow Barracks	Elven
-1425	1	YES	YES	Elven Eagle Rider	Limited Edition	Elven Eagle Rider Barracks	Elven
-471	1	YES	YES	Ent	Limited Edition	Ent Barrack	Elven
-1454	1	YES	YES	Golden Paladin	Limited Edition	Golden Paladin Barracks	Elven
-1408	1	YES	YES		Limited Edition	Imperial Elf Field	Elven
-1409	1	YES	YES		Limited Edition	Imperial Elf House	Elven
-1405	1	YES	YES		Limited Edition	Imperial Elf Mill	Elven
-1407	1	YES	YES		Limited Edition	Imperial Elf Tower	Elven
-1406	1	YES	YES		Limited Edition	Imperial Elf Wall	Elven
-1420	1	YES	YES	Red Bull Rider	Limited Edition	Red Bull Rider Barracks	Elven
-467	1	YES	YES	Elf Royal Archer	Limited Edition	Royal Archery	Elven
-465	1	YES	YES	Royal Elf	Limited Edition	Royal Barrack	Elven
-1421	1	YES	YES	Silver Paladin	Limited Edition	Silver Paladin Barracks	Elven
-1516	1	YES	YES	4-Weapons Gladiator	Limited Edition	4-Weapons Gladiator Barrack	Gladiators
-1495	1	YES	YES	Demolisher Gladiator	Limited Edition	Barrack Demolisher Gladiator	Gladiators
-1494	1	YES	YES	Knight Gladiator	Limited Edition	Barrack Knight Gladiator	Gladiators
-1496	1	YES	YES	Lizard Gladiator	Limited Edition	Barrack Lizard Gladiator	Gladiators
-1493	1	YES	YES	Spearman Gladiator	Limited Edition	Barrack Spearman Gladiator	Gladiators
-1492	1	YES	YES	Sword Gladiator	Limited Edition	Barrack Sword Gladiator	Gladiators
-1518	1	YES	YES	Blade Gladiator	Limited Edition	Blade Gladiator Barrack	Gladiators
-1513	1	YES	YES	Bull Gladiator	Limited Edition	Bull Gladiator Barrack	Gladiators
-1522	1	YES	YES	Caesar Gladiator	Limited Edition	Caesar Gladiator Barrack	Gladiators
-1517	1	YES	YES	Centaur Gladiator	Limited Edition	Centaur Gladiator Barrack	Gladiators
-1521	1	YES	YES	Chariot Gladiator	Limited Edition	Chariot Gladiator Barrack	Gladiators
-1520	1	YES	YES	Devil Gladiator	Limited Edition	Devil Gladiator Barrack	Gladiators
-1497	1	YES	YES		Limited Edition	Gladiator Bust Deco	Gladiators
-1502	1	YES	YES		Limited Edition	Gladiator Field	Gladiators
-1503	1	YES	YES		Limited Edition	Gladiator House	Gladiators
-1499	1	YES	YES		Limited Edition	Gladiator Mill	Gladiators
-1501	1	YES	YES		Limited Edition	Gladiator Tower	Gladiators
-1500	1	YES	YES		Limited Edition	Gladiator Wall	Gladiators
-1498	1	YES	YES		Limited Edition	Golden Gladiator Statue	Gladiators
-1512	1	YES	YES	Lion Soul Gladiator	Limited Edition	Lion Soul Gladiator Barrack	Gladiators
-1508	1	YES	YES	Mace Gladiator	Limited Edition	Mace Gladiator Barrack	Gladiators
-1519	1	YES	YES	Minotaur Gladiator	Limited Edition	Minotaur Gladiator Barrack	Gladiators
-1509	1	YES	YES	Priest Gladiator	Limited Edition	Priest Gladiator Barrack	Gladiators
-414	1	YES	YES	Elite Knight	Castles	Golden Castle	Golden
-278	1	YES	YES		Limited Edition	Golden Structure	Golden
-413	1	YES			Turrets	Golden Tower	Golden
-1243	1	YES	YES	Black Witch	Limited Edition	Black Witch Barracks	Halloween
-1249	1	YES	YES		Limited Edition	Cauldron	Halloween
-1510	1	YES	YES	Death Warrior	Limited Edition	Death Warrior Barrack	Halloween
-1250	1	YES	YES	Dracula	Limited Edition	Dracula Barracks	Halloween
-1244	1	YES	YES	Frankenstein	Limited Edition	Frankenstein Barracks	Halloween
-1248	1	YES	YES		Limited Edition	Ghost	Halloween
-1239	1	YES	YES		Limited Edition	Halloween Farm	Halloween
-1240	1	YES	YES		Limited Edition	Halloween House	Halloween
-1236	1	YES	YES		Limited Edition	Halloween Mill	Halloween
-1251	1	YES	YES		Limited Edition	Halloween SuperTower	Halloween
-1238	1	YES	YES		Limited Edition	Halloween Tower	Halloween
-1237	1	YES	YES		Limited Edition	Halloween Wall	Halloween
-1252	1	YES	YES		Limited Edition	Haunted House	Halloween
-1241	1	YES	YES	Mr. Bones	Limited Edition	Mr. Bones Barracks	Halloween
-1242	1	YES	YES	Scarecrow	Limited Edition	Scarecrow Barracks	Halloween
-1245	1	YES	YES	Werewolf	Limited Edition	Werewolf Barracks	Halloween
-1247	1	YES	YES	Scary Zombie	Limited Edition	Zombie Barracks	Halloween
-481	1	YES	YES		Limited Edition	Bleeding Sculpture	Infernal
-1505	1	YES	YES	Evil Demon	Limited Edition	Evil Demon Barrack	Infernal
-478	1	YES	YES	Infernal Archer	Limited Edition	Infernal Archery	Infernal
-476	1	YES	YES	Infernal Warrior	Limited Edition	Infernal Barracks	Infernal
-475	1	YES	YES		Limited Edition	Infernal Field	Infernal
-484	1	YES	YES	Infernal Halberdier	Limited Edition	Infernal Halberdiery	Infernal
-485	1	YES	YES	Demon Crusher	Limited Edition	Infernal Headquarters	Infernal
-477	1	YES	YES	Infernal Demon	Limited Edition	Infernal Quarters	Infernal
-483	1	YES	YES		Limited Edition	Infernal Sculpture	Infernal
-479	1	YES	YES	Infernal Knight	Limited Edition	Infernal Stables	Infernal
-474	1	YES	YES		Limited Edition	Infernal Tower	Infernal
-473	1	YES	YES		Limited Edition	Infernal Wall	Infernal
-1211	1	YES	YES	Infernal Kamikaze	Specials	Kamikaze Center	Infernal
-482	1	YES	YES		Limited Edition	Magma Fountain	Infernal
-1212	1	YES	YES	Rhino Rider	Limited Edition	Rhino Stables	Infernal
-480	1	YES	YES		Limited Edition	Torch	Infernal
-1271	1	YES	YES		Limited Edition	Ancient Ruins	Mythological
-1504	1	YES	YES	Antimatter Golem	Limited Edition	Antimatter Golem Barrack	Mythological
-1281	1	YES	YES	Aquiles	Limited Edition	Aquiles Barracks	Mythological
-1277	1	YES	YES	Centaur	Limited Edition	Centaur Barracks	Mythological
-1265	1	YES	YES	Cerberus	Limited Edition	Cerberus Barracks	Mythological
-1266	1	YES	YES	Cyclops	Limited Edition	Cyclops Barracks	Mythological
-1286	1	YES	YES	Hades	Limited Edition	Hades Barrack	Mythological
-1291	1	YES	YES	Harpy	Limited Edition	Harpy Barracks	Mythological
-1301	1	YES	YES	Hercules	Limited Edition	Hercules Barracks	Mythological
-1269	1	YES	YES		Limited Edition	Hercules Statue	Mythological
-1262	1	YES	YES	Hermes	Limited Edition	Hermes Barracks	Mythological
-1276	1	YES	YES	Hermes Spearman	Limited Edition	Hermes Spearman Barracks	Mythological
-1275	1	YES	YES	Hermes Swordsman	Limited Edition	Hermes Swordman Barracks	Mythological
-1303	1	YES	YES	Hidros Titan	Limited Edition	Hydros Barracks	Mythological
-1261	1	YES	YES	Icarus	Limited Edition	Icarus Barracks	Mythological
-1273	1	YES	YES	Lythos Titan	Limited Edition	Lythos Barracks	Mythological
-1267	1	YES	YES	Medusa	Limited Edition	Medusa Barracks	Mythological
-1263	1	YES	YES	Minotaur	Limited Edition	Minotaur Barracks	Mythological
-1272	1	YES	YES		Limited Edition	Myth Statue	Mythological
-1259	1	YES	YES		Limited Edition	Mythological Field	Mythological
-1260	1	YES	YES		Limited Edition	Mythological House	Mythological
-1256	1	YES	YES		Limited Edition	Mythological Mill	Mythological
-1258	1	YES	YES		Limited Edition	Mythological Tower	Mythological
-1257	1	YES	YES		Limited Edition	Mythological Wall	Mythological
-1280	1	YES	YES	Poseidon	Limited Edition	Poseidon Barracks	Mythological
-1268	1	YES	YES	Pyros Titan	Limited Edition	Pyros Barracks	Mythological
-1278	1	YES	YES	Rodas Colossus	Limited Edition	Rodhes Colossus Barracks	Mythological
-1264	1	YES	YES	Scorpion	Limited Edition	Scorpion Barracks	Mythological
-1292	1	YES	YES	Stratos Titan	Limited Edition	Stratos Barracks	Mythological
-1290	1	YES	YES	Ulises	Limited Edition	Ulises Barracks	Mythological
-1270	1	YES	YES		Limited Edition	Unicorn Statue	Mythological
-1321	1	YES	YES	Axe Skeleton	Limited Edition	Axe Skeleton Barracks	Necro
-1308	1	YES	YES		Limited Edition	Beholder Eye	Necro
-1312	1	YES	YES	Necro Dark Lord	Limited Edition	Dark Lord Barracks	Necro
-1314	1	YES	YES		Limited Edition	Draco Fountain	Necro
-1313	1	YES	YES		Limited Edition	Green Emerald	Necro
-1306	1	YES	YES	Necro Archer	Limited Edition	Necro Archer Barracks	Necro
-1347	1	YES	YES	Necro Doublesword	Limited Edition	Necro Doublesword Barracks	Necro
-1319	1	YES	YES		Limited Edition	Necro Field	Necro
-1323	1	YES	YES	Necro Fork Soldier	Limited Edition	Necro Fork Barracks	Necro
-1348	1	YES	YES	Necro Ghost	Limited Edition	Necro Ghost Barracks	Necro
-1325	1	YES	YES	Necro  Harvester	Limited Edition	Necro Harvester Barracks	Necro
-1322	1	YES	YES	Necro Horseman	Limited Edition	Necro Horseman Barracks	Necro
-1320	1	YES	YES		Limited Edition	Necro House	Necro
-1329	1	YES	YES	Necro King	Limited Edition	Necro King Barracks	Necro
-1316	1	YES	YES		Limited Edition	Necro Mill	Necro
-1326	1	YES	YES	Necro  Multi-arms	Limited Edition	Necro Multiarms Barracks	Necro
-1311	1	YES	YES	Necro Paladin	Limited Edition	Necro Paladin Barracks	Necro
-1309	1	YES	YES	Necro Priest	Limited Edition	Necro Priest Castle	Necro
-1342	1	YES	YES	Necro Rhino	Limited Edition	Necro Rhino Barracks	Necro
-1318	1	YES	YES		Limited Edition	Necro Tower	Necro
-1317	1	YES	YES		Limited Edition	Necro Wall	Necro
-1307	1	YES	YES	Necro Warrior	Limited Edition	Necro Warrior Barracks	Necro
-1343	1	YES	YES	Skeleton Archer	Limited Edition	Skeleton Archer Barracks	Necro
-1305	1	YES	YES	Sword Skeleton	Limited Edition	Sword Skeleton Barracks	Necro
-1310	1	YES	YES	Necro Winged Warrior	Limited Edition	Winged Warrior Barracks	Necro
-1514	1	YES	YES	Burning Tiger	Limited Edition	Burning Tiger Barrack	None
-1403	1	YES	YES		Limited Edition	Emerald Sculpture	None
-1478	1	YES	YES		Limited Edition	Level Up Statue	None
-1438	1	YES	YES		Limited Edition	Skullz Big Amulet	None
-1515	1	YES	YES	T-Rex	Limited Edition	T-Rex Barrack	None
-1463	1	YES	YES		Wonders	Time Machine	None
-1475	1	YES	YES	Big Basher Orc	Limited Edition	Big Basher Orc Barrack	Orcs
-1483	1	YES	YES	Black Lizard Rider	Limited Edition	Black Lizard Barrack	Orcs
-1435	1	YES	YES	Boar Axe Rider	Limited Edition	Boar Axe Rider Barrack	Orcs
-1486	1	YES	YES	Boomerang Orc	Limited Edition	Boomerang Orc Barracks	Orcs
-1433	1	YES	YES	Crusher Orc	Limited Edition	Crusher Orc Barrack	Orcs
-1444	1	YES	YES		Limited Edition	Dark Orc Field	Orcs
-1445	1	YES	YES		Limited Edition	Dark Orc House	Orcs
-1441	1	YES	YES		Limited Edition	Dark Orc Mill	Orcs
-1443	1	YES	YES		Limited Edition	Dark Orc Tower	Orcs
-1442	1	YES	YES		Limited Edition	Dark Orc Wall	Orcs
-1439	1	YES	YES		Limited Edition	Dark Orks Banner	Orcs
-1484	1	YES	YES	Dual Axe Orc	Limited Edition	Dual Axe Orc Barracks	Orcs
-1491	1	YES	YES	Orc Battering Ram	Limited Edition	Orc Battering Ram Barrack	Orcs
-1436	1	YES	YES	Orc Spear Warrior	Limited Edition	Orc Spear Warrior Barrack	Orcs
-1482	1	YES	YES	Priest Orc	Limited Edition	Priest Orc Barrack	Orcs
-1437	1	YES	YES	Spider Orc Rider	Limited Edition	Spider Orc Rider Barrack	Orcs
-1474	1	YES	YES	TNT Orc	Limited Edition	TNT Orc Barrack	Orcs
-1485	1	YES	YES	Wyvern Rider	Limited Edition	Wyvern Rider Barracks	Orcs
-1426		YES	YES		Limited Edition	Dragon Killer Fortress	OVERPOWERED SHIT
-388	1	YES	YES	Axe Viking	Limited Edition	Viking Axe Quarters	Viking
-377	1	YES	YES		Limited Edition	Viking Field	Viking
-378	1	YES	YES		Limited Edition	Viking Mine	Viking
-383	1	YES	YES		Limited Edition	Viking Mistress	Viking
-374	1	YES	YES	Viking	Limited Edition	Viking Quarters	Viking
-381	1	YES	YES		Limited Edition	Viking Ship	Viking
-382	1	YES	YES		Limited Edition	Viking Ship	Viking
-379	1	YES	YES		Limited Edition	Viking Statue	Viking
-380	1	YES	YES		Limited Edition	Viking Statue	Viking
-376	1	YES	YES		Limited Edition	Viking Tower	Viking
-375	1	YES	YES		Limited Edition	Viking Wall	Viking
+1371		YES	YES		Limited Edition	Abu Simbel Statue	Egyptian
+1382		YES	YES	Anubis God	Limited Edition	Anubis God Barracks	Egyptian
+400		YES	YES		Limited Edition	Anubis Statue	Egyptian
+406		YES	YES		Limited Edition	Anubis Statue	Egyptian
+393		YES	YES	Anubis Avatar	Limited Edition	Anubis Temple	Egyptian
+407		YES	YES		Limited Edition	Black Anubis	Egyptian
+399		YES	YES		Limited Edition	Camel	Egyptian
+410		YES	YES	Camel Rider	Limited Edition	Camel Stables	Egyptian
+401		YES	YES		Limited Edition	Cat Statue	Egyptian
+398		YES	YES		Limited Edition	Cleopatra	Egyptian
+1381		YES	YES	Cobra Rider	Limited Edition	Cobra Rider Barracks	Egyptian
+396		YES	YES		Limited Edition	Egyptian Field	Egyptian
+411		YES	YES		Limited Edition	Egyptian House	Egyptian
+397		YES	YES		Limited Edition	Egyptian Mine	Egyptian
+409		YES	YES	Egyptian Warrior	Limited Edition	Egyptian Quarters	Egyptian
+395		YES	YES		Limited Edition	Egyptian Tower	Egyptian
+394		YES	YES		Limited Edition	Egyptian Wall	Egyptian
+404		YES	YES		Limited Edition	Goat Sphynx	Egyptian
+1363		YES	YES	Guardian Archer	Limited Edition	Guardian Archer Barracks	Egyptian
+1379		YES	YES	Guardian Axe	Limited Edition	Guardian Axe Barracks	Egyptian
+1362		YES	YES	Guardian Swordsman	Limited Edition	Guardian Swordman Barracks	Egyptian
+1380		YES	YES	Horus Gryphon	Limited Edition	Horus Gryphon Barracks	Egyptian
+1365		YES	YES	Horus Herald	Limited Edition	Horus Herald Barracks	Egyptian
+1364		YES	YES	Isis Healer	Limited Edition	Isis Healer Barracks	Egyptian
+1369		YES	YES		Limited Edition	Isis Statue	Egyptian
+1370		YES	YES		Limited Edition	Keops Pyramid	Egyptian
+415		YES	YES	Mummy	Specials	Mummy Pyramid	Egyptian
+408		YES	YES		Limited Edition	Pharaoh	Egyptian
+1375		YES	YES		Limited Edition	Pharaohs Field	Egyptian
+1372		YES	YES		Limited Edition	Pharaohs Gold Mine	Egyptian
+1376		YES	YES		Limited Edition	Pharaohs House	Egyptian
+1374		YES	YES		Limited Edition	Pharaohs Tower	Egyptian
+1373		YES	YES		Limited Edition	Pharaohs Wall	Egyptian
+405		YES	YES		Limited Edition	Ra Sphynx	Egyptian
+402		YES	YES		Limited Edition	Ra Statue	Egyptian
+1366		YES	YES	Ramses II	Limited Edition	Ramses II Barracks	Egyptian
+1368		YES	YES		Limited Edition	Sarcophagus	Egyptian
+1396		YES	YES	Scarab Rider	Limited Edition	Scarab Rider Barracks	Egyptian
+1367		YES	YES	Sphinx	Limited Edition	Sphinx Barracks	Egyptian
+403		YES	YES		Limited Edition	Sphynx	Egyptian
+1383		YES	YES	Tuthankamon	Limited Edition	Tutankamon Barracks	Egyptian
+466		YES	YES	Elf Druid	Limited Edition	Druid's Hut	Elven
+444		YES	YES	Elf Druid	Limited Edition	Druids' Council	Elven
+443		YES	YES	Elf Archer	Limited Edition	Elf Archer	Elven
+1398		YES	YES	Imperial Elf Archer	Limited Edition	Elf Archer Barracks	Elven
+1414		YES	YES	Imperial Elf Axe	Limited Edition	Elf Axe Barracks	Elven
+442		YES	YES	Elf Warrior	Limited Edition	Elf Barracks	Elven
+1416		YES	YES	Imperial Elf Catapult	Limited Edition	Elf Catapult Barracks	Elven
+451		YES	YES		Limited Edition	Elf Eagle Aviary	Elven
+448		YES	YES		Limited Edition	Elf Field	Elven
+441		YES	YES		Limited Edition	Elf Fountain	Elven
+1402		YES	YES		Limited Edition	Elf Fountain	Elven
+439		YES	YES		Limited Edition	Elf Gazebo	Elven
+1415		YES	YES	Imperial Elf Gryphon	Limited Edition	Elf Gryphon Barracks	Elven
+440		YES	YES		Limited Edition	Elf Hero Statue	Elven
+450		YES	YES		Limited Edition	Elf House	Elven
+1400		YES	YES	Imperial Elf Knight	Limited Edition	Elf Knight Barracks	Elven
+438		YES	YES		Limited Edition	Elf Life Tree	Elven
+449		YES	YES		Limited Edition	Elf Mill	Elven
+1399		YES	YES	Elf Priest	Limited Edition	Elf Priest Barracks	Elven
+1401		YES	YES	Reptile Knight	Limited Edition	Elf Reptile Barracks	Elven
+445		YES	YES	Elf Tiger	Limited Edition	Elf Stables	Elven
+1397		YES	YES	Imperial Elf Sword	Limited Edition	Elf Swordman Barracks	Elven
+447		YES	YES		Limited Edition	Elf Tower	Elven
+446		YES	YES		Limited Edition	Elf Wall	Elven
+468		YES	YES	Elf Ballista	Limited Edition	Elf Workshop	Elven
+1424		YES	YES	Elven Crossbow	Limited Edition	Elven Crossbow Barracks	Elven
+1425		YES	YES	Elven Eagle Rider	Limited Edition	Elven Eagle Rider Barracks	Elven
+471		YES	YES	Ent	Limited Edition	Ent Barrack	Elven
+1454		YES	YES	Golden Paladin	Limited Edition	Golden Paladin Barracks	Elven
+1408		YES	YES		Limited Edition	Imperial Elf Field	Elven
+1409		YES	YES		Limited Edition	Imperial Elf House	Elven
+1405		YES	YES		Limited Edition	Imperial Elf Mill	Elven
+1407		YES	YES		Limited Edition	Imperial Elf Tower	Elven
+1406		YES	YES		Limited Edition	Imperial Elf Wall	Elven
+1420		YES	YES	Red Bull Rider	Limited Edition	Red Bull Rider Barracks	Elven
+467		YES	YES	Elf Royal Archer	Limited Edition	Royal Archery	Elven
+465		YES	YES	Royal Elf	Limited Edition	Royal Barrack	Elven
+1421		YES	YES	Silver Paladin	Limited Edition	Silver Paladin Barracks	Elven
+1516		YES	YES	4-Weapons Gladiator	Limited Edition	4-Weapons Gladiator Barrack	Gladiators
+1495		YES	YES	Demolisher Gladiator	Limited Edition	Barrack Demolisher Gladiator	Gladiators
+1494		YES	YES	Knight Gladiator	Limited Edition	Barrack Knight Gladiator	Gladiators
+1496		YES	YES	Lizard Gladiator	Limited Edition	Barrack Lizard Gladiator	Gladiators
+1493		YES	YES	Spearman Gladiator	Limited Edition	Barrack Spearman Gladiator	Gladiators
+1492		YES	YES	Sword Gladiator	Limited Edition	Barrack Sword Gladiator	Gladiators
+1518		YES	YES	Blade Gladiator	Limited Edition	Blade Gladiator Barrack	Gladiators
+1513		YES	YES	Bull Gladiator	Limited Edition	Bull Gladiator Barrack	Gladiators
+1522		YES	YES	Caesar Gladiator	Limited Edition	Caesar Gladiator Barrack	Gladiators
+1517		YES	YES	Centaur Gladiator	Limited Edition	Centaur Gladiator Barrack	Gladiators
+1521		YES	YES	Chariot Gladiator	Limited Edition	Chariot Gladiator Barrack	Gladiators
+1520		YES	YES	Devil Gladiator	Limited Edition	Devil Gladiator Barrack	Gladiators
+1497		YES	YES		Limited Edition	Gladiator Bust Deco	Gladiators
+1502		YES	YES		Limited Edition	Gladiator Field	Gladiators
+1503		YES	YES		Limited Edition	Gladiator House	Gladiators
+1499		YES	YES		Limited Edition	Gladiator Mill	Gladiators
+1501		YES	YES		Limited Edition	Gladiator Tower	Gladiators
+1500		YES	YES		Limited Edition	Gladiator Wall	Gladiators
+1498		YES	YES		Limited Edition	Golden Gladiator Statue	Gladiators
+1512		YES	YES	Lion Soul Gladiator	Limited Edition	Lion Soul Gladiator Barrack	Gladiators
+1508		YES	YES	Mace Gladiator	Limited Edition	Mace Gladiator Barrack	Gladiators
+1519		YES	YES	Minotaur Gladiator	Limited Edition	Minotaur Gladiator Barrack	Gladiators
+1509		YES	YES	Priest Gladiator	Limited Edition	Priest Gladiator Barrack	Gladiators
+1243		YES	YES	Black Witch	Limited Edition	Black Witch Barracks	Halloween
+1249		YES	YES		Limited Edition	Cauldron	Halloween
+1510		YES	YES	Death Warrior	Limited Edition	Death Warrior Barrack	Halloween
+1250		YES	YES	Dracula	Limited Edition	Dracula Barracks	Halloween
+1244		YES	YES	Frankenstein	Limited Edition	Frankenstein Barracks	Halloween
+1248		YES	YES		Limited Edition	Ghost	Halloween
+1239		YES	YES		Limited Edition	Halloween Farm	Halloween
+1240		YES	YES		Limited Edition	Halloween House	Halloween
+1236		YES	YES		Limited Edition	Halloween Mill	Halloween
+1251		YES	YES		Limited Edition	Halloween SuperTower	Halloween
+1238		YES	YES		Limited Edition	Halloween Tower	Halloween
+1237		YES	YES		Limited Edition	Halloween Wall	Halloween
+1252		YES	YES		Limited Edition	Haunted House	Halloween
+1241		YES	YES	Mr. Bones	Limited Edition	Mr. Bones Barracks	Halloween
+1242		YES	YES	Scarecrow	Limited Edition	Scarecrow Barracks	Halloween
+1245		YES	YES	Werewolf	Limited Edition	Werewolf Barracks	Halloween
+1247		YES	YES	Scary Zombie	Limited Edition	Zombie Barracks	Halloween
+481		YES	YES		Limited Edition	Bleeding Sculpture	Infernal
+1505		YES	YES	Evil Demon	Limited Edition	Evil Demon Barrack	Infernal
+478		YES	YES	Infernal Archer	Limited Edition	Infernal Archery	Infernal
+476		YES	YES	Infernal Warrior	Limited Edition	Infernal Barracks	Infernal
+475		YES	YES		Limited Edition	Infernal Field	Infernal
+484		YES	YES	Infernal Halberdier	Limited Edition	Infernal Halberdiery	Infernal
+485		YES	YES	Demon Crusher	Limited Edition	Infernal Headquarters	Infernal
+477		YES	YES	Infernal Demon	Limited Edition	Infernal Quarters	Infernal
+483		YES	YES		Limited Edition	Infernal Sculpture	Infernal
+479		YES	YES	Infernal Knight	Limited Edition	Infernal Stables	Infernal
+474		YES	YES		Limited Edition	Infernal Tower	Infernal
+473		YES	YES		Limited Edition	Infernal Wall	Infernal
+1211		YES	YES	Infernal Kamikaze	Specials	Kamikaze Center	Infernal
+482		YES	YES		Limited Edition	Magma Fountain	Infernal
+1212		YES	YES	Rhino Rider	Limited Edition	Rhino Stables	Infernal
+480		YES	YES		Limited Edition	Torch	Infernal
+1271		YES	YES		Limited Edition	Ancient Ruins	Mythological
+1504		YES	YES	Antimatter Golem	Limited Edition	Antimatter Golem Barrack	Mythological
+1281		YES	YES	Aquiles	Limited Edition	Aquiles Barracks	Mythological
+1277		YES	YES	Centaur	Limited Edition	Centaur Barracks	Mythological
+1265		YES	YES	Cerberus	Limited Edition	Cerberus Barracks	Mythological
+1266		YES	YES	Cyclops	Limited Edition	Cyclops Barracks	Mythological
+1286		YES	YES	Hades	Limited Edition	Hades Barrack	Mythological
+1291		YES	YES	Harpy	Limited Edition	Harpy Barracks	Mythological
+1301		YES	YES	Hercules	Limited Edition	Hercules Barracks	Mythological
+1269		YES	YES		Limited Edition	Hercules Statue	Mythological
+1262		YES	YES	Hermes	Limited Edition	Hermes Barracks	Mythological
+1276		YES	YES	Hermes Spearman	Limited Edition	Hermes Spearman Barracks	Mythological
+1275		YES	YES	Hermes Swordsman	Limited Edition	Hermes Swordman Barracks	Mythological
+1303		YES	YES	Hidros Titan	Limited Edition	Hydros Barracks	Mythological
+1261		YES	YES	Icarus	Limited Edition	Icarus Barracks	Mythological
+1273		YES	YES	Lythos Titan	Limited Edition	Lythos Barracks	Mythological
+1267		YES	YES	Medusa	Limited Edition	Medusa Barracks	Mythological
+1263		YES	YES	Minotaur	Limited Edition	Minotaur Barracks	Mythological
+1272		YES	YES		Limited Edition	Myth Statue	Mythological
+1259		YES	YES		Limited Edition	Mythological Field	Mythological
+1260		YES	YES		Limited Edition	Mythological House	Mythological
+1256		YES	YES		Limited Edition	Mythological Mill	Mythological
+1258		YES	YES		Limited Edition	Mythological Tower	Mythological
+1257		YES	YES		Limited Edition	Mythological Wall	Mythological
+1280		YES	YES	Poseidon	Limited Edition	Poseidon Barracks	Mythological
+1268		YES	YES	Pyros Titan	Limited Edition	Pyros Barracks	Mythological
+1278		YES	YES	Rodas Colossus	Limited Edition	Rodhes Colossus Barracks	Mythological
+1264		YES	YES	Scorpion	Limited Edition	Scorpion Barracks	Mythological
+1292		YES	YES	Stratos Titan	Limited Edition	Stratos Barracks	Mythological
+1290		YES	YES	Ulises	Limited Edition	Ulises Barracks	Mythological
+1270		YES	YES		Limited Edition	Unicorn Statue	Mythological
+1321		YES	YES	Axe Skeleton	Limited Edition	Axe Skeleton Barracks	Necro
+1308		YES	YES		Limited Edition	Beholder Eye	Necro
+1312		YES	YES	Necro Dark Lord	Limited Edition	Dark Lord Barracks	Necro
+1314		YES	YES		Limited Edition	Draco Fountain	Necro
+1313		YES	YES		Limited Edition	Green Emerald	Necro
+1306		YES	YES	Necro Archer	Limited Edition	Necro Archer Barracks	Necro
+1347		YES	YES	Necro Doublesword	Limited Edition	Necro Doublesword Barracks	Necro
+1319		YES	YES		Limited Edition	Necro Field	Necro
+1323		YES	YES	Necro Fork Soldier	Limited Edition	Necro Fork Barracks	Necro
+1348		YES	YES	Necro Ghost	Limited Edition	Necro Ghost Barracks	Necro
+1325		YES	YES	Necro  Harvester	Limited Edition	Necro Harvester Barracks	Necro
+1322		YES	YES	Necro Horseman	Limited Edition	Necro Horseman Barracks	Necro
+1320		YES	YES		Limited Edition	Necro House	Necro
+1329		YES	YES	Necro King	Limited Edition	Necro King Barracks	Necro
+1316		YES	YES		Limited Edition	Necro Mill	Necro
+1326		YES	YES	Necro  Multi-arms	Limited Edition	Necro Multiarms Barracks	Necro
+1311		YES	YES	Necro Paladin	Limited Edition	Necro Paladin Barracks	Necro
+1309		YES	YES	Necro Priest	Limited Edition	Necro Priest Castle	Necro
+1342		YES	YES	Necro Rhino	Limited Edition	Necro Rhino Barracks	Necro
+1318		YES	YES		Limited Edition	Necro Tower	Necro
+1317		YES	YES		Limited Edition	Necro Wall	Necro
+1307		YES	YES	Necro Warrior	Limited Edition	Necro Warrior Barracks	Necro
+1343		YES	YES	Skeleton Archer	Limited Edition	Skeleton Archer Barracks	Necro
+1305		YES	YES	Sword Skeleton	Limited Edition	Sword Skeleton Barracks	Necro
+1310		YES	YES	Necro Winged Warrior	Limited Edition	Winged Warrior Barracks	Necro
+1514		YES	YES	Burning Tiger	Limited Edition	Burning Tiger Barrack	None
+1403		YES	YES		Limited Edition	Emerald Sculpture	None
+414		YES	YES	Elite Knight	Castles	Golden Castle	None
+278		YES	YES		Limited Edition	Golden Structure	None
+413		YES			Turrets	Golden Tower	None
+102		YES	YES		Trees	Happy Tree	None
+1478		YES	YES		Limited Edition	Level Up Statue	None
+1438		YES	YES		Limited Edition	Skullz Big Amulet	None
+1515		YES	YES	T-Rex	Limited Edition	T-Rex Barrack	None
+1475		YES	YES	Big Basher Orc	Limited Edition	Big Basher Orc Barrack	Orcs
+1483		YES	YES	Black Lizard Rider	Limited Edition	Black Lizard Barrack	Orcs
+1435		YES	YES	Boar Axe Rider	Limited Edition	Boar Axe Rider Barrack	Orcs
+1486		YES	YES	Boomerang Orc	Limited Edition	Boomerang Orc Barracks	Orcs
+1433		YES	YES	Crusher Orc	Limited Edition	Crusher Orc Barrack	Orcs
+1444		YES	YES		Limited Edition	Dark Orc Field	Orcs
+1445		YES	YES		Limited Edition	Dark Orc House	Orcs
+1441		YES	YES		Limited Edition	Dark Orc Mill	Orcs
+1443		YES	YES		Limited Edition	Dark Orc Tower	Orcs
+1442		YES	YES		Limited Edition	Dark Orc Wall	Orcs
+1439		YES	YES		Limited Edition	Dark Orks Banner	Orcs
+1484		YES	YES	Dual Axe Orc	Limited Edition	Dual Axe Orc Barracks	Orcs
+1491		YES	YES	Orc Battering Ram	Limited Edition	Orc Battering Ram Barrack	Orcs
+1436		YES	YES	Orc Spear Warrior	Limited Edition	Orc Spear Warrior Barrack	Orcs
+1482		YES	YES	Priest Orc	Limited Edition	Priest Orc Barrack	Orcs
+1437		YES	YES	Spider Orc Rider	Limited Edition	Spider Orc Rider Barrack	Orcs
+1474		YES	YES	TNT Orc	Limited Edition	TNT Orc Barrack	Orcs
+1485		YES	YES	Wyvern Rider	Limited Edition	Wyvern Rider Barracks	Orcs
+388		YES	YES	Axe Viking	Limited Edition	Viking Axe Quarters	Viking
+377		YES	YES		Limited Edition	Viking Field	Viking
+378		YES	YES		Limited Edition	Viking Mine	Viking
+383		YES	YES		Limited Edition	Viking Mistress	Viking
+374		YES	YES	Viking	Limited Edition	Viking Quarters	Viking
+381		YES	YES		Limited Edition	Viking Ship	Viking
+382		YES	YES		Limited Edition	Viking Ship	Viking
+379		YES	YES		Limited Edition	Viking Statue	Viking
+380		YES	YES		Limited Edition	Viking Statue	Viking
+376		YES	YES		Limited Edition	Viking Tower	Viking
+375		YES	YES		Limited Edition	Viking Wall	Viking
 285		YES				_DEV ACTIVATOR	
 286		YES				_DEV TREASURE	
 236		YES				Abandoned Mine	
@@ -590,6 +589,7 @@
 1357		YES	YES		Turrets	Dome Protection descartado	
 1233	1	YES	YES		Miscellaneous	Dragon Breeding Nest	
 1527		YES			Limited Edition	Dragon City	
+1426		YES	YES		Limited Edition	Dragon Killer Fortress	
 1346	1	YES	YES		Miscellaneous	Dragon Riding	
 120	1	YES	YES		Statues	Dragon Statue	
 1387		YES				Dragons Isle	

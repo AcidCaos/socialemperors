@@ -1,10 +1,14 @@
 import json
 import os
 import jsonpatch
+import random
+import time
+import datetime
 from bundle import MODS_DIR, CONFIG_DIR, CONFIG_PATCH_DIR
 from constants import Constant
 
 __game_config = json.load(open(os.path.join(CONFIG_DIR, "main.json"), 'r', encoding='utf-8'))
+__rotation = json.load(open(os.path.join(CONFIG_DIR, "shop_rotation.json"), 'r', encoding='utf-8'))
 
 # Since we use mega patches now, better to make sure any old patches don't load as they will load after and will mess things up!
 patch_ignore = [ 
@@ -59,17 +63,103 @@ def apply_config_patch(filename):
 		jsonpatch.apply_patch(__game_config, patch, in_place=True)
 		print(f" * Patch applied:", fname)
 
-def patch_game_config():
+# because the way this is done sucks we have to do redefine this here
+def get_item(item_id):
+	item_id = str(item_id)
+	for item in __game_config["items"]:
+		if item_id == item["id"]:
+			return item
+	return None
 
-	# Apply patches
+def apply_shop_rotation(ts):
+	print (" [+] Setting up shop rotation...")
 
+	_rng = random.getstate()
+
+	seconds_interval = int(__rotation["rotation_hours"] * 3600)
+	seed = ts // seconds_interval
+	random.seed(seed)
+	print(f" * Shop: RNG seed = {seed}")
+
+	# halloween settings
+	spooktober = __rotation["spooktober"]
+	now = datetime.datetime.today()
+	is_spooktober = now.month == 10 and now.day == 31
+
+	if __rotation["full_random"]:
+		factions = __rotation["factions"]
+		max_items = __rotation["max_items_full_random"]
+
+		all_items = []
+		for name in factions:
+			if spooktober and name == "Halloween":
+				print("skipped halloween")
+				continue
+			for item in factions[name]:
+				
+				all_items.append(item)
+
+		max_items = min(len(all_items), max_items)
+		idx = 0
+		while idx < max_items:
+			item = get_item(all_items[idx])
+			idx += 1
+			if not item:
+				continue
+
+			item["in_store"] = "1"
+
+		if spooktober and is_spooktober:
+			for item_id in factions["Halloween"]:
+				item = get_item(item_id)
+				if not item:
+					continue
+
+				item["in_store"] = "1"
+			print(" * Shop: Faction Halloween is now available!")
+
+		print(f" * Shop: Enabled {max_items} random things in shop!")
+	else:
+		factions = __rotation["factions"]
+		faction_names = list(factions.keys())
+		random.shuffle(faction_names)
+		if spooktober:
+			# Remove halloween from rotation, it's always picked for halloween anyway
+			faction_names.remove("Halloween")
+		
+		max_factions = min(__rotation["max_factions"], len(faction_names))
+		chosen = []
+
+		if spooktober and is_spooktober:
+			# Always enable halloween on halloween
+			max_factions -= 1
+			chosen.append("Halloween")
+
+		while max_factions > 0:
+			chosen.append(faction_names[0])
+			del faction_names[0]
+			max_factions -= 1
+
+		for f in chosen:
+			print(f" * Shop: Faction {f} is now available!")
+			for item_id in factions[f]:
+				item = get_item(item_id)
+				if not item:
+					continue
+
+				item["in_store"] = "1"
+
+	random.setstate(_rng)
+
+def apply_patches():
+	print (" [+] Applying config patches...")
 	for patch_file in os.listdir(CONFIG_PATCH_DIR):
 		if patch_file.endswith(".json"):
 			f = os.path.join(CONFIG_PATCH_DIR, patch_file)
 			apply_config_patch(f)
 
-	# Apply mods
-
+def apply_mods():
+	print (" [+] Applying mods...")
 	if os.path.exists(MODS_DIR + "/mods.txt"):
 		with open(MODS_DIR + "/mods.txt", "r", encoding='utf-8') as f:
 			lines = f.readlines()
@@ -88,8 +178,14 @@ def patch_game_config():
 
 	remove_duplicate_items()
 
-print (" [+] Applying config patches and mods...")
-patch_game_config()
+# do it
+apply_patches()
+apply_shop_rotation(int(time.time()))
+apply_mods()
+
+items_dict_id_to_items_index = {int(item["id"]): i for i, item in enumerate(__game_config["items"])}
+items_dict_subcat_functional_to_items_index = {int(item["subcat_functional"]): i for i, item in enumerate(__game_config["items"])}
+missions_dict_id_to_missions_index = {int(item["id"]): i for i, item in enumerate(__game_config["missions"])}
 
 def get_game_config():
 	return __game_config
@@ -112,8 +208,6 @@ def get_level_from_xp(xp: int):
 		i += 1
 	return 0
 
-items_dict_id_to_items_index = {int(item["id"]): i for i, item in enumerate(__game_config["items"])}
-
 def get_item_from_id(id: int):
 	items_index = items_dict_id_to_items_index[int(id)] if int(id) in items_dict_id_to_items_index else None
 	return __game_config["items"][items_index] if items_index is not None else None
@@ -125,13 +219,9 @@ def get_attribute_from_item_id(id: int, attribute_name: str):
 def get_name_from_item_id(id: int):
 	return get_attribute_from_item_id(id, "name")
 
-items_dict_subcat_functional_to_items_index = {int(item["subcat_functional"]): i for i, item in enumerate(__game_config["items"])}
-
 def get_item_from_subcat_functional(subcat_functional: int):
 	items_index = items_dict_subcat_functional_to_items_index[int(subcat_functional)] if int(subcat_functional) in items_dict_subcat_functional_to_items_index else None
 	return __game_config["items"][items_index] if items_index is not None else None
-
-missions_dict_id_to_missions_index = {int(item["id"]): i for i, item in enumerate(__game_config["missions"])}
 
 def get_mission_from_id(id: int):
 	items_index = missions_dict_id_to_missions_index[int(id)] if int(id) in missions_dict_id_to_missions_index else None
@@ -140,7 +230,6 @@ def get_mission_from_id(id: int):
 def get_attribute_from_mission_id(id: int, attribute_name: str):
 	mission = get_mission_from_id(id)
 	return mission[attribute_name] if mission and attribute_name in mission else None
-
 
 def get_si_info(item_id):
 	for si in __game_config["social_items"]:

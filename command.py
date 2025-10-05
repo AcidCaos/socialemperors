@@ -161,7 +161,7 @@ def do_command(USERID, cmd, args, gameversion):
 		try:
 			result = commands[cmd](save, cmd, args, gameversion)
 		except:
-			traceback.print_exc()
+			# traceback.print_exc()
 			_ERROR(cmd, args)
 			return
 

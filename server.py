@@ -12,7 +12,7 @@ else:
     sys.stdout.write("\x1b]2;Social Empires Server\x07")
 
 print (" [+] Loading game config...")
-from get_game_config import get_game_config, patch_game_config
+from get_game_config import get_game_config
 
 print (" [+] Loading players...")
 from get_player_info import *

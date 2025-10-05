@@ -114,6 +114,41 @@ def shop_modify(items, csv_filename):
 			else:
 				item["in_store"] = "0"
 
+	
+	make_shop_rotation(items, csv, "../config/shop_rotation.json")
+
+def make_shop_rotation(items, csv, filename):
+	print(f"exporting shop rotation to {filename}...")
+	factions = {}
+	for entry in csv:
+		if len(entry) < 8:
+			continue
+		
+		faction = entry[7]
+		if faction == "CollectionReward" or faction == "Always":
+			continue
+
+		item = get_item(items, int(entry[0]))
+		if not item:
+			continue
+		if faction not in factions:
+			factions[faction] = []
+
+		factions[faction].append(int(int(entry[0])))
+
+	rotation = {
+		"rotation_hours": 48,
+		"max_factions": 2,
+		"max_items_full_random": 80,
+		"full_random": False,
+		"spooktober": True,
+		"factions": factions,
+	}
+
+	with open(filename, 'w') as f:
+		json.dump(rotation, f)
+
+
 
 def makeriderpatch(item_id, rider_tier, tamed_id):
 	# Create patch
