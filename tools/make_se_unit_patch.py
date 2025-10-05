@@ -29,6 +29,92 @@ def trimquotes(inputstr: str):
 		new = new [:-1]
 	return new
 
+def dump_category_csv(cats, main_csv, sub_csv):
+	_cat = []
+	_sub = []
+	for CAT in cats:
+		cat = cats[CAT]
+		if "id" in cat:
+			_cat.append([
+				str(cat["id"]),
+				str(cat["name"])
+			])
+			for sub in cat["sub"]:
+				_sub.append([
+					str(sub["id"]),
+					str(cat["id"]),
+					str(sub["name"])
+				])
+	write_csv(_cat, main_csv)
+	write_csv(_sub, sub_csv)
+
+def get_subcat(subcat):
+	cats = config["categories"]
+	for CAT in cats:
+		cat = cats[CAT]
+		for sub in cat["sub"]:
+			if sub["id"] == subcat:
+				return sub["name"]
+	return ""
+
+def dump_unit_category(items, output_csv):
+	csv = []
+	for item in items:
+		instore = ""
+		isbuilding = ""
+		ishuman = ""
+		doestrain = ""
+		if item["in_store"] != "0":
+			instore = item["in_store"]
+		if item["type"] == "b":
+			isbuilding = "YES"
+		if item["race"] == "h":
+			ishuman = "YES"
+		if item["trains"] != "0":
+			doestrain = get_item(items, int(item["trains"]))["name"]
+
+		csv.append([
+			str(item["id"]),
+			instore,
+			isbuilding,
+			ishuman,
+			doestrain,
+			"",
+			get_subcat(int(item["subcategory_id"])),
+			str(item["name"]),
+		])
+
+	write_csv(csv, output_csv)
+
+def read_csv(filename, separator='\t'):
+	csv = []
+	with open(filename, 'r') as f:
+		for line in f:
+			csv.append(line.strip().split(separator))
+	return csv
+
+def write_csv(csv, filename, separator='\t'):
+	with open(filename, 'w') as f:
+		for item in csv:
+			data = separator.join(item)
+			f.write(f"{data}\n")
+	print(f"wrote csv {filename}")
+
+def shop_modify(items, csv_filename):
+	print("applying new shop configuration...")
+	csv = read_csv(csv_filename)
+
+	for entry in csv:
+		item_id = entry[0]
+		in_store = entry[1]
+		item = get_item(items, int(item_id))
+		if item:
+			if in_store != "":
+				item["in_store"] = str(in_store)
+			else:
+				item["in_store"] = "0"
+
+
 def makeriderpatch(item_id, rider_tier, tamed_id):
 	# Create patch
 	p = {}
@@ -174,6 +260,16 @@ def get_item(items, item_id):
 			return item
 	return None
 
+def modify_item_price(items, item_id, price, price_type):
+	item = get_item(items, item_id)
+	if not item:
+		return
+	
+	item["cost"] = str(price)
+	item["cost_type"] = price_type
+	name = item["name"]
+	print(f"adjusted price of {name}")
+
 def make_final(config, patch, sm_patch):
 	print(f"applying phase 1 patch...")
 	jsonpatch.apply_patch(config, patch, in_place = True)
@@ -203,12 +299,17 @@ def make_final(config, patch, sm_patch):
 		name = item["name"]
 		print(f"applied size fix to {name}")
 
-	# fix sky tower 2 incorrect size
-	item = get_item(items, 1463)
-	if item:
-		item["in_store"] = "1"
-		name = item["name"]
-		print(f"enabled buying of {name}")
+	# modify shop items
+	shop_modify(config["items"], "shop_data.csv")
+
+	# adjust prices
+	modify_item_price(items, 472, 15, "c") # black castle
+	modify_item_price(items, 414, 20, "c") # golden castle
+	modify_item_price(items, 100, 225, "g") # yellow tree
+	modify_item_price(items, 106, 225, "g") # red tree
+	modify_item_price(items, 102, 390, "g") # happy tree	
+	modify_item_price(items, 125, 700, "g") # unused soldier statues
+	modify_item_price(items, 127, 700, "g") # unused soldier statues
 
 	# build final patch
 	final = []
@@ -225,6 +326,9 @@ sm_patch = "fusion_output.json"
 config = load_config("../config/main.json")
 load_patches(config, patches)
 patch_final = make_final(config, patch, sm_patch)
+
+#dump_category_csv(config["categories"], "categories.csv", "subcategories.csv")
+#dump_unit_category(config["items"], "unit_store.csv")
 
 if len(patch) > 0:
 	with open(patch_filename, 'w') as f:
