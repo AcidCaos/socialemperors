@@ -99,6 +99,7 @@ def apply_shop_rotation(ts):
 				
 				all_items.append(item)
 
+		random.shuffle(all_items)
 		max_items = min(len(all_items), max_items)
 		idx = 0
 		while idx < max_items:
