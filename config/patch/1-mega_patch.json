@@ -94,7 +94,7 @@
 				"store_order": 1,
 				"in_store": 1,
 				"min_level": 0,
-				"max_level": 45,
+				"max_level": 100,
 				"duration": 0,
 				"starts_at": 0,
 				"max_purchable": 1,
