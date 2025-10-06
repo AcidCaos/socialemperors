@@ -290,24 +290,12 @@ def set_training_time(life):
 	return math.ceil(amount / 100) * 30
 
 def set_pack_chance(life, item_type):
-	if item_type == "b":
-		return 0
-	if int(life) >= 5000:
-		return 0
 	return int(5000 / float(life))
 
 def set_pack_category(life, item_type):
-	if item_type == "b":
-		return 1
-	if int(life) >= 5000:
-		return 1
 	return 2
 
 def set_pack_num(life, item_type):
-	if item_type == "b":
-		return -1
-	if int(life) >= 5000:
-		return -1
 	return 1
 
 def get_item(items, item_id):
@@ -353,6 +341,8 @@ def make_final(config, patch, sm_patch):
 	num = 0
 	for item in items:
 		if "pack_chance" not in item:
+			if item["type"] == "b":
+				continue
 			life = item["life"]
 			item["pack_num"] = set_pack_num(life, item["type"])
 			item["pack_chance"] = str(set_pack_chance(life, item["type"]))

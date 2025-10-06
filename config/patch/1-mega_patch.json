@@ -239,9 +239,9 @@
 					"1": 100
 				},
 				"pack_category": {
-					"1": 0,
-					"2": 50,
-					"custom": 50
+					"0": 0,
+					"custom": 1,
+					"2": 9
 				},
 				"custom": [
 					{ "id": 875,	"chances": 2 },
@@ -255,7 +255,13 @@
 				],
 				"carrusel": [ 
 					{ "id": 875, "scale": 1.0, "orientation": "4", "offset": -40 },
-					{ "id": 877, "scale": 1.0, "orientation": "4", "offset": -40 }
+					{ "id": 877, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2011, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2370, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2369, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2360, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2357, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2354, "scale": 1.0, "orientation": "4", "offset": -40 }
 				]
 			}
 		]
