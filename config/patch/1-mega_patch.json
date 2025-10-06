@@ -100,11 +100,54 @@
 				"max_purchable": 1,
 				"price": { "g": 50 },
 
+				"banner": "The First Guardian",
 				"name": "The Guardian",
-				"tooltip": "Unit Pack Tooltip",
+				"tooltip": "TOOLTIP",
 				"img": "first.png",
-				"description": "Unit Pack Description",
-				"banner": "The First Guardian"
+
+				"description": "DESCRIPTION",
+				"data": "DATA",
+				"help_text": "HELP_TEXT_PACK_1",
+				"units_given": 1,
+				"pack_num": {
+					"1": 100
+				},
+				"pack_category": {
+					"0": 0,
+					"custom": 10.0,
+					"2": 0.0
+				},
+
+				"custom": [
+					{ "id": 610,	"chances": 1 },
+					{ "id": 573,	"chances": 1 },
+					{ "id": 508,	"chances": 1 },
+					{ "id": 643,	"chances": 1 },
+					{ "id": 514,	"chances": 1 },
+					{ "id": 541,	"chances": 1 },
+					{ "id": 560,	"chances": 1 },
+					{ "id": 574,	"chances": 1 },
+					{ "id": 576,	"chances": 1 },
+					{ "id": 603,	"chances": 1 },
+					{ "id": 608,	"chances": 1 },
+					{ "id": 609,	"chances": 1 },
+					{ "id": 643,	"chances": 1 }
+				],
+				"carrusel": [
+					{ "id": 610, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 573, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 508, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 643, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 514, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 541, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 560, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 574, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 576, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 603, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 608, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 609, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 643, "scale": 1.0, "orientation": "4", "offset": -40 }
+				]
 			},
 			{
 				"id": 2,
