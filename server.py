@@ -183,26 +183,16 @@ def units_pack_get_data():
 		spdebug = request.values['spdebug']
 	language = request.values['language']
 
-	print("UNIT PACKS HANDLER ----------------")
-	print("request: "+json.dumps(request.values, indent='\t'))
+	#print("request: "+json.dumps(request.values, indent='\t'))
 	data, correct = check_hmac(request.values['data'])
-	print("data: "+json.dumps(data, indent='\t'))
-	print("-----------------------------------")
+	#print("data: "+json.dumps(data, indent='\t'))
+
 	if not correct: # Invalid HMAC
 		return (construct_hash_and_payload({
 			"result": "error"
 		}), 403)
 
-	# data -> dict:
-	#    n -> int, number of packs bought
-    
-	#    if n is between >= 2 and < 8, apply 10% discount (* 0.9)
-	#    if n is between >= 8, apply 15% discount (* 0.85)
-
 	randoms = []
-
-	#state = random.getstate()
-	#random.seed(0)
 
 	for i in range(int(data["n"])):
 		randoms.append([
@@ -210,9 +200,6 @@ def units_pack_get_data():
 			random.random(),
 			random.random()
 		])
-
-	#random.setstate(state)
-	#print(randoms)
 
 	return (construct_hash_and_payload({
 		"result": "success",

@@ -105,6 +105,9 @@ commands = {
 	"end_attack_new":					cmd_pvp_end_attack_new,
 	# shop ----------------------------------------------------------------------------------------------------
 	"buy_super_offer_pack":				cmd_buy_super_offer_pack,
+	# unit packs ----------------------------------------------------------------------------------------------
+	"buy_unit_pack":					cmd_buy_unit_pack,
+	"store_add_items":					cmd_store_add_items,
 	# old -----------------------------------------------------------------------------------------------------
 	"complete_tutorial":				USE_OLD,
 	"complete_mission":					USE_OLD,

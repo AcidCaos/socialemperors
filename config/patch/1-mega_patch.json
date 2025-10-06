@@ -224,15 +224,15 @@
 				"duration": 0,
 				"starts_at": 0,
 				"max_purchable": 0,
-				"price": { "c": 1 },
+				"price": { "c": 15 },
 				
-				"banner": "TEST PACK\nWORK IN PROGRESS",
-				"name": "Test Pack",
-				"tooltip": "Nerroth Test in progress",
-				"img": "advanced_dragon.png",
+				"banner": "Stupidly\nOverpowered",
+				"name": "Working Pack",
+				"tooltip": "- Warning -\nNot even a remotely fair pack!",
+				"img": "ancient_dragons.png",
 
-				"description": "This is just a non working test unit pack",
-				"data": "Nothing to see here, move along, buying it will crash the game",
+				"description": "You have been warned, this is a stupidly overpowered Unit Pack",
+				"data": "No refunds! We don't refund if you don't win!",
 				"help_text": "HELP_TEXT_PACK_1",
 				"units_given": 1,
 				"pack_num": {
@@ -240,28 +240,36 @@
 				},
 				"pack_category": {
 					"0": 0,
-					"custom": 1,
-					"2": 9
+					"custom": 2.5,
+					"2": 7.5
 				},
 				"custom": [
-					{ "id": 875,	"chances": 2 },
-					{ "id": 877,	"chances": 1 },
-					{ "id": 2011,	"chances": 2 },
-					{ "id": 2370,	"chances": 1 },
-					{ "id": 2369,	"chances": 1 },
-					{ "id": 2360,	"chances": 1 },
-					{ "id": 2357,	"chances": 1 },
-					{ "id": 2354,	"chances": 1 }
+					{ "id": 2281,	"chances": 10 },
+					{ "id": 2284,	"chances": 10 },
+					{ "id": 2289,	"chances": 10 },
+					{ "id": 2295,	"chances": 10 },
+					{ "id": 2299,	"chances": 10 },
+					{ "id": 2302,	"chances": 8 },
+					{ "id": 2305,	"chances": 8 },
+					{ "id": 2308,	"chances": 8 },
+					{ "id": 2336,	"chances": 5 },
+					{ "id": 2344,	"chances": 5 },
+					{ "id": 2354,	"chances": 3 },
+					{ "id": 2370,	"chances": 1 }
 				],
 				"carrusel": [ 
-					{ "id": 875, "scale": 1.0, "orientation": "4", "offset": -40 },
-					{ "id": 877, "scale": 1.0, "orientation": "4", "offset": -40 },
-					{ "id": 2011, "scale": 1.0, "orientation": "4", "offset": -40 },
-					{ "id": 2370, "scale": 1.0, "orientation": "4", "offset": -40 },
-					{ "id": 2369, "scale": 1.0, "orientation": "4", "offset": -40 },
-					{ "id": 2360, "scale": 1.0, "orientation": "4", "offset": -40 },
-					{ "id": 2357, "scale": 1.0, "orientation": "4", "offset": -40 },
-					{ "id": 2354, "scale": 1.0, "orientation": "4", "offset": -40 }
+					{ "id": 2281,	"scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2284,	"scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2289,	"scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2295,	"scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2299,	"scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2302,	"scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2305,	"scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2308,	"scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2336,	"scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2344,	"scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2354,	"scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 2370,	"scale": 1.0, "orientation": "4", "offset": -40 }
 				]
 			}
 		]

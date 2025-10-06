@@ -1,4 +1,5 @@
 import json
+import math
 
 from sessions import session, save_session, pvp_pool_modify, pvp_modify_victim
 from get_game_config import *
@@ -970,6 +971,60 @@ def cmd_buy_super_offer_pack(player, cmd, args, gameversion):
 	for item_id in items:
 		add_store_item(player, item_id)
 
+	return True
+
+def cmd_buy_unit_pack(player, cmd, args, gameversion):
+	# pack_id, n
+	pack_id = int(args[0])
+	n = int(args[1])
+
+	# no support for other town IDs, sad :(
+	town_id = 0
+	_map = player["maps"][town_id]
+
+	# if n is between >= 2 and < 8, apply 10% discount (* 0.9)
+	# if n is between >= 8, apply 15% discount (* 0.85)
+	cost = 0
+	cost_type = None
+	pack = get_unit_pack(pack_id)
+	if not pack:
+		print("no pack")
+		return False
+	if pack["in_store"] == 0:
+		print("not in store")
+		return False
+
+	discount = 1.0
+	
+	if n >= 8:
+		discount = 0.85
+	elif n >= 2:
+		discount = 0.9
+
+	price = pack["price"]
+	if "c" in price:
+		cost = int(math.ceil(int(price["c"]) * n * discount))
+		if not pay_cash(player, cost):
+			print("no cash")
+			return False
+	elif "g" in price:
+		cost = int(math.ceil(int(price["g"]) * n * discount))
+		if not pay_map_currency(_map, "coins", cost):
+			print("no gold")
+			return False
+	else:
+		print("no price")
+		return False
+
+	return True
+
+def cmd_store_add_items(player, cmd, args, gameversion):
+	# items
+	items = json.loads(args[0])
+
+	for item_id in items:
+		add_store_item(player, item_id)
+	
 	return True
 
 def cmd_set_variables(player, cmd, args, gameversion):

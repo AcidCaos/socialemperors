@@ -263,3 +263,10 @@ def get_offer_pack_id(pack_id):
 		if pack["id"] == pack_id:
 			return pack
 	return None
+
+def get_unit_pack(pack_id):
+	packs = __game_config["unit_packs"]
+	for pack in packs:
+		if pack["id"] == pack_id:
+			return pack
+	return None
