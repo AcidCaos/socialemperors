@@ -236,14 +236,22 @@
 				"help_text": "HELP_TEXT_PACK_1",
 				"units_given": 1,
 				"pack_num": {
-					"1": "1"
+					"1": 100
 				},
 				"pack_category": {
-					"1": "custom"
+					"1": 0,
+					"2": 50,
+					"custom": 50
 				},
-				"pack_custom": [
-					{ "id": 875, "chances": 100 },
-					{ "id": 877, "chances": 100 }
+				"custom": [
+					{ "id": 875,	"chances": 2 },
+					{ "id": 877,	"chances": 1 },
+					{ "id": 2011,	"chances": 2 },
+					{ "id": 2370,	"chances": 1 },
+					{ "id": 2369,	"chances": 1 },
+					{ "id": 2360,	"chances": 1 },
+					{ "id": 2357,	"chances": 1 },
+					{ "id": 2354,	"chances": 1 }
 				],
 				"carrusel": [ 
 					{ "id": 875, "scale": 1.0, "orientation": "4", "offset": -40 },

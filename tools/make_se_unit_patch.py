@@ -289,6 +289,27 @@ def set_training_time(life):
 		return math.ceil(amount / 100) * 5
 	return math.ceil(amount / 100) * 30
 
+def set_pack_chance(life, item_type):
+	if item_type == "b":
+		return 0
+	if int(life) >= 5000:
+		return 0
+	return int(5000 / float(life))
+
+def set_pack_category(life, item_type):
+	if item_type == "b":
+		return 1
+	if int(life) >= 5000:
+		return 1
+	return 2
+
+def set_pack_num(life, item_type):
+	if item_type == "b":
+		return -1
+	if int(life) >= 5000:
+		return -1
+	return 1
+
 def get_item(items, item_id):
 	item_id = str(item_id)
 	for item in items:
@@ -326,6 +347,21 @@ def make_final(config, patch, sm_patch):
 				item["training_time"] = set_training_time(life)
 				num += 1
 	print(f"set training times for {num} units")
+
+	# unit pack chances
+	items = config["items"]
+	num = 0
+	for item in items:
+		if "pack_chance" not in item:
+			life = item["life"]
+			item["pack_num"] = set_pack_num(life, item["type"])
+			item["pack_chance"] = str(set_pack_chance(life, item["type"]))
+			item["pack_category"] = set_pack_category(life, item["type"])
+			name = item["name"]
+			chance = item["pack_chance"]
+			print(f"{chance}\t{name}")
+			num += 1
+	print(f"set unit pack chances for {num} units")
 
 	# fix sky tower 2 incorrect size
 	item = get_item(items, 1360)
