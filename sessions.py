@@ -362,9 +362,11 @@ def pvp_enemy(my_userid, town_id):
 
 def pvp_simulate_resources(save, userid, town_id = 0):
 	pool_data = get_pvp_data(userid)
-	if pool_data:
-		session_type = pool_data["type"]
+	if not pool_data:
+		return
 
+	session_type = pool_data["type"]
+	
 	# if in friend/ or enemy/, simulate resources being lost and gained over time
 	if session_type == SESSION_FRIEND or session_type == SESSION_ENEMY:
 		hours = int((timestamp_now() - save["privateState"]["shieldEndTime"]) / 3600)
