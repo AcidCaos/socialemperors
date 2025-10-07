@@ -174,9 +174,8 @@ def migrate_loaded_save(save):
 		fix_variable(_map, "lastQuestTimes", [])
 		fix_variable(_map, "warehouseAditionalCapacitySingle", _warehouse_default_cap)
 		fix_variable(_map, "warehousedUnits", {})
-
-		# make sure very old timestamps are removed
-		check_quest_times(_map["lastQuestTimes"], ts_now)
+		fix_variable(_map, "timestampLastTrade", 0)
+		fix_variable(_map, "numTradesDone", 0)
 
 	# darts rng seed if missing
 	fix_variable(privateState, "dartsRandomSeed", darts_seed)
@@ -245,3 +244,28 @@ def migrate_loaded_save(save):
 		save.pop("version")
 
 	return True
+
+def save_reset_stuff(save):
+	# This function performs some resets in save whenever the game loads the map
+	# Resets market trades if it's a new day
+	# 1 week = 604800 seconds
+	# 1 day = 86400 seconds
+
+	now = timestamp_now()
+	for map in save["maps"]:
+		last_trade = map["timestampLastTrade"]
+		if now // 86400 != last_trade // 86400:
+			map["numTradesDone"] = 0
+			map["resourcesTraded"] = {}
+
+	# Reset targets if start of a new week, game will call darts_reset if timestamp is 0
+	privateState = save["privateState"]
+	if "timeStampDartsReset" in privateState:
+		# take away 3 days since timestamp 0 is thursday, we want reset to happen on monday
+		# 3 days = 259200 seconds
+		last_darts_reset = privateState["timeStampDartsReset"] + 259200
+		temp = now + 259200
+		if temp // 604800 != last_darts_reset // 604800:
+			privateState["timeStampDartsReset"] = 0
+
+	check_quest_times(map["lastQuestTimes"], now)

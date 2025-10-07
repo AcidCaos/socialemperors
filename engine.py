@@ -45,6 +45,21 @@ SELL_DIVISOR = -1.0 / 20.0 # sell divisor (divides by 20 in game for 5% sell val
 SPEEDUP_COST_PER_HOUR = 1
 FRIENDS_ASSIST_DIVISOR = 1.0 / 4.0
 FRIENDS_ASSIST_EXPERIENCE = 10
+MARKET_BASE_COSTS = {
+	"f": 100,
+	"s": 150,
+	"w": 100
+}
+
+MARKET_SELL_PERCENTAGE = 0.75
+MARKET_INCREMENT = 0.02
+MARKET_MAX_INCREMENTS = 200
+MARKET_MAX_DECREMENTS = 25
+MARKET_AMOUNT_TRADE = [
+	100,
+	200,
+	300
+]
 
 def timestamp_now():
 	return int(time.time())
@@ -412,13 +427,12 @@ def player_fast_forward(player, seconds, time_machine = False):
 		for item in map["items"]:
 			modify_ts_array(item, 4, -seconds)
 
-	# TODO:
-	# privateState.timestampLastBonus
-	# privateState.kompuLastTimeStamp
-	# privateState.timeStampHeavySiegePeriod
-	# privateState.timeStampHeavySiegeAttack
-	# privateState.timeStampDartsReset
-	# privateState.timeStampDartsNewFree
+	privateState["kompuLastTimeStamp"] = max(0, privateState["kompuLastTimeStamp"] - seconds)
+	privateState["timestampLastBonus"] = max(0, privateState["timestampLastBonus"] - seconds)
+	privateState["timeStampHeavySiegePeriod"] = max(0, privateState["timeStampHeavySiegePeriod"] - seconds)
+	privateState["timeStampHeavySiegeAttack"] = max(0, privateState["timeStampHeavySiegeAttack"] - seconds)
+	privateState["timeStampDartsReset"] = max(0, privateState["timeStampDartsReset"] - seconds)
+	privateState["timeStampDartsNewFree"] = max(0, privateState["timeStampDartsNewFree"] - seconds)
 
 	# shields
 	if not time_machine:
@@ -688,3 +702,17 @@ def player_assist_receive(player, map, building_id):
 	add_map_currency(map, "xp", FRIENDS_ASSIST_EXPERIENCE)
 
 	return True
+
+def add_resource_trades(traded, res_type, factor):
+	if res_type not in traded:
+		traded[res_type] = factor
+	else:
+		traded[res_type] += factor
+
+def get_resource_trades(traded, res_type):
+	if res_type not in traded:
+		return 0
+	return traded[res_type]
+
+def clamp(value, value_min, value_max):
+	return max(value_min, min(value_max, value))

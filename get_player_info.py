@@ -2,6 +2,7 @@ import os
 from quests import get_quest_map
 from sessions import *
 from engine import timestamp_now
+from version import save_reset_stuff
 
 def get_player_info(USERID, town_id = 0):
 	save = session(USERID)
@@ -10,6 +11,8 @@ def get_player_info(USERID, town_id = 0):
 	# Update last logged in
 	ts_now = timestamp_now()
 	save["playerInfo"]["last_logged_in"] = ts_now
+
+	save_reset_stuff(save)
 
 	# player
 	response = {
@@ -26,6 +29,8 @@ def get_player_info(USERID, town_id = 0):
 def get_target_info(userid, town_id = 0):
 	save = get_target_session(userid)
 	pvp_simulate_resources(save, userid, town_id)
+
+	save_reset_stuff(save)
 
 	response = {
 		"result": "ok",
@@ -70,6 +75,8 @@ def get_pvp_search_result(userid, town_id):
 
 	save = get_pvp_session(enemy_id)
 	pvp_simulate_resources(save, enemy_id, town_id)
+
+	save_reset_stuff(save)
 	
 	response = {
 		"result": "ok",

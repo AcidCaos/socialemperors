@@ -103,6 +103,8 @@ commands = {
 	"begin_attack_new":					cmd_pvp_begin_attack_new,
 	"end_attack":						cmd_pvp_end_attack,
 	"end_attack_new":					cmd_pvp_end_attack_new,
+	# market --------------------------------------------------------------------------------------------------
+	"trade_resource_b":					cmd_market_trade_resource,
 	# shop ----------------------------------------------------------------------------------------------------
 	"buy_super_offer_pack":				cmd_buy_super_offer_pack,
 	# unit packs ----------------------------------------------------------------------------------------------

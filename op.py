@@ -1133,3 +1133,46 @@ def cmd_clean_received_assists(player, cmd, args, gameversion):
 		del assists[userid]
 
 	return True
+
+def cmd_market_trade_resource(player, cmd, args, gameversion):
+	# town_id, resource_type, is_sell, amount
+	town_id = args[0]
+	resource_type = args[1]
+	is_sell = args[2] == 1
+	amount = args[3]
+
+	_map = player["maps"][town_id]
+	res_traded = _map["resourcesTraded"]
+	
+	res_trades = get_resource_trades(res_traded, resource_type)
+	res_trades = clamp(res_trades, -MARKET_MAX_DECREMENTS, MARKET_MAX_INCREMENTS)
+
+	base_cost = MARKET_BASE_COSTS[resource_type] * (amount / 100)
+	cost = int(round(base_cost + base_cost * res_trades * MARKET_INCREMENT))
+	sell_cost = int(round(cost * MARKET_SELL_PERCENTAGE))
+
+	factor = 1
+	if not is_sell:
+		factor = -1
+
+	if is_sell:
+		# buy gold, for resource_type
+		if not pay_resource_type(_map, resource_type, sell_cost):
+			return False
+
+		add_map_currency(_map, "coins", sell_cost)
+	else:
+		# buy resource_type for gold
+		if not pay_map_currency(_map, "coins", cost):
+			return False
+
+		give_resource_type(player["playerInfo"], _map, resource_type, amount)
+
+	add_resource_trades(res_traded, resource_type, -factor)
+
+	if _map["numTradesDone"] == 0:
+		_map["timestampLastTrade"] = timestamp_now()
+
+	_map["numTradesDone"] += 1
+
+	return True
