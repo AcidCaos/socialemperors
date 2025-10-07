@@ -197,6 +197,11 @@ def migrate_loaded_save(save):
 		privateState["countTimePacket"] = [ 0, 0, 0, 0, 0, 0 ]
 	fix_variable(privateState, "helpMap", [])						# shown help pages
 	fix_variable(privateState, "unitPacks", {})						# unit packs
+	fix_variable(privateState, "teams", {})							# teams
+	fix_variable(privateState["teams"], "tournament", [
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	])
 
 	# SP's spaghetti is annoying
 	fix_variable(privateState, "deadHeroes", {})					# graveyard old version
@@ -220,6 +225,12 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "shieldEndTime", 0)
 	fix_variable(privateState, "shieldCooldown", 0)
 	fix_variable(privateState, "purchasedShields", [])
+
+	# player profile info
+	fix_variable(playerInfo, "country", "Social World")
+	fix_variable(playerInfo, "attacks_won", 0)
+	fix_variable(playerInfo, "attacks_lost", 0)
+	fix_variable(playerInfo, "honor_points", 0)
 
 	check_shield_times(privateState, ts_now)
 

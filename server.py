@@ -329,7 +329,6 @@ def cache_image(url, userid):
 
 		idx = len(_cache)
 		dest = f"{userid}.png"
-		print(dest)
 		try:
 			response = urllib.request.urlretrieve(url, CACHE_DIR + "/" + dest)
 		except urllib.error.HTTPError:
@@ -395,6 +394,37 @@ def get_player_info_response():
 	# Neighbor
 	else:
 		return (construct_hash_and_payload(get_target_info(user, map)), 200)
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_public_player_info.php", methods=['GET'])
+def get_public_player_info_response():
+	USERID = request.values['USERID']
+	user_key = request.values['user_key']
+	language = request.values['language']
+
+	player = get_target_session(USERID)
+	if not player:
+		return ("", 404)
+
+	town_id = 0
+	playerInfo = player["playerInfo"]
+	_map = player["maps"][town_id]
+	privateState = player["privateState"]
+	
+	response = {
+		"name": playerInfo["name"],
+		"level": _map["level"],
+		"map_names": playerInfo["map_names"],
+		"honor_points": playerInfo["honor_points"],
+		"country": playerInfo["country"],
+		"last_logged_in": playerInfo["last_logged_in"],
+		"attacks_won": playerInfo["attacks_won"],
+		"attacks_lost": playerInfo["attacks_lost"],
+		"pid": playerInfo["pid"],
+		"teams": privateState["teams"]
+	}
+
+	return (response, 200)
+
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/sync_error_track.php", methods=['POST'])
 def sync_error_track_response():
