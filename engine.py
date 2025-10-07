@@ -116,7 +116,7 @@ def player_get_item_with_bq(player, bq):
 
 def map_move_item(map, item_id, x1, y1, x2, y2, orientation):
 	items = map_get_item(map, x1, y1, item_id)
-	if len(items) >= 0:
+	if len(items) > 0:
 		item = items[0]
 		item[1] = x2
 		item[2] = y2
@@ -124,7 +124,7 @@ def map_move_item(map, item_id, x1, y1, x2, y2, orientation):
 
 def map_orient_item(map, x, y, orientation):
 	items = map_get_item(map, x, y)
-	if len(items) >= 0:
+	if len(items) > 0:
 		item = items[0]
 		item[3] = orientation
 
