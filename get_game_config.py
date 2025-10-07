@@ -191,10 +191,33 @@ def apply_mods():
 
 	remove_duplicate_items()
 
+def check_unit_packs():
+	print(" [+] Checking Unit Packs...")
+	unit_packs = __game_config["unit_packs"]
+	for pack in unit_packs:
+		if "custom" in pack:
+			duplicates = []
+			custom = pack["custom"]
+			num = len(custom)
+			idx = 0
+			while idx < num:
+				if custom[idx]["id"] in duplicates:
+					uid = custom[idx]["id"]
+					pack_id = pack["id"]
+					print(f" * Duplicate found: id={uid} in pack id={pack_id}")
+					del custom[idx]
+					num -= 1
+					continue
+				
+				duplicates.append(custom[idx]["id"])
+				idx += 1
+
+
 # do it
 apply_patches()
 apply_shop_rotation(int(time.time()))
 apply_mods()
+check_unit_packs()
 
 items_dict_id_to_items_index = {int(item["id"]): i for i, item in enumerate(__game_config["items"])}
 items_dict_subcat_functional_to_items_index = {int(item["subcat_functional"]): i for i, item in enumerate(__game_config["items"])}
