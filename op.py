@@ -987,12 +987,24 @@ def cmd_buy_unit_pack(player, cmd, args, gameversion):
 	cost = 0
 	cost_type = None
 	pack = get_unit_pack(pack_id)
+	
 	if not pack:
-		print("no pack")
 		return False
 	if pack["in_store"] == 0:
-		print("not in store")
 		return False
+
+	# check if we can even buy it
+	max_packs = pack["max_purchable"]
+	packs_bought = player["privateState"]["unitPacks"]
+	if max_packs != 0:
+		if str(pack_id) in packs_bought:
+			if packs_bought[str(pack_id)] + n > max_packs:
+				return False
+
+	if str(pack_id) not in packs_bought:
+		packs_bought[str(pack_id)] = n
+	else:
+		packs_bought[str(pack_id)] += n
 
 	discount = 1.0
 	
@@ -1005,15 +1017,12 @@ def cmd_buy_unit_pack(player, cmd, args, gameversion):
 	if "c" in price:
 		cost = int(math.ceil(int(price["c"]) * n * discount))
 		if not pay_cash(player, cost):
-			print("no cash")
 			return False
 	elif "g" in price:
 		cost = int(math.ceil(int(price["g"]) * n * discount))
 		if not pay_map_currency(_map, "coins", cost):
-			print("no gold")
 			return False
 	else:
-		print("no price")
 		return False
 
 	return True

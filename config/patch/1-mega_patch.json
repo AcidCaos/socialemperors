@@ -118,9 +118,9 @@
 					"2": 0
 				},
 				"custom": [
-					{ "id": 610,	"chances": 2 },
+					{ "id": 610,	"chances": 1 },
 					{ "id": 573,	"chances": 1 },
-					{ "id": 508,	"chances": 2 },
+					{ "id": 508,	"chances": 1 },
 					{ "id": 643,	"chances": 1 },
 					{ "id": 514,	"chances": 1 },
 					{ "id": 541,	"chances": 1 },
