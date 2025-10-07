@@ -202,6 +202,7 @@ def migrate_loaded_save(save):
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	])
+	fix_variable(privateState, "neighborAssists", {})				# neighbour assists
 
 	# SP's spaghetti is annoying
 	fix_variable(privateState, "deadHeroes", {})					# graveyard old version

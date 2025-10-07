@@ -1085,6 +1085,20 @@ def cmd_set_help_map(player, cmd, args, gameversion):
 		help_map.append(key)
 
 	return True
+	
+def cmd_assist_neighbor(player, cmd, args, gameversion):
+	# userid, assist_id, town_id
+	userid = str(args[0])
+	assist_id = args[1]
+	town_id = args[2]
+
+	_map = player["maps"][town_id]
+	cfg_globals = get_game_config()["globals"]
+
+	add_map_currency(_map, "coins", int(cfg_globals["ASSIST_REWARD_GOLD"]))
+	add_map_currency(_map, "xp", int(cfg_globals["ASSIST_REWARD_XP"]))
+
+	return True
 
 def cmd_assist_neighbor_new(player, cmd, args, gameversion):
 	# userid, town_id, assists
@@ -1092,7 +1106,14 @@ def cmd_assist_neighbor_new(player, cmd, args, gameversion):
 	town_id = args[1]
 	assists = json.loads(args[2])
 
-	return assist_neighbor(userid, town_id, assists, player["playerInfo"]["pid"])
+	status = assist_neighbor(userid, town_id, assists, player["playerInfo"]["pid"])
+	if not status:
+		return False
+
+	privateState = player["privateState"]
+	privateState["neighborAssists"][userid] = timestamp_now()
+
+	return True
 
 def cmd_clean_received_assists(player, cmd, args, gameversion):
 	# userid, town_id
