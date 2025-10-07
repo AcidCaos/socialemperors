@@ -437,6 +437,32 @@ def pvp_modify_victim(request, town_id = 0):
 
 	save_target_session(userid, save, session_type)
 
+def assist_neighbor(userid, town_id, assists, assistant_id):
+	if userid not in __pvp_data:
+		return False
+	data = __pvp_data[userid]
+	session_type = data["type"]
+
+	save = get_target_session(userid)
+	if not save:
+		return True
+
+	modify_allowed = False
+
+	if session_type == SESSION_VILLAGE:		# not allowed for static!
+		return True
+	if session_type == SESSION_SAVE:
+		modify_allowed = True
+
+	# update neighbour assist data
+	if modify_allowed:
+		_map = save["maps"][town_id]
+		receivedAssists = _map["receivedAssists"]
+		receivedAssists[assistant_id] = assists
+		save_target_session(userid, save, session_type)
+
+	return True
+
 def get_pvp_session(userid):
 	if userid in __pvp_data:
 		data = __pvp_data[userid]

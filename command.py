@@ -108,6 +108,9 @@ commands = {
 	# unit packs ----------------------------------------------------------------------------------------------
 	"buy_unit_pack":					cmd_buy_unit_pack,
 	"store_add_items":					cmd_store_add_items,
+	# neighbour assist ----------------------------------------------------------------------------------------
+	"assist_neighbor_new":				cmd_assist_neighbor_new,
+	"clean_received_assists":			cmd_clean_received_assists,
 	# old -----------------------------------------------------------------------------------------------------
 	"complete_tutorial":				USE_OLD,
 	"complete_mission":					USE_OLD,

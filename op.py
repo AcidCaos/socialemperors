@@ -1,7 +1,7 @@
 import json
 import math
 
-from sessions import session, save_session, pvp_pool_modify, pvp_modify_victim
+from sessions import *
 from get_game_config import *
 from constants import Constant
 from engine import *
@@ -1083,5 +1083,25 @@ def cmd_set_help_map(player, cmd, args, gameversion):
 	help_map = player["privateState"]["helpMap"]
 	if key not in help_map:
 		help_map.append(key)
+
+	return True
+
+def cmd_assist_neighbor_new(player, cmd, args, gameversion):
+	# userid, town_id, assists
+	userid = str(args[0])
+	town_id = args[1]
+	assists = json.loads(args[2])
+
+	return assist_neighbor(userid, town_id, assists, player["playerInfo"]["pid"])
+
+def cmd_clean_received_assists(player, cmd, args, gameversion):
+	# userid, town_id
+	userid = str(args[0])
+	town_id = args[1]
+
+	_map = player["maps"][town_id]
+	assists = _map["receivedAssists"]
+	if userid in assists:
+		del assists[userid]
 
 	return True
