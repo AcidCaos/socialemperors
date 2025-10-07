@@ -108,6 +108,7 @@ def load_static_villages(add_to_pvp = False):
 		if str(USERID) in __villages:
 			print(f"Ignored: duplicated PID '{USERID}'.")
 		else:
+			migrate_loaded_save(village)
 			__villages[str(USERID)] = village
 			if add_to_pvp:
 				pvp_pool_add(USERID, village, SESSION_VILLAGE, 0)
@@ -458,7 +459,7 @@ def pvp_modify_victim(request, town_id = 0):
 
 def assist_neighbor(userid, town_id, assists, assistant_id):
 	if userid not in __pvp_data:
-		return False
+		return True
 	data = __pvp_data[userid]
 	session_type = data["type"]
 
