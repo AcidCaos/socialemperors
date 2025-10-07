@@ -100,13 +100,13 @@
 				"max_purchable": 1,
 				"price": { "g": 50 },
 
-				"banner": "The First Guardian",
 				"name": "The Guardian",
-				"tooltip": "TOOLTIP",
-				"img": "first.png",
+				"banner": "The First Guardian",
+				"tooltip": "First Pack\nOne Guradian for each\nplaying",
+				"description": "Summon your first Guardian for your Empire!",
+				"data": "Elite infantry, heroes, wizards and more!",
 
-				"description": "DESCRIPTION",
-				"data": "DATA",
+				"img": "first.png",
 				"help_text": "HELP_TEXT_PACK_1",
 				"units_given": 1,
 				"pack_num": {
@@ -114,24 +114,31 @@
 				},
 				"pack_category": {
 					"0": 0,
-					"custom": 10.0,
-					"2": 0.0
+					"custom": 2.5,
+					"2": 0
 				},
-
 				"custom": [
-					{ "id": 610,	"chances": 1 },
+					{ "id": 610,	"chances": 2 },
 					{ "id": 573,	"chances": 1 },
-					{ "id": 508,	"chances": 1 },
+					{ "id": 508,	"chances": 2 },
 					{ "id": 643,	"chances": 1 },
 					{ "id": 514,	"chances": 1 },
 					{ "id": 541,	"chances": 1 },
 					{ "id": 560,	"chances": 1 },
 					{ "id": 574,	"chances": 1 },
-					{ "id": 576,	"chances": 1 },
 					{ "id": 603,	"chances": 1 },
 					{ "id": 608,	"chances": 1 },
-					{ "id": 609,	"chances": 1 },
-					{ "id": 643,	"chances": 1 }
+					{ "id": 557,	"chances": 1 },
+					{ "id": 556,	"chances": 1 },
+					{ "id": 555,	"chances": 1 },
+					{ "id": 554,	"chances": 1 },
+					{ "id": 553,	"chances": 1 },
+					{ "id": 535,	"chances": 1 },
+					{ "id": 534,	"chances": 1 },
+					{ "id": 652,	"chances": 1 },
+					{ "id": 683,	"chances": 1 },
+					{ "id": 706,	"chances": 1 },
+					{ "id": 712,	"chances": 1 }
 				],
 				"carrusel": [
 					{ "id": 610, "scale": 1.0, "orientation": "4", "offset": -40 },
@@ -142,11 +149,19 @@
 					{ "id": 541, "scale": 1.0, "orientation": "4", "offset": -40 },
 					{ "id": 560, "scale": 1.0, "orientation": "4", "offset": -40 },
 					{ "id": 574, "scale": 1.0, "orientation": "4", "offset": -40 },
-					{ "id": 576, "scale": 1.0, "orientation": "4", "offset": -40 },
 					{ "id": 603, "scale": 1.0, "orientation": "4", "offset": -40 },
 					{ "id": 608, "scale": 1.0, "orientation": "4", "offset": -40 },
-					{ "id": 609, "scale": 1.0, "orientation": "4", "offset": -40 },
-					{ "id": 643, "scale": 1.0, "orientation": "4", "offset": -40 }
+					{ "id": 557, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 556, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 555, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 554, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 553, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 535, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 534, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 652, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 683, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 706, "scale": 1.0, "orientation": "4", "offset": -40 },
+					{ "id": 712, "scale": 1.0, "orientation": "4", "offset": -40 }
 				]
 			},
 			{
