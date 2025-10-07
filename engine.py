@@ -41,9 +41,10 @@ collect_multiplier = [
 	3.0
 ]
 
-# sell divisor (divides by 20 in game for 5% sell value, negative so we refund)
-SELL_DIVISOR = -1.0 / 20.0
+SELL_DIVISOR = -1.0 / 20.0 # sell divisor (divides by 20 in game for 5% sell value, negative so we refund)
 SPEEDUP_COST_PER_HOUR = 1
+FRIENDS_ASSIST_DIVISOR = 1.0 / 4.0
+FRIENDS_ASSIST_EXPERIENCE = 10
 
 def timestamp_now():
 	return int(time.time())
@@ -674,3 +675,16 @@ def pvp_disable_revenge(player, request):
 		entry = attack_log[eid]
 		if entry["id"] == enemy_id:
 			entry["reply"] = 1
+
+def player_assist_receive(player, map, building_id):
+	building = get_item_from_id(building_id)
+	if not building:
+		return False
+
+	collect = int(math.floor(int(building["collect"]) * FRIENDS_ASSIST_DIVISOR))
+	collect_type = building["collect_type"]
+
+	give_resource_type(player["playerInfo"], map, collect_type, collect)
+	add_map_currency(map, "xp", FRIENDS_ASSIST_EXPERIENCE)
+
+	return True

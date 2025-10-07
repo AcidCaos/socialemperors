@@ -1115,6 +1115,13 @@ def cmd_assist_neighbor_new(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_assist_receive(player, cmd, args, gameversion):
+	# town_id, building_id
+	town_id = args[0]
+	building_id = args[1]
+
+	return player_assist_receive(player, player["maps"][town_id], building_id)
+
 def cmd_clean_received_assists(player, cmd, args, gameversion):
 	# userid, town_id
 	userid = str(args[0])

@@ -112,6 +112,7 @@ commands = {
 	"assist_neighbor":					cmd_assist_neighbor,
 	"assist_neighbor_new":				cmd_assist_neighbor_new,
 	"clean_received_assists":			cmd_clean_received_assists,
+	"assist_receive":					cmd_assist_receive,
 	# old -----------------------------------------------------------------------------------------------------
 	"complete_tutorial":				USE_OLD,
 	"complete_mission":					USE_OLD,
