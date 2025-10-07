@@ -647,13 +647,18 @@ def handle_unit_loss(player, map, units):
 		if lost > 0:
 			player_lose_item(player, map, uid, lost)
 
-def pvp_steal_resources(player, town_id, resources):
+def pvp_steal_resources(player, town_id, resources, is_winner):
 	map = player["maps"][town_id]
 	for res in resources:
 		map["wood"] = max(0, map["wood"] - resources["w"])
 		map["coins"] = max(0, map["coins"] - resources["g"])
 		map["stone"] = max(0, map["stone"] - resources["s"])
 		map["food"] = max(0, map["food"] - resources["f"])
+
+	if not is_winner:
+		attacker["playerInfo"]["attacks_won"] += 1
+	else:
+		attacker["playerInfo"]["attacks_lost"] += 1
 
 def pvp_push_attack_log(player, request, extra_data, attacker):
 	attack_log = player["privateState"]["PVPattacksReceived"]

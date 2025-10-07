@@ -11,6 +11,7 @@ from version import version_code
 from engine import *
 from version import migrate_loaded_save
 from constants import Constant
+from get_game_config import get_game_config
 
 from bundle import VILLAGES_DIR, SAVES_DIR, ENEMIES_DIR, FRIENDS_DIR
 
@@ -424,12 +425,28 @@ def pvp_modify_victim(request, town_id = 0):
 	# grab some extra data
 	extra = pvp_end_attack(request["user_id"])
 
+	# calculate honor points
+	is_winner = request["winnerId"] == request["user_id"]
+	cfg_globals = get_game_config()["globals"]
+	honor = cfg_globals["HONOR_POINT_PVP_WIN_ATTACK"]
+	if not is_winner:
+		honor = int(round(100 * (1.0 - request["percentage"]) / 10) * cfg_globals["HONOR_POINT_PVP_LOSE_ATTACK"])
+
+	attacker = session(request["user_id"])
+	attacker["playerInfo"]["honor_points"] += honor
+
+	# modify wins / loses
+	if is_winner:
+		attacker["playerInfo"]["attacks_won"] += 1
+	else:
+		attacker["playerInfo"]["attacks_lost"] += attacks_lost
+
 	# give PVP shield to victim
 	save["privateState"]["shieldEndTime"] = int(ts_now + _PVP_SHIELD_AFTER_ATTACK)
 
 	# steal resources if allowed (saves only)
 	if stealing_allowed:
-		pvp_steal_resources(save, town_id, resources)
+		pvp_steal_resources(save, town_id, resources, is_winner)
 
 	# update pool data
 	pvp_pool_modify(save, town_id)

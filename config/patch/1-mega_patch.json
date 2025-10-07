@@ -680,36 +680,6 @@
 		"value": []
 	},
 	{
-		"op": "add",
-		"path": "/pvp_shields",
-		"value": [
-			{
-				"id":				1,
-				"name":				"Bronze Shield 1 Day",
-				"price":			10,
-				"price_type":		"c",
-				"protection_time":	86400,
-				"cooldown":			86400
-			},
-			{
-				"id":				2,
-				"name":				"Silver Shield 2 Days",
-				"price":			20,
-				"price_type":		"c",
-				"protection_time":	172800,
-				"cooldown":			172800
-			},
-			{
-				"id":				3,
-				"name":				"Gold Shield 7 Days",
-				"price":			50,
-				"price_type":		"c",
-				"protection_time":	604800,
-				"cooldown":			604800
-			}
-		]
-	},
-	{
 		"_TABLEINFO": "normal | ios | troll | golden hall",
 		"op": "add",
 		"path": "/globals/TOWNHALL_HOUSE_LIMIT",
@@ -944,6 +914,47 @@
 			"61": 30000,
 			"71": 30000
 		}
+	},
+	{
+		"op": "add",
+		"path": "/pvp_shields",
+		"value": 
+		[
+			{
+				"id":				1,
+				"name":				"Bronze Shield 1 Day",
+				"price":			10,
+				"price_type":		"c",
+				"protection_time":	86400,
+				"cooldown":			86400
+			},
+			{
+				"id":				2,
+				"name":				"Silver Shield 2 Days",
+				"price":			20,
+				"price_type":		"c",
+				"protection_time":	172800,
+				"cooldown":			172800
+			},
+			{
+				"id":				3,
+				"name":				"Gold Shield 7 Days",
+				"price":			50,
+				"price_type":		"c",
+				"protection_time":	604800,
+				"cooldown":			604800
+			}
+		]
+	},
+	{
+		"op": "add",
+		"path": "/globals/HONOR_POINT_PVP_WIN_ATTACK",
+		"value": 15
+	},
+	{
+		"op": "add",
+		"path": "/globals/HONOR_POINT_PVP_LOSE_ATTACK",
+		"value": 5
 	},
 	{
 		"_TITLE": "AcidCaos/Nerroth - Graveyard fixes",
