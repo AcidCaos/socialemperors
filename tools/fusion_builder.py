@@ -91,7 +91,7 @@ def breeding_order_tier_based(a, ar, ai, d, l, v):
 	return breeding_order
 
 def breeding_order_health(a, ar, ai, d, l, v):
-	return min(int(l/20), 240)
+	return min(int(l/15), 440)
 
 def breeding_order_simple2(a, ar, ai, d, l, v):
 	print("attack", a, "range", ar, "interval", ai, "defense", d, "life", l, "vel", v)
@@ -142,7 +142,7 @@ for index, item in enumerate(config["items"]):
 
 	# some way to approximate power (aka breeding order)
 	breeding_order = breeding_order_health(a, ar, ai, d, l, v)
-	sm_training_time = 2000 * breeding_order # in seconds
+	sm_training_time = 1000 * breeding_order # in seconds
 
 	# make patch
 	patch_breeding_order = {
@@ -164,6 +164,6 @@ for index, item in enumerate(config["items"]):
 patch_str += "\n\n]"
 
 # write patch file
-fd = open("../fusion-output.json", 'w')
+fd = open("fusion-output.json", 'w')
 fd.write(patch_str)
 fd.close()

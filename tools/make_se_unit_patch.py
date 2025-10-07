@@ -384,7 +384,7 @@ def make_final(config, patch, sm_patch):
 
 print("Patch phase 2 ----------------------------------------------------------")
 patches = [ "../config/patch/0-language_en.json", "../config/patch/1-mega_patch.json" ]
-sm_patch = "fusion_output.json"
+sm_patch = "fusion-output.json"
 config = load_config("../config/main.json")
 load_patches(config, patches)
 patch_final = make_final(config, patch, sm_patch)
