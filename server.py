@@ -89,7 +89,7 @@ def play():
 	GAMEVERSION = session['GAMEVERSION']
 	print("[PLAY] USERID:", USERID)
 	print("[PLAY] GAMEVERSION:", GAMEVERSION)
-	return render_template("play.html", save_info=save_info(USERID), serverTime=timestamp_now(), friendsInfo=fb_friends_str(USERID), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host)
+	return render_template("play.html", save_info=save_info(USERID), serverTime=timestamp_now(), friendsInfo=fb_friends_str(USERID), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host, PORT=port)
 
 @app.route("/ruffle.html")
 def ruffle():
