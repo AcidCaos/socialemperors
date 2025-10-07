@@ -37,6 +37,12 @@ def get_target_info(userid, town_id = 0):
 		"neighbors": []
 	}
 	return response
+
+def get_target_pic(userid):
+	save = get_target_session(userid)
+	if not save:
+		return None
+	return save["playerInfo"]["pic"]
 	
 def get_enemy_info(userid, town_id = 0):
 	enemy_id = pvp_enemy(userid, town_id)

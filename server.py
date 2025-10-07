@@ -26,7 +26,7 @@ from command import command
 from engine import timestamp_now
 from version import version_name, quest_ids, survival_arenas
 from constants import Constant
-from bundle import ASSETS_DIR, STUB_DIR, TEMPLATES_DIR, BASE_DIR
+from bundle import ASSETS_DIR, STUB_DIR, TEMPLATES_DIR, BASE_DIR, CACHE_DIR
 from server_hmac import construct_hash_and_payload, check_hmac
 
 host = '127.0.0.1'
@@ -279,6 +279,64 @@ def pvp_end():
 	pvp_modify_victim(data, 0)
 
 	return ("", 200)
+
+# graph.facebook.com reroute
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/graph.facebook.com/<path:path>", methods=['GET'])
+def graph_fb(path):
+	_path = path.split("/")
+	if len(_path) != 2:
+		return ("", 404)
+	if _path[1] != "picture":
+		return ("", 404)
+	if request.values["type"] != "square":
+		return ("", 404)
+	
+	uid = str(_path[0])
+	avatar = get_target_pic(uid)
+
+	if not avatar:
+		return ("", 404)
+
+	pic = cache_image(avatar, uid)
+	if not pic:
+		return ("", 404)
+	
+	return send_from_directory(CACHE_DIR, pic)
+
+# caches images from web to send under the graph.facebook.com reroute
+_cache = []
+_cache_filename = []
+
+def clean_cache():
+	_cache = []
+	_cache_filename = []
+	if os.path.exists(CACHE_DIR):
+		for image in os.listdir(CACHE_DIR):
+			os.remove(os.path.join(CACHE_DIR, image))
+
+clean_cache()
+
+def cache_image(url, userid):
+	# no bullshit!
+	userid = userid.replace(".","")
+
+	if url in _cache:
+		idx = _cache.index(url)
+		return _cache_filename[idx]
+	else:
+		if not os.path.exists(CACHE_DIR):
+			os.mkdir(CACHE_DIR)
+
+		idx = len(_cache)
+		dest = f"{userid}.png"
+		print(dest)
+		try:
+			response = urllib.request.urlretrieve(url, CACHE_DIR + "/" + dest)
+		except urllib.error.HTTPError:
+			return ("", 404)
+		_cache.append(url)
+		_cache_filename.append(dest)
+		return dest
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/track_game_status.php", methods=['POST'])
 def track_game_status_response():

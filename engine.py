@@ -60,7 +60,11 @@ def map_add_item(map, item, x, y, orientation = 0, timestamp = None, attr = None
 	si_info = get_si_info(int(item))
 	# enable SI (Socially In Construction), because the game expects it
 	if si_info:
-		attr["si"] = [ "0" ]
+		if int(item) == 470:
+			# TODO: hire all friends
+			attr["si"] = [ "Neutral", "AcidCaos", "Nerroth" ]
+		else:
+			attr["si"] = [ "0" ]
 	# # click to build
 	# click_to_build = get_attribute_from_item_id(item, "clicks_to_build")
 	# if click_to_build:
