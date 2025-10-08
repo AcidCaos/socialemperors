@@ -297,45 +297,57 @@ def graph_fb(path):
 	if not avatar:
 		return ("", 404)
 
-	pic = cache_image(avatar, uid)
+	pic = image_cache(avatar, uid)
 	if not pic:
 		return ("", 404)
 	
 	return send_from_directory(CACHE_DIR, pic)
 
 # caches images from web to send under the graph.facebook.com reroute
-_cache = []
-_cache_filename = []
+__image_cache = []
+__image_cache_filename = []
 
-def clean_cache():
-	_cache = []
-	_cache_filename = []
-	if os.path.exists(CACHE_DIR):
-		for image in os.listdir(CACHE_DIR):
-			os.remove(os.path.join(CACHE_DIR, image))
+def image_cache_load():
+	global __image_cache
+	global __image_cache_filename
+	if not os.path.exists(CACHE_DIR):
+		os.mkdir(CACHE_DIR)
+	cache_json_path = os.path.join(CACHE_DIR, "cache.json")
+	if os.path.exists(cache_json_path):
+		data = json.load(open(cache_json_path, 'r', encoding='utf-8'))
+		__image_cache = data["uid"]
+		__image_cache_filename = data["img"]
 
-clean_cache()
+def image_cache_save():
+	with open(os.path.join(CACHE_DIR, "cache.json"), 'w', encoding='utf-8') as f:
+		data = {
+			"uid": __image_cache,
+			"img": __image_cache_filename
+		}
+		json.dump(data, f)
 
-def cache_image(url, userid):
+def image_cache(url, userid):
 	# no bullshit!
 	userid = userid.replace(".","")
 
-	if url in _cache:
-		idx = _cache.index(url)
-		return _cache_filename[idx]
+	if url in __image_cache:
+		idx = __image_cache.index(url)
+		return __image_cache_filename[idx]
 	else:
 		if not os.path.exists(CACHE_DIR):
 			os.mkdir(CACHE_DIR)
 
-		idx = len(_cache)
 		dest = f"{userid}.png"
 		try:
-			response = urllib.request.urlretrieve(url, CACHE_DIR + "/" + dest)
+			response = urllib.request.urlretrieve(url, os.path.join(CACHE_DIR, dest))
 		except urllib.error.HTTPError:
 			return ("", 404)
-		_cache.append(url)
-		_cache_filename.append(dest)
+		__image_cache.append(url)
+		__image_cache_filename.append(dest)
+		image_cache_save()
 		return dest
+
+image_cache_load()
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/track_game_status.php", methods=['POST'])
 def track_game_status_response():
