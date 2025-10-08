@@ -160,7 +160,7 @@ def building_collect(player, _map, item, vills = 1, res_multiplier = 1.0):
 
 	amount = int(data["collect"])
 	resource_type = data["collect_type"]
-	xp = int(data["xp"])
+	xp = int(data["collect_xp"])
 
 	if int(data["subcat_functional"]) == Constant.SUBCATFUNC_BUILDING_FARM:
 		# farms cost 1/3rd of the amount collected in wood
