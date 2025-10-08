@@ -41,7 +41,7 @@ collect_multiplier = [
 	3.0
 ]
 
-SELL_DIVISOR = -1.0 / 20.0 # sell divisor (divides by 20 in game for 5% sell value, negative so we refund)
+SELL_DIVISOR = 1.0 / 20.0 # sell divisor (divides by 20 in game for 5% sell value, negative so we refund)
 SPEEDUP_COST_PER_HOUR = 1
 FRIENDS_ASSIST_DIVISOR = 1.0 / 4.0
 FRIENDS_ASSIST_EXPERIENCE = 10
