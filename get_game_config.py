@@ -221,7 +221,6 @@ def grab_animals():
 			if subcat not in __animals:
 				__animals[str(subcat)] = []
 			__animals[str(subcat)].append(int(item["id"]))
-	print(__animals)
 
 # do it
 apply_patches()
