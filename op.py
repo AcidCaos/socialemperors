@@ -34,7 +34,7 @@ def cmd_buy(player, cmd, args, gameversion):
 		return False
 
 	if not is_free:
-		if not pay_resource_type(player["playerInfo"], _map, item["cost_type"], int(int(item["cost"]) * price_mult)):
+		if not pay_resource_type2(player, _map, item["cost_type"], int(int(item["cost"]) * price_mult)):
 			return False
 		
 	add_map_currency(_map, "xp", int(item["xp"]))
@@ -93,7 +93,7 @@ def cmd_sell(player, cmd, args, gameversion):
 	if not is_free:
 		cost_type = item["cost_type"]
 		if cost_type != "c":
-			give_resource_type(player["playerInfo"], _map, cost_type, int(int(item["cost"]) * SELL_DIVISOR))
+			give_resource_type(player, _map, cost_type, int(int(item["cost"]) * SELL_DIVISOR))
 	if resurrectable:
 		try_push_graveyard(player, item_id)
 
@@ -272,15 +272,15 @@ def cmd_push_queue_unit(player, cmd, args, gameversion):
 		if cost_type != "f":
 			cost_food = cost << 1			# x2 food
 
-		refund_res =  pay_resource_type(_map, cost_type, cost)
+		refund_res =  pay_resource_type(player, _map, cost_type, cost)
 		if not refund_res:
 			# not paid, no stealing!!!!
 			return False
 
-		if not pay_resource_type(_map, "f", cost_food):
+		if not pay_resource_type(player, _map, "f", cost_food):
 			if refund_res and cost_type != "c":
 				# lets not steal resources for no reason
-				give_resource_type(player["playerInfo"], _map, cost_type, cost_food)
+				give_resource_type(player, _map, cost_type, cost_food)
 			return False
 
 	if not player_push_queue_unit(player, building[0], uitem_id, bq, not not_soulmixer):
@@ -346,8 +346,8 @@ def cmd_unqueue_unit(player, cmd, args, gameversion):
 	cost_food = cost << 1			# x2 food
 
 	# refund
-	give_resource_type(player["playerInfo"], _map, cost_type, cost)
-	give_resource_type(player["playerInfo"], _map, "f", cost_food)
+	give_resource_type(player, _map, cost_type, cost)
+	give_resource_type(player, _map, "f", cost_food)
 
 	return True
 
@@ -389,7 +389,7 @@ def cmd_sell_gift(player, cmd, args, gameversion):
 	# not sure if gifts should give resources when selling but lets leave it like this
 	cost_type = item["cost_type"]
 	if cost_type != "c":
-		give_resource_type(player["playerInfo"], _map, cost_type, int(int(item["cost"]) * SELL_DIVISOR))
+		give_resource_type(player, _map, cost_type, int(int(item["cost"]) * SELL_DIVISOR))
 
 	remove_store_item(player, item_id, 1)
 
@@ -1157,7 +1157,7 @@ def cmd_market_trade_resource(player, cmd, args, gameversion):
 
 	if is_sell:
 		# buy gold, for resource_type
-		if not pay_resource_type(_map, resource_type, sell_cost):
+		if not pay_resource_type(player, _map, resource_type, sell_cost):
 			return False
 
 		add_map_currency(_map, "coins", sell_cost)
@@ -1166,7 +1166,7 @@ def cmd_market_trade_resource(player, cmd, args, gameversion):
 		if not pay_map_currency(_map, "coins", cost):
 			return False
 
-		give_resource_type(player["playerInfo"], _map, resource_type, amount)
+		give_resource_type(player, _map, resource_type, amount)
 
 	add_resource_trades(res_traded, resource_type, -factor)
 

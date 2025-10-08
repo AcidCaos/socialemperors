@@ -181,7 +181,7 @@ def building_collect(player, _map, item, vills = 1, res_multiplier = 1.0):
 	# resource multiplier in command
 	amount = int(amount * res_multiplier)
 
-	give_resource_type(player["playerInfo"], _map, resource_type, amount)
+	give_resource_type(player, _map, resource_type, amount)
 	add_map_currency(_map, "xp", xp)
 
 	item[4] = timestamp_now()
@@ -562,21 +562,21 @@ def give_levelup_reward(player, map, level):
 	reward_type = level["reward_type"]
 	reward_amount = level["reward_amount"]
 
-	give_resource_type(player["playerInfo"], map, reward_type, reward_amount)
+	give_resource_type(player, map, reward_type, reward_amount)
 
-def give_resource_type(playerInfo, map, resource, amount):
+def give_resource_type(player, map, resource, amount):
 	if resource == "w":
 		map["wood"] += amount
 	elif resource == "g":
 		map["coins"] += amount
 	elif resource == "c":
-		playerInfo["cash"] += amount
+		player["playerInfo"]["cash"] += amount
 	elif resource == "s":
 		map["stone"] += amount
 	elif resource == "f":
 		map["food"] += amount
 
-def pay_resource_type(map, resource, amount):
+def pay_resource_type(player, map, resource, amount):
 	if resource == "w":
 		return pay_map_currency(map, "wood", amount)
 	elif resource == "g":
@@ -585,6 +585,8 @@ def pay_resource_type(map, resource, amount):
 		return pay_map_currency(map, "stone", amount)
 	elif resource == "f":
 		return pay_map_currency(map, "food", amount)
+	elif resource == "c":
+		return pay_cash(player, amount)
 	return False
 
 def get_quest_index(quest_id):
@@ -670,7 +672,7 @@ def player_assist_receive(player, map, building_id):
 	collect = int(math.floor(int(building["collect"]) * FRIENDS_ASSIST_DIVISOR))
 	collect_type = building["collect_type"]
 
-	give_resource_type(player["playerInfo"], map, collect_type, collect)
+	give_resource_type(player, map, collect_type, collect)
 	add_map_currency(map, "xp", FRIENDS_ASSIST_EXPERIENCE)
 
 	return True
