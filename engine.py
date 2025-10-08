@@ -738,7 +738,7 @@ def hire_friends(userid, si_info, is_church):
 	num_friends = len(friends)
 	friend_id = 0
 	while total < num_needed:
-		if friend_id > num_friends:
+		if friend_id >= num_friends:
 			break
 		si.append(friends[friend_id]["pid"])
 		friend_id += 1
