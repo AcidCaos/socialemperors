@@ -34,7 +34,7 @@ def cmd_buy(player, cmd, args, gameversion):
 		return False
 
 	if not is_free:
-		if not pay_resource_type2(player, _map, item["cost_type"], int(int(item["cost"]) * price_mult)):
+		if not pay_resource_type(player, _map, item["cost_type"], int(int(item["cost"]) * price_mult)):
 			return False
 		
 	add_map_currency(_map, "xp", int(item["xp"]))
