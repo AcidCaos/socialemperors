@@ -64,7 +64,7 @@ MARKET_AMOUNT_TRADE = [
 def timestamp_now():
 	return int(time.time())
 
-def map_add_item(map, item, x, y, orientation = 0, timestamp = None, attr = None, store = None, level = 0):
+def map_add_item(map, item, x, y, orientation = 0, timestamp = None, attr = None, store = None, level = 0, userid = None):
 	if not attr:
 		attr = {}
 	if not store:
@@ -76,11 +76,13 @@ def map_add_item(map, item, x, y, orientation = 0, timestamp = None, attr = None
 	si_info = get_si_info(int(item))
 	# enable SI (Socially In Construction), because the game expects it
 	if si_info:
-		if int(item) == 470:
-			# TODO: hire all friends
-			attr["si"] = [ "Neutral", "AcidCaos", "Nerroth" ]
+		if userid:
+			attr["si"] = hire_friends(userid, si_info, int(item) == 470)
 		else:
-			attr["si"] = [ "0" ]
+			if int(item) == 470:
+				attr["si"] = []
+			else:
+				attr["si"] = [ 1 ]
 	# # click to build
 	# click_to_build = get_attribute_from_item_id(item, "clicks_to_build")
 	# if click_to_build:
@@ -721,3 +723,25 @@ def get_resource_trades(traded, res_type):
 
 def clamp(value, value_min, value_max):
 	return max(value_min, min(value_max, value))
+
+def hire_friends(userid, si_info, is_church):
+	# nasty import but I don't care
+	from sessions import neighbors
+
+	si = []
+	if not is_church:
+		si.append("0")	# 1 villager for everything except church
+
+	total = len(si)
+	num_needed = len(si_info["workers"].split(","))
+	friends = neighbors(userid)
+	num_friends = len(friends)
+	friend_id = 0
+	while total < num_needed:
+		if friend_id > num_friends:
+			break
+		si.append(friends[friend_id]["pid"])
+		friend_id += 1
+		total += 1
+
+	return si

@@ -28,7 +28,7 @@ def cmd_buy(player, cmd, args, gameversion):
 	reason = args[7]
 	
 	_map = player["maps"][town_id]
-	map_add_item(_map, item_id, x, y, orientation = orientation)
+	map_add_item(_map, item_id, x, y, orientation = orientation, userid = player["playerInfo"]["pid"])
 
 	if not is_free:
 		apply_cost(player["playerInfo"], _map, item_id, price_mult)
@@ -405,7 +405,7 @@ def cmd_place_gift(player, cmd, args, gameversion):
 
 	_map = player["maps"][town_id]
 
-	map_add_item(_map, item_id, x, y, orientation = orientation)
+	map_add_item(_map, item_id, x, y, orientation = orientation, userid = player["playerInfo"]["pid"])
 	remove_store_item(player, item_id, 1)
 
 	return True
