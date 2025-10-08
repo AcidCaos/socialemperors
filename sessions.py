@@ -440,7 +440,7 @@ def pvp_modify_victim(request, town_id = 0):
 	if is_winner:
 		attacker["playerInfo"]["attacks_won"] += 1
 	else:
-		attacker["playerInfo"]["attacks_lost"] += attacks_lost
+		attacker["playerInfo"]["attacks_lost"] += 1
 
 	# give PVP shield to victim
 	save["privateState"]["shieldEndTime"] = int(ts_now + _PVP_SHIELD_AFTER_ATTACK)

@@ -10,22 +10,27 @@ from commands_old import do_command as do_old_command
 log = logging.getLogger('__main__')
 
 # command OK
-def _OKOLD(cmd, args):
-	log.info(f"[C] USING OLD: {cmd} {args}")
+def _OKOLD(player, cmd, args):
+	name = player["playerInfo"]["name"]
+	log.info(f"[C] USING OLD: [{name}] -> {cmd} {args}")
 
-def _OK(cmd, args):
-	log.info(f"[C] OK: {cmd} {args}")
+def _OK(player, cmd, args):
+	name = player["playerInfo"]["name"]
+	log.info(f"[C] OK: [{name}] -> {cmd} {args}")
 
-def _NOTOK(cmd, args):
-	log.info(f"[C] FAILED: {cmd} {args}")
+def _NOTOK(player, cmd, args):
+	name = player["playerInfo"]["name"]
+	log.info(f"[C] FAILED: [{name}] -> {cmd} {args}")
 	raise Exception(f"Illegal server command")
 
-def _ERROR(cmd, args):
-	log.info(f"[C] CRASH: {cmd} {args}")
+def _ERROR(player, cmd, args):
+	name = player["playerInfo"]["name"]
+	log.info(f"[C] CRASH: [{name}] -> {cmd} {args}")
 	raise Exception(f"Illegal server command")
 
 def NOT_IMPLEMENTED(player, cmd, args, gameversion):
-	log.info(f"[C] UNKNOWN: {cmd} {args}")
+	name = player["playerInfo"]["name"]
+	log.info(f"[C] UNKNOWN: [{name}] -> {cmd} {args}")
 	return True
 
 def USE_OLD(player, cmd, args, gameversion):
@@ -173,14 +178,14 @@ def do_command(USERID, cmd, args, gameversion):
 			result = commands[cmd](save, cmd, args, gameversion)
 		except:
 			# traceback.print_exc()
-			_ERROR(cmd, args)
+			_ERROR(save, cmd, args)
 			return
 
 		if result == 2:
-			_OKOLD(cmd, args)
+			_OKOLD(save, cmd, args)
 		elif result == True:
-			_OK(cmd, args)
+			_OK(save, cmd, args)
 		else:
-			_NOTOK(cmd, args)
+			_NOTOK(save, cmd, args)
 	else:
 		NOT_IMPLEMENTED(save, cmd, args, gameversion)
