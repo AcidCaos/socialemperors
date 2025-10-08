@@ -2,4 +2,3 @@
 # You don't need to provide the .json extension here, just the name
 # If a line starts with #, it is ignored
 
-# mod_venzkaizer
