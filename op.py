@@ -1176,3 +1176,12 @@ def cmd_market_trade_resource(player, cmd, args, gameversion):
 	_map["numTradesDone"] += 1
 
 	return True
+
+def cmd_increase_population(player, cmd, args, gameversion):
+	# town_id
+	town_id = args[0]
+
+	_map = player["maps"][town_id]
+	_map["increasedPopulation"] = min(5, _map["increasedPopulation"] + 1)
+
+	return True

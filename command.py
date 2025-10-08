@@ -88,6 +88,8 @@ commands = {
 	# time machine --------------------------------------------------------------------------------------------
 	"buy_time_packet":					cmd_tm_buy_packet,
 	"time_ff":							cmd_tm_use_packet,
+	# great church --------------------------------------------------------------------------------------------
+	"increase_population":				cmd_increase_population,
 	# player general ------------------------------------------------------------------------------------------
 	"expand":							cmd_expand,
 	"name_map":							cmd_name_map,
