@@ -1,7 +1,7 @@
 import random
 
 from engine import timestamp_now, spaghetti_resurrected_units
-from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional
+from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional, get_animals
 
 version_name = "nerroth rewrite - beyond 0.04a"
 version_code = ""
@@ -269,3 +269,25 @@ def save_reset_stuff(save):
 			privateState["timeStampDartsReset"] = 0
 
 	check_quest_times(map["lastQuestTimes"], now)
+	check_animals(save)
+
+def check_animals(save):
+	animal_data = get_animals()
+	animal_counters = {}
+	for key in animal_data:
+		animal_counters[key] = 0
+	for map in save["maps"]:
+		for item in map["items"]:
+			item_id = item[0]
+			stored = item[6]
+			for key in animal_data:
+				if item_id in animal_data[key]:
+					animal_counters[key] += 1
+					break
+			for item_id in stored:
+				for key in animal_data:
+					if item_id in animal_data[key]:
+						animal_counters[key] += 1
+						break
+
+	save["privateState"]["arrayAnimals"] = animal_counters

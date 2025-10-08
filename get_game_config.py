@@ -9,6 +9,7 @@ from constants import Constant
 
 __game_config = json.load(open(os.path.join(CONFIG_DIR, "main.json"), 'r', encoding='utf-8'))
 __rotation = json.load(open(os.path.join(CONFIG_DIR, "shop_rotation.json"), 'r', encoding='utf-8'))
+__animals = {}
 
 # Since we use mega patches now, better to make sure any old patches don't load as they will load after and will mess things up!
 patch_ignore = [ 
@@ -212,12 +213,22 @@ def check_unit_packs():
 				duplicates.append(custom[idx]["id"])
 				idx += 1
 
+def grab_animals():
+	animal_subcats = [ 74, 75, 88 ]
+	for item in __game_config["items"]:
+		subcat = item["subcat_functional"]
+		if int(subcat) in animal_subcats:
+			if subcat not in __animals:
+				__animals[str(subcat)] = []
+			__animals[str(subcat)].append(int(item["id"]))
+	print(__animals)
 
 # do it
 apply_patches()
 apply_shop_rotation(int(time.time()))
 apply_mods()
 check_unit_packs()
+grab_animals()
 
 items_dict_id_to_items_index = {int(item["id"]): i for i, item in enumerate(__game_config["items"])}
 items_dict_subcat_functional_to_items_index = {int(item["subcat_functional"]): i for i, item in enumerate(__game_config["items"])}
@@ -225,6 +236,9 @@ missions_dict_id_to_missions_index = {int(item["id"]): i for i, item in enumerat
 
 def get_game_config():
 	return __game_config
+
+def get_animals():
+	return __animals
 
 def game_config():
 	return get_game_config()
