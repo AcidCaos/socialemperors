@@ -139,7 +139,7 @@ def load_saves(add_to_pvp = False):
 			pvp_pool_add(USERID, save, SESSION_SAVE, 0)
 		modified = migrate_loaded_save(save) # check save version for migration
 		if modified:
-			save_session(USERID)
+			save_session(USERID, False)
 
 def copy_static_friends():
 	# Copy from villages/friend_static to /friend if it's not there!
@@ -537,10 +537,13 @@ def save_info(USERID: str):
 	save = __saves[USERID]
 	migrate_loaded_save(save)
 	default_map = int(save["playerInfo"]["default_map"])
-	empire_name = str(save["playerInfo"]["map_names"][default_map])
-	xp = save["maps"][default_map]["xp"]
-	level = save["maps"][default_map]["level"]
-	return{"userid": USERID, "name": empire_name, "xp": xp, "level": level}
+	return {
+		"userid": str(save["playerInfo"]["pid"]), 
+		"name": str(save["playerInfo"]["name"]), 
+		"xp": save["maps"][default_map]["xp"], 
+		"level": save["maps"][default_map]["level"],
+		"last_logged_in": save["playerInfo"]["last_logged_in"]
+	}
 
 def all_saves_info():
 	saves_info = []
@@ -670,15 +673,20 @@ def backup_session(USERID: str):
 	# TODO 
 	return
 
-def save_session(USERID: str):
+def save_session(USERID, write_ts = True):
 	# TODO 
 	file = f"{USERID}.save.json"
-	village = session(USERID)
+	save = session(USERID)
+
+	# update timestamp
+	if write_ts:
+		save["playerInfo"]["last_logged_in"] = timestamp_now()
+
 	with open(os.path.join(SAVES_DIR, file), 'w') as f:
-		json.dump(village, f, indent='\t')
+		json.dump(save, f, indent='\t')
 
 def save_session_path(USERID: str, save: dict, path: str):
-	# TODO 
+	# TODO
 	file = f"{USERID}.save.json"
 	with open(os.path.join(path, file), 'w') as f:
 		json.dump(save, f, indent='\t')

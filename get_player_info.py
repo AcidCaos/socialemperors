@@ -8,17 +8,13 @@ def get_player_info(USERID, town_id = 0):
 	save = session(USERID)
 	friends = neighbors(USERID)
 
-	# Update last logged in
-	ts_now = timestamp_now()
-	save["playerInfo"]["last_logged_in"] = ts_now
-
 	save_reset_stuff(save)
 
 	# player
 	response = {
 		"result": "ok",
 		"processed_errors": 0,
-		"timestamp": ts_now,
+		"timestamp": timestamp_now(),
 		"playerInfo": save["playerInfo"],
 		"map": save["maps"][town_id],
 		"privateState": save["privateState"],
