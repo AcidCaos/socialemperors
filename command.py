@@ -71,8 +71,8 @@ commands = {
 	"place_gift":						cmd_place_gift,
 	"place_stored_item":				cmd_place_gift,
 	"sell_gift":						cmd_sell_gift,
-	"sell_stored_item":					cmd_sell_stored_item,
-	"sell_iphone_item":					cmd_sell_stored_item,	# this should modify a different thing perhaps?
+	"sell_stored_item":					cmd_sell_gift,
+	"sell_iphone_item":					cmd_sell_gift,	# this should modify a different thing perhaps?
 	# warehouse -----------------------------------------------------------------------------------------------
 	"add_unit_warehouse":				cmd_add_warehoused_item,
 	"place_warehoused_item":			cmd_place_warehoused_item,

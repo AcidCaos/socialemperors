@@ -28,11 +28,17 @@ def cmd_buy(player, cmd, args, gameversion):
 	reason = args[7]
 	
 	_map = player["maps"][town_id]
-	map_add_item(_map, item_id, x, y, orientation = orientation, userid = player["playerInfo"]["pid"])
+
+	item = get_item_from_id(item_id)
+	if not item:
+		return False
 
 	if not is_free:
-		apply_cost(player["playerInfo"], _map, item_id, price_mult)
-		apply_xp_for_item(_map, item_id)
+		if not pay_resource_type(player["playerInfo"], _map, item["cost_type"], int(int(item["cost"]) * price_mult)):
+			return False
+		
+	add_map_currency(_map, "xp", int(item["xp"]))
+	map_add_item(_map, item_id, x, y, orientation = orientation, userid = player["playerInfo"]["pid"])
 
 	return True
 
@@ -80,14 +86,18 @@ def cmd_sell(player, cmd, args, gameversion):
 		resurrectable = True
 	
 	_map = player["maps"][town_id]
-	map_remove_item(_map, x, y, item_id)
+	item = get_item_from_id(item_id)
+	if not item:
+		return False
 	
 	if not is_free:
-		if get_attribute_from_item_id(item_id, "cost_type") != "c":
-			# you sell at 5% value
-			apply_cost(player["playerInfo"], _map, item_id, -SELL_DIVISOR)
+		cost_type = item["cost_type"]
+		if cost_type != "c":
+			give_resource_type(player["playerInfo"], _map, cost_type, int(int(item["cost"]) * SELL_DIVISOR))
 	if resurrectable:
 		try_push_graveyard(player, item_id)
+
+	map_remove_item(_map, x, y, item_id)
 
 	return True
 
@@ -371,27 +381,17 @@ def cmd_sell_gift(player, cmd, args, gameversion):
 	town_id = args[1]
 	
 	_map = player["maps"][town_id]
+	item = get_item_from_id(item_id)
 
-	remove_store_item(player, item_id, 1)
+	if not item:
+		return False
 
 	# not sure if gifts should give resources when selling but lets leave it like this
-	if get_attribute_from_item_id(item_id, "cost_type") != "c":
-		# you sell at 5% value
-		apply_cost(player["playerInfo"], _map, item_id, -SELL_DIVISOR)
-
-	return True
-
-def cmd_sell_stored_item(player, cmd, args, gameversion):
-	# item_id, town_id
-	item_id	= args[0]
-	town_id = args[1]
-	
-	_map = player["maps"][town_id]
+	cost_type = item["cost_type"]
+	if cost_type != "c":
+		give_resource_type(player["playerInfo"], _map, cost_type, int(int(item["cost"]) * SELL_DIVISOR))
 
 	remove_store_item(player, item_id, 1)
-	if get_attribute_from_item_id(item_id, "cost_type") != "c":
-		# you sell at 5% value
-		apply_cost(player["playerInfo"], _map, item_id, -SELL_DIVISOR)
 
 	return True
 

@@ -501,48 +501,13 @@ def modify_ts_array(arr, idx, seconds):
 	else:
 		arr[idx] = max(arr[idx] + seconds, 0)
 
-def apply_xp_for_item(map, item_id):
-	amount = get_attribute_from_item_id(item_id, "xp")
-	if not amount:
-		return
-
-	map["xp"] += int(amount)
-
-def apply_cost(playerInfo, map, id, price_multiplier):
-	cost = int(price_multiplier * int(get_attribute_from_item_id(id, "cost")))
-	cost_type = get_attribute_from_item_id(id, "cost_type")
-	if cost_type == "w":
-		map["wood"] = max(map["wood"] - cost, 0)
-	elif cost_type == "g":
-		map["coins"] = max(map["coins"] - cost, 0)
-	elif cost_type == "c":
-		playerInfo["cash"] = max(playerInfo["cash"] - cost, 0)
-	elif cost_type == "s":
-		map["stone"] = max(map["stone"] - cost, 0)
-	elif cost_type == "f":
-		map["food"] = max(map["food"] - cost, 0)
-
-def apply_collect(playerInfo, map, id, resource_multiplier):
-	collect = int(resource_multiplier * int(get_attribute_from_item_id(id, "collect")))
-	collect_type = get_attribute_from_item_id(id, "collect_type")
-	apply_collect_xp(map, id)
-	if collect_type == "w":
-		map["wood"] = map["wood"] + collect
-	elif collect_type == "g":
-		map["coins"] = map["coins"] + collect
-	elif collect_type == "c":
-		playerInfo["cash"] = playerInfo["cash"] + collect
-	elif collect_type == "s":
-		map["stone"] = map["stone"] + collect
-	elif collect_type == "f":
-		map["food"] = map["food"] + collect
-
 def apply_collect_xp(map, item_id):
 	amount = get_attribute_from_item_id(item_id, "collect_xp")
 	if not amount:
 		return
 
-	map["xp"] += int(amount)
+	add_map_currency(map, "xp", int(amount))
+	add_map_currency(map, "coins", 5)
 
 def add_cash(player, amount):
 	player["playerInfo"]["cash"] += int(amount)

@@ -3,7 +3,7 @@ import json
 from sessions import session, save_session
 from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional
 from constants import Constant
-from engine import apply_cost, apply_collect, apply_collect_xp, timestamp_now
+from engine import *
 
 def get_strategy_type(id):
     if id == 8:
@@ -35,26 +35,6 @@ def do_command(save, cmd, args, gameversion):
 
     if cmd == Constant.CMD_GAME_STATUS:
         print(" ".join(args))
-
-    elif cmd == Constant.CMD_BUY:
-        id = args[0]
-        x = args[1]
-        y = args[2]
-        frame = args[3] # TODO ??
-        town_id = args[4]
-        bool_dont_modify_resources = bool(args[5]) # 1 if the game "buys" for you, so does not substract whatever the item cost is.
-        price_multiplier = args[6]
-        type = args[7]
-        print("Add", str(get_name_from_item_id(id)), "at", f"({x},{y})")
-        collected_at_timestamp = timestamp_now()
-        level = 0 # TODO 
-        orientation = 0
-        map = save["maps"][town_id]
-        if not bool_dont_modify_resources:
-            apply_cost(save["playerInfo"], map, id, price_multiplier)
-            xp = int(get_attribute_from_item_id(id, "xp"))
-            map["xp"] = map["xp"] + xp
-        map["items"] += [[id, x, y, orientation, collected_at_timestamp, level]]
     
     elif cmd == Constant.CMD_COMPLETE_TUTORIAL:
         tutorial_step = args[0]
@@ -80,39 +60,6 @@ def do_command(save, cmd, args, gameversion):
                 item[1] = newx
                 item[2] = newy
                 break
-    
-    elif cmd == Constant.CMD_COLLECT:
-        x = args[0]
-        y = args[1]
-        town_id = args[2]
-        id = args[3]
-        num_units_contained_when_harvested = args[4]#TODO does this affect multiplier?
-        resource_multiplier = args[5]
-        cash_to_substract = args[6]
-        print("Collect", str(get_name_from_item_id(id)))
-        map = save["maps"][town_id]
-        apply_collect(save["playerInfo"], map, id, resource_multiplier)
-        save["playerInfo"]["cash"] = max(save["playerInfo"]["cash"] - cash_to_substract, 0)
-    
-    elif cmd == Constant.CMD_SELL:
-        x = args[0]
-        y = args[1]
-        id = args[2]
-        town_id = args[3]
-        bool_dont_modify_resources = args[4]
-        reason = args[5]
-        print("Remove", str(get_name_from_item_id(id)), "from", f"({x},{y}). Reason: {reason}")
-        map = save["maps"][town_id]
-        for item in map["items"]:
-            if item[0] == id and item[1] == x and item[2] == y:
-                map["items"].remove(item)
-                break
-        if not bool_dont_modify_resources:
-            price_multiplier = -0.05
-            if get_attribute_from_item_id(id, "cost_type") != "c":
-                apply_cost(save["playerInfo"], save["maps"][town_id], id, price_multiplier)
-        if reason == 'KILL':
-            pass # TODO : add to graveyard
     
     elif cmd == Constant.CMD_KILL:
         x = args[0]
@@ -281,19 +228,6 @@ def do_command(save, cmd, args, gameversion):
         if save["privateState"]["gifts"][item_id] == 0: #removes excess zeros at end if necessary
             while(save["privateState"]["gifts"][-1] == 0):
                 save["privateState"]["gifts"].pop()  
-
-    elif cmd == Constant.CMD_SELL_GIFT:
-        item_id = args[0]
-        town_id = args[1]
-        print("Gift", str(get_name_from_item_id(item_id)), "sold on town:",town_id)
-        gifts = save["privateState"]["gifts"]
-        gifts[item_id] -= 1
-        if gifts[item_id] == 0: #removes excess zeros at end if necessary
-            while(len(gifts) != 0 and gifts[-1] == 0):
-                gifts.pop()
-        price_multiplier = -0.05
-        if get_attribute_from_item_id(item_id, "cost_type") != "c":
-            apply_cost(save["playerInfo"], save["maps"][town_id], item_id, price_multiplier)
     
     elif cmd == Constant.CMD_ACTIVATE_DRAGON:
         currency = args[0]
