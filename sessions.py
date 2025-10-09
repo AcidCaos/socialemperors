@@ -7,6 +7,9 @@ import random
 from flask import session
 # from flask_session import SqlAlchemySessionInterface, current_app
 
+# grab server settings
+from server_config import get_server_config
+
 from version import version_code
 from engine import *
 from version import migrate_loaded_save
@@ -23,9 +26,9 @@ __friend_info = {}
 
 # PVP ---------------------------------------------------------------------------
 # PVP SEARCH SETTINGS
-_PVP_SEARCH_MAX_RETRIES = 2200
-_PVP_SEARCH_RETRIES_BEFORE_EXPAND = 200
-_PVP_SEARCH_LEVEL_RANGE = 10 # -that, +that
+_PVP_SEARCH_MAX_RETRIES = get_server_config()["pvp"]["search"]["max_attempts"]
+_PVP_SEARCH_RETRIES_BEFORE_EXPAND = get_server_config()["pvp"]["search"]["attempts_before_expanding"]
+_PVP_SEARCH_LEVEL_RANGE = get_server_config()["pvp"]["search"]["level_range"] # -that, +that
 
 # Any saves under this are excluded from search
 # This is because PVP unlocks at level 8 in the game client
@@ -33,7 +36,11 @@ _PVP_MIN_LEVEL = 8
 
 # How long the PVP Shield will be enabled on the player you attack
 # after finishing the attack. Set to 0 to disable, default is 12h (0.5 days)
-_PVP_SHIELD_AFTER_ATTACK = int(0.5 * 86400)
+_PVP_SHIELD_AFTER_ATTACK = int(get_server_config()["pvp"]["shield_hours_after_attack"] * 3600)
+
+# Resource stealing settings
+_PVP_RESOURCE_STEALING = get_server_config()["pvp"]["resource_stealing_enabled"]
+_PVP_RESOURCE_GENERATION_HOURS = get_server_config()["pvp"]["resource_regeneration_hours"]
 
 # PVP pool data
 __pvp_data = {}
@@ -373,7 +380,7 @@ def pvp_simulate_resources(save, userid, town_id = 0):
 	if session_type == SESSION_FRIEND or session_type == SESSION_ENEMY:
 		hours = int((timestamp_now() - save["privateState"]["shieldEndTime"]) / 3600)
 		#print(f"hours since last shield: {hours}")
-		res_multiplier = min(1.0, max(0.125, float(hours) / (24 * 2)))	# 2 days to recharge
+		res_multiplier = min(1.0, max(0.125, float(hours) / _PVP_RESOURCE_GENERATION_HOURS))
 		#print(f"res_multiplier = {res_multiplier}")
 		_map = save["maps"][town_id]
 
@@ -446,7 +453,7 @@ def pvp_modify_victim(request, town_id = 0):
 	save["privateState"]["shieldEndTime"] = int(ts_now + _PVP_SHIELD_AFTER_ATTACK)
 
 	# steal resources if allowed (saves only)
-	if stealing_allowed:
+	if _PVP_RESOURCE_STEALING and stealing_allowed:
 		pvp_steal_resources(save, town_id, resources, is_winner)
 
 	# update pool data

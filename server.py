@@ -4,6 +4,9 @@ import json
 import urllib
 import logging
 
+# grab server settings
+from server_config import get_server_config
+
 if os.name == 'nt':
 	os.system("color")
 	os.system("title Social Empires Server")
@@ -29,8 +32,8 @@ from constants import Constant
 from bundle import ASSETS_DIR, STUB_DIR, TEMPLATES_DIR, BASE_DIR, CACHE_DIR
 from server_hmac import construct_hash_and_payload, check_hmac
 
-host = '127.0.0.1'
-port = 5050
+host = get_server_config()["server"]["ip"]
+port = get_server_config()["server"]["port"]
 
 app = Flask(__name__, template_folder=TEMPLATES_DIR)
 
@@ -528,8 +531,10 @@ def get_continent_ranking_response():
 
 print (" [+] Running server...")
 
-#print(pvp_enemy("Nerroth", 0))
-
 if __name__ == '__main__':
 	app.secret_key = 'SECRET_KEY'
+	# TODO: post to console this after running the app
+	if logging.getLogger('werkzeug').disabled:
+		print(f" * Running on http://{host}:{port}")
 	app.run(host=host, port=port, debug=False)
+	

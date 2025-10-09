@@ -1,5 +1,8 @@
 import random
 
+# grab server settings
+from server_config import get_server_config
+
 from engine import timestamp_now, spaghetti_resurrected_units
 from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional, get_animals
 
@@ -50,11 +53,9 @@ survival_arenas = [
 	"100000037"
 ]
 
-# this is in the game client, sorry about that!
-# 6 hours * 3 attempts = 18 * 3600
-quest_entry_seconds = 6 * 3 * 3600
+quest_entry_seconds = int(get_server_config()["misc"]["quests_reset_hours"] * 3600)
 
-_warehouse_default_cap = get_game_config()["globals"]["WAREHOUSE_CAPACITIES"][0]
+_warehouse_default_cap = int(get_game_config()["globals"]["WAREHOUSE_CAPACITIES"][0])
 
 def remove_variable(dictionary, key):
 	if key in dictionary:
@@ -183,9 +184,11 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "arrayAnimals", {})					# fix no animal spawning
 	fix_variable(privateState, "strategy", 8)						# fix crash when attacking player
 	fix_variable(privateState, "universAttackWin", [])				# pvp current island progress (old game builds)
-	fix_variable(privateState, "graveyardCapacity", 10000)			# graveyard cap
-	if privateState["graveyardCapacity"] != 10000:
-		privateState["graveyardCapacity"] = 10000
+	
+	graveyard_cap = get_server_config()["misc"]["graveyard_max_slots"]
+	fix_variable(privateState, "graveyardCapacity", graveyard_cap)			# graveyard cap
+	if privateState["graveyardCapacity"] != graveyard_cap:
+		privateState["graveyardCapacity"] = graveyard_cap
 	fix_variable(privateState, "potionsReceived", {})				# graveyard potions received
 	fix_variable(privateState, "barracksQueues", {})				# unit queues (and soul mixer)
 	fix_variable(privateState, "unlockedQuestIndex", 0)				# quest index
