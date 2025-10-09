@@ -1,6 +1,10 @@
 import json
 import math
 
+# grab server settings
+from server_config import get_server_config
+_allow_shield_bug = get_server_config()["pvp"]["shield_allow_original_bug"]
+
 from sessions import *
 from get_game_config import *
 from constants import Constant
@@ -791,7 +795,8 @@ def cmd_buy_shield(player, cmd, args, gameversion):
 	# Yes this was an actual bug, I am not making this up
 	# Go dig up old facebook comments on the official SE page and you'll find someone
 	# talking about this!
-	player["playerInfo"]["cash"] += int(shield["price"]) << 1
+	if _allow_shield_bug:
+		player["playerInfo"]["cash"] += int(shield["price"]) << 1
 
 	# This implementation however doesn't require you to do the step of visiting your friend's empire
 	# -----------------------------------------------------------------------------------------------------------
