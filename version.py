@@ -139,6 +139,21 @@ def check_shield_times(privateState, ts_now):
 		privateState["shieldCooldown"] = 0
 		privateState["purchasedShields"] = []
 
+def fix_collections(privateState):
+	cols = [ [] ]	# ELEMENT 0 MUST BE EMPTY OR THE GAME BREAKS, DON'T ASK ME WHY, SP CAN'T CODE!!!
+	idx = 0
+	while idx < 23:
+		cols.append([ 0, 0, 0, 0, 0, 0 ]) # completed, item_count_1, ..., item_count_5
+		idx += 1
+	privateState["collections"] = cols
+
+def fix_collections_completed(privateState):
+	pass
+	#idx = 0
+	#while idx <= 23:
+	#	cols.append(1)
+	#	idx += 1
+
 def migrate_loaded_save(save):
 	# Migration always happens now, we check the data type this time and insert any new data if necessary
 	# This should make sure the save file isn't "half fixed"
@@ -207,6 +222,12 @@ def migrate_loaded_save(save):
 	])
 	fix_variable(privateState, "neighborAssists", {})				# neighbour assists
 
+	# item collections
+	if fix_variable(privateState, "collections", []):
+		fix_collections(privateState)
+	if fix_variable(privateState, "collectionsCompleted", []):
+		fix_collections_completed(privateState)
+
 	# SP's spaghetti is annoying
 	fix_variable(privateState, "deadHeroes", {})					# graveyard old version
 	if fix_variable(privateState, "resurrectableUnits", []):		# graveyard new version
@@ -238,11 +259,10 @@ def migrate_loaded_save(save):
 
 	check_shield_times(privateState, ts_now)
 
-	# gifts convert to dict
+	# item storage
 	if type(privateState["gifts"]) != dict:
 		privateState["gifts"] = array_to_dict(privateState["gifts"], True)
 	fix_variable(privateState, "iphoneBox", {})
-
 
 	# remove version tag as it's useless now
 	if "version" in save:

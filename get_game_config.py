@@ -312,3 +312,9 @@ def get_unit_pack(pack_id):
 		if pack["id"] == pack_id:
 			return pack
 	return None
+
+def get_collection_reward(collection_id):
+	rewards = __game_config["globals"]["COLLECTION_REWARDS"]
+	if collection_id <= 0 or collection_id >= len(rewards):
+		return None
+	return rewards[collection_id]

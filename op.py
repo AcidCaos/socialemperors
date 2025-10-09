@@ -1087,6 +1087,62 @@ def cmd_store_add_items(player, cmd, args, gameversion):
 	
 	return True
 
+def cmd_add_collectable(player, cmd, args, gameversion):
+	# collection_id, index
+	collection_id = args[0]
+	index = args[1]
+
+	if collection_id <= 0:
+		return False
+	if index < 1 or index > 6:
+		return False
+
+	collections = player["privateState"]["collections"]
+	collections[collection_id][index] += 1
+
+	return True
+
+def cmd_finish_collection(player, cmd, args, gameversion):
+	# collection_id - if free
+	# collection_id, used_cash (always 1), cost
+
+	collection_id = args[0]
+	if collection_id <= 0:
+		return False
+
+	collections = collections = player["privateState"]["collections"]
+	data = collections[collection_id]
+	reward = get_collection_reward(collection_id)
+	if not reward:
+		return False
+
+	if len(args) >= 3:
+		used_cash = args[1]
+		cost = args[2]
+
+		if used_cash != 1:
+			return False
+		if not pay_cash(player, cost):
+			return False
+	else:
+		# check if we have 1 of each
+		one_of_each = True
+		idx = 1
+		while idx <= 5:
+			if data[idx] <= 0:
+				return False
+			idx += 1
+
+	data[0] = 1
+
+	# no support for other town IDs, sad :(
+	town_id = 0
+	_map = player["maps"][town_id]
+
+	add_store_item(_map, reward)
+
+	return True
+
 def cmd_set_variables(player, cmd, args, gameversion):
 	playerInfo = player["playerInfo"]
 	town_id = args[7]

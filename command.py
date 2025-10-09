@@ -99,6 +99,9 @@ commands = {
 	"rt_publish_score":					cmd_rt_publish_score,
 	"set_help_map":						cmd_set_help_map,
 	"admin_add_animal":					cmd_admin_add_animal,
+	# item collections ----------------------------------------------------------------------------------------
+	"add_collectable":					cmd_add_collectable,
+	"finish_collection":				cmd_finish_collection,
 	# quests, tournament --------------------------------------------------------------------------------------
 	"set_attack_team":					cmd_set_attack_team,
 	"start_quest":						cmd_start_quest,
@@ -126,7 +129,6 @@ commands = {
 	"complete_tutorial":				USE_OLD,
 	"complete_mission":					USE_OLD,
 	"reward_mission":					USE_OLD,
-	"add_collectable":					USE_OLD,
 	"win_bonus":						NOT_IMPLEMENTED,
 
 	"activate_dragon":					USE_OLD,
