@@ -636,26 +636,23 @@ def handle_unit_loss(player, map, units):
 def pvp_steal_resources(player, town_id, resources, is_winner):
 	map = player["maps"][town_id]
 	for res in resources:
-		map["wood"] = max(0, map["wood"] - resources["w"])
-		map["coins"] = max(0, map["coins"] - resources["g"])
-		map["stone"] = max(0, map["stone"] - resources["s"])
-		map["food"] = max(0, map["food"] - resources["f"])
+		pay_resource_type(player, map, res, resources[res])
 
 	if not is_winner:
-		attacker["playerInfo"]["attacks_won"] += 1
+		player["playerInfo"]["attacks_won"] += 1
 	else:
-		attacker["playerInfo"]["attacks_lost"] += 1
+		player["playerInfo"]["attacks_lost"] += 1
 
 def pvp_push_attack_log(player, request, extra_data, attacker):
 	attack_log = player["privateState"]["PVPattacksReceived"]
 	next_id = len(attack_log)
 
 	# handle revenge attacks
-	is_reply = 0
+	is_reply = 1
 	if extra_data:
 		if extra_data["revenge"]:
 			pvp_disable_revenge(attacker, request)
-			is_reply = 1
+			is_reply = 0
 
 	# get next available ID
 	while str(next_id) in attack_log:
