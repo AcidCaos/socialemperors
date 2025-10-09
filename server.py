@@ -62,21 +62,42 @@ def login():
 	# Log out previous session
 	session.pop('USERID', default=None)
 	session.pop('GAMEVERSION', default=None)
+	session.pop('RUNNER', default=None)
 	# Reload saves. Allows saves modification without server reset
 	reload_saves()
 	# If logging in, set session USERID, and go to play
 	if request.method == 'POST':
 		session['USERID'] = request.form['USERID']
 		session['GAMEVERSION'] = request.form['GAMEVERSION']
+		session['RUNNER'] = request.form['RUNNER']
 		print("[LOGIN] USERID:", request.form['USERID'])
 		print("[LOGIN] GAMEVERSION:", request.form['GAMEVERSION'])
-		return redirect("/play.html")
+		print("[LOGIN] RUNNER:", request.form['RUNNER'])
+		if session['RUNNER'] == "RUFFLE":
+			return redirect("/play/ruffle")
+		elif session['RUNNER'] == "FLASH":
+			return redirect("/play")
+		else:
+			return redirect("/play")
 	# Login page
 	if request.method == 'GET':
 		saves_info = all_saves_info()
 		return render_template("login.html", saves_info=saves_info, version=version_name)
 
+# old redirects
+@app.route("/new")
+def new_redirect():
+	return redirect("/new")
+
+@app.route("/ruffle.html")
+def ruffle_redirect():
+	return redirect("/play/ruffle")
+
 @app.route("/play.html")
+def play_redirect():
+	return redirect("/play")
+
+@app.route("/play")
 def play():
 	print(session)
 
@@ -94,7 +115,7 @@ def play():
 	print("[PLAY] GAMEVERSION:", GAMEVERSION)
 	return render_template("play.html", save_info=save_info(USERID), serverTime=timestamp_now(), friendsInfo=fb_friends_str(USERID), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host, PORT=port)
 
-@app.route("/ruffle.html")
+@app.route("/play/ruffle")
 def ruffle():
 	print(session)
 
@@ -110,14 +131,14 @@ def ruffle():
 	GAMEVERSION = session['GAMEVERSION']
 	print("[RUFFLE] USERID:", USERID)
 	print("[RUFFLE] GAMEVERSION:", GAMEVERSION)
-	return render_template("ruffle.html", save_info=save_info(USERID), serverTime=timestamp_now(), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host)
+	return render_template("ruffle.html", save_info=save_info(USERID), serverTime=timestamp_now(), friendsInfo=fb_friends_str(USERID), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host, PORT=port)
 
 
-@app.route("/new.html")
+@app.route("/new")
 def new():
 	session['USERID'] = new_village()
 	session['GAMEVERSION'] = "SocialEmpires0926bsec.swf"
-	return redirect("play.html")
+	return redirect("play")
 
 @app.route("/crossdomain.xml")
 def crossdomain():

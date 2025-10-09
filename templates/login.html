@@ -5,19 +5,19 @@
 		<meta charset="utf-8"/>
 		<!-- Title and Icon -->
 		<title id="pageTitle">Social Empires</title>
-		<link rel="shortcut icon" href="img/icon.gif"/>
-		<link rel="icon" type="image/png" href="img/icon.gif"/>
+		<link rel="shortcut icon" href="/img/icon.gif"/>
+		<link rel="icon" type="image/png" href="/img/icon.gif"/>
 		<!-- CSS -->
 		<link rel="stylesheet" href="css/facebook.css"/>
 	</head>
 	<body class="ego_wide canvas center_fixed_width_app fbx UIPage_LoggedOut liquid hideBanner Locale_en_US" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); overflow: auto;">
-		<center><img src="img/logo.png" style="width: 200px;"/></center>
+		<center><img src="/img/logo.png" style="width: 200px;"/></center>
 		<div class="mvl ptm uiInterstitial canvas_error_page uiInterstitialLarge uiBoxWhite">
 			<!-- HEAD TITLE -->
 			<div class="uiHeader uiHeaderBottomBorder mhl mts uiHeaderPage interstitialHeader">
 				<div class="clearfix uiHeaderTop">
 					<div>
-						<img src="img/sword.png" height="18px" style="margin-left: 5px;">
+						<img src="/img/sword.png" height="18px" style="margin-left: 5px;">
 						<h2 class="uiHeaderTitle" aria-hidden="true" style="margin-left: 2px; display: inline-block;">
 							<a href="/" style="text-decoration: none;">Social Empires </a>
 						</h2>
@@ -35,7 +35,7 @@
 						<b>Select a village</b>
 						<br><br>
 						<div style="float: left; margin-right: 4px;">
-							<img src="img/villager.png" style="height: 27px; margin-top: 0px;">
+							<img src="/img/villager.png" style="height: 27px; margin-top: 0px;">
 						</div>
 						<div style="float: left">
 							<select id="USERID" name="USERID" style="height: 27px; min-width: 330px;" required>
@@ -46,19 +46,36 @@
 						</div>
 						<br><br>
 						<br>
+						<!-- RUNNER  SELECTION -->
+						<b>Flash Client</b>
+						<br><br>
+						<div style="overflow: auto; display: inblock;">
+							<div style="float: left">
+								<div style="float: left; margin-right: 4px;">
+									<img src="/img/sword.png" style="height: 27px; margin-top: 0px;">
+								</div>
+								<div style="float: left">
+									<select id="RUNNER" name="RUNNER" style="height: 24px;" required>
+										<option value="FLASH">Use Flash Player</option>
+										<option value="RUFFLE">Ruffle (Experimental)</option>
+									</select>
+								</div>
+								<br><br> <i>Note: Ruffle works on modern web browsers but may be slow or broken!</i>
+								<br><br>
+							</div>
+						</div>
 						<!-- RELEASE SELECTION -->
 						<b>Game version</b>
 						<br><br>
 						<div style="overflow: auto; display: inblock;">
 							<div style="float: left">
 								<div style="float: left; margin-right: 4px;">
-									<img src="img/knight.png" style="height: 27px; margin-top: 0px;">
+									<img src="/img/knight.png" style="height: 27px; margin-top: 0px;">
 								</div>
 								<div style="float: left">
 									<select id="GAMEVERSION" name="GAMEVERSION" style="height: 24px;" required>
-										<option value="SocialEmpires0926bsec.swf">0.9.26b (Working)</option>
-										<option value="SocialEmpires1.1.5sec.swf">1.1.5 (Experimental)</option>
-										<option value="SocialEmpires1.4.07sec_fixed.swf">1.4.07 (Experimental)</option>
+										<option value="SocialEmpires1.4.07sec_fixed.swf">1.4.07 (Latest)</option>
+										<option value="SocialEmpires0926bsec.swf">0.9.26b</option>
 									</select>
 								</div>
 								<br><br> <i>Tip: 0.9.26b Contains legacy Troll Missions!</i>
@@ -74,7 +91,7 @@
 					<p style="font-size:13px; display: inline;">Or </p>
 					{% endif %}
 					<p style="font-size:13px; display: inline;">
-						<b><a href="/new.html">Create a new empire</a></b>
+						<b><a href="/new">Create a new empire</a></b>
 					</p>
 				</div>
 			</div>
