@@ -127,8 +127,7 @@ def cmd_pop_sell(player, cmd, args, gameversion):
 	if cost_type != "c":
 		give_resource_type(player, _map, cost_type, int(int(item["cost"]) * SELL_DIVISOR))
 
-	player_lose_item(player, _map, uitem_id, 1, False)
-	return True
+	return map_pop_unit_short(_map, building[0], uitem_id)
 
 def cmd_kill(player, cmd, args, gameversion):
 	# x, y, item_id, town_id, item_type
