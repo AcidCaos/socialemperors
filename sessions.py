@@ -545,12 +545,19 @@ def save_info(USERID: str):
 	save = __saves[USERID]
 	migrate_loaded_save(save)
 	default_map = int(save["playerInfo"]["default_map"])
+	last_ts = save["playerInfo"]["last_logged_in"]
+
+	# don't know why but alerts aren't sending otherwise
+	if "_pvp_alert" in save["playerInfo"]:
+		del save["playerInfo"]["_pvp_alert"]
+		last_ts = 0
+
 	return {
 		"userid": str(save["playerInfo"]["pid"]), 
 		"name": str(save["playerInfo"]["name"]), 
 		"xp": save["maps"][default_map]["xp"], 
 		"level": save["maps"][default_map]["level"],
-		"last_logged_in": save["playerInfo"]["last_logged_in"]
+		"last_logged_in": last_ts
 	}
 
 def all_saves_info():

@@ -669,6 +669,7 @@ def pvp_push_attack_log(player, request, extra_data, attacker):
 	}
 
 	attack_log[str(next_id)] = entry
+	player["playerInfo"]["_pvp_alert"] = True
 
 def pvp_disable_revenge(player, request):
 	enemy_id = request["attacked_id"]
