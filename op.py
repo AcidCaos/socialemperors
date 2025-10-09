@@ -739,11 +739,18 @@ def cmd_end_quest(player, cmd, args, gameversion):
 		if next_index - old_index <= 1:
 			privateState["unlockedQuestIndex"] = max(next_index, old_index)
 
-		# if we won, also set quest rank
+		# if we won, also set quest rank and add honor points
 		rank = privateState["questsRank"][str(quest_id)]
+		cfg_globals = get_game_config()["globals"]
+		honor_points = 0
 		if rank == None:
 			rank = 0
+			honor_points = cfg_globals["HONOR_POINT_QUEST_FIRST_TIME"][difficulty - 1]
+		else:
+			honor_points = cfg_globals["HONOR_POINT_QUEST"][difficulty - 1]
+			
 		privateState["questsRank"][str(quest_id)] = max(difficulty, rank)
+		player["playerInfo"]["honor_points"] += honor_points
 
 	# give player gold and xp
 	add_map_currency(_map, "coins", resources["g"])
