@@ -94,6 +94,7 @@ def check_saves():
 		exit(1)
 
 def reload_saves():
+	global __saves
 	__saves = {}
 
 	load_saves()
