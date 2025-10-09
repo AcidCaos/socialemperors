@@ -731,28 +731,63 @@
 	{
 		"op": "add",
 		"path": "/level_up_tips",
-		"value": [
+		"value": {
+			"2":
 			{
-				"text": "you can do stuff for level 1",
-				"image": "level1.png"
+				"text": "LEVEL_UP_TIP_2",
+				"image": ""
 			},
+			"4":
 			{
-				"text": "you can do stuff for level 2",
-				"image": "level2.png"
+				"text": "LEVEL_UP_TIP_4",
+				"image": ""
 			},
+			"6":
 			{
-				"text": "you can do stuff for level 3",
-				"image": "level3.png"
+				"text": "LEVELUP_TIP_6",
+				"image": ""
 			},
+			"8":
 			{
-				"text": "you can do stuff for level 4",
-				"image": "level4.png"
+				"text": "LEVELUP_TIP_SOULMIXER",
+				"image": ""
 			},
+			"10":
 			{
-				"text": "you can do stuff for level 5",
-				"image": "level5.png"
+				"text": "LEVELUP_TIP_10",
+				"image": ""
+			},
+			"15":
+			{
+				"text": "LEVELUP_TIP_15",
+				"image": ""
+			},
+			"25":
+			{
+				"text": "LEVELUP_TIP_25",
+				"image": ""
+			},
+			"30":
+			{
+				"text": "LEVELUP_TIP_30",
+				"image": ""
+			},
+			"34":
+			{
+				"text": "LEVELUP_TIP_34",
+				"image": ""
+			},
+			"35":
+			{
+				"text": "LEVELUP_TIP_35",
+				"image": ""
+			},
+			"40":
+			{
+				"text": "LEVELUP_TIP_40",
+				"image": ""
 			}
-		]
+		}
 	},
 	{
 		"op": "add",
@@ -869,6 +904,12 @@
 				"rewarded": 0
 			}
 		]
+	},
+	{
+		"_TITLE": "Nerroth - Disable tournament",
+		"op": "add",
+		"path": "/globals/TOURNAMENT_ACTIVATED",
+		"value": 0
 	},
 	{
 		"_TITLE": "Nerroth - PVP Fixes",
@@ -1224,8 +1265,8 @@
 			"17":	{ "category_id": 17,	"category_lang_id": 1072,	"units": [590, 591, 592, 604, 605],			"rewards": 605,		"cost": 15,		"costs": [10, 16, 18, 16, 16],		"position": 95 },
 			"18":	{ "category_id": 18,	"category_lang_id": 1073,	"units": [585, 586, 587, 588],				"rewards": 588,		"cost": 10,		"costs": null,						"position": 100 },
 			"19":	{ "category_id": 19,	"category_lang_id": 10001,	"units": [2027, 2029, 2030, 2031],			"rewards": 607,		"cost": 10,		"costs": null,						"position": 105 },
-			"20":	{ "category_id": 20,	"category_lang_id": 10002,	"units": [2046, 2047, 2054, 2056],			"rewards": 578,		"cost": 10,		"costs": null,						"position": 110 },
-			"21":	{ "category_id": 21,	"category_lang_id": 10003,	"units": [2061, 2062, 2068],				"rewards": 614,		"cost": 10,		"costs": null,						"position": 115 },
+			"20":	{ "category_id": 20,	"category_lang_id": 1633,	"units": [2046, 2047, 2054, 2056],			"rewards": 578,		"cost": 10,		"costs": null,						"position": 110 },
+			"21":	{ "category_id": 21,	"category_lang_id": 1634,	"units": [2061, 2062, 2068],				"rewards": 614,		"cost": 10,		"costs": null,						"position": 115 },
 			"22":	{ "category_id": 22,	"category_lang_id": 10004,	"units": [638, 651, 698, 710, 725],			"rewards": 622,		"cost": 10,		"costs": null,						"position": 120 },
 			"23":	{ "category_id": 23,	"category_lang_id": 10005,	"units": [768, 769, 784, 790, 813],			"rewards": 629,		"cost": 15,		"costs": [null],					"position": 125 },
 			"24":	{ "category_id": 24,	"category_lang_id": 10006,	"units": [814, 820, 849, 850, 868],			"rewards": 634,		"cost": 15,		"costs": [18, 15, 15],				"position": 130 },
