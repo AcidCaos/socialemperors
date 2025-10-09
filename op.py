@@ -745,6 +745,7 @@ def cmd_end_quest(player, cmd, args, gameversion):
 		honor_points = 0
 		if rank == None:
 			rank = 0
+		if difficulty > rank:
 			honor_points = cfg_globals["HONOR_POINT_QUEST_FIRST_TIME"][difficulty - 1]
 		else:
 			honor_points = cfg_globals["HONOR_POINT_QUEST"][difficulty - 1]
