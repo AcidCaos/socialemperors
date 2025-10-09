@@ -85,7 +85,7 @@ def login():
 		return render_template("login.html", saves_info=saves_info, version=version_name)
 
 # old redirects
-@app.route("/new")
+@app.route("/new.html")
 def new_redirect():
 	return redirect("/new")
 
@@ -138,6 +138,7 @@ def ruffle():
 def new():
 	session['USERID'] = new_village()
 	session['GAMEVERSION'] = "SocialEmpires0926bsec.swf"
+	session['RUNNER'] = "FLASH"
 	return redirect("play")
 
 @app.route("/crossdomain.xml")
