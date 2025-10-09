@@ -546,6 +546,75 @@ def get_continent_ranking_response():
 	}
 	return(construct_hash_and_payload(response))
 
+# UNIMPLEMENTED APIS
+
+def _api_not_implemented(request, api_call):
+	print(f"API NOT IMPLEMENTED: {api_call}")
+	print("request: "+json.dumps(request.values, indent='\t'))
+	data, correct = check_hmac(request.values['data'])
+	print("data: "+json.dumps(data, indent='\t'))
+
+	if not correct:
+		return ("", 403)
+
+	return ("", 404)
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/register_found_item.php", methods=['POST'])
+def register_found_item():
+	return _api_not_implemented(request, "register_found_item.php")
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_continent.php", methods=['POST'])
+def get_continent():
+	return _api_not_implemented(request, "get_continent.php")
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_user_world.php", methods=['POST'])
+def get_user_world():
+	return _api_not_implemented(request, "get_user_world.php")
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/report_error.php", methods=['POST'])
+def report_error():
+	return _api_not_implemented(request, "report_error.php")
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/cancel_tournament.php", methods=['POST'])
+def tournaments_cancel_tournament():
+	return _api_not_implemented(request, "tournaments/cancel_tournament.php")
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/create_tournament.php", methods=['POST'])
+def tournaments_create_tournament():
+	return _api_not_implemented(request, "tournaments/create_tournament.php")
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/join_tournament.php", methods=['POST'])
+def tournaments_join_tournament():
+	return _api_not_implemented(request, "tournaments/join_tournament.php")
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/start_tournament_match.php", methods=['POST'])
+def tournaments_start_tournament_match():
+	return _api_not_implemented(request, "tournaments/start_tournament_match.php")
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/finish_tournament_match.php", methods=['POST'])
+def tournaments_finish_tournament_match():
+	return _api_not_implemented(request, "tournaments/finish_tournament_match.php")
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/clean_tournament.php", methods=['POST'])
+def tournaments_clean_tournament():
+	return _api_not_implemented(request, "tournaments/clean_tournament.php")
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/leave_tournament.php", methods=['POST'])
+def tournaments_leave_tournament():
+	return _api_not_implemented(request, "tournaments/leave_tournament.php")
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/kompu_try.php", methods=['POST'])
+def kompu_try():
+	return _api_not_implemented(request, "tournaments/kompu_try.php")
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/kompu_hurry_up.php", methods=['POST'])
+def kompu_hurry_up():
+	return _api_not_implemented(request, "tournaments/kompu_hurry_up.php")
+
+@app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/clean_assaults.php", methods=['POST'])
+def clean_assaults():
+	return _api_not_implemented(request, "tournaments/clean_assaults.php")
+
 
 ########
 # MAIN #
