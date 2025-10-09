@@ -419,10 +419,11 @@ def spaghetti_resurrected_units(privateState, deadunits):
 
 	privateState["resurrectableUnits"] = cringe
 
-def player_lose_item(player, map, item_id, amount):
+def player_lose_item(player, map, item_id, amount, push_graveyard = True):
 	items = map_get_items_of_id(map, item_id)
 	while len(items) > 0 and amount > 0:
-		try_push_graveyard(player, item_id)
+		if push_graveyard:
+			try_push_graveyard(player, item_id)
 		map["items"].remove(items[0])
 		del items[0]
 		amount -= 1

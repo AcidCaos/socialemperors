@@ -51,6 +51,7 @@ commands = {
 	"move":								cmd_move,
 	"orient":							cmd_orient,
 	"sell":								cmd_sell,
+	"pop_sell":							cmd_pop_sell,
 	"kill":								cmd_kill,
 	# production buildings ------------------------------------------------------------------------------------
 	"activate":							cmd_activate,

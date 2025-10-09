@@ -105,6 +105,31 @@ def cmd_sell(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_pop_sell(player, cmd, args, gameversion):
+	# bx, by, town_id, bitem_id, uitem_id
+	bx = args[0]
+	by = args[1]
+	town_id = args[2]
+	bitem_id = args[3]
+	uitem_id = args[4]
+
+	item = get_item_from_id(uitem_id)
+	if not item:
+		return False
+
+	_map = player["maps"][town_id]
+
+	building = map_get_item(_map, bx, by, bitem_id)
+	if len(building) <= 0:
+		return False
+
+	cost_type = item["cost_type"]
+	if cost_type != "c":
+		give_resource_type(player, _map, cost_type, int(int(item["cost"]) * SELL_DIVISOR))
+
+	player_lose_item(player, _map, uitem_id, 1, False)
+	return True
+
 def cmd_kill(player, cmd, args, gameversion):
 	# x, y, item_id, town_id, item_type
 	x = args[0]
