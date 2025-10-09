@@ -308,14 +308,30 @@ def push_queued_unit(player, queue_id, unit_id, amount = 1):
 			"unit":		unit_id
 		}
 
-def add_store_item(player, item, quantity = 1):
+def add_store_item(map, item, quantity = 1):
+	itemstr = str(item)
+	if itemstr not in map["store"]:
+		map["store"][itemstr] = quantity
+	else:
+		map["store"][itemstr] += quantity
+
+def remove_store_item(map, item, quantity = 1):
+	itemstr = str(item)
+	if itemstr in map["store"]:
+		new_quantity = map["store"][itemstr] - quantity
+		if new_quantity <= 0:
+			del map["store"][itemstr]
+		else:
+			map["store"][itemstr] = new_quantity
+
+def add_gift_item(player, item, quantity = 1):
 	itemstr = str(item)
 	if itemstr not in player["privateState"]["gifts"]:
 		player["privateState"]["gifts"][itemstr] = quantity
 	else:
 		player["privateState"]["gifts"][itemstr] += quantity
 
-def remove_store_item(player, item, quantity = 1):
+def remove_gift_item(player, item, quantity = 1):
 	itemstr = str(item)
 	if itemstr in player["privateState"]["gifts"]:
 		new_quantity = player["privateState"]["gifts"][itemstr] - quantity
@@ -480,11 +496,11 @@ def warehouse_remove(map, item_id):
 
 	return True
 
-def warehouse_reset(player, map):
+def warehouse_reset(map):
 	# push all units from warehouse to storage
 	warehoused = map["warehousedUnits"]
 	for item_id in warehoused:
-		add_store_item(player, item_id, warehoused[item_id])
+		add_store_item(map, item_id, warehoused[item_id])
 	map["warehousedUnits"] = {}
 
 def modify_ts(dictionary, key, seconds):

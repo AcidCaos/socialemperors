@@ -375,7 +375,27 @@ def cmd_store_item(player, cmd, args, gameversion):
 	_map = player["maps"][town_id]
 
 	map_remove_item(_map, x, y, item_id)
-	add_store_item(player, item_id, 1)
+	add_store_item(_map, item_id, 1)
+
+	return True
+
+def cmd_place_gift(player, cmd, args, gameversion):
+	# item_id, x, y, orientation, town_id
+	item_id = args[0]
+	x = args[1]
+	y = args[2]
+	orientation = args[3]
+	town_id = args[4]
+
+	_map = player["maps"][town_id]
+
+	item = get_item_from_id(item_id)
+	if not item:
+		return False
+	add_map_currency(_map, "xp", int(item["xp"]))
+
+	map_add_item(_map, item_id, x, y, orientation = orientation, userid = player["playerInfo"]["pid"])
+	remove_gift_item(player, item_id, 1)
 
 	return True
 
@@ -390,16 +410,15 @@ def cmd_sell_gift(player, cmd, args, gameversion):
 	if not item:
 		return False
 
-	# not sure if gifts should give resources when selling but lets leave it like this
 	cost_type = item["cost_type"]
 	if cost_type != "c":
 		give_resource_type(player, _map, cost_type, int(int(item["cost"]) * SELL_DIVISOR))
 
-	remove_store_item(player, item_id, 1)
+	remove_gift_item(player, item_id, 1)
 
 	return True
 
-def cmd_place_gift(player, cmd, args, gameversion):
+def cmd_place_stored_item(player, cmd, args, gameversion):
 	# item_id, x, y, orientation, town_id
 	item_id = args[0]
 	x = args[1]
@@ -410,7 +429,26 @@ def cmd_place_gift(player, cmd, args, gameversion):
 	_map = player["maps"][town_id]
 
 	map_add_item(_map, item_id, x, y, orientation = orientation, userid = player["playerInfo"]["pid"])
-	remove_store_item(player, item_id, 1)
+	remove_store_item(_map, item_id, 1)
+
+	return True
+
+def cmd_sell_stored_item(player, cmd, args, gameversion):
+	# item_id, town_id
+	item_id	= args[0]
+	town_id = args[1]
+	
+	_map = player["maps"][town_id]
+	item = get_item_from_id(item_id)
+
+	if not item:
+		return False
+
+	cost_type = item["cost_type"]
+	if cost_type != "c":
+		give_resource_type(player, _map, cost_type, int(int(item["cost"]) * SELL_DIVISOR))
+
+	remove_store_item(_map, item_id, 1)
 
 	return True
 
@@ -547,7 +585,7 @@ def cmd_reset_warehouse(player, cmd, args, gameversion):
 	town_id = args[0]
 
 	_map = player["maps"][town_id]
-	warehouse_reset(player, _map)
+	warehouse_reset(_map)
 
 	return True
 
@@ -982,7 +1020,7 @@ def cmd_buy_super_offer_pack(player, cmd, args, gameversion):
 	add_mana(player, pack["mana"])
 
 	for item_id in items:
-		add_store_item(player, item_id)
+		add_gift_item(player, item_id)
 
 	return True
 
@@ -1045,7 +1083,7 @@ def cmd_store_add_items(player, cmd, args, gameversion):
 	items = json.loads(args[0])
 
 	for item_id in items:
-		add_store_item(player, item_id)
+		add_gift_item(player, item_id)
 	
 	return True
 

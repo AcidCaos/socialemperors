@@ -177,6 +177,7 @@ def migrate_loaded_save(save):
 		fix_variable(_map, "warehousedUnits", {})
 		fix_variable(_map, "timestampLastTrade", 0)
 		fix_variable(_map, "numTradesDone", 0)
+		fix_variable(_map, "store", {})
 
 	# darts rng seed if missing
 	fix_variable(privateState, "dartsRandomSeed", darts_seed)
@@ -240,6 +241,8 @@ def migrate_loaded_save(save):
 	# gifts convert to dict
 	if type(privateState["gifts"]) != dict:
 		privateState["gifts"] = array_to_dict(privateState["gifts"], True)
+	fix_variable(privateState, "iphoneBox", {})
+
 
 	# remove version tag as it's useless now
 	if "version" in save:
