@@ -451,7 +451,7 @@ def pvp_modify_victim(request, town_id = 0):
 		attacker["playerInfo"]["attacks_lost"] += 1
 
 	# give PVP shield to victim
-	save["privateState"]["shieldEndTime"] = int(max(save["privateState"]["shieldEndtTime"], int(ts_now + _PVP_SHIELD_AFTER_ATTACK)))
+	save["privateState"]["shieldEndTime"] = int(max(save["privateState"]["shieldEndTime"], int(ts_now + _PVP_SHIELD_AFTER_ATTACK)))
 
 	# steal resources if allowed (saves only)
 	if _PVP_RESOURCE_STEALING and stealing_allowed:
