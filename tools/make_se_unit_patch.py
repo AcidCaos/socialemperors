@@ -334,7 +334,7 @@ def modify_item_xp(items, item_id, xp):
 	if not item:
 		return
 	
-	item["cost"] = str(xp)
+	item["xp"] = str(xp)
 	name = item["name"]
 	print(f"adjusted xp of {name}")
 
@@ -384,7 +384,7 @@ def make_final(config, patch, sm_patch):
 
 	# adjust item xp
 	modify_item_xp(items, 106, 23)				# red tree
-	modify_item_xp(items, 100, 225)				# yellow tree
+	modify_item_xp(items, 100, 23)				# yellow tree
 	modify_item_xp(items, 125, 70)				# unused soldier statues
 	modify_item_xp(items, 127, 70)				# unused soldier statues
 
