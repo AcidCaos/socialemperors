@@ -329,6 +329,15 @@ def modify_item_price(items, item_id, price, price_type):
 	name = item["name"]
 	print(f"adjusted price of {name}")
 
+def modify_item_xp(items, item_id, xp):
+	item = get_item(items, item_id)
+	if not item:
+		return
+	
+	item["cost"] = str(xp)
+	name = item["name"]
+	print(f"adjusted xp of {name}")
+
 def make_final(config, patch, sm_patch):
 	print(f"applying phase 1 patch...")
 	jsonpatch.apply_patch(config, patch, in_place = True)
@@ -365,13 +374,19 @@ def make_final(config, patch, sm_patch):
 	shop_modify(config["items"], "shop_data.csv")
 
 	# adjust prices
-	modify_item_price(items, 472, 15, "c") # black castle
-	modify_item_price(items, 414, 20, "c") # golden castle
-	modify_item_price(items, 100, 225, "g") # yellow tree
-	modify_item_price(items, 106, 225, "g") # red tree
-	modify_item_price(items, 102, 390, "g") # happy tree	
-	modify_item_price(items, 125, 700, "g") # unused soldier statues
-	modify_item_price(items, 127, 700, "g") # unused soldier statues
+	modify_item_price(items, 472, 15, "c")		# black castle
+	modify_item_price(items, 414, 20, "c")		# golden castle
+	modify_item_price(items, 100, 225, "g")		# yellow tree
+	modify_item_price(items, 106, 225, "g")		# red tree
+	modify_item_price(items, 102, 390, "g")		# happy tree	
+	modify_item_price(items, 125, 700, "g")		# unused soldier statues
+	modify_item_price(items, 127, 700, "g")		# unused soldier statues
+
+	# adjust item xp
+	modify_item_xp(items, 106, 23)				# red tree
+	modify_item_xp(items, 100, 225)				# yellow tree
+	modify_item_xp(items, 125, 70)				# unused soldier statues
+	modify_item_xp(items, 127, 70)				# unused soldier statues
 
 	# build final patch
 	final = []

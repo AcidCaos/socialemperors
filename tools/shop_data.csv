@@ -49,7 +49,6 @@
 1222		YES	YES	Celestial Mech	Limited Edition	Mecha Barrack	Celestial
 1526		YES	YES	Punisher Knight	Limited Edition	Punisher Knight Barrack	Celestial
 1224		YES	YES	Celestial Reaper	Limited Edition	Reaper Barracks	Celestial
-1345		YES	YES		Miscellaneous	Rider Academy	Celestial
 1232		YES	YES	Celestial Supreme	Limited Edition	Supreme Barracks	Celestial
 1274		YES	YES	Valkyr	Limited Edition	Valkyr Barracks	Celestial
 244		YES	YES		Limited Edition	Bamboo Mill	Chinese
@@ -194,6 +193,7 @@
 1238		YES	YES		Limited Edition	Halloween Tower	Halloween
 1237		YES	YES		Limited Edition	Halloween Wall	Halloween
 1252		YES	YES		Limited Edition	Haunted House	Halloween
+107		YES	YES		Trees	Horror Tree	Halloween
 1241		YES	YES	Mr. Bones	Limited Edition	Mr. Bones Barracks	Halloween
 1242		YES	YES	Scarecrow	Limited Edition	Scarecrow Barracks	Halloween
 1245		YES	YES	Werewolf	Limited Edition	Werewolf Barracks	Halloween
@@ -660,7 +660,6 @@
 298		YES				Hero Isle	
 239	1	YES	YES		Miscellaneous	Heroes Grave	
 49992		YES	YES		Wonders	Heroes Hall	
-107	1	YES	YES		Trees	Horror Tree	
 1	1	YES	YES		Houses	House I	
 2	1	YES	YES		Houses	House II	
 3	1	YES	YES		Houses	House III	
@@ -808,6 +807,7 @@
 1404		YES	YES		Limited Edition	Reptile Knight Statue	
 232	1	YES	YES		Miscellaneous	Restaurant	
 372	2	YES		Rhino Rider	Cavalry	Rhino Stables	
+1345	1	YES	YES		Miscellaneous	Rider Academy	
 945		YES				RocaCalavera	
 946		YES				RocaMinerales2	
 947		YES				RocaMinerales3	
