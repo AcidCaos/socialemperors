@@ -998,6 +998,88 @@
 		"value": 5
 	},
 	{
+		"_TITLE": "Nerroth - Honor Point level adjustments",
+		"op": "replace",
+		"path": "/honor_levels",
+		"value": [
+			{
+				"id": 1,
+				"points": 0,
+				"rank": "Peasant with Spear"
+			},
+			{
+				"id": 2,
+				"points": 500,
+				"rank": "Count's Squire"
+			},
+			{
+				"id": 3,
+				"points": 1000,
+				"rank": "Troll Slayer"
+			},
+			{
+				"id": 4,
+				"points": 1500,
+				"rank": "Baron's Knight"
+			},
+			{
+				"id": 5,
+				"points": 2000,
+				"rank": "Captain of Duke's Army"
+			},
+			{
+				"id": 6,
+				"points": 2500,
+				"rank": "Kingdom's Protector"
+			},
+			{
+				"id": 7,
+				"points": 3000,
+				"rank": "Citadel's Protector"
+			},
+			{
+				"id": 8,
+				"points": 3500,
+				"rank": "Spearmen's Commander"
+			},
+			{
+				"id": 9,
+				"points": 4000,
+				"rank": "Archery Lord"
+			},
+			{
+				"id": 10,
+				"points": 5000,
+				"rank": "Master Warlord"
+			},
+			{
+				"id": 11,
+				"points": 6000,
+				"rank": "Swords' Master"
+			},
+			{
+				"id": 12,
+				"points": 7000,
+				"rank": "Head of the Cavalry"
+			},
+			{
+				"id": 13,
+				"points": 8000,
+				"rank": "Great Lord of Tactics"
+			},
+			{
+				"id": 14,
+				"points": 9000,
+				"rank": "Siege's Master"
+			},
+			{
+				"id": 15,
+				"points": 10000,
+				"rank": "Elite King's Warlord"
+			}
+		]
+	},
+	{
 		"_TITLE": "AcidCaos/Nerroth - Graveyard fixes",
 		"op": "add",
 		"path": "/globals/GRAVEYARD_POTIONS",
