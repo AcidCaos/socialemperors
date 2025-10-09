@@ -31,6 +31,9 @@ patch_ignore = [
 	"fusion_output"
 ]
 
+def ts_to_date(ts):
+	return datetime.datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d')
+
 def remove_duplicate_items():
 	indexes = {}
 	items = __game_config["items"]
@@ -79,8 +82,11 @@ def apply_shop_rotation(ts):
 
 	seconds_interval = int(__rotation["rotation_hours"] * 3600)
 	seed = ts // seconds_interval
+	next_expiration_ts = (seed + 1) * seconds_interval 
+	next_expiration_date = ts_to_date(next_expiration_ts)
+	__game_config["globals"]["LIMITED_EDITION_EXPIRATION"] = next_expiration_date
 	random.seed(seed)
-	print(f" * Shop: RNG seed = {seed}")
+	print(f" * Shop: RNG seed = {seed}\n * Shop: Limited Items will expire on {next_expiration_date}")
 
 	# halloween settings
 	spooktober = __rotation["spooktober"]
