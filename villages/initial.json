@@ -1,9 +1,9 @@
 {
 	"playerInfo": {
-		"pid": 1000,
+		"pid": "initial",
 		"name": "Emperor",
 		"pic": "",
-		"cash": 0,
+		"cash": 20,
 		"completed_tutorial": 0,
 		"default_map": 0,
 		"map_names": [
@@ -15,7 +15,11 @@
 		"world_id": null,
 		"sp_ref_uid": 1000,
 		"sp_ref_cat_install": "ts",
-		"last_logged_in": -1
+		"last_logged_in": -1,
+		"country": "Social World",
+		"attacks_won": 0,
+		"attacks_lost": 0,
+		"honor_points": 0
 	},
 	"maps": [
 		{
@@ -234,7 +238,10 @@
 				]
 			],
 			"warehouseAditionalCapacitySingle": 50,
-			"warehousedUnits": {}
+			"warehousedUnits": {},
+			"timestampLastTrade": 0,
+			"numTradesDone": 0,
+			"store": {}
 		}
 	],
 	"privateState": {
@@ -314,10 +321,38 @@
 		"dartsRandomSeed": 0,
 		"dartsHasFree": true,
 		"dartsGotExtra": true,
-		"countTimePacket": [],
+		"countTimePacket": [
+			0,
+			0,
+			0,
+			0,
+			0,
+			0
+		],
 		"infoShowed": [],
 		"teams": {
-			"tournament": null
+			"tournament": [
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			]
 		},
 		"arrayAnimals": {},
 		"strategy": 8,
@@ -346,6 +381,198 @@
 		"tournamentFormation": 0,
 		"shieldEndTime": 0,
 		"shieldCooldown": 0,
-		"purchasedShields": []
+		"purchasedShields": [],
+		"PVPattacksReceived": {},
+		"helpMap": [],
+		"unitPacks": {},
+		"collections": [
+			[],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			]
+		],
+		"collectionsCompleted": [],
+		"iphoneBox": {}
 	}
 }
