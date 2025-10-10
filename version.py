@@ -321,6 +321,7 @@ def migrate_loaded_save(save):
 	# remove version tag as it's useless now
 	if "version" in save:
 		_fix_map_items(maps)
+		privateState["monsterNestActive"] = 1
 		save.pop("version")
 
 	return True
