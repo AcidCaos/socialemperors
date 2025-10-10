@@ -44,6 +44,9 @@ def cmd_buy(player, cmd, args, gameversion):
 	add_map_currency(_map, "xp", int(item["xp"]))
 	map_add_item(_map, item_id, x, y, orientation = orientation, userid = player["playerInfo"]["pid"])
 
+	if not is_free:
+		register_bought_unit(player, item_id, town_id)
+
 	return True
 
 def cmd_move(player, cmd, args, gameversion):
@@ -269,6 +272,8 @@ def cmd_pop_unit(player, cmd, args, gameversion):
 		if not map_pop_unit_short(_map, building[0], uitem_id):
 			return False	# unit was never in this building
 
+	register_bought_unit(player, uitem_id, town_id)
+
 	return True
 
 def cmd_push_queue_unit(player, cmd, args, gameversion):
@@ -348,6 +353,8 @@ def cmd_pop_queue_unit(player, cmd, args, gameversion):
 	is_soulmixer = result[1]
 	map_add_item(_map, unit_id, ux, uy)
 
+	register_bought_unit(player, unit_id, town_id)
+
 	return True
 
 def cmd_unqueue_unit(player, cmd, args, gameversion):
@@ -421,6 +428,8 @@ def cmd_place_gift(player, cmd, args, gameversion):
 	map_add_item(_map, item_id, x, y, orientation = orientation, userid = player["playerInfo"]["pid"])
 	remove_gift_item(player, item_id, 1)
 
+	register_bought_unit(player, item_id, town_id)
+
 	return True
 
 def cmd_sell_gift(player, cmd, args, gameversion):
@@ -454,6 +463,8 @@ def cmd_place_stored_item(player, cmd, args, gameversion):
 
 	map_add_item(_map, item_id, x, y, orientation = orientation, userid = player["playerInfo"]["pid"])
 	remove_store_item(_map, item_id, 1)
+
+	register_bought_unit(player, item_id, town_id)
 
 	return True
 
@@ -546,6 +557,8 @@ def cmd_resurrect_hero(player, cmd, args, gameversion):
 	map_add_item(_map, item_id, x, y)
 	graveyard_remove(player, item_id)
 
+	register_bought_unit(player, item_id, town_id)
+
 	return True
 
 def cmd_add_warehoused_item(player, cmd, args, gameversion):
@@ -581,6 +594,8 @@ def cmd_place_warehoused_item(player, cmd, args, gameversion):
 		return False
 
 	map_add_item(_map, uitem_id, ux, uy)
+
+	register_bought_unit(player, uitem_id, town_id)
 
 	return True
 
@@ -1045,6 +1060,7 @@ def cmd_buy_super_offer_pack(player, cmd, args, gameversion):
 
 	for item_id in items:
 		add_gift_item(player, item_id)
+		register_bought_unit(player, item_id, town_id)
 
 	return True
 
@@ -1112,6 +1128,7 @@ def cmd_store_add_items(player, cmd, args, gameversion):
 
 	for item_id in items:
 		add_store_item(_map, item_id)
+		register_bought_unit(player, item_id, town_id)
 	
 	return True
 
@@ -1168,8 +1185,36 @@ def cmd_finish_collection(player, cmd, args, gameversion):
 	_map = player["maps"][town_id]
 
 	add_store_item(_map, reward)
+	register_bought_unit(player, reward, town_id)
 
 	return True
+
+def cmd_buy_stored_item_cash(player, cmd, args, gameversion):
+	# town_id, uitem_id, cost
+	town_id = args[0]
+	uitem_id = int(args[1])
+	cost = int(args[2])
+
+	_map = player["maps"][town_id]
+
+	if cost > 0:
+		if not pay_cash(player, cost):
+			return False
+
+	add_store_item(_map, uitem_id)
+	register_bought_unit(player, uitem_id, town_id)
+
+	return True
+
+def cmd_unit_collections_completed(player, cmd, args, gameversion):
+	# collection_id
+	collection_id = int(args[0])
+	if collection_id not in player["privateState"]["unitCollectionsCompleted"]:
+		player["privateState"]["unitCollectionsCompleted"].append(collection_id)
+		add_cash(player, 1)
+		return True
+
+	return False
 
 def cmd_set_variables(player, cmd, args, gameversion):
 	playerInfo = player["playerInfo"]

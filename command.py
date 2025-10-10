@@ -103,6 +103,9 @@ commands = {
 	# item collections ----------------------------------------------------------------------------------------
 	"add_collectable":					cmd_add_collectable,
 	"finish_collection":				cmd_finish_collection,
+	# unit collections ----------------------------------------------------------------------------------------
+	"buy_stored_item_cash":				cmd_buy_stored_item_cash,
+	"unit_collections_completed":		cmd_unit_collections_completed,
 	# quests, tournament --------------------------------------------------------------------------------------
 	"set_attack_team":					cmd_set_attack_team,
 	"start_quest":						cmd_start_quest,

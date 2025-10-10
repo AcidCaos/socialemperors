@@ -155,6 +155,49 @@ def fix_collections_completed(privateState):
 	#	cols.append(1)
 	#	idx += 1
 
+def _fix_bought_unit(collection, item_id, ignored_race):
+	item_id = int(item_id)
+	data = get_item_from_id(item_id)
+	if not data:
+		return
+	if data["type"] == "b" or data["race"] == ignored_race:
+		return
+	if item_id not in collection:
+		collection.append(item_id)
+
+def fix_bought_units(maps, privateState):
+	collection = []
+	ignored_race = "t"
+
+	# MAPS
+	for map in maps:
+		race = map["race"]
+
+		# race check
+		ignored_race = "t"
+		if race == "t":
+			ignored_race == "h"
+
+		# items:
+		for item in map["items"]:
+			_fix_bought_unit(collection, item[0], ignored_race)
+		# item storage
+		for item_id in map["store"]:
+			_fix_bought_unit(collection, item_id, ignored_race)
+		# warehouse
+		for item_id in map["warehousedUnits"]:
+			_fix_bought_unit(collection, item_id, ignored_race)
+
+	# PRIVATE STATE
+	# gifts
+	for item_id in privateState["gifts"]:
+		_fix_bought_unit(collection, item_id, "")
+	# graveyard
+	for item_id in privateState["deadHeroes"]:
+		_fix_bought_unit(collection, item_id, "")
+
+	privateState["boughtUnits"] = collection
+
 def migrate_loaded_save(save):
 	# Migration always happens now, we check the data type this time and insert any new data if necessary
 	# This should make sure the save file isn't "half fixed"
@@ -264,6 +307,13 @@ def migrate_loaded_save(save):
 	if type(privateState["gifts"]) != dict:
 		privateState["gifts"] = array_to_dict(privateState["gifts"], True)
 	fix_variable(privateState, "iphoneBox", {})
+
+	# unit collections
+	if fix_variable(privateState, "boughtUnits", []):
+		fix_bought_units(maps, privateState)
+	elif len(privateState["boughtUnits"]) == 0:
+		fix_bought_units(maps, privateState)
+	fix_variable(privateState, "unitCollectionsCompleted", [])
 
 	# remove version tag as it's useless now
 	if "version" in save:

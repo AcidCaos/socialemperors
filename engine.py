@@ -727,3 +727,20 @@ def hire_friends(userid, si_info, is_church):
 		total += 1
 
 	return si
+
+def register_bought_unit(player, item_id, town_id = 0):
+	item_id = int(item_id)
+
+	race = player["maps"][town_id]["race"]
+	ignored_race = "t"
+	if race == "t":
+		ignored_race = "h"
+
+	data = get_item_from_id(item_id)
+	if not data:
+		return
+	if data["type"] == "b" or data["race"] == ignored_race:
+		return
+	
+	if item_id not in player["privateState"]["boughtUnits"]:
+		player["privateState"]["boughtUnits"].append(item_id)
