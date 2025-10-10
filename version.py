@@ -181,6 +181,9 @@ def fix_bought_units(maps, privateState):
 		# items:
 		for item in map["items"]:
 			_fix_bought_unit(collection, item[0], ignored_race)
+			# building item slots
+			for item_id in item[6]:
+				_fix_bought_unit(collection, item_id, ignored_race)
 		# item storage
 		for item_id in map["store"]:
 			_fix_bought_unit(collection, item_id, ignored_race)
