@@ -3,8 +3,8 @@ import random
 # grab server settings
 from server_config import get_server_config
 
-from engine import timestamp_now, spaghetti_resurrected_units
-from get_game_config import get_game_config, get_level_from_xp, get_name_from_item_id, get_attribute_from_mission_id, get_xp_from_level, get_attribute_from_item_id, get_item_from_subcat_functional, get_animals
+from engine import timestamp_now, spaghetti_resurrected_units, hire_friends
+from get_game_config import *
 
 version_name = "nerroth rewrite - beyond 0.04a"
 version_code = ""
@@ -56,6 +56,7 @@ survival_arenas = [
 quest_entry_seconds = int(get_server_config()["misc"]["quests_reset_hours"] * 3600)
 
 _warehouse_default_cap = int(get_game_config()["globals"]["WAREHOUSE_CAPACITIES"][0])
+_market_reset_time = 3600 * 20
 
 def remove_variable(dictionary, key):
 	if key in dictionary:
@@ -271,31 +272,44 @@ def migrate_loaded_save(save):
 
 	return True
 
-def save_reset_stuff(save):
+def save_reset_stuff(save, player_visiting_own_save = False):
 	# This function performs some resets in save whenever the game loads the map
-	# Resets market trades if it's a new day
-	# 1 week = 604800 seconds
-	# 1 day = 86400 seconds
+	if player_visiting_own_save:
+		# Resets market trades
+		now = timestamp_now()
+		for map in save["maps"]:
+			last_trade = map["timestampLastTrade"]
+			if abs(now - last_trade) >= _market_reset_time:
+				map["numTradesDone"] = 0
+				map["resourcesTraded"] = {}
 
-	now = timestamp_now()
+		# Reset targets if start of a new week, game will call darts_reset if timestamp is 0
+		privateState = save["privateState"]
+		if "timeStampDartsReset" in privateState:
+			# take away 3 days since timestamp 0 is thursday, we want reset to happen on monday
+			# 3 days = 259200 seconds
+			last_darts_reset = privateState["timeStampDartsReset"] + 259200
+			temp = now + 259200
+			if temp // 604800 != last_darts_reset // 604800:
+				privateState["timeStampDartsReset"] = 0
+
+		check_quest_times(map["lastQuestTimes"], now)
+		check_animals(save)
+		check_si_buildings(save)
+
+def check_si_buildings(save):
+	userid = save["playerInfo"]["pid"]
 	for map in save["maps"]:
-		last_trade = map["timestampLastTrade"]
-		if now // 86400 != last_trade // 86400:
-			map["numTradesDone"] = 0
-			map["resourcesTraded"] = {}
+		for item in map["items"]:
+			if "si" in item[7]:
+				_check_si(userid, item)
 
-	# Reset targets if start of a new week, game will call darts_reset if timestamp is 0
-	privateState = save["privateState"]
-	if "timeStampDartsReset" in privateState:
-		# take away 3 days since timestamp 0 is thursday, we want reset to happen on monday
-		# 3 days = 259200 seconds
-		last_darts_reset = privateState["timeStampDartsReset"] + 259200
-		temp = now + 259200
-		if temp // 604800 != last_darts_reset // 604800:
-			privateState["timeStampDartsReset"] = 0
+def _check_si(userid, item):
+	si_info = get_si_info(item[0])
+	if not si_info:
+		return
 
-	check_quest_times(map["lastQuestTimes"], now)
-	check_animals(save)
+	item[7]["si"] = hire_friends(userid, si_info, item[0] == 470)
 
 def check_animals(save):
 	animal_data = get_animals()

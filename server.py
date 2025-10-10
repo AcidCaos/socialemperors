@@ -398,6 +398,7 @@ def get_game_config_response():
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_player_info.php", methods=['POST'])
 def get_player_info_response():
+	player_user = session['USERID']
 
 	USERID = request.values['USERID']
 	user_key = request.values['user_key']
@@ -412,7 +413,7 @@ def get_player_info_response():
 
 	# Current Player
 	if user is None:
-		return (get_player_info(USERID), 200)
+		return (get_player_info(USERID, session['USERID']), 200)
 	# PVP RANDOM
 	if user == "undefined":
 		enemy = get_pvp_search_result(USERID, map)

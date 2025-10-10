@@ -4,11 +4,12 @@ from sessions import *
 from engine import timestamp_now
 from version import save_reset_stuff
 
-def get_player_info(USERID, town_id = 0):
+def get_player_info(USERID, player_userid = None, town_id = 0):
 	save = session(USERID)
 	friends = neighbors(USERID)
 
-	save_reset_stuff(save)
+	if player_userid == USERID:
+		save_reset_stuff(save, True)
 
 	# player
 	response = {
@@ -26,7 +27,7 @@ def get_target_info(userid, town_id = 0):
 	save = get_target_session(userid)
 	pvp_simulate_resources(save, userid, town_id)
 
-	save_reset_stuff(save)
+	save_reset_stuff(save, False)
 
 	response = {
 		"result": "ok",
@@ -72,7 +73,7 @@ def get_pvp_search_result(userid, town_id):
 	save = get_pvp_session(enemy_id)
 	pvp_simulate_resources(save, enemy_id, town_id)
 
-	save_reset_stuff(save)
+	save_reset_stuff(save, False)
 	
 	response = {
 		"result": "ok",
