@@ -1106,8 +1106,12 @@ def cmd_store_add_items(player, cmd, args, gameversion):
 	# items
 	items = json.loads(args[0])
 
+	# no support for other town IDs, sad :(
+	town_id = 0
+	_map = player["maps"][town_id]
+
 	for item_id in items:
-		add_gift_item(player, item_id)
+		add_store_item(_map, item_id)
 	
 	return True
 
