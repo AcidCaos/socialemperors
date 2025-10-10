@@ -381,12 +381,14 @@ def make_final(config, patch, sm_patch):
 	modify_item_price(items, 102, 390, "g")		# happy tree	
 	modify_item_price(items, 125, 700, "g")		# unused soldier statues
 	modify_item_price(items, 127, 700, "g")		# unused soldier statues
+	modify_item_price(items, 1233, 0, "g")		# dragon breeding nest
 
 	# adjust item xp
 	modify_item_xp(items, 106, 23)				# red tree
 	modify_item_xp(items, 100, 23)				# yellow tree
 	modify_item_xp(items, 125, 70)				# unused soldier statues
 	modify_item_xp(items, 127, 70)				# unused soldier statues
+	modify_item_xp(items, 1233, 0)				# dragon breeding nest
 
 	# build final patch
 	final = []
