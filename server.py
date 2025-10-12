@@ -3,6 +3,7 @@ import os
 import json
 import urllib
 import logging
+import re
 
 # grab server settings
 from server_config import get_server_config
@@ -57,12 +58,16 @@ print (" [+] Configuring server routes...")
 
 ## PAGES AND RESOURCES
 
-@app.route("/", methods=['GET', 'POST'])
-def login():
+def do_logout():
 	# Log out previous session
 	session.pop('USERID', default=None)
 	session.pop('GAMEVERSION', default=None)
 	session.pop('RUNNER', default=None)
+
+@app.route("/", methods=['GET', 'POST'])
+def login():
+	do_logout()
+
 	# Reload saves. Allows saves modification without server reset
 	reload_saves()
 	# If logging in, set session USERID, and go to play
@@ -83,6 +88,37 @@ def login():
 	if request.method == 'GET':
 		saves_info = all_saves_info()
 		return render_template("login.html", saves_info=saves_info, version=version_name)
+
+@app.route("/reg", methods=['GET', 'POST'])
+def new_player():
+	do_logout()
+	return render_template("new_empire.html", version=version_name)
+
+@app.route("/reg/new", methods=['POST'])
+def new_player_register():
+	do_logout()
+
+	#print("request: "+json.dumps(request.values, indent='\t'))
+	user = request.values["username"][:16]
+	skiptutorial = request.values["skiptutorial"] == "skiptutorial"
+	starting_draggy = request.values["STARTING_DRAGGY"]
+	result = bool(re.fullmatch(r'[A-Za-z0-9]+', user))
+
+	if not result:
+		return redirect("/reg")
+
+	print(f"registering save for {user}...")
+
+	session['USERID'] = new_village(user, skiptutorial, starting_draggy)
+	session['GAMEVERSION'] = request.form['GAMEVERSION']
+	session['RUNNER'] = request.form['RUNNER']
+
+	if session['RUNNER'] == "RUFFLE":
+		return redirect("/play/ruffle")
+	elif session['RUNNER'] == "FLASH":
+		return redirect("/play")
+
+	return redirect("/play")
 
 # old redirects
 @app.route("/new.html")
@@ -136,10 +172,11 @@ def ruffle():
 
 @app.route("/new")
 def new():
-	session['USERID'] = new_village()
-	session['GAMEVERSION'] = "SocialEmpires0926bsec.swf"
-	session['RUNNER'] = "FLASH"
-	return redirect("play")
+	return redirect("/")
+	#session['USERID'] = new_village()
+	#session['GAMEVERSION'] = "SocialEmpires0926bsec.swf"
+	#session['RUNNER'] = "FLASH"
+	#return redirect("play")
 
 @app.route("/crossdomain.xml")
 def crossdomain():

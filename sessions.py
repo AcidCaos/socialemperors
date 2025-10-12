@@ -53,6 +53,7 @@ _pvp_pool_blacklist = [ "100000030", "100000031", "100000032" ]
 # -------------------------------------------------------------------------------
 
 __initial_village = json.load(open(os.path.join(VILLAGES_DIR, "initial.json")))
+__initial_village1407 = json.load(open(os.path.join(VILLAGES_DIR, "initial1407.json")))
 
 
 SESSION_SAVE = 0		# player save
@@ -250,17 +251,37 @@ def get_enemy_save(userid):
 	return data
 
 # New village
-def new_village():
+def new_village(username, skip_tutorial, draggy = None):
+	draggies = {
+		"GREEN": 698,
+		"BLUE": 651,
+		"GOLD": 710
+	}
+
 	# Generate USERID
 	USERID: str = str(uuid.uuid4())
 	assert USERID not in all_userid()
 	# Copy init
-	village = copy.deepcopy(__initial_village)
+	village = None
+
+	if skip_tutorial:
+		village = copy.deepcopy(__initial_village1407)
+	else:
+		village = copy.deepcopy(__initial_village)
+
 	# Custom values
 	village["version"] = "migrateme"
 	village["playerInfo"]["pid"] = USERID
+	village["playerInfo"]["name"] = username
 	village["maps"][0]["timestamp"] = timestamp_now()
 	village["privateState"]["dartsRandomSeed"] = abs(int((2**16 - 1) * random.random()))
+
+	if skip_tutorial:
+		if draggy in draggies:
+			draggy = draggies[draggy]
+		if draggy:
+			map_add_item(village["maps"][0], draggy, 60, 60)
+
 	# fix stuff
 	migrate_loaded_save(village)
 	# Memory saves

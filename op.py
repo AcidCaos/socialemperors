@@ -634,7 +634,7 @@ def cmd_name_map(player, cmd, args, gameversion):
 	name = str(args[1])
 
 	player["playerInfo"]["map_names"][town_id] = name
-	player["playerInfo"]["name"] = name # allow renaming of profile too
+	# player["playerInfo"]["name"] = name # allow renaming of profile too
 
 	return True
 
