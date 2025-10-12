@@ -861,6 +861,10 @@ def cmd_buy_shield(player, cmd, args, gameversion):
 	if not shield:
 		return False
 
+	bought = privateState["purchasedShields"]
+	if shield_id in bought:
+		return False
+
 	price = shield["price"]
 	price_type = shield["price_type"]
 	if price_type == "c":
@@ -889,9 +893,7 @@ def cmd_buy_shield(player, cmd, args, gameversion):
 	shield_duration = shield["protection_time"]
 	shield_cooldown = shield["cooldown"]
 
-	bought = privateState["purchasedShields"]
-	if not shield_id in bought:
-		bought.append(shield_id)
+	bought.append(shield_id)
 	
 	end_time = privateState["shieldEndTime"]
 	cooldown = privateState["shieldCooldown"]
