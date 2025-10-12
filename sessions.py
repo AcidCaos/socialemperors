@@ -106,7 +106,7 @@ def reload_saves():
 def load_static_villages(add_to_pvp = False):
 	# Static neighbors in /villages
 	for file in os.listdir(VILLAGES_DIR):
-		if file == "initial.json" or not file.endswith(".json"):
+		if file == "initial.json" or file == "initial1407.json" or not file.endswith(".json"):
 			continue
 		print(f" * Loading static neighbour {file}... ", end='')
 		village = json.load(open(os.path.join(VILLAGES_DIR, file)))
