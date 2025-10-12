@@ -100,18 +100,22 @@ def new_player_register():
 
 	#print("request: "+json.dumps(request.values, indent='\t'))
 	user = request.values["username"][:16]
-	skiptutorial = request.values["skiptutorial"] == "skiptutorial"
+	skiptutorial = 0
+	if "skiptutorial" in request.values:
+		skiptutorial = request.values["skiptutorial"] == "skiptutorial"
 	starting_draggy = request.values["STARTING_DRAGGY"]
 	result = bool(re.fullmatch(r'[A-Za-z0-9]+', user))
 
 	if not result:
 		return redirect("/reg")
 
-	print(f"registering save for {user}...")
-
-	session['USERID'] = new_village(user, skiptutorial, starting_draggy)
 	session['GAMEVERSION'] = request.form['GAMEVERSION']
 	session['RUNNER'] = request.form['RUNNER']
+
+	if "0926" not in session['GAMEVERSION']:
+		skiptutorial = 1
+
+	session['USERID'] = new_village(user, skiptutorial, starting_draggy)
 
 	if session['RUNNER'] == "RUFFLE":
 		return redirect("/play/ruffle")
