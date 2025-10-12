@@ -1279,6 +1279,7 @@ def cmd_assist_neighbor(player, cmd, args, gameversion):
 
 	add_map_currency(_map, "coins", int(cfg_globals["ASSIST_REWARD_GOLD"]))
 	add_map_currency(_map, "xp", int(cfg_globals["ASSIST_REWARD_XP"]))
+	privateState["neighborAssists"][userid] = timestamp_now()
 
 	return True
 
