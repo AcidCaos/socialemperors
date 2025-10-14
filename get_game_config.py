@@ -4,6 +4,8 @@ import jsonpatch
 import random
 import time
 import datetime
+
+from mods import *
 from bundle import MODS_DIR, CONFIG_DIR, CONFIG_PATCH_DIR
 from constants import Constant
 
@@ -193,8 +195,7 @@ def apply_mods():
 				mod.replace(".json", "")
 				mod_path = f"{MODS_DIR}/{mod}.json"
 				if os.path.exists(mod_path):
-					apply_config_patch(mod_path)
-					print(" * Mod applied:", mod)
+					apply_user_mod(mod_path, mod, __game_config)
 
 	remove_duplicate_items()
 
@@ -230,9 +231,9 @@ def grab_animals():
 
 # do it
 apply_patches()
-apply_shop_rotation(int(time.time()))
 apply_mods()
 check_unit_packs()
+apply_shop_rotation(int(time.time()))
 grab_animals()
 
 items_dict_id_to_items_index = {int(item["id"]): i for i, item in enumerate(__game_config["items"])}

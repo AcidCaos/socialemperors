@@ -1,4 +1,30 @@
+# --------------------------------------------------------------------------------------------------------------------------
 # Mods are loaded from the "mods" folder in the order provided below
 # You don't need to provide the .json extension here, just the name
 # If a line starts with #, it is ignored
-
+#
+# --------------------------------------------------------------------------------------------------------------------------
+# GUIDE FOR MAKING MODS:
+# To make a mod, the mod structure must be respected!
+# This is only a reference on how a mod structure should look like
+#    {
+#        "name": "My very own mod",                                          // Mod name
+#        "author": "My own name",                                            // Mod author
+#        "description": "What does my mod do? It is explained here!",        // Mod description
+#        "game": "Social Empires",                                           // Supported game
+#        "supports": [                                                       // Any supported versions must be listed here
+#            "0.05a",                                                        // Do NOT list any unreleased versions
+#            ...
+#        ],
+#        "data": [                                                           // This is the changes that your mod does
+#            { "op": "add", ... },
+#            ...
+#        ]
+#    }
+#
+#    - You CAN NOT directly replace "items" in config
+#    - You CAN NOT use the "remove" operation on anything in the config
+#    - You CAN use the "add" operation to change "items" in the config
+#
+#    - Item changes CAN NOT delete any data that is required
+# --------------------------------------------------------------------------------------------------------------------------
