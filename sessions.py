@@ -108,41 +108,43 @@ def load_static_villages(add_to_pvp = False):
 	for file in os.listdir(VILLAGES_DIR):
 		if file == "initial.json" or file == "initial1407.json" or not file.endswith(".json"):
 			continue
-		print(f" * Loading static neighbour {file}... ", end='')
+		#print(f" * Loading static {file}... ", end='')
 		village = json.load(open(os.path.join(VILLAGES_DIR, file)))
 		if not is_valid_village(village):
-			print("Invalid neighbour")
+			#print("Invalid neighbour")
 			continue
 		USERID = village["playerInfo"]["pid"]
 		if str(USERID) in __villages:
-			print(f"Ignored: duplicated PID '{USERID}'.")
+			#print(f"Ignored: duplicated PID '{USERID}'.")
+			pass
 		else:
 			migrate_loaded_save(village)
 			__villages[str(USERID)] = village
 			if add_to_pvp:
 				pvp_pool_add(USERID, village, SESSION_VILLAGE, 0)
-			print("Ok.")
+			#print("Ok.")
 
 def load_saves(add_to_pvp = False):
 	# Saves in /saves
 	for file in os.listdir(SAVES_DIR):
 		if not file.endswith(".save.json"):
 			continue
-		print(f" * Loading save at {file}... ", end='')
+		
 		try:
 			save = json.load(open(os.path.join(SAVES_DIR, file)))
 		except json.decoder.JSONDecodeError as e:
-			print("Corrupted JSON.")
+			print(f" * Player data corrupted -> {file}")
 			continue
 		if not is_valid_village(save):
-			print("Invalid Save.")
+			print(f" * Player data invalid -> {file}")
 			continue
 		USERID = save["playerInfo"]["pid"]
+		name = save["playerInfo"]["name"]
 		try:
 			map_name = save["playerInfo"]["map_names"][ save["playerInfo"]["default_map"] ]
 		except:
 			map_name = '?'
-		print(f"({map_name}) Ok.")
+		print(f" * Player OK! -> {USERID} | {name} | {map_name}")
 		__saves[str(USERID)] = save
 		if add_to_pvp:
 			pvp_pool_add(USERID, save, SESSION_SAVE, 0)
