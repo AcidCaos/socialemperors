@@ -454,7 +454,7 @@ def get_player_info_response():
 
 	# Current Player
 	if user is None:
-		return (get_player_info(USERID, session['USERID']), 200)
+		return (construct_hash_and_payload(get_player_info(USERID, session['USERID'])), 200)
 	# PVP RANDOM
 	if user == "undefined":
 		enemy = get_pvp_search_result(USERID, map)
