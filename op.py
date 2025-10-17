@@ -734,6 +734,11 @@ def cmd_rt_level_up(player, cmd, args, gameversion):
 	_map["level"] = level_now
 	_map["xp"] = max(get_xp_from_level(max(0, level_now - 1)), _map["xp"])
 
+	# add mana
+	cfg_globals = get_game_config()["globals"]
+	if level_now >= cfg_globals["START_LEVEL_MANA_REWARD"]:
+		add_mana(player, cfg_globals["MANA_REWARD_PER_LEVEL"])
+
 	pvp_pool_modify(player)
 
 	return True
