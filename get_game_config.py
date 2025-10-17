@@ -11,6 +11,7 @@ from constants import Constant
 
 __game_config = json.load(open(os.path.join(CONFIG_DIR, "main.json"), 'r', encoding='utf-8'))
 __rotation = json.load(open(os.path.join(CONFIG_DIR, "shop_rotation.json"), 'r', encoding='utf-8'))
+__shop_rotation_refresh = None
 __animals = {}
 
 # Since we use mega patches now, better to make sure any old patches don't load as they will load after and will mess things up!
@@ -77,15 +78,36 @@ def get_item(item_id):
 			return item
 	return None
 
-def apply_shop_rotation(ts):
-	print (" [+] Setting up shop rotation...")
+def check_shop_rotation(ts):
+	if ts >= __shop_rotation_refresh:
+		apply_shop_rotation(ts, True)
+
+def clear_shop_rotation():
+	factions = __rotation["factions"]
+	for faction in factions:
+		for item_id in factions[faction]:
+			item = get_item(item_id)
+			if not item:
+				continue
+
+			item["in_store"] = "0"
+
+def apply_shop_rotation(ts, refresh = False):
+	if refresh:
+		print (" [+] Refreshing shop rotation...")
+	else:
+		print (" [+] Setting up shop rotation...")
+
+	clear_shop_rotation()
 
 	_rng = random.getstate()
 
 	seconds_interval = int(__rotation["rotation_hours"] * 3600)
 	seed = ts // seconds_interval
-	next_expiration_ts = (seed + 1) * seconds_interval 
+	next_expiration_ts = (seed + 1) * seconds_interval
 	next_expiration_date = ts_to_date(next_expiration_ts)
+	global __shop_rotation_refresh
+	__shop_rotation_refresh = next_expiration_ts
 	__game_config["globals"]["LIMITED_EDITION_EXPIRATION"] = next_expiration_date
 	random.seed(seed)
 	print(f" * Shop: RNG seed = {seed}\n * Shop: Limited Items will expire on {next_expiration_date}")

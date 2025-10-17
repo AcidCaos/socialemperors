@@ -16,7 +16,7 @@ else:
 	sys.stdout.write("\x1b]2;Social Empires Server\x07")
 
 print (" [+] Loading game config...")
-from get_game_config import get_game_config
+from get_game_config import get_game_config, check_shop_rotation
 
 print (" [+] Loading players...")
 from get_player_info import *
@@ -435,6 +435,9 @@ def get_game_config_response():
 	language = request.values['language']
 
 	#print(f"get_game_config: USERID: {USERID}. --", request.values)
+	
+	check_shop_rotation(timestamp_now())
+
 	return construct_hash_and_payload(get_game_config())
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_player_info.php", methods=['POST'])
