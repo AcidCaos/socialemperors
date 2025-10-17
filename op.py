@@ -1092,6 +1092,7 @@ def cmd_buy_unit_pack(player, cmd, args, gameversion):
 	if max_packs != 0:
 		if str(pack_id) in packs_bought:
 			if packs_bought[str(pack_id)] + n > max_packs:
+				# TODO: fail without stopping commands
 				return False
 
 	if str(pack_id) not in packs_bought:
@@ -1157,7 +1158,7 @@ def cmd_finish_collection(player, cmd, args, gameversion):
 	if collection_id <= 0:
 		return False
 
-	collections = collections = player["privateState"]["collections"]
+	collections = player["privateState"]["collections"]
 	data = collections[collection_id]
 	reward = get_collection_reward(collection_id)
 	if not reward:
@@ -1181,6 +1182,10 @@ def cmd_finish_collection(player, cmd, args, gameversion):
 			idx += 1
 
 	data[0] = 1
+
+	finished = player["privateState"]["collectionsCompleted"]
+	if collection_id not in finished:
+		finished.append(collection_id)
 
 	# no support for other town IDs, sad :(
 	town_id = 0

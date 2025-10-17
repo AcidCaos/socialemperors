@@ -149,11 +149,15 @@ def fix_collections(privateState):
 	privateState["collections"] = cols
 
 def fix_collections_completed(privateState):
-	pass
-	#idx = 0
-	#while idx <= 23:
-	#	cols.append(1)
-	#	idx += 1
+	collections = privateState["collections"]
+	finished = privateState["collectionsCompleted"]
+
+	idx = 1
+	while idx <= 23:
+		if collections[idx][0]:
+			if idx not in finished:
+				finished.append(idx)
+		idx += 1
 
 def _fix_bought_unit(collection, item_id, ignored_race):
 	item_id = int(item_id)
@@ -272,8 +276,10 @@ def migrate_loaded_save(save):
 	# item collections
 	if fix_variable(privateState, "collections", []):
 		fix_collections(privateState)
-	if fix_variable(privateState, "collectionsCompleted", []):
-		fix_collections_completed(privateState)
+
+	fix_variable(privateState, "collectionsCompleted", [])
+	if len(privateState["collectionsCompleted"]) == 0:
+		fix_collections_completed(privateState)						# oopsie daisy
 
 	# SP's spaghetti is annoying
 	fix_variable(privateState, "deadHeroes", {})					# graveyard old version

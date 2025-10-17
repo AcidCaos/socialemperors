@@ -103,6 +103,15 @@ def reload_saves():
 	pvp_pool_size = len(__pvp_pool)
 	print(f" [*] PVP pool size: {pvp_pool_size}")
 
+def show_player_info(save, player_type):
+	USERID = save["playerInfo"]["pid"]
+	name = save["playerInfo"]["name"]
+	try:
+		map_name = save["playerInfo"]["map_names"][ save["playerInfo"]["default_map"] ]
+	except:
+		map_name = '?'
+	print(f" * {player_type} OK! -> {USERID} | {name} | {map_name}")
+
 def load_static_villages(add_to_pvp = False):
 	# Static neighbors in /villages
 	for file in os.listdir(VILLAGES_DIR):
@@ -138,13 +147,8 @@ def load_saves(add_to_pvp = False):
 		if not is_valid_village(save):
 			print(f" * Player data invalid -> {file}")
 			continue
+		show_player_info(save, "Player")
 		USERID = save["playerInfo"]["pid"]
-		name = save["playerInfo"]["name"]
-		try:
-			map_name = save["playerInfo"]["map_names"][ save["playerInfo"]["default_map"] ]
-		except:
-			map_name = '?'
-		print(f" * Player OK! -> {USERID} | {name} | {map_name}")
 		__saves[str(USERID)] = save
 		if add_to_pvp:
 			pvp_pool_add(USERID, save, SESSION_SAVE, 0)
@@ -183,6 +187,7 @@ def load_friends(add_to_pvp = False):
 		if not is_valid_village(village):
 			print(f"Invalid friends {file}")
 			continue
+		#show_player_info(village, "Friend")
 		USERID = village["playerInfo"]["pid"]
 		if str(USERID) in __pvp_data:
 			print(f"Ignored: duplicated friends PID '{USERID}'.")
@@ -216,6 +221,7 @@ def load_enemies(add_to_pvp = False):
 		if not is_valid_village(village):
 			print(f"Invalid enemy {file}")
 			continue
+		#show_player_info(village, "Enemy")
 		USERID = village["playerInfo"]["pid"]
 		if str(USERID) in __pvp_data:
 			print(f"Ignored: duplicated enemy PID '{USERID}'.")
