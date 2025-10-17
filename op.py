@@ -580,6 +580,52 @@ def cmd_buy_mana(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_buy_magic(player, cmd, args, gameversion):
+	# spell_id, town_id, use_cash
+	spell_id = args[0]
+	town_id = args[1]
+	use_cash = args[2] == 1
+
+	learned = player["privateState"]["magics"]
+	if str(spell_id) in learned:
+		return False
+
+	spell = get_spell(spell_id)
+	if not spell:
+		return False
+
+	_map = player["maps"][town_id]
+	if use_cash:
+		if not pay_cash(player, spell["cash"]):
+			return False
+	else:
+		if not pay_map_currency(_map, "coins", spell["gold"]):
+			return False
+
+	learned[str(spell_id)] = 0
+	add_mana(player, spell["mana"])
+
+	return True
+
+def cmd_use_magic(player, cmd, args, gameversion):
+	# spell_id
+	spell_id = args[0]
+
+	learned = player["privateState"]["magics"]
+	if str(spell_id) not in learned:
+		return False
+
+	spell = get_spell(spell_id)
+	if not spell:
+		return False
+
+	if not pay_mana(player, spell["mana"]):
+		return False
+
+	learned[str(spell_id)] += 1
+
+	return True
+
 def cmd_add_warehoused_item(player, cmd, args, gameversion):
 	# ux, uy, town_id, uitem_id
 	ux = args[0]

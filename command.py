@@ -85,6 +85,8 @@ commands = {
 	"graveyard_buy_potions":			cmd_graveyard_buy_potions,
 	# spell book ----------------------------------------------------------------------------------------------
 	"buy_mana_new":						cmd_buy_mana,
+	"buy_magic":						cmd_buy_magic,
+	"use_magic":						cmd_use_magic,
 	# weather machine -----------------------------------------------------------------------------------------
 	"unlock_skin":						cmd_unlock_skin,
 	"set_skin":							cmd_set_skin,

@@ -319,3 +319,10 @@ def get_collection_reward(collection_id):
 	if collection_id <= 0 or collection_id >= len(rewards):
 		return None
 	return rewards[collection_id]
+
+def get_spell(spell_id):
+	spells = __game_config["magics"]
+	for spell in spells:
+		if spell["id"] == spell_id:
+			return spell
+	return None
