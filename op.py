@@ -677,9 +677,9 @@ def cmd_set_strategy(player, cmd, args, gameversion):
 def cmd_exchange_cash(player, cmd, args, gameversion):
 	town_id = args[0]
 
-	cfg_global = get_game_config()["globals"]
-	cash_amount = cfg_global["EXCHANGE_CASH"]
-	gold_amount = cfg_global["EXCHANGE_GOLD"]
+	cfg_globals = get_game_config()["globals"]
+	cash_amount = cfg_globals["EXCHANGE_CASH"]
+	gold_amount = cfg_globals["EXCHANGE_GOLD"]
 
 	_map = player["maps"][town_id]
 	if not pay_cash(player, cash_amount):
