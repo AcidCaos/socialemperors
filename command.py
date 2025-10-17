@@ -95,6 +95,18 @@ commands = {
 	"time_ff":							cmd_tm_use_packet,
 	# great church --------------------------------------------------------------------------------------------
 	"increase_population":				cmd_increase_population,
+	# dragon nest ---------------------------------------------------------------------------------------------
+	"activate_dragon":					cmd_activate_dragon,
+	"desactivate_dragon":				cmd_deactivate_dragon,
+	"next_dragon":						cmd_next_dragon,
+	"next_step":						cmd_next_step_dragon,
+	"buy_step_cash":					cmd_buy_step_dragon,
+	# monster nest --------------------------------------------------------------------------------------------
+	"activate_monster":					cmd_activate_monster,
+	"desactivate_monster":				cmd_deactivate_monster,
+	"next_monster":						cmd_next_monster,
+	"next_monster_step":				cmd_next_step_monster,
+	"buy_monster_step_cash":			cmd_buy_step_monster,
 	# player general ------------------------------------------------------------------------------------------
 	"expand":							cmd_expand,
 	"name_map":							cmd_name_map,
@@ -139,22 +151,8 @@ commands = {
 	"reward_mission":					USE_OLD,
 	"win_bonus":						NOT_IMPLEMENTED,
 
-	"activate_dragon":					USE_OLD,
-	"desactivate_dragon":				USE_OLD,
-	"next_dragon":						USE_OLD,
-	"next_step":						USE_OLD,
-	"buy_step_cash":					USE_OLD,
-
 	"rider_select":						USE_OLD,
 	"rider_next_step":					USE_OLD,
-	"rider_buy_step_cash":				USE_OLD,
-
-	"activate_monster":					USE_OLD,
-	"desactivate_monster":				USE_OLD,
-	"next_monster":						USE_OLD,
-	"next_monster_step":				USE_OLD,
-
-	"buy_monster_step_cash":			USE_OLD,
 }
 
 def get_strategy_type(id):

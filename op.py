@@ -1445,3 +1445,135 @@ def cmd_increase_population(player, cmd, args, gameversion):
 	_map["increasedPopulation"] = min(5, _map["increasedPopulation"] + 1)
 
 	return True
+
+def cmd_activate_dragon(player, cmd, args, gameversion):
+	return _cmd_activate_nest(player, cmd, args, gameversion, "dragon")
+
+def cmd_activate_monster(player, cmd, args, gameversion):
+	return _cmd_activate_nest(player, cmd, args, gameversion, "monster")
+
+def cmd_deactivate_dragon(player, cmd, args, gameversion):
+	return _cmd_deactivate_nest(player, cmd, args, gameversion, "dragon")
+
+def cmd_deactivate_monster(player, cmd, args, gameversion):
+	return _cmd_deactivate_nest(player, cmd, args, gameversion, "monster")
+
+def cmd_next_dragon(player, cmd, args, gameversion):
+	return _cmd_next_nest(player, cmd, args, gameversion, "dragon")
+
+def cmd_next_monster(player, cmd, args, gameversion):
+	return _cmd_next_nest(player, cmd, args, gameversion, "monster")
+
+def cmd_next_step_dragon(player, cmd, args, gameversion):
+	return _cmd_next_step_nest(player, cmd, args, gameversion, "dragon")
+
+def cmd_next_step_monster(player, cmd, args, gameversion):
+	return _cmd_next_step_nest(player, cmd, args, gameversion, "monster")
+
+def cmd_buy_step_dragon(player, cmd, args, gameversion):
+	return _cmd_buy_step_nest(player, cmd, args, gameversion, "dragon")
+
+def cmd_buy_step_monster(player, cmd, args, gameversion):
+	return _cmd_buy_step_nest(player, cmd, args, gameversion, "monster")
+
+def _cmd_activate_nest(player, cmd, args, gameversion, nest_type):
+	# currency
+	resource = str(args[0])
+
+	# no support for other town IDs, sad :(
+	town_id = 0
+	_map = player["maps"][town_id]
+
+	nest = get_nest(nest_type)
+	if not nest:
+		print("invalid nest")
+		return False
+
+	if resource not in nest["cost"]:
+		return False
+	cost_key = nest["cost"][resource]
+
+	cfg_globals = get_game_config()["globals"]
+	cost = cfg_globals[cost_key]
+	if not pay_resource_type(player, _map, resource, cost):
+		print("no funds")
+		return False
+
+	privateState = player["privateState"]
+	privateState[nest["flag"]] = 1
+	privateState[nest["num"]] = 0
+	privateState[nest["step"]] = 0
+	privateState[nest["ts"]] = 0
+
+	return True
+
+def _cmd_deactivate_nest(player, cmd, args, gameversion, nest_type):
+	nest = get_nest(nest_type)
+	if not nest:
+		return False
+
+	privateState = player["privateState"]
+	privateState[nest["flag"]] = 0
+	privateState[nest["num"]] = 0
+	privateState[nest["step"]] = 0
+	privateState[nest["ts"]] = 0
+	return True
+
+def _cmd_next_nest(player, cmd, args, gameversion, nest_type):
+	# zero
+	zero = args[0] # always sent as "0"
+
+	nest = get_nest(nest_type)
+	if not nest:
+		return False
+
+	privateState = player["privateState"]
+	if privateState[nest["flag"]] == 0:
+		return False
+
+	privateState[nest["num"]] += 1
+	privateState[nest["step"]] = 0
+	privateState[nest["ts"]] = 0
+
+	return True
+	
+def _cmd_next_step_nest(player, cmd, args, gameversion, nest_type):
+	# cash_cost
+	cash_cost = args[0]
+
+	nest = get_nest(nest_type)
+	if not nest:
+		return False
+
+	privateState = player["privateState"]
+	if privateState[nest["flag"]] == 0:
+		return False
+
+	if cash_cost > 0:
+		if not pay_cash(player, cash_cost):
+			return False
+
+	privateState[nest["step"]] += 1
+	privateState[nest["ts"]] = timestamp_now()
+
+	return True
+
+def _cmd_buy_step_nest(player, cmd, args, gameversion, nest_type):
+	# cash_cost
+	cash_cost = args[0]
+
+	nest = get_nest(nest_type)
+	if not nest:
+		return False
+
+	privateState = player["privateState"]
+	if privateState[nest["flag"]] == 0:
+		return False
+
+	if cash_cost > 0:
+		if not pay_cash(player, cash_cost):
+			return False
+
+	privateState[nest["ts"]] = 0
+
+	return True

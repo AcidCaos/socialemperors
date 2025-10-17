@@ -41,6 +41,30 @@ collect_multiplier = [
 	3.0
 ]
 
+# nest lookup table
+_nest_lut = {
+	"dragon": {
+		"cost": {
+			"c":		"ACTIVATE_DRAGON_NEST_CASH",
+			"g":		"ACTIVATE_DRAGON_NEST_GOLD"
+		},
+		"flag":			"dragonNestActive",
+		"num":			"dragonNumber",
+		"step":			"stepNumber",
+		"ts":			"timeStampTakeCare"
+	},
+	"monster": {
+		"cost": {
+			"c":		"ACTIVATE_MONSTER_NEST_CASH",
+			"g":		"ACTIVATE_MONSTER_NEST_GOLD"
+		},
+		"flag":			"monsterNestActive",
+		"num":			"monsterNumber",
+		"step":			"stepMonsterNumber",
+		"ts":			"timeStampTakeCareMonster"
+	}
+}
+
 SELL_DIVISOR = 1.0 / 20.0 # sell divisor (divides by 20 in game for 5% sell value, negative so we refund)
 SPEEDUP_COST_PER_HOUR = 1
 FRIENDS_ASSIST_DIVISOR = 1.0 / 4.0
@@ -60,6 +84,11 @@ MARKET_AMOUNT_TRADE = [
 	200,
 	300
 ]
+
+def get_nest(nest_type):
+	if nest_type in _nest_lut:
+		return _nest_lut[nest_type]
+	return None
 
 def timestamp_now():
 	return int(time.time())
