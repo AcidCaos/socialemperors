@@ -561,6 +561,25 @@ def cmd_resurrect_hero(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_buy_mana(player, cmd, args, gameversion):
+	# town_id, use_cash
+	town_id = args[0]
+	use_cash = args[1] == 1
+	_map = player["maps"][town_id]
+
+	cfg_globals = get_game_config()["globals"]
+
+	if use_cash:
+		if not pay_cash(player, cfg_globals["COST_MANA_CASH"]):
+			return False
+	else:
+		if not pay_map_currency(_map, "coins", cfg_globals["COST_MANA_GOLD"]):
+			return False
+
+	add_mana(player, cfg_globals["MANA_PER_PURCHASE"])
+
+	return True
+
 def cmd_add_warehoused_item(player, cmd, args, gameversion):
 	# ux, uy, town_id, uitem_id
 	ux = args[0]
