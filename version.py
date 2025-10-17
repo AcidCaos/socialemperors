@@ -209,7 +209,7 @@ def _fix_level_mana(map, privateState):
 	# applies fix for mana not being gained after specific level
 	cfg_globals = get_game_config()["globals"]
 	gain = int(max(0, 1 + min(100, map["level"]) - cfg_globals["START_LEVEL_MANA_REWARD"]) * cfg_globals["MANA_REWARD_PER_LEVEL"])
-	if gain >= 0:
+	if gain > 0:
 		privateState["mana"] += gain
 
 def migrate_loaded_save(save):
