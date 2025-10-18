@@ -142,7 +142,7 @@ commands = {
 	"clean_received_assists":			cmd_clean_received_assists,
 	"assist_receive":					cmd_assist_receive,
 	# old -----------------------------------------------------------------------------------------------------
-	"complete_tutorial":				NOT_IMPLEMENTED,
+	"complete_tutorial":				cmd_complete_tutorial,
 	"complete_mission":					NOT_IMPLEMENTED,
 	"reward_mission":					NOT_IMPLEMENTED,
 	"win_bonus":						NOT_IMPLEMENTED,

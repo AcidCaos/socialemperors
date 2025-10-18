@@ -1626,3 +1626,10 @@ def cmd_rider_buy_step(player, cmd, args, gameversion):
 	privateState[rider["ts"]] = 0
 
 	return True
+
+def cmd_complete_tutorial(player, cmd, args, gameversion):
+	# step
+	step = str(args[0])
+
+	player["playerInfo"]["completed_tutorial"] = step
+	return True
