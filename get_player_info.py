@@ -1,8 +1,11 @@
 import os
+import logging
 from quests import get_quest_map
 from sessions import *
 from engine import timestamp_now
 from version import save_reset_stuff
+
+log = logging.getLogger('__main__')
 
 def get_player_info(USERID, player_userid = None, town_id = 0):
 	save = session(USERID)

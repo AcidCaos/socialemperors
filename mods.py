@@ -1,6 +1,9 @@
 import json
 import os
 import jsonpatch
+import logging
+
+log = logging.getLogger('__main__')
 
 _supported_mod_versions = "rewrite"
 _required_fields = {
@@ -16,19 +19,19 @@ def apply_user_mod(path, mod_name, config):
 	mod = json.load(open(path, "r", encoding='utf-8'))
 
 	if type(mod) != dict:
-		print(f" * [{mod_name}] Wrong mod format!")
+		log.info(f" * [{mod_name}] Wrong mod format!")
 		return False
 
 	if not check_fields(mod, mod_name):
-		print(f" * [{mod_name}] Incorrect mod structure!")
+		log.info(f" * [{mod_name}] Incorrect mod structure!")
 		return False
 
 	if mod["game"] != "Social Empires":
-		print(f" * [{mod_name}] Mod does not support this game!")
+		log.info(f" * [{mod_name}] Mod does not support this game!")
 		return False
 
 	if _supported_mod_versions not in mod["supports"]:
-		print(f" * [{mod_name}] Mod does not support this version!")
+		log.info(f" * [{mod_name}] Mod does not support this version!")
 		return False
 
 	status = try_apply_mod(mod["data"], mod_name, config)
@@ -37,7 +40,7 @@ def apply_user_mod(path, mod_name, config):
 	else:
 		name = mod["name"]
 		author = mod["author"]
-		print(f" * [{mod_name}] {name} by {author} -> FAILED!")
+		log.info(f" * [{mod_name}] {name} by {author} -> FAILED!")
 		return False
 
 def try_apply_mod(data, mod_name, config):
@@ -47,7 +50,7 @@ def try_apply_mod(data, mod_name, config):
 	for p in data:
 		if p["op"] == "replace":
 			if p["path"].lower().startswith("/items"):
-				print(f" * [{mod_name}] Replace operation on items is not allowed!")
+				log.info(f" * [{mod_name}] Replace operation on items is not allowed!")
 				errors += 1
 
 		elif p["op"] == "add":
@@ -58,11 +61,11 @@ def try_apply_mod(data, mod_name, config):
 					if not check_item_mod(item, config, mod_name):
 						name = item["name"]
 						item_id = item["id"]
-						print(f" * [{mod_name}] Invalid item modification: [{item_id}] {name}!")
+						log.info(f" * [{mod_name}] Invalid item modification: [{item_id}] {name}!")
 						errors += 1
 
 		elif p["op"] == "remove":
-			print(f" * [{mod_name}] Remove operation is not allowed!")
+			log.info(f" * [{mod_name}] Remove operation is not allowed!")
 			errors += 1
 
 	return errors == 0
@@ -71,11 +74,11 @@ def check_fields(mod, mod_name):
 	errors = 0
 	for key in _required_fields:
 		if key not in mod:
-			print(f" * [{mod_name}] Field \"{key}\" is missing!")
+			log.info(f" * [{mod_name}] Field \"{key}\" is missing!")
 			errors += 1
 			continue
 		if type(mod[key]) != type(_required_fields[key]):
-			print(f" * [{mod_name}] Field \"{key}\" is wrong type!")
+			log.info(f" * [{mod_name}] Field \"{key}\" is wrong type!")
 			errors += 1
 			continue
 
@@ -122,5 +125,5 @@ def _apply(config, mod, mod_name):
 	jsonpatch.apply_patch(config, mod["data"], in_place=True)
 	name = mod["name"]
 	author = mod["author"]
-	print(f" * [{mod_name}] {name} by {author} -> MOD ACTIVE!")
+	log.info(f" * [{mod_name}] {name} by {author} -> MOD ACTIVE!")
 	return True

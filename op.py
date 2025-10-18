@@ -1,5 +1,8 @@
 import json
 import math
+import logging
+
+log = logging.getLogger('__main__')
 
 # grab server settings
 from server_config import get_server_config
@@ -553,7 +556,7 @@ def cmd_resurrect_hero(player, cmd, args, gameversion):
 		if not pay_potions(player, potion_price):
 			return False
 	else:
-		print("cmd_resurrect_hero EDGE CASE NOT IMPLEMENTED!")
+		log.info("cmd_resurrect_hero EDGE CASE NOT IMPLEMENTED!")
 		return False
 		# TODO: resurrected a dead hero instead? idk
 
@@ -856,7 +859,7 @@ def cmd_start_quest(player, cmd, args, gameversion):
 def cmd_end_quest(player, cmd, args, gameversion):
 	# json
 	data = json.loads(args[0])
-	#print(json.dumps(data, indent='\t'))
+	#log.info(json.dumps(data, indent='\t'))
 
 	privateState = player["privateState"]
 
@@ -1499,7 +1502,7 @@ def _cmd_activate_nest(player, cmd, args, gameversion, nest_type):
 
 	nest = get_nest(nest_type)
 	if not nest:
-		print("invalid nest")
+		log.info("invalid nest")
 		return False
 
 	if resource not in nest["cost"]:
@@ -1509,7 +1512,7 @@ def _cmd_activate_nest(player, cmd, args, gameversion, nest_type):
 	cfg_globals = get_game_config()["globals"]
 	cost = cfg_globals[cost_key]
 	if not pay_resource_type(player, _map, resource, cost):
-		print("no funds")
+		log.info("no funds")
 		return False
 
 	privateState = player["privateState"]

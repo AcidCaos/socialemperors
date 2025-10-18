@@ -1,40 +1,13 @@
-print (" [+] Loading basics...")
 import os
 import json
 import urllib
 import logging
 import re
 
-# grab server settings
-from server_config import get_server_config
-
-if os.name == 'nt':
-	os.system("color")
-	os.system("title Social Empires Server")
-else:
-	import sys
-	sys.stdout.write("\x1b]2;Social Empires Server\x07")
-
-print (" [+] Loading game config...")
-from get_game_config import get_game_config, check_shop_rotation
-
-print (" [+] Loading players...")
-from get_player_info import *
-from sessions import *
-load_saved_villages()
-
-print (" [+] Loading server...")
-from flask import Flask, render_template, send_from_directory, request, redirect, session
+from flask import Flask, render_template, send_from_directory, request, redirect
+from flask import session as flasksession
 from flask.debughelpers import attach_enctype_error_multidict
-from command import command
-from engine import timestamp_now
-from version import version_name, quest_ids, survival_arenas
-from constants import Constant
-from bundle import ASSETS_DIR, STUB_DIR, TEMPLATES_DIR, BASE_DIR, CACHE_DIR
-from server_hmac import construct_hash_and_payload, check_hmac
-
-host = get_server_config()["server"]["ip"]
-port = get_server_config()["server"]["port"]
+from bundle import ASSETS_DIR, STUB_DIR, TEMPLATES_DIR, BASE_DIR, CACHE_DIR, LOGS_DIR
 
 app = Flask(__name__, template_folder=TEMPLATES_DIR)
 
@@ -45,12 +18,57 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 log.propagate = False
 
-h = logging.StreamHandler()
-h.setLevel(logging.INFO)
-h.setFormatter(logging.Formatter('[%(asctime)s] %(levelname)s %(message)s', "%Y-%m-%d %H:%M:%S"))
-log.addHandler(h)
+def _logging_filename():
+	if not os.path.exists(LOGS_DIR):
+		os.mkdir(LOGS_DIR)
 
-print (" [+] Configuring server routes...")
+	from datetime import datetime
+	ts = datetime.utcnow().strftime("%Y-%m-%d %H %M %S")
+	return f"{LOGS_DIR}/{ts}.log"
+
+def _logging_setup(handle):
+	handle.setLevel(logging.INFO)
+	handle.setFormatter(logging.Formatter('[%(asctime)s] %(levelname)s %(message)s', "%Y-%m-%d %H:%M:%S"))
+	log.addHandler(handle)
+
+_logging_setup(logging.StreamHandler())
+
+log.info(" [+] Loading basics...")
+
+if os.name == 'nt':
+	os.system("color")
+	os.system("title Social Empires Server")
+else:
+	import sys
+	sys.stdout.write("\x1b]2;Social Empires Server\x07")
+
+# load server config -------------------------------------------------------------------------------------------
+from server_config import get_server_config
+
+host = get_server_config()["server"]["ip"]
+port = get_server_config()["server"]["port"]
+if get_server_config()["server"]["write_logs"]:
+	_logging_setup(logging.FileHandler(_logging_filename(), mode='a'))
+
+# --------------------------------------------------------------------------------------------------------------
+
+log.info(" [+] Loading game config...")
+from get_game_config import get_game_config, check_shop_rotation
+
+log.info(" [+] Loading players...")
+from get_player_info import *
+from sessions import *
+load_saved_villages()
+
+log.info(" [+] Loading server...")
+
+from command import command
+from engine import timestamp_now
+from version import version_name, quest_ids, survival_arenas
+from constants import Constant
+from server_hmac import construct_hash_and_payload, check_hmac
+
+log.info(" [+] Configuring server routes...")
 
 ##########
 # ROUTES #
@@ -60,9 +78,9 @@ print (" [+] Configuring server routes...")
 
 def do_logout():
 	# Log out previous session
-	session.pop('USERID', default=None)
-	session.pop('GAMEVERSION', default=None)
-	session.pop('RUNNER', default=None)
+	flasksession.pop('USERID', default=None)
+	flasksession.pop('GAMEVERSION', default=None)
+	flasksession.pop('RUNNER', default=None)
 
 @app.route("/", methods=['GET', 'POST'])
 def login():
@@ -72,15 +90,18 @@ def login():
 	reload_saves()
 	# If logging in, set session USERID, and go to play
 	if request.method == 'POST':
-		session['USERID'] = request.form['USERID']
-		session['GAMEVERSION'] = request.form['GAMEVERSION']
-		session['RUNNER'] = request.form['RUNNER']
-		print("[LOGIN] USERID:", request.form['USERID'])
-		print("[LOGIN] GAMEVERSION:", request.form['GAMEVERSION'])
-		print("[LOGIN] RUNNER:", request.form['RUNNER'])
-		if session['RUNNER'] == "RUFFLE":
+		flasksession['USERID'] = request.form['USERID']
+		flasksession['GAMEVERSION'] = request.form['GAMEVERSION']
+		flasksession['RUNNER'] = request.form['RUNNER']
+
+		uid = request.form['USERID']
+		version = request.form['GAMEVERSION']
+		runner = request.form['RUNNER']
+		log.info(f"[LOGIN] USERID={uid}, GAMEVERSION={version}, RUNNER={runner}")
+
+		if flasksession['RUNNER'] == "RUFFLE":
 			return redirect("/play/ruffle")
-		elif session['RUNNER'] == "FLASH":
+		elif flasksession['RUNNER'] == "FLASH":
 			return redirect("/play")
 		else:
 			return redirect("/play")
@@ -98,7 +119,7 @@ def new_player():
 def new_player_register():
 	do_logout()
 
-	#print("request: "+json.dumps(request.values, indent='\t'))
+	#log.info("request: "+json.dumps(request.values, indent='\t'))
 	user = request.values["username"][:16]
 	skiptutorial = 0
 	if "skiptutorial" in request.values:
@@ -109,17 +130,17 @@ def new_player_register():
 	if not result:
 		return redirect("/reg")
 
-	session['GAMEVERSION'] = request.form['GAMEVERSION']
-	session['RUNNER'] = request.form['RUNNER']
+	flasksession['GAMEVERSION'] = request.form['GAMEVERSION']
+	flasksession['RUNNER'] = request.form['RUNNER']
 
-	if "0926" not in session['GAMEVERSION']:
+	if "0926" not in flasksession['GAMEVERSION']:
 		skiptutorial = 1
 
-	session['USERID'] = new_village(user, skiptutorial, starting_draggy)
+	flasksession['USERID'] = new_village(user, skiptutorial, starting_draggy)
 
-	if session['RUNNER'] == "RUFFLE":
+	if flasksession['RUNNER'] == "RUFFLE":
 		return redirect("/play/ruffle")
-	elif session['RUNNER'] == "FLASH":
+	elif flasksession['RUNNER'] == "FLASH":
 		return redirect("/play")
 
 	return redirect("/play")
@@ -139,47 +160,48 @@ def play_redirect():
 
 @app.route("/play")
 def play():
-	print(session)
+	log.info(flasksession)
 
-	if 'USERID' not in session:
+	if 'USERID' not in flasksession:
 		return redirect("/")
-	if 'GAMEVERSION' not in session:
+	if 'GAMEVERSION' not in flasksession:
 		return redirect("/")
 
-	if session['USERID'] not in all_saves_userid():
+	if flasksession['USERID'] not in all_saves_userid():
 		return redirect("/")
     
-	USERID = session['USERID']
-	GAMEVERSION = session['GAMEVERSION']
-	print("[PLAY] USERID:", USERID)
-	print("[PLAY] GAMEVERSION:", GAMEVERSION)
+	USERID = flasksession['USERID']
+	GAMEVERSION = flasksession['GAMEVERSION']
+	log.info(f"[PLAY] USERID={USERID}, GAMEVERSION={GAMEVERSION}")
+
 	return render_template("play.html", save_info=save_info(USERID), serverTime=timestamp_now(), friendsInfo=fb_friends_str(USERID), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host, PORT=port)
 
 @app.route("/play/ruffle")
 def ruffle():
-	print(session)
+	log.info(flasksession)
 
-	if 'USERID' not in session:
+	if 'USERID' not in flasksession:
 		return redirect("/")
-	if 'GAMEVERSION' not in session:
+	if 'GAMEVERSION' not in flasksession:
 		return redirect("/")
 
-	if session['USERID'] not in all_saves_userid():
+	if flasksession['USERID'] not in all_saves_userid():
 		return redirect("/")
     
-	USERID = session['USERID']
-	GAMEVERSION = session['GAMEVERSION']
-	print("[RUFFLE] USERID:", USERID)
-	print("[RUFFLE] GAMEVERSION:", GAMEVERSION)
+	USERID = flasksession['USERID']
+	GAMEVERSION = flasksession['GAMEVERSION']
+	
+	log.info(f"[RUFFLE] USERID={USERID}, GAMEVERSION={GAMEVERSION}")
+
 	return render_template("ruffle.html", save_info=save_info(USERID), serverTime=timestamp_now(), friendsInfo=fb_friends_str(USERID), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host, PORT=port)
 
 
 @app.route("/new")
 def new():
 	return redirect("/")
-	#session['USERID'] = new_village()
-	#session['GAMEVERSION'] = "SocialEmpires0926bsec.swf"
-	#session['RUNNER'] = "FLASH"
+	#flasksession['USERID'] = new_village()
+	#flasksession['GAMEVERSION'] = "SocialEmpires0926bsec.swf"
+	#flasksession['RUNNER'] = "FLASH"
 	#return redirect("play")
 
 @app.route("/crossdomain.xml")
@@ -229,11 +251,11 @@ def static_assets_loader(path):
 			except urllib.error.HTTPError:
 				return ("", 404)
 
-			print(f"====== DOWNLOADED ASSET: {URL}")
+			log.info(f"====== DOWNLOADED ASSET: {URL}")
 			return send_from_directory("{ASSETS_DIR}/../download_assets/assets", path)
 		else:
 			# Use downloaded CDN asset
-			print(f"====== USING EXTERNAL: download_assets/assets/{path}")
+			log.info(f"====== USING EXTERNAL: download_assets/assets/{path}")
 			return send_from_directory("{ASSETS_DIR}/../download_assets/assets", path)
 	else:
 		# Use provided asset
@@ -249,9 +271,9 @@ def units_pack_get_data():
 		spdebug = request.values['spdebug']
 	language = request.values['language']
 
-	#print("request: "+json.dumps(request.values, indent='\t'))
+	#log.info("request: "+json.dumps(request.values, indent='\t'))
 	data, correct = check_hmac(request.values['data'])
-	#print("data: "+json.dumps(data, indent='\t'))
+	#log.info("data: "+json.dumps(data, indent='\t'))
 
 	if not correct: # Invalid HMAC
 		return (construct_hash_and_payload({
@@ -296,9 +318,9 @@ def pvp_begin():
 		spdebug = request.values['spdebug']
 	language = request.values['language']
 
-	#print("request: "+json.dumps(request.values, indent='\t'))
+	#log.info("request: "+json.dumps(request.values, indent='\t'))
 	data, correct = check_hmac(request.values['data'])
-	#print("data: "+json.dumps(data, indent='\t'))
+	#log.info("data: "+json.dumps(data, indent='\t'))
 
 	# data -> dict
 	#    attacked_id -> enemy_id
@@ -328,9 +350,9 @@ def pvp_end():
 		spdebug = request.values['spdebug']
 	language = request.values['language']
 
-	#print("request: "+json.dumps(request.values, indent='\t'))
+	#log.info("request: "+json.dumps(request.values, indent='\t'))
 	data, correct = check_hmac(request.values['data'])
-	#print("data: "+json.dumps(data, indent='\t'))
+	#log.info("data: "+json.dumps(data, indent='\t'))
 
 	# data -> dict
 	#    user_id -> user_id
@@ -423,7 +445,7 @@ def track_game_status_response():
 	installId = request.values['installId']
 	user_id = request.values['user_id']
 
-	#print(f"track_game_status: status={status}, installId={installId}, user_id={user_id}. --", request.values)
+	#log.info(f"track_game_status: status={status}, installId={installId}, user_id={user_id}. --", request.values)
 	return ("", 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_game_config.php", methods=['GET','POST'])
@@ -436,7 +458,7 @@ def get_game_config_response():
 		spdebug = request.values['spdebug']
 	language = request.values['language']
 
-	#print(f"get_game_config: USERID: {USERID}. --", request.values)
+	#log.info(f"get_game_config: USERID: {USERID}. --", request.values)
 	
 	check_shop_rotation(timestamp_now())
 
@@ -444,7 +466,7 @@ def get_game_config_response():
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_player_info.php", methods=['POST'])
 def get_player_info_response():
-	player_user = session['USERID']
+	player_user = flasksession['USERID']
 
 	USERID = request.values['USERID']
 	user_key = request.values['user_key']
@@ -455,11 +477,11 @@ def get_player_info_response():
 	user = request.values['user'] if 'user' in request.values else None
 	map = int(request.values['map']) if 'map' in request.values else 0
 
-	print(f"get_player_info: USERID: {USERID}. user: {user} --", request.values)
+	log.info(f"get_player_info: USERID: {USERID}. user: {user} --", request.values)
 
 	# Current Player
 	if user is None:
-		return (construct_hash_and_payload(get_player_info(USERID, session['USERID'])), 200)
+		return (construct_hash_and_payload(get_player_info(USERID, flasksession['USERID'])), 200)
 	# PVP RANDOM
 	if user == "undefined":
 		enemy = get_pvp_search_result(USERID, map)
@@ -527,7 +549,7 @@ def sync_error_track_response():
 	description = request.values['description']
 	user_id = request.values['user_id']
 
-	#print(f"sync_error_track: USERID: {USERID}. [Error: {error}] tries: {tries}. --", request.values)
+	#log.info(f"sync_error_track: USERID: {USERID}. [Error: {error}] tries: {tries}. --", request.values)
 	return ("", 200)
 
 @app.route("/null")
@@ -541,7 +563,7 @@ def flash_sync_error_response():
 	elif sp_ref_cat == "flash_reload_attack":
 		reason = "reload On End Attack"
 
-	#print("flash_sync_error", reason, ". --", request.values)
+	#log.info("flash_sync_error", reason, ". --", request.values)
 	return redirect("/play.html")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/command.php", methods=['POST'])
@@ -555,7 +577,7 @@ def command_response():
 	language = request.values['language']
 	client_id = request.values['client_id']
 
-	# print(f"command: USERID: {USERID}. --", request.values)
+	# log.info(f"command: USERID: {USERID}. --", request.values)
 
 	data_str = request.values['data']
 	data_hash = data_str[:64]
@@ -563,7 +585,7 @@ def command_response():
 	data_payload = data_str[65:]
 	data = json.loads(data_payload)
 
-	command(USERID, data, session["GAMEVERSION"])
+	command(USERID, data, flasksession["GAMEVERSION"])
     
 	return ({"result": "success"}, 200)
 
@@ -596,10 +618,10 @@ def get_continent_ranking_response():
 # UNIMPLEMENTED APIS
 
 def _api_not_implemented(request, api_call):
-	print(f"API NOT IMPLEMENTED: {api_call}")
-	print("request: "+json.dumps(request.values, indent='\t'))
+	log.info(f"API NOT IMPLEMENTED: {api_call}")
+	log.info("request: "+json.dumps(request.values, indent='\t'))
 	data, correct = check_hmac(request.values['data'])
-	print("data: "+json.dumps(data, indent='\t'))
+	log.info("data: "+json.dumps(data, indent='\t'))
 
 	if not correct:
 		return ("", 403)
@@ -667,12 +689,12 @@ def clean_assaults():
 # MAIN #
 ########
 
-print (" [+] Running server...")
+log.info(" [+] Running server...")
 
 if __name__ == '__main__':
 	app.secret_key = 'SECRET_KEY'
 	# TODO: post to console this after running the app
 	if logging.getLogger('werkzeug').disabled:
-		print(f" * Running on http://{host}:{port}")
+		log.info(f" * Running on http://{host}:{port}")
 	app.run(host=host, port=port, debug=False)
 	

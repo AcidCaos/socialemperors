@@ -1,9 +1,12 @@
 import time
 import math
 import random
+import logging
 
 from get_game_config import *
 from constants import *
+
+log = logging.getLogger('__main__')
 
 # cannot be resurrected
 resurrectable_items_blocklist = [

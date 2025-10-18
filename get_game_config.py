@@ -4,10 +4,13 @@ import jsonpatch
 import random
 import time
 import datetime
+import logging
 
 from mods import *
 from bundle import MODS_DIR, CONFIG_DIR, CONFIG_PATCH_DIR
 from constants import Constant
+
+log = logging.getLogger('__main__')
 
 __game_config = json.load(open(os.path.join(CONFIG_DIR, "main.json"), 'r', encoding='utf-8'))
 __rotation = json.load(open(os.path.join(CONFIG_DIR, "shop_rotation.json"), 'r', encoding='utf-8'))
@@ -60,7 +63,7 @@ def remove_duplicate_items():
 			continue
         
 		if num_duplicate:
-			print(f" * Removed {num_duplicate} duplicate items from config patches")
+			log.info(f" * Removed {num_duplicate} duplicate items from config patches")
 		break
 
 def apply_config_patch(filename):
@@ -68,7 +71,7 @@ def apply_config_patch(filename):
 	if fname.lower() not in patch_ignore:
 		patch = json.load(open(filename, 'r', encoding='utf-8'))
 		jsonpatch.apply_patch(__game_config, patch, in_place=True)
-		print(f" * Patch applied:", fname)
+		log.info(f" * Patch applied: {fname}")
 
 # because the way this is done sucks we have to do redefine this here
 def get_item(item_id):
@@ -94,9 +97,9 @@ def clear_shop_rotation():
 
 def apply_shop_rotation(ts, refresh = False):
 	if refresh:
-		print (" [+] Refreshing shop rotation...")
+		log.info(" [+] Refreshing shop rotation...")
 	else:
-		print (" [+] Setting up shop rotation...")
+		log.info(" [+] Setting up shop rotation...")
 
 	clear_shop_rotation()
 
@@ -110,7 +113,8 @@ def apply_shop_rotation(ts, refresh = False):
 	__shop_rotation_refresh = next_expiration_ts
 	__game_config["globals"]["LIMITED_EDITION_EXPIRATION"] = next_expiration_date
 	random.seed(seed)
-	print(f" * Shop: RNG seed = {seed}\n * Shop: Limited Items will expire on {next_expiration_date}")
+	log.info(f" * Shop: RNG seed = {seed}")
+	log.info(f" * Shop: Limited Items will expire on {next_expiration_date}")
 
 	# halloween settings
 	spooktober = __rotation["spooktober"]
@@ -125,7 +129,7 @@ def apply_shop_rotation(ts, refresh = False):
 		all_items = []
 		for name in factions:
 			if spooktober and name == "Halloween":
-				print("skipped halloween")
+				log.info("skipped halloween")
 				continue
 			for item in factions[name]:
 				
@@ -149,9 +153,9 @@ def apply_shop_rotation(ts, refresh = False):
 					continue
 
 				item["in_store"] = "1"
-			print(" * Shop: Faction Halloween is now available!")
+			log.info(" * Shop: Faction Halloween is now available!")
 
-		print(f" * Shop: Enabled {max_items} random things in shop!")
+		log.info(f" * Shop: Enabled {max_items} random things in shop!")
 	else:
 		faction_names = list(factions.keys())
 		random.shuffle(faction_names)
@@ -173,7 +177,7 @@ def apply_shop_rotation(ts, refresh = False):
 			max_factions -= 1
 
 		for f in chosen:
-			print(f" * Shop: Faction {f} is now available!")
+			log.info(f" * Shop: Faction {f} is now available!")
 			for item_id in factions[f]:
 				item = get_item(item_id)
 				if not item:
@@ -185,7 +189,7 @@ def apply_shop_rotation(ts, refresh = False):
 		force_enable = __rotation["always_enabled"]
 		for name in force_enable:
 			if name in factions:
-				print(f" * Shop: FORCE-ENABLED Faction {name}!")
+				log.info(f" * Shop: FORCE-ENABLED Faction {name}!")
 				for item_id in factions[name]:
 					item = get_item(item_id)
 					if not item:
@@ -196,14 +200,14 @@ def apply_shop_rotation(ts, refresh = False):
 	random.setstate(_rng)
 
 def apply_patches():
-	print (" [+] Applying config patches...")
+	log.info(" [+] Applying config patches...")
 	for patch_file in os.listdir(CONFIG_PATCH_DIR):
 		if patch_file.endswith(".json"):
 			f = os.path.join(CONFIG_PATCH_DIR, patch_file)
 			apply_config_patch(f)
 
 def apply_mods():
-	print (" [+] Applying mods...")
+	log.info(" [+] Applying mods...")
 	if os.path.exists(MODS_DIR + "/mods.txt"):
 		with open(MODS_DIR + "/mods.txt", "r", encoding='utf-8') as f:
 			lines = f.readlines()
@@ -222,7 +226,7 @@ def apply_mods():
 	remove_duplicate_items()
 
 def check_unit_packs():
-	print(" [+] Checking Unit Packs...")
+	log.info(" [+] Checking Unit Packs...")
 	unit_packs = __game_config["unit_packs"]
 	for pack in unit_packs:
 		if "custom" in pack:
@@ -234,7 +238,7 @@ def check_unit_packs():
 				if custom[idx]["id"] in duplicates:
 					uid = custom[idx]["id"]
 					pack_id = pack["id"]
-					print(f" * Duplicate found: id={uid} in pack id={pack_id}")
+					log.info(f" * Duplicate found: id={uid} in pack id={pack_id}")
 					del custom[idx]
 					num -= 1
 					continue

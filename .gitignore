@@ -5,11 +5,13 @@ saves/
 enemy/
 friend/
 cache/
+logs/
 .idea
 __pycache__/
 .DS_Store
 .vs/
 *.lnk
+*.log
 download_assets/
 Include/
 Lib/

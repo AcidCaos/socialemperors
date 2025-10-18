@@ -4,8 +4,11 @@ import copy
 import shutil
 import uuid
 import random
+import logging
 from flask import session
 # from flask_session import SqlAlchemySessionInterface, current_app
+
+log = logging.getLogger('__main__')
 
 # grab server settings
 from server_config import get_server_config
@@ -84,18 +87,18 @@ def load_saved_villages():
 	load_enemies(True)
 
 	pvp_pool_size = len(__pvp_pool)
-	print(f" [*] PVP pool size: {pvp_pool_size}")
+	log.info(f" [*] PVP pool size: {pvp_pool_size}")
 
 def check_saves():
 	if not os.path.exists(SAVES_DIR):
 		try:
-			print(f"Creating '{SAVES_DIR}' folder...")
+			log.info(f"Creating '{SAVES_DIR}' folder...")
 			os.mkdir(SAVES_DIR)
 		except:
-			print(f"Could not create '{SAVES_DIR}' folder.")
+			log.info(f"Could not create '{SAVES_DIR}' folder.")
 			exit(1)
 	if not os.path.isdir(SAVES_DIR):
-		print(f"'{SAVES_DIR}' is not a folder... Move the file somewhere else.")
+		log.info(f"'{SAVES_DIR}' is not a folder... Move the file somewhere else.")
 		exit(1)
 
 def reload_saves():
@@ -105,7 +108,7 @@ def reload_saves():
 	load_saves()
 
 	pvp_pool_size = len(__pvp_pool)
-	print(f" [*] PVP pool size: {pvp_pool_size}")
+	log.info(f" [*] PVP pool size: {pvp_pool_size}")
 
 def show_player_info(save, player_type):
 	USERID = save["playerInfo"]["pid"]
@@ -114,28 +117,28 @@ def show_player_info(save, player_type):
 		map_name = save["playerInfo"]["map_names"][ save["playerInfo"]["default_map"] ]
 	except:
 		map_name = '?'
-	print(f" * {player_type} OK! -> {USERID} | {name} | {map_name}")
+	log.info(f" * {player_type} OK! -> {USERID} | {name} | {map_name}")
 
 def load_static_villages(add_to_pvp = False):
 	# Static neighbors in /villages
 	for file in os.listdir(VILLAGES_DIR):
 		if file == "initial.json" or file == "initial1407.json" or not file.endswith(".json"):
 			continue
-		#print(f" * Loading static {file}... ", end='')
+		#log.info(f" * Loading static {file}... ", end='')
 		village = json.load(open(os.path.join(VILLAGES_DIR, file)))
 		if not is_valid_village(village):
-			#print("Invalid neighbour")
+			#log.info("Invalid neighbour")
 			continue
 		USERID = village["playerInfo"]["pid"]
 		if str(USERID) in __villages:
-			#print(f"Ignored: duplicated PID '{USERID}'.")
+			#log.info(f"Ignored: duplicated PID '{USERID}'.")
 			pass
 		else:
 			migrate_loaded_save(village)
 			__villages[str(USERID)] = village
 			if add_to_pvp:
 				pvp_pool_add(USERID, village, SESSION_VILLAGE, 0)
-			#print("Ok.")
+			#log.info("Ok.")
 
 def load_saves(add_to_pvp = False):
 	# Saves in /saves
@@ -146,10 +149,10 @@ def load_saves(add_to_pvp = False):
 		try:
 			save = json.load(open(os.path.join(SAVES_DIR, file)))
 		except json.decoder.JSONDecodeError as e:
-			print(f" * Player data corrupted -> {file}")
+			log.info(f" * Player data corrupted -> {file}")
 			continue
 		if not is_valid_village(save):
-			print(f" * Player data invalid -> {file}")
+			log.info(f" * Player data invalid -> {file}")
 			continue
 		show_player_info(save, "Player")
 		USERID = save["playerInfo"]["pid"]
@@ -175,30 +178,30 @@ def copy_static_friends():
 
 def load_friends(add_to_pvp = False):
 	# Friends in /friend
-	print(" * Loading friends...")
+	log.info(" * Loading friends...")
 	if not os.path.exists(FRIENDS_DIR):
 		os.mkdir(FRIENDS_DIR)
 
 	for file in os.listdir(FRIENDS_DIR):
 		if file == "initial.json" or not file.endswith(".json"):
 			continue
-		# print(f" * Loading static enemy {file}... ", end='')
+		# log.info(f" * Loading static enemy {file}... ", end='')
 		try:
 			village = json.load(open(os.path.join(FRIENDS_DIR, file)))
 		except json.decoder.JSONDecodeError as e:
-			print(f"Corrupt friends {file}")
+			log.info(f"Corrupt friends {file}")
 			continue
 		if not is_valid_village(village):
-			print(f"Invalid friends {file}")
+			log.info(f"Invalid friends {file}")
 			continue
 		#show_player_info(village, "Friend")
 		USERID = village["playerInfo"]["pid"]
 		if str(USERID) in __pvp_data:
-			print(f"Ignored: duplicated friends PID '{USERID}'.")
+			log.info(f"Ignored: duplicated friends PID '{USERID}'.")
 		else:
 			# migrate pvp save
 			if "version" in village:
-				print(f"migrating friends file for {USERID}...")
+				log.info(f"migrating friends file for {USERID}...")
 				migrate_loaded_save(village)
 				with open(os.path.join(FRIENDS_DIR, file), 'w') as f:
 					json.dump(village, f, indent='\t')
@@ -209,30 +212,30 @@ def load_friends(add_to_pvp = False):
 
 def load_enemies(add_to_pvp = False):
 	# Enemies in /enemy
-	print(" * Loading enemies...")
+	log.info(" * Loading enemies...")
 	if not os.path.exists(ENEMIES_DIR):
 		os.mkdir(ENEMIES_DIR)
 
 	for file in os.listdir(ENEMIES_DIR):
 		if file == "initial.json" or not file.endswith(".json"):
 			continue
-		# print(f" * Loading static enemy {file}... ", end='')
+		# log.info(f" * Loading static enemy {file}... ", end='')
 		try:
 			village = json.load(open(os.path.join(ENEMIES_DIR, file)))
 		except json.decoder.JSONDecodeError as e:
-			print(f"Corrupt enemy {file}")
+			log.info(f"Corrupt enemy {file}")
 			continue
 		if not is_valid_village(village):
-			print(f"Invalid enemy {file}")
+			log.info(f"Invalid enemy {file}")
 			continue
 		#show_player_info(village, "Enemy")
 		USERID = village["playerInfo"]["pid"]
 		if str(USERID) in __pvp_data:
-			print(f"Ignored: duplicated enemy PID '{USERID}'.")
+			log.info(f"Ignored: duplicated enemy PID '{USERID}'.")
 		else:
 			# migrate pvp save
 			if "version" in village:
-				print(f"migrating enemy file for {USERID}...")
+				log.info(f"migrating enemy file for {USERID}...")
 				migrate_loaded_save(village)
 				with open(os.path.join(ENEMIES_DIR, file), 'w') as f:
 					json.dump(village, f, indent='\t')
@@ -301,7 +304,7 @@ def new_village(username, skip_tutorial, draggy = None):
 	pvp_pool_add(USERID, village, SESSION_SAVE, 0)
 	# Generate save file
 	save_session(USERID)
-	print("Done.")
+	log.info("Done.")
 	return USERID
 
 # Access functions
@@ -412,12 +415,12 @@ def pvp_enemy(my_userid, town_id):
 		if data["level"] < range_min or data["level"] > range_max:
 			continue
 
-		# print(json.dumps(data, indent="\t"))
+		# log.info(json.dumps(data, indent="\t"))
 
-		print(f"PVP enemy found after {retries} retries: {user}")
+		log.info(f"PVP enemy found after {retries} retries: {user}")
 		return user
 
-	print("No enemy found! :(")
+	log.info("No enemy found! :(")
 	return None
 
 def pvp_simulate_resources(save, userid, town_id = 0):
@@ -430,9 +433,9 @@ def pvp_simulate_resources(save, userid, town_id = 0):
 	# if in friend/ or enemy/, simulate resources being lost and gained over time
 	if session_type == SESSION_FRIEND or session_type == SESSION_ENEMY:
 		hours = int((timestamp_now() - save["privateState"]["shieldEndTime"]) / 3600)
-		#print(f"hours since last shield: {hours}")
+		#log.info(f"hours since last shield: {hours}")
 		res_multiplier = min(1.0, max(0.125, float(hours) / _PVP_RESOURCE_GENERATION_HOURS))
-		#print(f"res_multiplier = {res_multiplier}")
+		#log.info(f"res_multiplier = {res_multiplier}")
 		_map = save["maps"][town_id]
 
 		# this does not modify the save, it's just client side

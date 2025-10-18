@@ -1,4 +1,7 @@
 import random
+import logging
+
+log = logging.getLogger('__main__')
 
 # grab server settings
 from server_config import get_server_config
