@@ -15,6 +15,7 @@ templates = json.load(open("unit_templates.json", 'r', encoding='utf-8'))
 num_units = 0
 lines = []
 patch = []
+riderpatch = []
 storage = {}
 if os.path.exists(input_csv):
 	with open(input_csv, "r", encoding='utf-8') as f:
@@ -165,7 +166,11 @@ def makeriderpatch(item_id, rider_tier, tamed_id):
 
 	# Append to rider patch list
 	print(f"Created rider patch for {ITEM_NAME}")
-	patch.append(p)
+	riderpatch.append(p)
+
+def apply_riderpatch(config, patch):
+	print("applying rider patch")
+	jsonpatch.apply_patch(config, patch, in_place = True)
 
 print("Patch phase 1 ----------------------------------------------------------")
 
@@ -392,11 +397,20 @@ def make_final(config, patch, sm_patch):
 
 	# build final patch
 	final = []
+
+	# items
 	final.append({
 		"op": "replace",
 		"path": "/items",
 		"value": items
 	})
+	# rider data
+	final.append({
+		"op": "replace",
+		"path": "/globals/DRAGONS",
+		"value": config["globals"]["DRAGONS"]
+	})
+
 	return final
 
 print("Patch phase 2 ----------------------------------------------------------")
@@ -404,6 +418,7 @@ patches = [ "../config/patch/0-language_en.json", "../config/patch/1-mega_patch.
 sm_patch = "fusion-output.json"
 config = load_config("../config/main.json")
 load_patches(config, patches)
+apply_riderpatch(config, riderpatch)
 patch_final = make_final(config, patch, sm_patch)
 
 #dump_category_csv(config["categories"], "categories.csv", "subcategories.csv")
