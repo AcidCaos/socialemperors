@@ -160,7 +160,7 @@ def makeriderpatch(item_id, rider_tier, tamed_id):
 
 	value = {}
 	value["rider"] = rider_tier
-	value["tamed_id"] = tamed_id
+	value["tamedId"] = tamed_id
 
 	p["value"] = value
 
