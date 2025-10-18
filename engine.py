@@ -1,5 +1,6 @@
 import time
 import math
+import random
 
 from get_game_config import *
 from constants import *
@@ -784,6 +785,18 @@ def register_bought_unit(player, item_id, town_id = 0):
 	
 	if item_id not in player["privateState"]["boughtUnits"]:
 		player["privateState"]["boughtUnits"].append(item_id)
+
+def get_unit_pack_randoms(n = 1):
+	randoms = []
+
+	for i in range(n):
+		randoms.append([
+			random.random(),
+			random.random(),
+			random.random()
+		])
+
+	return randoms
 
 def get_strategy_type(id):
 	if id == 8:

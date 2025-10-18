@@ -1144,6 +1144,14 @@ def cmd_buy_unit_pack(player, cmd, args, gameversion):
 	pack_id = int(args[0])
 	n = int(args[1])
 
+
+	userid = player["playerInfo"]["pid"]
+	pack_state = get_unit_pack_state(userid)
+
+	if pack_state:
+		# stop, we already have a state
+		return True
+
 	# no support for other town IDs, sad :(
 	town_id = 0
 	_map = player["maps"][town_id]
@@ -1165,8 +1173,7 @@ def cmd_buy_unit_pack(player, cmd, args, gameversion):
 	if max_packs != 0:
 		if str(pack_id) in packs_bought:
 			if packs_bought[str(pack_id)] + n > max_packs:
-				# TODO: fail without stopping commands
-				return False
+				return True
 
 	if str(pack_id) not in packs_bought:
 		packs_bought[str(pack_id)] = n
@@ -1191,6 +1198,9 @@ def cmd_buy_unit_pack(player, cmd, args, gameversion):
 			return False
 	else:
 		return False
+
+	# set state
+	set_unit_pack_state(userid, get_unit_pack_randoms(n))
 
 	return True
 

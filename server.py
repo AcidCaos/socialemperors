@@ -258,18 +258,20 @@ def units_pack_get_data():
 			"result": "error"
 		}), 403)
 
-	randoms = []
+	state = pop_unit_pack_state(USERID)
+	if not state:
+		return (construct_hash_and_payload({
+			"result": "error"
+		}), 403)
 
-	for i in range(int(data["n"])):
-		randoms.append([
-			random.random(),
-			random.random(),
-			random.random()
-		])
+	if state["n"] != int(data["n"]):
+		return (construct_hash_and_payload({
+			"result": "error"
+		}), 403)
 
 	return (construct_hash_and_payload({
 		"result": "success",
-		"data": randoms
+		"data": state["r"]
 	}), 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/enemy", methods=['POST'])

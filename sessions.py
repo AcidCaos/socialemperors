@@ -52,6 +52,9 @@ __pvp_active_data = {}
 _pvp_pool_blacklist = [ "100000030", "100000031", "100000032" ]
 # -------------------------------------------------------------------------------
 
+# Unit Packs states
+__unit_pack_state = {}
+
 __initial_village = json.load(open(os.path.join(VILLAGES_DIR, "initial.json")))
 __initial_village1407 = json.load(open(os.path.join(VILLAGES_DIR, "initial1407.json")))
 
@@ -71,6 +74,7 @@ def load_saved_villages():
 	global __pvp_pool
 	global __pvp_search_result
 	global __pvp_active_data
+	global __unit_pack_state
 
 	check_saves()
 	load_saves(True)
@@ -301,6 +305,23 @@ def new_village(username, skip_tutorial, draggy = None):
 	return USERID
 
 # Access functions
+def set_unit_pack_state(userid, randoms):
+	__unit_pack_state[userid] = {
+		"n": len(randoms),
+		"r": randoms
+	}
+
+def get_unit_pack_state(userid):
+	if userid in __unit_pack_state:
+		return __unit_pack_state[userid]
+	return None
+
+def pop_unit_pack_state(userid):
+	if userid in __unit_pack_state:
+		state = __unit_pack_state.pop(userid)
+		return state
+	return None
+
 def pvp_pool_add(userid, village, session_type, town_id = 0):
 	if not pvp_pool_allowed(userid, village, town_id):
 		return
