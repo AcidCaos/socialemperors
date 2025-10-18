@@ -107,6 +107,10 @@ commands = {
 	"next_monster":						cmd_next_monster,
 	"next_monster_step":				cmd_next_step_monster,
 	"buy_monster_step_cash":			cmd_buy_step_monster,
+	# dragon riding -------------------------------------------------------------------------------------------
+	"rider_select":						cmd_rider_select,
+	"rider_next_step":					cmd_rider_next_step,
+	"rider_buy_step_cash":				cmd_rider_buy_step,
 	# player general ------------------------------------------------------------------------------------------
 	"expand":							cmd_expand,
 	"name_map":							cmd_name_map,
@@ -137,6 +141,7 @@ commands = {
 	"trade_resource_b":					cmd_market_trade_resource,
 	# shop ----------------------------------------------------------------------------------------------------
 	"buy_super_offer_pack":				cmd_buy_super_offer_pack,
+	"buy_offer_pack":					NOT_IMPLEMENTED,
 	# unit packs ----------------------------------------------------------------------------------------------
 	"buy_unit_pack":					cmd_buy_unit_pack,
 	"store_add_items":					cmd_store_add_items,
@@ -150,9 +155,6 @@ commands = {
 	"complete_mission":					USE_OLD,
 	"reward_mission":					USE_OLD,
 	"win_bonus":						NOT_IMPLEMENTED,
-
-	"rider_select":						USE_OLD,
-	"rider_next_step":					USE_OLD,
 }
 
 def get_strategy_type(id):

@@ -65,6 +65,13 @@ _nest_lut = {
 	}
 }
 
+# rider lookup "table"
+_rider_lut = {
+	"flag":				"riderNumber",
+	"step":				"riderStepNumber",
+	"ts":				"riderTimeStamp",
+}
+
 SELL_DIVISOR = 1.0 / 20.0 # sell divisor (divides by 20 in game for 5% sell value, negative so we refund)
 SPEEDUP_COST_PER_HOUR = 1
 FRIENDS_ASSIST_DIVISOR = 1.0 / 4.0
@@ -89,6 +96,9 @@ def get_nest(nest_type):
 	if nest_type in _nest_lut:
 		return _nest_lut[nest_type]
 	return None
+
+def get_rider():
+	return _rider_lut
 
 def timestamp_now():
 	return int(time.time())

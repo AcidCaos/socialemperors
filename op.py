@@ -1577,3 +1577,52 @@ def _cmd_buy_step_nest(player, cmd, args, gameversion, nest_type):
 	privateState[nest["ts"]] = 0
 
 	return True
+
+def cmd_rider_select(player, cmd, args, gameversion):
+	# rider_id
+	rider_id = int(args[0])
+	if rider_id < 0 or rider_id > 3:
+		return False
+
+	rider = get_rider()
+	privateState = player["privateState"]
+
+	privateState[rider["flag"]] = rider_id
+	privateState[rider["step"]] = 0
+	privateState[rider["ts"]] = 0
+	return True
+
+def cmd_rider_next_step(player, cmd, args, gameversion):
+	# success
+	success = int(args[0]) == 1
+
+	if not success:
+		return False
+
+	rider = get_rider()
+	privateState = player["privateState"]
+
+	if privateState[rider["flag"]] == 0:
+		return False
+
+	privateState[rider["step"]] += 1
+	privateState[rider["ts"]] = timestamp_now()
+
+	return True
+
+def cmd_rider_buy_step(player, cmd, args, gameversion):
+	# cost
+	cost = int(args[0])
+
+	rider = get_rider()
+	privateState = player["privateState"]
+
+	if privateState[rider["flag"]] == 0:
+		return False
+
+	if not pay_cash(player, cost):
+		return False
+	
+	privateState[rider["ts"]] = 0
+
+	return True
