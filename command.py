@@ -102,11 +102,17 @@ commands = {
 	"rider_select":						cmd_rider_select,
 	"rider_next_step":					cmd_rider_next_step,
 	"rider_buy_step_cash":				cmd_rider_buy_step,
+	# missions/goals ------------------------------------------------------------------------------------------
+	"complete_mission":					cmd_complete_goal,
+	"reward_mission":					cmd_reward_goal,
+	# daily bonus (old) ---------------------------------------------------------------------------------------
+	"win_bonus":						cmd_win_bonus,
 	# player general ------------------------------------------------------------------------------------------
 	"expand":							cmd_expand,
 	"name_map":							cmd_name_map,
 	"set_strategy":						cmd_set_strategy,
 	"exchange_cash_new":				cmd_exchange_cash,
+	"complete_tutorial":				cmd_complete_tutorial,
 	"rt_level_up":						cmd_rt_level_up,
 	"rt_publish_score":					cmd_rt_publish_score,
 	"set_help_map":						cmd_set_help_map,
@@ -140,12 +146,7 @@ commands = {
 	"assist_neighbor":					cmd_assist_neighbor,
 	"assist_neighbor_new":				cmd_assist_neighbor_new,
 	"clean_received_assists":			cmd_clean_received_assists,
-	"assist_receive":					cmd_assist_receive,
-	# old -----------------------------------------------------------------------------------------------------
-	"complete_tutorial":				cmd_complete_tutorial,
-	"complete_mission":					cmd_complete_goal,
-	"reward_mission":					cmd_reward_goal,
-	"win_bonus":						NOT_IMPLEMENTED,
+	"assist_receive":					cmd_assist_receive
 }
 
 def command(USERID, data, gameversion):

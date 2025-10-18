@@ -1681,3 +1681,26 @@ def cmd_reward_goal(player, cmd, args, gameversion):
 	privateState["rewardedMissions"].append(goal_id)
 
 	return True
+
+def cmd_win_bonus(player, cmd, args, gameversion):
+	# gold, town_id, uitem_id, next_day, cash
+	gold = int(args[0])
+	town_id = int(args[1])
+	uitem_id = int(args[2])
+	next_day = int(args[3])
+	cash = int(args[4])
+
+	_map = player["maps"][town_id]
+
+	if cash > 0:
+		add_cash(player, cash)
+	if gold > 0:
+		add_map_currency(_map, "coins", gold)
+	if uitem_id > 0:
+		add_store_item(_map, uitem_id)
+
+	privateState = player["privateState"]
+	privateState["bonusNextId"] = next_day + 1
+	privateState["timestampLastBonus"] = timestamp_now() - 86400
+
+	return True
