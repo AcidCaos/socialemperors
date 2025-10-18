@@ -1701,6 +1701,6 @@ def cmd_win_bonus(player, cmd, args, gameversion):
 
 	privateState = player["privateState"]
 	privateState["bonusNextId"] = next_day + 1
-	privateState["timestampLastBonus"] = timestamp_now() - 86400
+	privateState["timestampLastBonus"] = timestamp_now()
 
 	return True
