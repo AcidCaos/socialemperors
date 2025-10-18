@@ -24,38 +24,6 @@ def command(USERID, data):
 def do_command(save, cmd, args, gameversion):
     # print (" [+] COMMAND: ", cmd, "(", args, ") -> ", sep='', end='')
 
-    elif cmd == Constant.CMD_COMPLETE_TUTORIAL:
-        tutorial_step = args[0]
-        print("Tutorial step", tutorial_step, "reached.")
-        if tutorial_step >= 31: # 31 is Dragon choosing. After that, you have some freedom. There's at least until step 45.
-            print("Tutorial COMPLETED!")
-            save["playerInfo"]["completed_tutorial"] = 1
-            save["privateState"]["dragonNestActive"] = 1 
-    
-    elif cmd == Constant.CMD_COMPLETE_MISSION:
-        if "0926" not in gameversion:
-            # game incorrectly sends this command due to missing goals in newer clients
-            return
-        mission_id = args[0]
-        skipped_with_cash = bool(args[1])
-        print("Complete mission", mission_id, ":", str(get_attribute_from_mission_id(mission_id, "title")))
-        if skipped_with_cash:
-            cash_to_substract = 0 # TODO 
-            save["playerInfo"]["cash"] = max(save["playerInfo"]["cash"] - cash_to_substract, 0)
-        save["privateState"]["completedMissions"] += [mission_id]
-    
-    elif cmd == Constant.CMD_REWARD_MISSION:
-        if "0926" not in gameversion:
-            # game incorrectly sends this command due to missing goals in newer clients
-            return
-
-        town_id = args[0]
-        mission_id = args[1]
-        print("Reward mission", mission_id, ":", str(get_attribute_from_mission_id(mission_id, "title")))
-        reward = int(get_attribute_from_mission_id(mission_id, "reward")) # gold
-        save["maps"][town_id]["coins"] += reward   
-        save["privateState"]["rewardedMissions"] += [mission_id]
-
     elif cmd == Constant.CMD_WIN_BONUS:
         coins = args[0]
         town_id = args[1]

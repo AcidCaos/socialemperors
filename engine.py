@@ -111,9 +111,7 @@ def map_add_item(map, item, x, y, orientation = 0, timestamp = None, attr = None
 	if not timestamp:
 		timestamp = timestamp_now()
 
-	# # properties
 	si_info = get_si_info(int(item))
-	# enable SI (Socially In Construction), because the game expects it
 	if si_info:
 		if userid:
 			attr["si"] = hire_friends(userid, si_info, int(item) == 470)
@@ -122,11 +120,6 @@ def map_add_item(map, item, x, y, orientation = 0, timestamp = None, attr = None
 				attr["si"] = []
 			else:
 				attr["si"] = [ 1 ]
-	# # click to build
-	# click_to_build = get_attribute_from_item_id(item, "clicks_to_build")
-	# if click_to_build:
-	# 	if int(click_to_build) > 0:
-	# 		attr["nc"] = 0
 
 	map["items"].append([item, x, y, orientation, timestamp, level, store, attr])
 
@@ -268,10 +261,14 @@ def player_speed_up_queue(player, building, bq, new_ts = 0):
 
 	is_soulmixer = building[0] == Constant.ID_BUILDING_SOUL_MIXER
 
-	training_key = "training_time" # not sure if correct
+	item = get_item_from_id(queue["unit"])
+	if not item:
+		return False
+
+	training_key = "training_time"
 	if is_soulmixer:
 		training_key = "sm_training_time"
-	training_time = get_attribute_from_item_id(queue["unit"], training_key)
+	training_time = item[training_key]
 
 	if training_time:
 		time_left = queue["ts"] + int(training_time) - timestamp_now()
@@ -558,7 +555,11 @@ def modify_ts_array(arr, idx, seconds):
 		arr[idx] = max(arr[idx] + seconds, 0)
 
 def apply_collect_xp(map, item_id):
-	amount = get_attribute_from_item_id(item_id, "collect_xp")
+	item = get_item_from_id(item_id)
+	if not item:
+		return
+
+	amount = item["collect_xp"]
 	if not amount:
 		return
 

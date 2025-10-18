@@ -258,9 +258,8 @@ check_unit_packs()
 apply_shop_rotation(int(time.time()))
 grab_animals()
 
+# access functions
 items_dict_id_to_items_index = {int(item["id"]): i for i, item in enumerate(__game_config["items"])}
-items_dict_subcat_functional_to_items_index = {int(item["subcat_functional"]): i for i, item in enumerate(__game_config["items"])}
-missions_dict_id_to_missions_index = {int(item["id"]): i for i, item in enumerate(__game_config["missions"])}
 
 def get_game_config():
 	return __game_config
@@ -271,43 +270,9 @@ def get_animals():
 def game_config():
 	return get_game_config()
 
-##########
-# PLAYER #
-##########
-
-def get_xp_from_level(level: int):
-	return __game_config["levels"][int(level)]["exp_required"]
-
-def get_level_from_xp(xp: int):
-	i = 0
-	for lvl in __game_config["levels"]:
-		if lvl["exp_required"] > int(xp):
-			return i
-		i += 1
-	return 0
-
 def get_item_from_id(id: int):
 	items_index = items_dict_id_to_items_index[int(id)] if int(id) in items_dict_id_to_items_index else None
 	return __game_config["items"][items_index] if items_index is not None else None
-
-def get_attribute_from_item_id(id: int, attribute_name: str):
-	item = get_item_from_id(id)
-	return item[attribute_name] if item and attribute_name in item else None
-
-def get_name_from_item_id(id: int):
-	return get_attribute_from_item_id(id, "name")
-
-def get_item_from_subcat_functional(subcat_functional: int):
-	items_index = items_dict_subcat_functional_to_items_index[int(subcat_functional)] if int(subcat_functional) in items_dict_subcat_functional_to_items_index else None
-	return __game_config["items"][items_index] if items_index is not None else None
-
-def get_mission_from_id(id: int):
-	items_index = missions_dict_id_to_missions_index[int(id)] if int(id) in missions_dict_id_to_missions_index else None
-	return __game_config["missions"][items_index] if items_index is not None else None
-
-def get_attribute_from_mission_id(id: int, attribute_name: str):
-	mission = get_mission_from_id(id)
-	return mission[attribute_name] if mission and attribute_name in mission else None
 
 def get_si_info(item_id):
 	for si in __game_config["social_items"]:
@@ -347,4 +312,11 @@ def get_spell(spell_id):
 	for spell in spells:
 		if spell["id"] == spell_id:
 			return spell
+	return None
+
+def get_mission(goal_id):
+	missions = __game_config["missions"]
+	for m in missions:
+		if m["id"] == goal_id:
+			return m
 	return None

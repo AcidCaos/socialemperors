@@ -543,7 +543,11 @@ def cmd_resurrect_hero(player, cmd, args, gameversion):
 		used_potion = args[4]
 
 	if used_potion:
-		potion_price = get_attribute_from_item_id(item_id, "potion")
+		item = get_item_from_id(item_id)
+		if not item:
+			return False
+
+		potion_price = item["potion"]
 		if not potion_price:
 			return False
 		if not pay_potions(player, potion_price):
@@ -797,7 +801,6 @@ def cmd_rt_level_up(player, cmd, args, gameversion):
 	give_levelup_reward(player, _map, level_data)
 
 	_map["level"] = level_now
-	_map["xp"] = max(get_xp_from_level(max(0, level_now - 1)), _map["xp"])
 
 	# add mana
 	cfg_globals = get_game_config()["globals"]
@@ -1632,4 +1635,49 @@ def cmd_complete_tutorial(player, cmd, args, gameversion):
 	step = str(args[0])
 
 	player["playerInfo"]["completed_tutorial"] = step
+	return True
+
+def cmd_complete_goal(player, cmd, args, gameversion):
+	# goal_id, [cash_cost]
+	# TODO: FIX 1.4.07 GOALS
+	goal_id = int(args[0])
+
+	if goal_id <= 0:	# invalid goal (client error)
+		return True
+
+	privateState = player["privateState"]
+	if goal_id in privateState["completedMissions"]:
+		return True
+
+	if len(args) >= 1:
+		cash_cost = int(args[1])
+		if not pay_cash(player, cash_cost):
+			return False
+
+	privateState["completedMissions"].append(goal_id)
+
+	return True
+	
+def cmd_reward_goal(player, cmd, args, gameversion):
+	# town_id, goal_id
+	# TODO: FIX 1.4.07 GOALS
+	town_id = int(args[0])
+	goal_id = int(args[1])
+
+	if goal_id <= 0:	# invalid goal (client error)
+		return True
+
+	_map = player["maps"][town_id]
+
+	goal = get_mission(goal_id)
+	if not goal:
+		return True
+
+	privateState = player["privateState"]
+	if goal_id in privateState["rewardedMissions"]:
+		return True
+
+	add_map_currency(_map, "coins", goal["reward"])
+	privateState["rewardedMissions"].append(goal_id)
+
 	return True
