@@ -783,3 +783,14 @@ def register_bought_unit(player, item_id, town_id = 0):
 	
 	if item_id not in player["privateState"]["boughtUnits"]:
 		player["privateState"]["boughtUnits"].append(item_id)
+
+def get_strategy_type(id):
+	if id == 8:
+		return "Defensive"
+	if id == 9:
+		return "Mid Defensive"
+	if id == 7:
+		return "Mid Aggressive"
+	if id == 10:
+		return "Aggressive"
+	return "Unknown Strategy"

@@ -5,15 +5,10 @@ import traceback
 from datetime import datetime
 from sessions import session, save_session
 from op import *
-from commands_old import do_command as do_old_command
 
 log = logging.getLogger('__main__')
 
 # command OK
-def _OKOLD(player, cmd, args):
-	name = player["playerInfo"]["name"]
-	log.info(f"[C] USING OLD: [{name}] -> {cmd} {args}")
-
 def _OK(player, cmd, args):
 	name = player["playerInfo"]["name"]
 	log.info(f"[C] OK: [{name}] -> {cmd} {args}")
@@ -32,10 +27,6 @@ def NOT_IMPLEMENTED(player, cmd, args, gameversion):
 	name = player["playerInfo"]["name"]
 	log.info(f"[C] UNKNOWN: [{name}] -> {cmd} {args}")
 	return True
-
-def USE_OLD(player, cmd, args, gameversion):
-	do_old_command(player, cmd, args, gameversion)
-	return 2
 
 def EXCEPTION(player, cmd, args, gameversion):
 	raise Exception("Command exception")
@@ -151,22 +142,11 @@ commands = {
 	"clean_received_assists":			cmd_clean_received_assists,
 	"assist_receive":					cmd_assist_receive,
 	# old -----------------------------------------------------------------------------------------------------
-	"complete_tutorial":				USE_OLD,
-	"complete_mission":					USE_OLD,
-	"reward_mission":					USE_OLD,
+	"complete_tutorial":				NOT_IMPLEMENTED,
+	"complete_mission":					NOT_IMPLEMENTED,
+	"reward_mission":					NOT_IMPLEMENTED,
 	"win_bonus":						NOT_IMPLEMENTED,
 }
-
-def get_strategy_type(id):
-	if id == 8:
-		return "Defensive"
-	if id == 9:
-		return "Mid Defensive"
-	if id == 7:
-		return "Mid Aggressive"
-	if id == 10:
-		return "Aggressive"
-	return "Unknown Strategy"
 
 def command(USERID, data, gameversion):
 	timestamp = data["ts"]
@@ -175,11 +155,12 @@ def command(USERID, data, gameversion):
 	tries = data["tries"]
 	publishActions = data["publishActions"]
 	commands = data["commands"]
-    
+
 	for i, comm in enumerate(commands):
 		cmd = comm["cmd"]
 		args = comm["args"]
 		do_command(USERID, cmd, args, gameversion)
+
 	save_session(USERID) # Save session
 
 def do_command(USERID, cmd, args, gameversion):
@@ -193,9 +174,7 @@ def do_command(USERID, cmd, args, gameversion):
 			_ERROR(save, cmd, args)
 			return
 
-		if result == 2:
-			_OKOLD(save, cmd, args)
-		elif result == True:
+		if result == True:
 			_OK(save, cmd, args)
 		else:
 			_NOTOK(save, cmd, args)
