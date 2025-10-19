@@ -667,6 +667,15 @@ def pay_resource_type(player, map, resource, amount):
 		return pay_potions(player, amount)
 	return False
 
+def sb_offer_unit(player, map, item_id):
+	items = map_get_items_of_id(map, item_id)
+	print(items)
+	if len(items) > 0:
+		map["items"].remove(items[0])
+		return True
+
+	return False
+
 def get_quest_index(quest_id):
 	quests = get_game_config()["globals"]["ISLE_ORDER"]
 

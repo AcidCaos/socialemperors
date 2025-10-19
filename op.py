@@ -1678,16 +1678,10 @@ def cmd_rider_reset(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_sb_add_unit(player, cmd, args, gameversion):
-	return False
-
 def cmd_sb_next_step(player, cmd, args, gameversion):
 	# offering, step_id
 	offering = json.loads(args[0])
 	step_id = int(args[1])
-
-	if step_id >= 6:
-		return False
 
 	# no support for other town IDs, sad :(
 	town_id = 0
@@ -1696,10 +1690,26 @@ def cmd_sb_next_step(player, cmd, args, gameversion):
 	if len(offering) != 1:
 		return False
 
-	for resource_type in offering:
-		cost = offering[resource_type]
-		if not pay_resource_type(player, _map, resource_type, cost):
-			return False
+	for offering_type in offering:
+		cost = offering[offering_type]
+
+		if offering_type == "u":				# unit sacrifice
+			# the game sells the unit for you with a sell command
+			if step_id < 6 or step_id >= 11:
+				return False
+
+		elif offering_type == "collection":		# bahamut heart
+			# the game does not sell the heart from your inventory when doing this one
+			# it is sold when all steps are completed and you obtain the dragon
+			if step_id != 11:
+				return False
+			if cost not in privateState["collectionsCompleted"]:
+				return False
+		else:									# resource offering
+			if step_id >= 6:
+				return False
+			if not pay_resource_type(player, _map, offering_type, cost):
+				return False
 
 	sb = get_sb_temple()
 

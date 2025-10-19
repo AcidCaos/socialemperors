@@ -106,7 +106,7 @@ commands = {
 	"rider_buy_step_cash":				cmd_rider_buy_step,
 	"rider_reset":						cmd_rider_reset,
 	# bahamut temple ------------------------------------------------------------------------------------------
-	"add_unit_temple":					cmd_sb_add_unit,
+	"add_unit_temple":					cmd_nop,	# not used
 	"next_temple_step":					cmd_sb_next_step,
 	"buy_temple_step_cash":				cmd_sb_buy_step_cash,
 	"reset_temple":						cmd_sb_reset,
