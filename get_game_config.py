@@ -9,6 +9,7 @@ import logging
 from mods import *
 from bundle import MODS_DIR, CONFIG_DIR, CONFIG_PATCH_DIR
 from constants import Constant
+from event_system import apply_events
 
 log = logging.getLogger('__main__')
 
@@ -37,8 +38,19 @@ patch_ignore = [
 	"fusion_output"
 ]
 
+def get_event_data(event_id):
+	events = __game_config["collect_game"]
+	for ev in events:
+		event = events[ev]
+		if event["id"] == event_id:
+			return event
+	return None
+
 def ts_to_date(ts):
 	return datetime.datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d')
+
+def date_to_ts(date_str):
+	return int(datetime.datetime.strptime(date_str, "%m-%d-%Y").replace(tzinfo=datetime.timezone.utc).timestamp())
 
 def remove_duplicate_items():
 	indexes = {}
@@ -84,6 +96,7 @@ def get_item(item_id):
 def check_shop_rotation(ts):
 	if ts >= __shop_rotation_refresh:
 		apply_shop_rotation(ts, True)
+		apply_events(get_game_config(), ts)
 
 def _cost_str(t):
 	types = {
@@ -285,10 +298,12 @@ def grab_animals():
 			__animals[str(subcat)].append(int(item["id"]))
 
 # do it
+_ts = int(time.time())
 apply_patches()
 apply_mods()
 check_unit_packs()
-apply_shop_rotation(int(time.time()))
+apply_shop_rotation(_ts)
+apply_events(__game_config, _ts)
 grab_animals()
 
 # access functions

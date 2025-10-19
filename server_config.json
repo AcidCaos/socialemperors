@@ -22,5 +22,14 @@
 	{
 		"quests_reset_hours":				6,
 		"graveyard_max_slots":				10000
-	}
+	},
+	"events": 
+	[
+		{
+			"event":						"HELL_FORGE_ISLAND",
+			"active":						true,
+			"date":							"10-19-2025",
+			"days":							30
+		}
+	]
 }

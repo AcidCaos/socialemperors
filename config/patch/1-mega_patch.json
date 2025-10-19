@@ -7,14 +7,14 @@
 		{
 			"1": 
 			{
-				"id": "1",
+				"id": 1,
 				"rewards": 
 				{
 					"90": [ 2272 ],
 					"110": [ 2269 ]
 				},
 				"starts_at": 0,
-				"duration": 2000000000,
+				"duration": 0,
 				"minimum_pack_value": 0,
 				"building_id": 1530,
 				"discountPrice": 1,

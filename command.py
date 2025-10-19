@@ -114,6 +114,7 @@ commands = {
 	"collect_game_add_item":			cmd_nop,
 	"collect_game_buy_all":				EXCEPTION,
 	"collect_game_reward_given":		EXCEPTION,
+	"collect_game_update_timestamp":	cmd_nop,
 	"buy_viral_offer_friend":			EXCEPTION,
 	"reward_viral_offer":				EXCEPTION,
 	# missions/goals ------------------------------------------------------------------------------------------
