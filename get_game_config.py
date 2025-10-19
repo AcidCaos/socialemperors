@@ -85,6 +85,35 @@ def check_shop_rotation(ts):
 	if ts >= __shop_rotation_refresh:
 		apply_shop_rotation(ts, True)
 
+def _cost_str(t):
+	types = {
+		"c": "cash",
+		"g": "gold",
+		"w": "wood",
+		"f": "food",
+		"s": "stone",
+		"x": "xp",
+		"p": "potion(s)"
+	}
+	if t in types:
+		return types[t]
+	return ""
+
+def _output_shop_factions():
+	factions = __rotation["factions"]
+	for faction in factions:
+		log.info(f"**{faction}**")
+		for item_id in factions[faction]:
+			item = get_item(item_id)
+			if not item:
+				continue
+
+			name = item["name"]
+			cost = item["cost"]
+			cost_type = _cost_str(item["cost_type"])
+			log.info(f"{name} [{cost} {cost_type}]")
+		log.info("")
+
 def clear_shop_rotation():
 	factions = __rotation["factions"]
 	for faction in factions:
