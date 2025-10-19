@@ -110,6 +110,12 @@ commands = {
 	"next_temple_step":					cmd_sb_next_step,
 	"buy_temple_step_cash":				cmd_sb_buy_step_cash,
 	"reset_temple":						cmd_sb_reset,
+	# hell forge island (event) -------------------------------------------------------------------------------
+	"collect_game_add_item":			EXCEPTION,
+	"collect_game_buy_all":				EXCEPTION,
+	"collect_game_reward_given":		EXCEPTION,
+	"buy_viral_offer_friend":			EXCEPTION,
+	"reward_viral_offer":				EXCEPTION,
 	# missions/goals ------------------------------------------------------------------------------------------
 	"complete_mission":					cmd_complete_goal,
 	"reward_mission":					cmd_reward_goal,

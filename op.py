@@ -869,7 +869,11 @@ def cmd_end_quest(player, cmd, args, gameversion):
 	set_unlocked_index = False
 	if "set_unlocked_index" in data:
 		set_unlocked_index = data["set_unlocked_index"] == 1
-	next_index = get_quest_index(quest_id) + 1
+	try:
+		next_index = get_quest_index(quest_id) + 1
+	except:
+		log.info(f"Unknown quest ID {quest_id}!")
+		return False
 
 	win = False
 	if "win" in data:
