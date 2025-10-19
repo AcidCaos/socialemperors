@@ -306,6 +306,10 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "questsRank", {})
 	_fix_quest_ranks(privateState["questsRank"], quest_ids)
 
+	# goals fix
+	fix_variable(privateState, "completedMissions", [])
+	fix_variable(privateState, "rewardedMissions", [])
+
 	# team selection window formations
 	fix_variable(privateState, "tournamentFormation", 0)
 
