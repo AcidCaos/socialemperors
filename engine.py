@@ -639,12 +639,16 @@ def give_resource_type(player, map, resource, amount):
 		map["wood"] += amount
 	elif resource == "g":
 		map["coins"] += amount
-	elif resource == "c":
-		player["playerInfo"]["cash"] += amount
 	elif resource == "s":
 		map["stone"] += amount
 	elif resource == "f":
 		map["food"] += amount
+	elif resource == "c":
+		player["playerInfo"]["cash"] += amount
+	elif resource == "m":
+		player["privateState"]["mana"] += amount
+	elif resource == "p":
+		player["privateState"]["potion"] += amount
 
 def pay_resource_type(player, map, resource, amount):
 	if resource == "w":
@@ -657,6 +661,10 @@ def pay_resource_type(player, map, resource, amount):
 		return pay_map_currency(map, "food", amount)
 	elif resource == "c":
 		return pay_cash(player, amount)
+	elif resource == "m":
+		return pay_mana(player, amount)
+	elif resource == "p":
+		return pay_potions(player, amount)
 	return False
 
 def get_quest_index(quest_id):
