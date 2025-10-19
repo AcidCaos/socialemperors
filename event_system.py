@@ -37,15 +37,16 @@ def event_hellforge(config, event, ts_now):
 		event_data["starts_at"] = 0
 		event_data["duration"] = 0
 
-	log.info(json.dumps(event_data, indent='\t'))
-
 _events = {
 	"HELL_FORGE_ISLAND":				event_hellforge
 }
 
 def apply_events(config, ts):
-	log.info(" [+] Applying events...")
 	
+	if "events" not in get_server_config():
+		return
+
+	log.info(" [+] Applying events...")
 	events = get_server_config()["events"]
 	for event in events:
 		try:
