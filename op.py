@@ -1682,7 +1682,32 @@ def cmd_sb_add_unit(player, cmd, args, gameversion):
 	return False
 
 def cmd_sb_next_step(player, cmd, args, gameversion):
-	return False
+	# offering, step_id
+	offering = json.loads(args[0])
+	step_id = int(args[1])
+
+	if step_id >= 6:
+		return False
+
+	# no support for other town IDs, sad :(
+	town_id = 0
+	_map = player["maps"][town_id]
+
+	if len(offering) != 1:
+		return False
+
+	for resource_type in offering:
+		cost = offering[resource_type]
+		if not pay_resource_type(player, _map, resource_type, cost):
+			return False
+
+	sb = get_sb_temple()
+
+	privateState = player["privateState"]
+	privateState[sb["step"]].append(step_id)
+	privateState[sb["ts"]] = timestamp_now()
+
+	return True
 
 def cmd_sb_buy_step_cash(player, cmd, args, gameversion):
 	# cost
