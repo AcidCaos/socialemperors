@@ -92,16 +92,19 @@ commands = {
 	"next_dragon":						cmd_next_dragon,
 	"next_step":						cmd_next_step_dragon,
 	"buy_step_cash":					cmd_buy_step_dragon,
+	"reset_dragon":						cmd_reset_dragon,
 	# monster nest --------------------------------------------------------------------------------------------
 	"activate_monster":					cmd_activate_monster,
 	"desactivate_monster":				cmd_deactivate_monster,
 	"next_monster":						cmd_next_monster,
 	"next_monster_step":				cmd_next_step_monster,
 	"buy_monster_step_cash":			cmd_buy_step_monster,
+	"reset_monster":					cmd_reset_monster,
 	# dragon riding -------------------------------------------------------------------------------------------
 	"rider_select":						cmd_rider_select,
 	"rider_next_step":					cmd_rider_next_step,
 	"rider_buy_step_cash":				cmd_rider_buy_step,
+	"rider_reset":						cmd_rider_reset,
 	# missions/goals ------------------------------------------------------------------------------------------
 	"complete_mission":					cmd_complete_goal,
 	"reward_mission":					cmd_reward_goal,

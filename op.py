@@ -1498,6 +1498,12 @@ def cmd_buy_step_dragon(player, cmd, args, gameversion):
 def cmd_buy_step_monster(player, cmd, args, gameversion):
 	return _cmd_buy_step_nest(player, cmd, args, gameversion, "monster")
 
+def cmd_reset_dragon(player, cmd, args, gameversion):
+	return _cmd_reset_nest(player, cmd, args, gameversion, "dragon")
+
+def cmd_reset_monster(player, cmd, args, gameversion):
+	return _cmd_reset_nest(player, cmd, args, gameversion, "monster")
+
 def _cmd_activate_nest(player, cmd, args, gameversion, nest_type):
 	# currency
 	resource = str(args[0])
@@ -1600,6 +1606,19 @@ def _cmd_buy_step_nest(player, cmd, args, gameversion, nest_type):
 
 	return True
 
+def _cmd_reset_nest(player, cmd, args, gameversion, nest_type):
+	nest = get_nest(nest_type)
+	if not nest:
+		return False
+
+	privateState = player["privateState"]
+	privateState[nest["flag"]] = 0
+	privateState[nest["num"]] = 0
+	privateState[nest["step"]] = 0
+	privateState[nest["ts"]] = 0
+
+	return True
+
 def cmd_rider_select(player, cmd, args, gameversion):
 	# rider_id
 	rider_id = int(args[0])
@@ -1649,6 +1668,15 @@ def cmd_rider_buy_step(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_rider_reset(player, cmd, args, gameversion):
+	rider = get_rider()
+
+	privateState = player["privateState"]
+	privateState[rider["flag"]] = 0
+	privateState[rider["step"]] = 0
+	privateState[rider["ts"]] = 0
+
+	return True
 def cmd_complete_tutorial(player, cmd, args, gameversion):
 	# step
 	step = str(args[0])
