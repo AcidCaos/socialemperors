@@ -502,25 +502,31 @@ def player_fast_forward(player, seconds, time_machine = False):
 	privateState["timeStampDartsReset"] = max(0, privateState["timeStampDartsReset"] - seconds)
 	privateState["timeStampDartsNewFree"] = max(0, privateState["timeStampDartsNewFree"] - seconds)
 
+	# nests, rider, supreme bahamut
+	for n in _nest_lut:
+		nest = _nest_lut[n]
+		modify_ts(privateState, nest["ts"], -seconds)
+	modify_ts(privateState, _rider_lut["ts"], -seconds)
+	modify_ts(privateState, _sb_lut["ts"], -seconds)
+
 	# shields
 	if not time_machine:
 		modify_ts(privateState, "shieldEndTime", -seconds)
 		modify_ts(privateState, "shieldCooldown", -seconds)
 
-	# privateState.survivalVidaTimeStamp
+	# survival arena
 	survivalVidaTimeStamp = privateState["survivalVidaTimeStamp"]
 	idx = len(survivalVidaTimeStamp) - 1
 	while idx >= 0:
 		modify_ts_array(survivalVidaTimeStamp, idx, -seconds)
 		idx -= 1
 
-	# privateState.survivalMaps
 	survivalMaps = privateState["survivalMaps"]
 	for entry in survivalMaps:
 		data = survivalMaps[entry]
 		modify_ts(data, "ts", -seconds)
 
-	# privateState.barracksQueues
+	# unit training queues
 	barracksQueues = privateState["barracksQueues"]
 	for queue in barracksQueues:
 		q = barracksQueues[queue]

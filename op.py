@@ -1703,7 +1703,7 @@ def cmd_sb_next_step(player, cmd, args, gameversion):
 			# it is sold when all steps are completed and you obtain the dragon
 			if step_id != 11:
 				return False
-			if cost not in privateState["collectionsCompleted"]:
+			if cost not in player["privateState"]["collectionsCompleted"]:
 				return False
 		else:									# resource offering
 			if step_id >= 6:
