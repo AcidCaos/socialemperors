@@ -76,6 +76,12 @@ _rider_lut = {
 	"ts":				"riderTimeStamp",
 }
 
+# bahamut temple lookup "table"
+_sb_lut = {
+	"step":				"templeStep",
+	"ts":				"timeStampTemple",
+}
+
 SELL_DIVISOR = 1.0 / 20.0 # sell divisor (divides by 20 in game for 5% sell value, negative so we refund)
 SPEEDUP_COST_PER_HOUR = 1
 FRIENDS_ASSIST_DIVISOR = 1.0 / 4.0
@@ -103,6 +109,9 @@ def get_nest(nest_type):
 
 def get_rider():
 	return _rider_lut
+
+def get_sb_temple():
+	return _sb_lut
 
 def timestamp_now():
 	return int(time.time())

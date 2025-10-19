@@ -1677,6 +1677,24 @@ def cmd_rider_reset(player, cmd, args, gameversion):
 	privateState[rider["ts"]] = 0
 
 	return True
+
+def cmd_sb_add_unit(player, cmd, args, gameversion):
+	return False
+
+def cmd_sb_next_step(player, cmd, args, gameversion):
+	return False
+
+def cmd_sb_buy_step_cash(player, cmd, args, gameversion):
+	return False
+
+def cmd_sb_reset(player, cmd, args, gameversion):
+	sb = get_sb_temple()
+
+	privateState = player["privateState"]
+	privateState[sb["step"]] = 0
+	privateState[sb["ts"]] = 0
+	return True
+
 def cmd_complete_tutorial(player, cmd, args, gameversion):
 	# step
 	step = str(args[0])
