@@ -111,7 +111,7 @@ commands = {
 	"buy_temple_step_cash":				cmd_sb_buy_step_cash,
 	"reset_temple":						cmd_sb_reset,
 	# hell forge island (event) -------------------------------------------------------------------------------
-	"collect_game_add_item":			EXCEPTION,
+	"collect_game_add_item":			cmd_nop,
 	"collect_game_buy_all":				EXCEPTION,
 	"collect_game_reward_given":		EXCEPTION,
 	"buy_viral_offer_friend":			EXCEPTION,
