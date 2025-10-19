@@ -282,8 +282,8 @@ def migrate_loaded_save(save):
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	])
 	fix_variable(privateState, "neighborAssists", {})				# neighbour assists
-	fix_variable(privateState, "templeStep", 0)						# supreme bahamut
-	fix_variable(privateState, "timeStampTemple", 0)				# supreme bahamut
+	fix_variable(privateState, "templeStep", [])					# supreme bahamut
+	fix_variable(privateState, "timeStampTemple", 0)
 
 	# item collections
 	if fix_variable(privateState, "collections", []):

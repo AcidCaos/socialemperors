@@ -1685,13 +1685,24 @@ def cmd_sb_next_step(player, cmd, args, gameversion):
 	return False
 
 def cmd_sb_buy_step_cash(player, cmd, args, gameversion):
-	return False
+	# cost
+	cost = int(args[0])
+	if cost > 0:
+		if not pay_cash(player, cost):
+			return False
+
+	sb = get_sb_temple()
+
+	privateState = player["privateState"]
+	privateState[sb["ts"]] = 0
+
+	return True
 
 def cmd_sb_reset(player, cmd, args, gameversion):
 	sb = get_sb_temple()
 
 	privateState = player["privateState"]
-	privateState[sb["step"]] = 0
+	privateState[sb["step"]] = []
 	privateState[sb["ts"]] = 0
 	return True
 
