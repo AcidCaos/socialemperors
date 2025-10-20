@@ -867,13 +867,13 @@ def cmd_end_quest(player, cmd, args, gameversion):
 	quest_id = data["quest_id"]
 	next_index = None
 	set_unlocked_index = False
+	forge_quest = False
 	if "set_unlocked_index" in data:
 		set_unlocked_index = data["set_unlocked_index"] == 1
 	try:
 		next_index = get_quest_index(quest_id) + 1
 	except:
-		log.info(f"Unknown quest ID {quest_id}!")
-		return False
+		forge_quest = True
 
 	win = False
 	if "win" in data:
@@ -890,11 +890,12 @@ def cmd_end_quest(player, cmd, args, gameversion):
 	if win:
 		#if set_unlocked_index == 1:
 		# if we won then unlock next quest
-		old_index = privateState["unlockedQuestIndex"]
-		if old_index == None:
-			old_index = -1
-		if next_index - old_index <= 1:
-			privateState["unlockedQuestIndex"] = max(next_index, old_index)
+		if not forge_quest:
+			old_index = privateState["unlockedQuestIndex"]
+			if old_index == None:
+				old_index = -1
+			if next_index - old_index <= 1:
+				privateState["unlockedQuestIndex"] = max(next_index, old_index)
 
 		# if we won, also set quest rank and add honor points
 		rank = privateState["questsRank"][str(quest_id)]
@@ -1743,6 +1744,48 @@ def cmd_sb_reset(player, cmd, args, gameversion):
 	privateState = player["privateState"]
 	privateState[sb["step"]] = []
 	privateState[sb["ts"]] = 0
+	return True
+
+def cmd_hellforge_add_item(player, cmd, args, gameversion):
+	# item_id, use_cash
+	item_id = args[0]
+	use_cash = args[1] == 1
+
+	if use_cash:
+		item = get_hellforge_item(item_id)
+		if not item:
+			return False
+
+		if not pay_cash(player, item["cost"]):
+			return False
+
+	collect_game = player["privateState"]["collectGame"]
+	data = collect_game[str(item_id)]
+	data["counter"] += 1
+	if use_cash:
+		data["timestamp"] = 0
+	else:
+		data["timestamp"] = timestamp_now()
+	
+	# TODO: CLAMP TO MAX
+
+	return True
+
+def cmd_hellforge_speed_up(player, cmd, args, gameversion):
+	# item_id
+	item_id = args[0]
+
+	item = get_hellforge_item(item_id)
+	if not item:
+		return False
+
+	if not pay_cash(player, item["speedup_cost"]):
+		return False
+
+	collect_game = player["privateState"]["collectGame"]
+	data = collect_game[str(item_id)]
+	data["timestamp"] = 0
+
 	return True
 
 def cmd_complete_tutorial(player, cmd, args, gameversion):

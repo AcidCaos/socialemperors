@@ -215,6 +215,18 @@ def _fix_level_mana(map, privateState):
 	if gain > 0:
 		privateState["mana"] += gain
 
+def _fix_hellforge():
+	idx = 1
+	collect_game = {}
+	while idx <= 6:
+		collect_game[str(idx)] = {
+			"id": idx,
+			"counter": 0,
+			"timestamp": 0
+		}
+		idx += 1
+	return collect_game
+
 def migrate_loaded_save(save):
 	# Migration always happens now, we check the data type this time and insert any new data if necessary
 	# This should make sure the save file isn't "half fixed"
@@ -342,6 +354,8 @@ def migrate_loaded_save(save):
 
 	# island forge
 	fix_variable(privateState, "collectGame", {})
+	if len(privateState["collectGame"]) != 6:
+		privateState["collectGame"] = _fix_hellforge()
 	fix_variable(privateState, "collectGameGivenPrizes", {})
 
 	# remove version tag as it's useless now

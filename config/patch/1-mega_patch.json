@@ -19,7 +19,7 @@
 				"building_id": 1530,
 				"discountPrice": 1,
 				"min_level": 1,
-				"game_type": 1,
+				"game_type": 3,
 				"game_data": 
 				{
 					"retry_price": 1,
@@ -36,9 +36,9 @@
 		"path": "/collect_game_items",
 		"value": 
 		{
-			"0": 
+			"1": 
 			{
-				"id": 0,
+				"id": 1,
 				"name": "ISLAND_FORGE_ITEM_COPPER",
 				"type": 1,
 				"action": "ISLAND_FORGE_ACTION_QUESTS",
@@ -47,50 +47,50 @@
 				"cost": 8,
 				"last_cost": 8,
 				"speedup_cost": 1,
-				"cooldown": 0
+				"cooldown": 86400
 			},
-			"1": 
+			"2": 
 			{
-				"id": 1,
+				"id": 2,
 				"name": "ISLAND_FORGE_ITEM_FANG",
-				"type": 1,
+				"type": 2,
 				"action": "",
 				"tooltip": "ISLAND_FORGE_ITEM_FANG_TOOLTIP",
 				"required": 25,
 				"cost": 5,
 				"last_cost": 5,
-				"speedup_cost": 1,
-				"cooldown": 0
-			},
-			"2": 
-			{
-				"id": 2,
-				"name": "ISLAND_FORGE_ITEM_IRON",
-				"type": 1,
-				"action": "",
-				"tooltip": "ISLAND_FORGE_ITEM_IRON_TOOLTIP",
-				"required": 25,
-				"cost": 5,
-				"last_cost": 5,
-				"speedup_cost": 1,
+				"speedup_cost": 0,
 				"cooldown": 0
 			},
 			"3": 
 			{
 				"id": 3,
-				"name": "ISLAND_FORGE_ITEM_SKULL",
-				"type": 1,
-				"action": "ISLAND_FORGE_ACTION_PVP",
-				"tooltip": "ISLAND_FORGE_ITEM_SKULL_TOOLTIP",
-				"required": 20,
-				"cost": 8,
-				"last_cost": 8,
-				"speedup_cost": 1,
+				"name": "ISLAND_FORGE_ITEM_IRON",
+				"type": 3,
+				"action": "",
+				"tooltip": "ISLAND_FORGE_ITEM_IRON_TOOLTIP",
+				"required": 25,
+				"cost": 5,
+				"last_cost": 5,
+				"speedup_cost": 0,
 				"cooldown": 0
 			},
 			"4": 
 			{
 				"id": 4,
+				"name": "ISLAND_FORGE_ITEM_SKULL",
+				"type": 4,
+				"action": "ISLAND_FORGE_ACTION_PVP",
+				"tooltip": "ISLAND_FORGE_ITEM_SKULL_TOOLTIP",
+				"required": 20,
+				"cost": 8,
+				"last_cost": 8,
+				"speedup_cost": 0,
+				"cooldown": 0
+			},
+			"5": 
+			{
+				"id": 5,
 				"name": "ISLAND_FORGE_ITEM_HORN",
 				"type": 5,
 				"action": "ISLAND_FORGE_ACTION_INVITE",
@@ -98,21 +98,21 @@
 				"required": 5,
 				"cost": 10,
 				"last_cost": 10,
-				"speedup_cost": 1,
+				"speedup_cost": 0,
 				"cooldown": 0
 			},
-			"5": 
+			"6": 
 			{
-				"id": 5,
+				"id": 6,
 				"name": "ISLAND_FORGE_ITEM_HAMMER",
-				"type": 1,
-				"action": "",
+				"type": 6,
+				"action": "ISLAND_FORGE_ACTION_COLLECT",
 				"tooltip": "ISLAND_FORGE_ITEM_HAMMER_TOOLTIP",
 				"required": 20,
-				"cost": 5,
-				"last_cost": 5,
-				"speedup_cost": 1,
-				"cooldown": 0
+				"cost": 0,
+				"last_cost": 0,
+				"speedup_cost": 3,
+				"cooldown":90000
 			}
 		}
 	},
