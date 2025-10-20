@@ -1197,136 +1197,136 @@
 {"op": "add", "path": "/items/1586/breeding_order", "value": "26"},
 {"op": "add", "path": "/items/1586/sm_training_time", "value": "26000"},
 
-{"op": "add", "path": "/items/1590/breeding_order", "value": "346"},
-{"op": "add", "path": "/items/1590/sm_training_time", "value": "346000"},
+{"op": "add", "path": "/items/1595/breeding_order", "value": "346"},
+{"op": "add", "path": "/items/1595/sm_training_time", "value": "346000"},
 
-{"op": "add", "path": "/items/1591/breeding_order", "value": "46"},
-{"op": "add", "path": "/items/1591/sm_training_time", "value": "46000"},
+{"op": "add", "path": "/items/1596/breeding_order", "value": "46"},
+{"op": "add", "path": "/items/1596/sm_training_time", "value": "46000"},
 
-{"op": "add", "path": "/items/1593/breeding_order", "value": "353"},
-{"op": "add", "path": "/items/1593/sm_training_time", "value": "353000"},
+{"op": "add", "path": "/items/1598/breeding_order", "value": "353"},
+{"op": "add", "path": "/items/1598/sm_training_time", "value": "353000"},
 
-{"op": "add", "path": "/items/1594/breeding_order", "value": "46"},
-{"op": "add", "path": "/items/1594/sm_training_time", "value": "46000"},
+{"op": "add", "path": "/items/1599/breeding_order", "value": "46"},
+{"op": "add", "path": "/items/1599/sm_training_time", "value": "46000"},
 
-{"op": "add", "path": "/items/1596/breeding_order", "value": "360"},
-{"op": "add", "path": "/items/1596/sm_training_time", "value": "360000"},
+{"op": "add", "path": "/items/1601/breeding_order", "value": "360"},
+{"op": "add", "path": "/items/1601/sm_training_time", "value": "360000"},
 
-{"op": "add", "path": "/items/1597/breeding_order", "value": "46"},
-{"op": "add", "path": "/items/1597/sm_training_time", "value": "46000"},
+{"op": "add", "path": "/items/1602/breeding_order", "value": "46"},
+{"op": "add", "path": "/items/1602/sm_training_time", "value": "46000"},
 
-{"op": "add", "path": "/items/1599/breeding_order", "value": "366"},
-{"op": "add", "path": "/items/1599/sm_training_time", "value": "366000"},
+{"op": "add", "path": "/items/1604/breeding_order", "value": "366"},
+{"op": "add", "path": "/items/1604/sm_training_time", "value": "366000"},
 
-{"op": "add", "path": "/items/1600/breeding_order", "value": "46"},
-{"op": "add", "path": "/items/1600/sm_training_time", "value": "46000"},
+{"op": "add", "path": "/items/1605/breeding_order", "value": "46"},
+{"op": "add", "path": "/items/1605/sm_training_time", "value": "46000"},
 
-{"op": "add", "path": "/items/1602/breeding_order", "value": "16"},
-{"op": "add", "path": "/items/1602/sm_training_time", "value": "16000"},
+{"op": "add", "path": "/items/1607/breeding_order", "value": "16"},
+{"op": "add", "path": "/items/1607/sm_training_time", "value": "16000"},
 
-{"op": "add", "path": "/items/1603/breeding_order", "value": "373"},
-{"op": "add", "path": "/items/1603/sm_training_time", "value": "373000"},
+{"op": "add", "path": "/items/1608/breeding_order", "value": "373"},
+{"op": "add", "path": "/items/1608/sm_training_time", "value": "373000"},
 
-{"op": "add", "path": "/items/1604/breeding_order", "value": "46"},
-{"op": "add", "path": "/items/1604/sm_training_time", "value": "46000"},
+{"op": "add", "path": "/items/1609/breeding_order", "value": "46"},
+{"op": "add", "path": "/items/1609/sm_training_time", "value": "46000"},
 
-{"op": "add", "path": "/items/1606/breeding_order", "value": "380"},
-{"op": "add", "path": "/items/1606/sm_training_time", "value": "380000"},
+{"op": "add", "path": "/items/1611/breeding_order", "value": "380"},
+{"op": "add", "path": "/items/1611/sm_training_time", "value": "380000"},
 
-{"op": "add", "path": "/items/1607/breeding_order", "value": "46"},
-{"op": "add", "path": "/items/1607/sm_training_time", "value": "46000"},
+{"op": "add", "path": "/items/1612/breeding_order", "value": "46"},
+{"op": "add", "path": "/items/1612/sm_training_time", "value": "46000"},
 
-{"op": "add", "path": "/items/1609/breeding_order", "value": "386"},
-{"op": "add", "path": "/items/1609/sm_training_time", "value": "386000"},
+{"op": "add", "path": "/items/1614/breeding_order", "value": "386"},
+{"op": "add", "path": "/items/1614/sm_training_time", "value": "386000"},
 
-{"op": "add", "path": "/items/1610/breeding_order", "value": "48"},
-{"op": "add", "path": "/items/1610/sm_training_time", "value": "48000"},
+{"op": "add", "path": "/items/1615/breeding_order", "value": "48"},
+{"op": "add", "path": "/items/1615/sm_training_time", "value": "48000"},
 
-{"op": "add", "path": "/items/1612/breeding_order", "value": "393"},
-{"op": "add", "path": "/items/1612/sm_training_time", "value": "393000"},
+{"op": "add", "path": "/items/1617/breeding_order", "value": "393"},
+{"op": "add", "path": "/items/1617/sm_training_time", "value": "393000"},
 
-{"op": "add", "path": "/items/1613/breeding_order", "value": "48"},
-{"op": "add", "path": "/items/1613/sm_training_time", "value": "48000"},
+{"op": "add", "path": "/items/1618/breeding_order", "value": "48"},
+{"op": "add", "path": "/items/1618/sm_training_time", "value": "48000"},
 
-{"op": "add", "path": "/items/1615/breeding_order", "value": "393"},
-{"op": "add", "path": "/items/1615/sm_training_time", "value": "393000"},
+{"op": "add", "path": "/items/1620/breeding_order", "value": "393"},
+{"op": "add", "path": "/items/1620/sm_training_time", "value": "393000"},
 
-{"op": "add", "path": "/items/1616/breeding_order", "value": "48"},
-{"op": "add", "path": "/items/1616/sm_training_time", "value": "48000"},
+{"op": "add", "path": "/items/1621/breeding_order", "value": "48"},
+{"op": "add", "path": "/items/1621/sm_training_time", "value": "48000"},
 
-{"op": "add", "path": "/items/1618/breeding_order", "value": "400"},
-{"op": "add", "path": "/items/1618/sm_training_time", "value": "400000"},
+{"op": "add", "path": "/items/1623/breeding_order", "value": "400"},
+{"op": "add", "path": "/items/1623/sm_training_time", "value": "400000"},
 
-{"op": "add", "path": "/items/1619/breeding_order", "value": "48"},
-{"op": "add", "path": "/items/1619/sm_training_time", "value": "48000"},
+{"op": "add", "path": "/items/1624/breeding_order", "value": "48"},
+{"op": "add", "path": "/items/1624/sm_training_time", "value": "48000"},
 
-{"op": "add", "path": "/items/1621/breeding_order", "value": "406"},
-{"op": "add", "path": "/items/1621/sm_training_time", "value": "406000"},
+{"op": "add", "path": "/items/1626/breeding_order", "value": "406"},
+{"op": "add", "path": "/items/1626/sm_training_time", "value": "406000"},
 
-{"op": "add", "path": "/items/1622/breeding_order", "value": "48"},
-{"op": "add", "path": "/items/1622/sm_training_time", "value": "48000"},
+{"op": "add", "path": "/items/1627/breeding_order", "value": "48"},
+{"op": "add", "path": "/items/1627/sm_training_time", "value": "48000"},
 
-{"op": "add", "path": "/items/1624/breeding_order", "value": "413"},
-{"op": "add", "path": "/items/1624/sm_training_time", "value": "413000"},
+{"op": "add", "path": "/items/1629/breeding_order", "value": "413"},
+{"op": "add", "path": "/items/1629/sm_training_time", "value": "413000"},
 
-{"op": "add", "path": "/items/1625/breeding_order", "value": "50"},
-{"op": "add", "path": "/items/1625/sm_training_time", "value": "50000"},
+{"op": "add", "path": "/items/1630/breeding_order", "value": "50"},
+{"op": "add", "path": "/items/1630/sm_training_time", "value": "50000"},
 
-{"op": "add", "path": "/items/1627/breeding_order", "value": "420"},
-{"op": "add", "path": "/items/1627/sm_training_time", "value": "420000"},
+{"op": "add", "path": "/items/1632/breeding_order", "value": "420"},
+{"op": "add", "path": "/items/1632/sm_training_time", "value": "420000"},
 
-{"op": "add", "path": "/items/1628/breeding_order", "value": "50"},
-{"op": "add", "path": "/items/1628/sm_training_time", "value": "50000"},
+{"op": "add", "path": "/items/1633/breeding_order", "value": "50"},
+{"op": "add", "path": "/items/1633/sm_training_time", "value": "50000"},
 
-{"op": "add", "path": "/items/1630/breeding_order", "value": "426"},
-{"op": "add", "path": "/items/1630/sm_training_time", "value": "426000"},
+{"op": "add", "path": "/items/1635/breeding_order", "value": "426"},
+{"op": "add", "path": "/items/1635/sm_training_time", "value": "426000"},
 
-{"op": "add", "path": "/items/1631/breeding_order", "value": "50"},
-{"op": "add", "path": "/items/1631/sm_training_time", "value": "50000"},
+{"op": "add", "path": "/items/1636/breeding_order", "value": "50"},
+{"op": "add", "path": "/items/1636/sm_training_time", "value": "50000"},
 
-{"op": "add", "path": "/items/1633/breeding_order", "value": "433"},
-{"op": "add", "path": "/items/1633/sm_training_time", "value": "433000"},
+{"op": "add", "path": "/items/1638/breeding_order", "value": "433"},
+{"op": "add", "path": "/items/1638/sm_training_time", "value": "433000"},
 
-{"op": "add", "path": "/items/1634/breeding_order", "value": "50"},
-{"op": "add", "path": "/items/1634/sm_training_time", "value": "50000"},
+{"op": "add", "path": "/items/1639/breeding_order", "value": "50"},
+{"op": "add", "path": "/items/1639/sm_training_time", "value": "50000"},
 
-{"op": "add", "path": "/items/1636/breeding_order", "value": "440"},
-{"op": "add", "path": "/items/1636/sm_training_time", "value": "440000"},
+{"op": "add", "path": "/items/1641/breeding_order", "value": "440"},
+{"op": "add", "path": "/items/1641/sm_training_time", "value": "440000"},
 
-{"op": "add", "path": "/items/1637/breeding_order", "value": "53"},
-{"op": "add", "path": "/items/1637/sm_training_time", "value": "53000"},
+{"op": "add", "path": "/items/1642/breeding_order", "value": "53"},
+{"op": "add", "path": "/items/1642/sm_training_time", "value": "53000"},
 
-{"op": "add", "path": "/items/1639/breeding_order", "value": "440"},
-{"op": "add", "path": "/items/1639/sm_training_time", "value": "440000"},
+{"op": "add", "path": "/items/1644/breeding_order", "value": "440"},
+{"op": "add", "path": "/items/1644/sm_training_time", "value": "440000"},
 
-{"op": "add", "path": "/items/1640/breeding_order", "value": "53"},
-{"op": "add", "path": "/items/1640/sm_training_time", "value": "53000"},
+{"op": "add", "path": "/items/1645/breeding_order", "value": "53"},
+{"op": "add", "path": "/items/1645/sm_training_time", "value": "53000"},
 
-{"op": "add", "path": "/items/1642/breeding_order", "value": "440"},
-{"op": "add", "path": "/items/1642/sm_training_time", "value": "440000"},
+{"op": "add", "path": "/items/1647/breeding_order", "value": "440"},
+{"op": "add", "path": "/items/1647/sm_training_time", "value": "440000"},
 
-{"op": "add", "path": "/items/1643/breeding_order", "value": "56"},
-{"op": "add", "path": "/items/1643/sm_training_time", "value": "56000"},
+{"op": "add", "path": "/items/1648/breeding_order", "value": "56"},
+{"op": "add", "path": "/items/1648/sm_training_time", "value": "56000"},
 
-{"op": "add", "path": "/items/1645/breeding_order", "value": "440"},
-{"op": "add", "path": "/items/1645/sm_training_time", "value": "440000"},
+{"op": "add", "path": "/items/1650/breeding_order", "value": "440"},
+{"op": "add", "path": "/items/1650/sm_training_time", "value": "440000"},
 
-{"op": "add", "path": "/items/1646/breeding_order", "value": "53"},
-{"op": "add", "path": "/items/1646/sm_training_time", "value": "53000"},
+{"op": "add", "path": "/items/1651/breeding_order", "value": "53"},
+{"op": "add", "path": "/items/1651/sm_training_time", "value": "53000"},
 
-{"op": "add", "path": "/items/1648/breeding_order", "value": "313"},
-{"op": "add", "path": "/items/1648/sm_training_time", "value": "313000"},
+{"op": "add", "path": "/items/1653/breeding_order", "value": "313"},
+{"op": "add", "path": "/items/1653/sm_training_time", "value": "313000"},
 
-{"op": "add", "path": "/items/1649/breeding_order", "value": "320"},
-{"op": "add", "path": "/items/1649/sm_training_time", "value": "320000"},
+{"op": "add", "path": "/items/1654/breeding_order", "value": "320"},
+{"op": "add", "path": "/items/1654/sm_training_time", "value": "320000"},
 
-{"op": "add", "path": "/items/1650/breeding_order", "value": "300"},
-{"op": "add", "path": "/items/1650/sm_training_time", "value": "300000"},
+{"op": "add", "path": "/items/1655/breeding_order", "value": "300"},
+{"op": "add", "path": "/items/1655/sm_training_time", "value": "300000"},
 
-{"op": "add", "path": "/items/1651/breeding_order", "value": "440"},
-{"op": "add", "path": "/items/1651/sm_training_time", "value": "440000"},
+{"op": "add", "path": "/items/1656/breeding_order", "value": "440"},
+{"op": "add", "path": "/items/1656/sm_training_time", "value": "440000"},
 
-{"op": "add", "path": "/items/1652/breeding_order", "value": "56"},
-{"op": "add", "path": "/items/1652/sm_training_time", "value": "56000"}
+{"op": "add", "path": "/items/1657/breeding_order", "value": "56"},
+{"op": "add", "path": "/items/1657/sm_training_time", "value": "56000"}
 
 ]
