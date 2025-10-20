@@ -227,6 +227,18 @@ def _fix_hellforge():
 		idx += 1
 	return collect_game
 
+def _fix_events():
+	idx = 1
+	events = {}
+	while idx <= 5:
+		events[str(idx)] = {
+			"id": idx,
+			"friends": [],
+			"rewarded": []
+		}
+		idx += 1
+	return events
+
 def migrate_loaded_save(save):
 	# Migration always happens now, we check the data type this time and insert any new data if necessary
 	# This should make sure the save file isn't "half fixed"
@@ -351,6 +363,11 @@ def migrate_loaded_save(save):
 	elif len(privateState["boughtUnits"]) == 0:
 		fix_bought_units(maps, privateState)
 	fix_variable(privateState, "unitCollectionsCompleted", [])
+
+	# events
+	fix_variable(privateState, "viralOffers", {})
+	if len(privateState["viralOffers"]) != 5:
+		privateState["viralOffers"] = _fix_events()
 
 	# island forge
 	fix_variable(privateState, "collectGame", {})
