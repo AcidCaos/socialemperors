@@ -4,6 +4,8 @@ import copy
 import jsonpatch
 import math
 
+from fusion_builder import fusion_build
+
 # CONFIG
 patch_filename = "../config/patch/2-unit_patch.json"
 # patch_filename = "unit_patch.json"
@@ -348,7 +350,9 @@ def make_final(config, patch, sm_patch):
 	jsonpatch.apply_patch(config, patch, in_place = True)
 
 	# apply soul mixer patch
-	apply_patch(config, sm_patch)
+	print(f"applying fusion build patch...")
+	jsonpatch.apply_patch(config, sm_patch, in_place = True)
+	#apply_patch(config, sm_patch)
 
 	# remove duplicates
 	remove_duplicate_items(config)
@@ -414,8 +418,9 @@ def make_final(config, patch, sm_patch):
 	return final
 
 print("Patch phase 2 ----------------------------------------------------------")
+print("running fusion builder...")
+sm_patch = fusion_build()
 patches = [ "../config/patch/0-language_en.json", "../config/patch/1-mega_patch.json" ]
-sm_patch = "fusion-output.json"
 config = load_config("../config/main.json")
 load_patches(config, patches)
 apply_riderpatch(config, riderpatch)
