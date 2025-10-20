@@ -685,7 +685,7 @@
 				"duration": 0,
 				"minimum_pack_value": 0,
 				"building_id": 1530,
-				"discountPrice": 1,
+				"discount_price": 21,
 				"min_level": 1,
 				"game_type": 2,
 				"game_data": 
@@ -1151,8 +1151,8 @@
 				"icon": "easterDragon",
 				"starts_at": 0,
 				"duration": 0,
-				"buy_cost": [ 1, 2, 3, 4, 5 ],
-				"buy_all_cost": [ 1, 2, 3, 4, 5 ],
+				"buy_cost": [],
+				"buy_all_cost": [],
 				"num_workers": 5
 			},
 			"3": 

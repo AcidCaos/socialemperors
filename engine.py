@@ -5,6 +5,7 @@ import logging
 
 from get_game_config import *
 from constants import *
+from event_system import get_active_events
 
 log = logging.getLogger('__main__')
 
@@ -101,6 +102,7 @@ MARKET_AMOUNT_TRADE = [
 	200,
 	300
 ]
+HELLFORGE_INVITE_ITEM = 5
 
 def get_nest(nest_type):
 	if nest_type in _nest_lut:
@@ -803,6 +805,20 @@ def hire_friends(userid, si_info, is_church):
 		total += 1
 
 	return si
+
+def event_recruit_friend(player, friend_uid):
+	active_events = get_active_events(get_game_config(), timestamp_now())
+	for offer_id in active_events:
+		offer = get_event_offer(offer_id)
+		data = player["privateState"]["viralOffers"][str(offer_id)]
+
+		if len(data["friends"]) >= offer["num_workers"]:
+			continue
+
+		if friend_uid in data["friends"]:
+			continue
+
+		data["friends"].append(friend_uid)
 
 def register_bought_unit(player, item_id, town_id = 0):
 	item_id = int(item_id)

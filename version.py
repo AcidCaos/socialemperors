@@ -234,7 +234,7 @@ def _fix_events():
 		events[str(idx)] = {
 			"id": idx,
 			"friends": [],
-			"rewarded": []
+			"rewarded": 0
 		}
 		idx += 1
 	return events
@@ -373,7 +373,7 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "collectGame", {})
 	if len(privateState["collectGame"]) != 6:
 		privateState["collectGame"] = _fix_hellforge()
-	fix_variable(privateState, "collectGameGivenPrizes", {})
+	fix_variable(privateState, "collectGameGivenPrizes", [])
 
 	# remove version tag as it's useless now
 	if "version" in save:

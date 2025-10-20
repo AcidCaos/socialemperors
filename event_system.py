@@ -1,6 +1,7 @@
 import logging
 import traceback
 import json
+import math
 
 log = logging.getLogger('__main__')
 
@@ -118,3 +119,55 @@ def apply_events(ts):
 			traceback.print_exc()
 			pass
 		
+def get_active_events(config, ts):
+	events = []
+	offers = config["viral_offers"]
+	for offer_id in offers:
+		offer = offers[offer_id]
+		if ts >= offer["starts_at"] and ts < offer["starts_at"] + offer["duration"]:
+			events.append(offer["id"])
+	return events
+
+def hellforge_buy_all_price(player):
+	from engine import get_event_data, get_game_config, HELLFORGE_INVITE_ITEM
+	event = get_event_data(_events["HELL_FORGE_ISLAND"]["event_id"])
+	offer_id = _events["HELL_FORGE_ISLAND"]["offer_id"]
+	discount_price = event["discount_price"]
+	
+	items = get_game_config()["collect_game_items"]
+
+	player_items = player["privateState"]["collectGame"]
+	player_offer = player["privateState"]["viralOffers"][str(offer_id)]
+
+	total_cost = 0
+	total_items = 0
+	progress = 0
+
+	for it in items:
+		item = items[it]
+
+		cost = item["speedup_cost"]
+		last_cost = item["speedup_cost"]
+		required = item["required"]
+
+		amount = player_items[it]["counter"]
+		if int(it) == HELLFORGE_INVITE_ITEM:
+			amount = len(player_offer["friends"])
+
+		if item["cost"] != 0:
+			cost = item["cost"]
+		if item["last_cost"] != 0:
+			last_cost = item["last_cost"]
+
+		if required == amount - 1:
+			last_cost = 0
+
+		total_items += required
+		progress += amount
+		total_cost += (required - amount - 1) * cost + last_cost
+	
+	percentage = (total_items - progress) / total_items
+	discounted = math.ceil(total_cost - total_cost * (discount_price / 100) * percentage)
+
+	#log.info(f"BUY ALL PRICE -> total: {total_cost} -> discounted: {discounted}")
+	return discounted

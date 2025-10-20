@@ -12,6 +12,7 @@ from sessions import *
 from get_game_config import *
 from constants import Constant
 from engine import *
+from event_system import hellforge_buy_all_price
 
 def cmd_nop(player, cmd, args, gameversion):
 	return True
@@ -1751,24 +1752,37 @@ def cmd_hellforge_add_item(player, cmd, args, gameversion):
 	item_id = args[0]
 	use_cash = args[1] == 1
 
+	collect_game = player["privateState"]["collectGame"]
+	data = collect_game[str(item_id)]
+
 	if use_cash:
 		item = get_hellforge_item(item_id)
 		if not item:
 			return False
 
-		if not pay_cash(player, item["cost"]):
+		cost = item["cost"]
+		if data["counter"] == item["required"] - 1:
+			cost = item["last_cost"]
+		if not pay_cash(player, cost):
 			return False
 
-	collect_game = player["privateState"]["collectGame"]
-	data = collect_game[str(item_id)]
 	data["counter"] += 1
 	if use_cash:
 		data["timestamp"] = 0
 	else:
 		data["timestamp"] = timestamp_now()
 	
-	# TODO: CLAMP TO MAX
+	return True
 
+def cmd_hellforge_update_ts(player, cmd, args, gameversion):
+	# item_id
+	item_id = args[0]
+
+	collect_game = player["privateState"]["collectGame"]
+	data = collect_game[str(item_id)]
+
+	data["timestamp"] = timestamp_now()
+	
 	return True
 
 def cmd_hellforge_speed_up(player, cmd, args, gameversion):
@@ -1786,6 +1800,141 @@ def cmd_hellforge_speed_up(player, cmd, args, gameversion):
 	data = collect_game[str(item_id)]
 	data["timestamp"] = 0
 
+	return True
+
+def cmd_hellforge_buy_all(player, cmd, args, gameversion):
+	# hellforge_game_id
+	hellforge_game_id = int(args[0])
+	if hellforge_game_id != 1:
+		return False
+	
+	event = get_event_data(hellforge_game_id)
+
+	if not pay_cash(player, hellforge_buy_all_price(player)):
+		return False
+
+	# fill in all items and friend slots!
+	collect_game = player["privateState"]["collectGame"]
+	for it in collect_game:
+		item = collect_game[it]
+		item_data = get_hellforge_item(item["id"])
+		required = item_data["required"]
+		item["counter"] = required
+
+		if item["id"] == HELLFORGE_INVITE_ITEM:
+			friends = player["privateState"]["viralOffers"]["2"]["friends"]
+			num_friends = len(friends)
+			while num_friends < required:
+				friends.append("0")
+				num_friends += 1
+
+	return True
+
+def cmd_hellforge_reward_given(player, cmd, args, gameversion):
+	# items
+	item_id = int(args[0])
+	rewards_given = player["privateState"]["collectGameGivenPrizes"]
+
+	if item_id in rewards_given:
+		return False
+	
+	rewards_given.append(item_id)
+
+	return True
+
+def cmd_event_buy_friend(player, cmd, args, gameversion):
+	# offer_id
+	offer_id = args[0]
+
+	offer = get_event_offer(offer_id)
+	if not offer:
+		return False
+
+	player_offers = player["privateState"]["viralOffers"]
+	offer_data = player_offers[str(offer_id)]
+	num_friends = len(offer_data["friends"])
+	max_friends = offer["num_workers"]
+
+	if num_friends >= max_friends:
+		return False
+
+	if offer_id == 2:
+		# hell forge
+		invite_item = get_hellforge_item(HELLFORGE_INVITE_ITEM)
+		if not invite_item:
+			return False
+
+		offer_data["friends"].append("0")
+	else:
+		if not pay_cash(player, offer["buy_cost"][num_friends]):
+			return False
+
+		offer_data["friends"].append("0")
+		
+	return True
+
+def cmd_event_buy_friend_all(player, cmd, args, gameversion):
+	# offer_id
+	offer_id = args[0]
+
+	offer = get_event_offer(offer_id)
+	if not offer:
+		return False
+
+	player_offers = player["privateState"]["viralOffers"]
+	offer_data = player_offers[str(offer_id)]
+	num_friends = len(offer_data["friends"])
+	max_friends = offer["num_workers"]
+
+	if num_friends >= max_friends:
+		return False
+
+	if offer_id == 2:
+		# hell forge
+		return False
+	else:
+		if not pay_cash(player, offer["buy_all_cost"][num_friends]):
+			return False
+
+		while num_friends < max_friends:
+			offer_data["friends"].append("0")
+			num_friends += 1
+		
+	return True
+
+def cmd_event_get_reward(player, cmd, args, gameversion):
+	# offer_id, x, y, orientation, town_id
+	offer_id = args[0]
+	x = args[1] # not used
+	y = args[2] # not used
+	orientation = args[3] # not used
+	town_id = args[4] # not used
+
+	# so the game adds the item to the map on the client
+	# does NOT tell the server
+	# then stores that item immediately in storage
+	# but it tells the server to just add the item as if it was a unit pack
+	
+	offer = get_event_offer(offer_id)
+	if not offer:
+		return False
+
+	player_offers = player["privateState"]["viralOffers"]
+	offer_data = player_offers[str(offer_id)]
+	num_friends = len(offer_data["friends"])
+	max_friends = offer["num_workers"]
+
+	if type(offer_data["rewarded"]) != int:
+		offer_data["rewarded"] = 0
+	if offer_data["rewarded"] == 1:
+		return False
+
+	if offer_id == 2:
+		# hell forge
+		offer_data["rewarded"] = 1
+	else:
+		offer_data["rewarded"] = 1
+		
 	return True
 
 def cmd_complete_tutorial(player, cmd, args, gameversion):

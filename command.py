@@ -113,11 +113,12 @@ commands = {
 	# hell forge island (event) -------------------------------------------------------------------------------
 	"collect_game_add_item":			cmd_hellforge_add_item,
 	"collect_game_speed_up":			cmd_hellforge_speed_up,
-	"collect_game_buy_all":				EXCEPTION,
-	"collect_game_reward_given":		EXCEPTION,
-	"collect_game_update_timestamp":	cmd_nop,
-	"buy_viral_offer_friend":			EXCEPTION,
-	"reward_viral_offer":				EXCEPTION,
+	"collect_game_buy_all":				cmd_hellforge_buy_all,
+	"collect_game_reward_given":		cmd_hellforge_reward_given,
+	"collect_game_update_timestamp":	cmd_hellforge_update_ts,
+	"buy_viral_offer_friend":			cmd_event_buy_friend,
+	"buy_viral_offer_all":				cmd_event_buy_friend_all,
+	"reward_viral_offer":				cmd_event_get_reward,
 	# missions/goals ------------------------------------------------------------------------------------------
 	"complete_mission":					cmd_complete_goal,
 	"reward_mission":					cmd_reward_goal,
