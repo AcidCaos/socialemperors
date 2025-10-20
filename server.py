@@ -87,7 +87,8 @@ def login():
 	do_logout()
 
 	# Reload saves. Allows saves modification without server reset
-	reload_saves()
+	if get_server_config()["server"]["allow_save_reloading"]:
+		reload_saves()
 	# If logging in, set session USERID, and go to play
 	if request.method == 'POST':
 		flasksession['USERID'] = request.form['USERID']

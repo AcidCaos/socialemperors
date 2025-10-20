@@ -3,7 +3,8 @@
 	{
 		"ip":								"127.0.0.1",
 		"port":								5050,
-		"write_logs":						false
+		"write_logs":						false,
+		"allow_save_reloading":				false
 	},
 	"pvp": 
 	{
@@ -33,7 +34,7 @@
 		},
 		{
 			"event":						"HELL_FORGE_ISLAND",
-			"active":						false,
+			"active":						true,
 			"date":							"10-20-2025",
 			"days":							7
 		},
