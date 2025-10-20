@@ -1469,7 +1469,7 @@
 				"price":			20,
 				"price_type":		"c",
 				"protection_time":	172800,
-				"cooldown":			172800
+				"cooldown":			86400
 			},
 			{
 				"id":				3,
@@ -1477,7 +1477,7 @@
 				"price":			50,
 				"price_type":		"c",
 				"protection_time":	604800,
-				"cooldown":			604800
+				"cooldown":			86400
 			}
 		]
 	},
