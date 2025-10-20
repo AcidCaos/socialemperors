@@ -872,8 +872,8 @@ def cmd_end_quest(player, cmd, args, gameversion):
 	forge_quest = is_forge_quest(quest_id)
 	if "set_unlocked_index" in data:
 		set_unlocked_index = data["set_unlocked_index"] == 1
-		if not forge_quest:
-			next_index = get_quest_index(quest_id) + 1
+	if not forge_quest:
+		next_index = get_quest_index(quest_id) + 1
 
 	win = False
 	if "win" in data:
