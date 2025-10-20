@@ -26,10 +26,34 @@
 	"events": 
 	[
 		{
+			"event":						"EASTER_DRAGON",
+			"active":						false,
+			"date":							"12-30-1970",
+			"days":							7
+		},
+		{
 			"event":						"HELL_FORGE_ISLAND",
-			"active":						true,
-			"date":							"10-19-2025",
-			"days":							30
+			"active":						false,
+			"date":							"12-30-1970",
+			"days":							7
+		},
+		{
+			"event":						"IVORY_CHALLENGE",
+			"active":						false,
+			"date":							"12-30-1970",
+			"days":							7
+		},
+		{
+			"event":						"IVORY_CHALLENGE_DUPLICATE",
+			"active":						false,
+			"date":							"12-30-1970",
+			"days":							7
+		},
+		{
+			"event":						"NIGHT_FORGE",
+			"active":						false,
+			"date":							"12-30-1970",
+			"days":							7
 		}
 	]
 }

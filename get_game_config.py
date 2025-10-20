@@ -46,6 +46,14 @@ def get_event_data(event_id):
 			return event
 	return None
 
+def get_event_offer(event_id):
+	events = __game_config["viral_offers"]
+	for ev in events:
+		event = events[ev]
+		if event["id"] == event_id:
+			return event
+	return None
+
 def ts_to_date(ts):
 	return datetime.datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d')
 
@@ -96,7 +104,7 @@ def get_item(item_id):
 def check_shop_rotation(ts):
 	if ts >= __shop_rotation_refresh:
 		apply_shop_rotation(ts, True)
-		apply_events(get_game_config(), ts)
+		apply_events(ts)
 
 def _cost_str(t):
 	types = {
@@ -303,7 +311,7 @@ apply_patches()
 apply_mods()
 check_unit_packs()
 apply_shop_rotation(_ts)
-apply_events(__game_config, _ts)
+apply_events(_ts)
 grab_animals()
 
 # access functions

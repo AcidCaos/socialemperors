@@ -19,7 +19,7 @@
 				"building_id": 1530,
 				"discountPrice": 1,
 				"min_level": 1,
-				"game_type": 3,
+				"game_type": 2,
 				"game_data": 
 				{
 					"retry_price": 1,
@@ -1340,24 +1340,64 @@
 	{
 		"op": "add",
 		"path": "/viral_offers",
-		"value": [
-			{
-				"id": 0,
-				"rewarded": 0
-			},
-			{
+		"value": 
+		{
+			"1": {
 				"id": 1,
-				"rewarded": 0
+				"icon": "viralRecruitment",
+				"rewarded": 0,
+				"starts_at": 0,
+				"duration": 0,
+				"buy_cost": [ 30, 30, 30, 30 ],
+				"buy_all_cost": [ 110, 90, 60, 30 ],
+				"friends": [ 0, 0, 0, 0 ],
+				"num_workers": 4
 			},
-			{
+			"2": {
 				"id": 2,
-				"rewarded": 0
+				"icon": "viralRecruitment",
+				"rewarded": 0,
+				"starts_at": 0,
+				"duration": 0,
+				"buy_cost": [ 1, 2, 3, 4, 5 ],
+				"buy_all_cost": [ 1, 2, 3, 4, 5 ],
+				"friends": [ 0, 0, 0, 0, 0 ],
+				"num_workers": 5
 			},
-			{
+			"3": {
 				"id": 3,
-				"rewarded": 0
+				"icon": "viralRecruitment",
+				"rewarded": 0,
+				"starts_at": 0,
+				"duration": 0,
+				"buy_cost": [ 30, 30, 30, 30 ],
+				"buy_all_cost": [ 110, 90, 60, 30 ],
+				"friends": [ 0, 0, 0, 0 ],
+				"num_workers": 4
+			},
+			"4": {
+				"id": 4,
+				"icon": "viralRecruitment",
+				"rewarded": 0,
+				"starts_at": 0,
+				"duration": 0,
+				"buy_cost": [ 30, 30, 30, 30 ],
+				"buy_all_cost": [ 110, 90, 60, 30 ],
+				"friends": [ 0, 0, 0, 0 ],
+				"num_workers": 4
+			},
+			"5": {
+				"id": 5,
+				"icon": "viralRecruitment",
+				"rewarded": 0,
+				"starts_at": 0,
+				"duration": 0,
+				"buy_cost": [ 30, 30, 30, 30 ],
+				"buy_all_cost": [ 110, 90, 60, 30 ],
+				"friends": [ 0, 0, 0, 0 ],
+				"num_workers": 4
 			}
-		]
+		}
 	},
 	{
 		"_TITLE": "Nerroth - Disable tournament",
