@@ -83,6 +83,15 @@ _sb_lut = {
 	"ts":				"timeStampTemple",
 }
 
+# hell forge quests
+_forge_quests = [
+	"100000051",
+	"100000052",
+	"100000053",
+	"100000054",
+	"100000055"
+]
+
 SELL_DIVISOR = 1.0 / 20.0 # sell divisor (divides by 20 in game for 5% sell value, negative so we refund)
 SPEEDUP_COST_PER_HOUR = 1
 FRIENDS_ASSIST_DIVISOR = 1.0 / 4.0
@@ -819,6 +828,9 @@ def event_recruit_friend(player, friend_uid):
 			continue
 
 		data["friends"].append(friend_uid)
+
+def is_forge_quest(quest_id):
+	return str(quest_id) in _forge_quests
 
 def register_bought_unit(player, item_id, town_id = 0):
 	item_id = int(item_id)

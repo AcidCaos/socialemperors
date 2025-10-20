@@ -852,8 +852,9 @@ def cmd_start_quest(player, cmd, args, gameversion):
 	ts_now = timestamp_now()
 	_map = player["maps"][town_id]
 
-	_map["questTimes"][str(quest_id)] = ts_now
-	_map["lastQuestTimes"].append(ts_now)
+	if not is_forge_quest(quest_id):
+		_map["questTimes"][str(quest_id)] = ts_now
+		_map["lastQuestTimes"].append(ts_now)
 
 	return True
 
@@ -868,13 +869,11 @@ def cmd_end_quest(player, cmd, args, gameversion):
 	quest_id = data["quest_id"]
 	next_index = None
 	set_unlocked_index = False
-	forge_quest = False
+	forge_quest = is_forge_quest(quest_id)
 	if "set_unlocked_index" in data:
 		set_unlocked_index = data["set_unlocked_index"] == 1
-	try:
-		next_index = get_quest_index(quest_id) + 1
-	except:
-		forge_quest = True
+		if not forge_quest:
+			next_index = get_quest_index(quest_id) + 1
 
 	win = False
 	if "win" in data:
