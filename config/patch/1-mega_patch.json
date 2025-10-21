@@ -668,6 +668,99 @@
 		]
 	},
 	{
+		"_TITLE": "Nerroth/Neutral/AcidCaos - Soul Mixer",
+		"op": "add",
+		"path": "/items/-",
+		"value": {
+			"id": "1529",
+			"in_store": "1",
+			"name": "Soul Mixer",
+			"type": "b",
+			"cost": "100",
+			"cost_type": "c",
+			"xp": "500",
+			"groups": "",
+			"trains": "0",
+			"upgrades_to": "0",
+			"display_order": "2",
+			"activation": "0",
+			"expiration": "0",
+			"collect": "0",
+			"collect_type": "g",
+			"collect_xp": "0",
+			"category_id": "1",
+			"subcategory_id": "13",
+			"subcat_functional": "139",
+			"min_level": "8",
+			"width": "4",
+			"height": "4",
+			"max_frame": "2",
+			"giftable": "0",
+			"img_name": "1529_soulMixer",
+			"elevation": "4",
+			"unit_capacity": "2",
+			"attack": "0",
+			"defense": "1",
+			"life": "5000",
+			"velocity": "0",
+			"attack_range": "0",
+			"attack_interval": "0",
+			"new_item": "1",
+			"population": "0",
+			"gift_level": "1",
+			"cost_unit_cash": "0",
+			"race": "h",
+			"flying": "0",
+			"protect": "0",
+			"potion": "1",
+			"achievement": "0",
+			"achievement_desc": "",
+			"units_limit": "1",
+			"store_groups": "",
+			"store_level": "0",
+			"size": "0",
+			"show_on_mobile": "1",
+			"show_on_mobile_store": "0",
+			"only_mobile": "0",
+			"iphone_adjustments": ""
+		}
+	},
+	{
+		"op": "add",
+		"path": "/globals/SOUL_MIXER_POWERUPS_LEVELS",
+		"value": [
+			{
+				"cash_cost": 1,
+				"order_increment": 1
+			},
+			{
+				"cash_cost": 2,
+				"order_increment": 2
+			},
+			{
+				"cash_cost": 4,
+				"order_increment": 4
+			},
+			{
+				"cash_cost": 8,
+				"order_increment": 8
+			},
+			{
+				"cash_cost": 15,
+				"order_increment": 15
+			},
+			{
+				"cash_cost": 20,
+				"order_increment": 20
+			}
+		]
+	},
+	{
+		"op": "add",
+		"path": "/globals/SOUL_MIXER_MIN_LEVEL",
+		"value": 4
+	},
+	{
 		"_TITLE": "Nerroth - Hell's Forge Island Fixes - TODO: move to some event system later",
 		"op": "add",
 		"path": "/collect_game",
@@ -1250,12 +1343,12 @@
 		"value": {
 			"2":
 			{
-				"text": "LEVEL_UP_TIP_2",
+				"text": "LEVELUP_TIP_2",
 				"image": ""
 			},
 			"4":
 			{
-				"text": "LEVEL_UP_TIP_4",
+				"text": "LEVELUP_TIP_SOULMIXER",
 				"image": ""
 			},
 			"6":
@@ -1265,7 +1358,7 @@
 			},
 			"8":
 			{
-				"text": "LEVELUP_TIP_SOULMIXER",
+				"text": "LEVELUP_TIP_4",
 				"image": ""
 			},
 			"10":
@@ -1613,36 +1706,6 @@
 		]
 	},
 	{
-		"op": "add",
-		"path": "/globals/SOUL_MIXER_POWERUPS_LEVELS",
-		"value": [
-			{
-				"cash_cost": 1,
-				"order_increment": 1
-			},
-			{
-				"cash_cost": 2,
-				"order_increment": 2
-			},
-			{
-				"cash_cost": 4,
-				"order_increment": 4
-			},
-			{
-				"cash_cost": 8,
-				"order_increment": 8
-			},
-			{
-				"cash_cost": 15,
-				"order_increment": 15
-			},
-			{
-				"cash_cost": 20,
-				"order_increment": 20
-			}
-		]
-	},
-	{
 		"_TITLE": "Nerroth - Unit fixes patch'",
 		"op": "add",
 		"path": "/items/-",
@@ -1700,64 +1763,7 @@
 			"iphone_adjustments": ""
 		}
 	},
-	{
-		"op": "add",
-		"path": "/items/-",
-		"value": {
-			"id": "1529",
-			"in_store": "1",
-			"name": "Soul Mixer",
-			"type": "b",
-			"cost": "2000",
-			"cost_type": "g",
-			"xp": "200",
-			"groups": "",
-			"trains": "0",
-			"upgrades_to": "0",
-			"display_order": "2",
-			"activation": "0",
-			"expiration": "0",
-			"collect": "0",
-			"collect_type": "g",
-			"collect_xp": "0",
-			"category_id": "1",
-			"subcategory_id": "13",
-			"subcat_functional": "139",
-			"min_level": "8",
-			"width": "4",
-			"height": "4",
-			"max_frame": "2",
-			"giftable": "0",
-			"img_name": "1529_soulMixer",
-			"elevation": "4",
-			"unit_capacity": "2",
-			"attack": "0",
-			"defense": "1",
-			"life": "5000",
-			"velocity": "0",
-			"attack_range": "0",
-			"attack_interval": "0",
-			"new_item": "1",
-			"population": "0",
-			"gift_level": "1",
-			"cost_unit_cash": "0",
-			"race": "h",
-			"flying": "0",
-			"protect": "0",
-			"potion": "1",
-			"achievement": "0",
-			"achievement_desc": "",
-			"units_limit": "1",
-			"store_groups": "",
-			"store_level": "0",
-			"size": "0",
-			"show_on_mobile": "1",
-			"show_on_mobile_store": "0",
-			"only_mobile": "0",
-			"iphone_adjustments": ""
-		}
-	},
-	{
+		{
 		"_TITLE": "[Neutral] - Unit Collection patch'",
 		"op": "replace",
 		"path": "/units_collections_categories",
@@ -1881,7 +1887,16 @@
 			"119":	{ "category_id": 119,	"category_lang_id": 10096,	"units": [2079, 2080, 2152],				"rewards": 2022,	"cost": 150,	"costs": null,						"position": 605 },
 			"120":	{ "category_id": 120,	"category_lang_id": 10097,	"units": [2085, 2086, 2167, 2235],			"rewards": 2022,	"cost": 150,	"costs": null,						"position": 610 },
 			"121":	{ "category_id": 121,	"category_lang_id": 10098,	"units": [2093, 2094, 2236, 2160],			"rewards": 2022,	"cost": 150,	"costs": null,						"position": 615 },
-			"122":	{ "category_id": 122,	"category_lang_id": 10099,	"units": [2089, 2090, 2156, 2162],			"rewards": 2022,	"cost": 150,	"costs": null,						"position": 620 }
+			"122":	{ "category_id": 122,	"category_lang_id": 10099,	"units": [2089, 2090, 2156, 2162],			"rewards": 2022,	"cost": 150,	"costs": null,						"position": 620 },
+
+			"123":	{ "category_id": 123,	"category_lang_id": 10100,	"units": [2244, 2245, 2246],				"rewards": 2022,	"cost": 150,	"costs": null,						"position": 625 },
+			"124":	{ "category_id": 124,	"category_lang_id": 10101,	"units": [2247, 2248, 2249],				"rewards": 2022,	"cost": 150,	"costs": null,						"position": 630 },
+			"125":	{ "category_id": 125,	"category_lang_id": 10102,	"units": [2250, 2251, 2252],				"rewards": 2022,	"cost": 150,	"costs": null,						"position": 635 },
+			"126":	{ "category_id": 126,	"category_lang_id": 1074,	"units": [606, 607],						"rewards": 2022,	"cost": 150,	"costs": null,						"position": 640 },
+			"127":	{ "category_id": 127,	"category_lang_id": 10103,	"units": [2256, 2257, 2258],				"rewards": 2022,	"cost": 150,	"costs": null,						"position": 645 },
+			"128":	{ "category_id": 128,	"category_lang_id": 10104,	"units": [2259, 2260, 2261],				"rewards": 2022,	"cost": 150,	"costs": null,						"position": 650 },
+			"129":	{ "category_id": 129,	"category_lang_id": 10105,	"units": [2269, 2271, 2272, 2274],			"rewards": 2022,	"cost": 150,	"costs": null,						"position": 655 },
+			"130":	{ "category_id": 130,	"category_lang_id": 10106,	"units": [2275, 2276, 2277],				"rewards": 2022,	"cost": 150,	"costs": null,						"position": 660 }
 		}
 	}
 ]
