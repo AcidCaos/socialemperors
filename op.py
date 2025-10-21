@@ -355,6 +355,14 @@ def cmd_pop_queue_unit(player, cmd, args, gameversion):
 		return False
 	unit_id = result[0]
 	is_soulmixer = result[1]
+
+	if not is_soulmixer:
+		item = get_item_from_id(unit_id)
+		if not item:
+			return False
+
+		add_map_currency(_map, "xp", int(item["xp"]))
+
 	map_add_item(_map, unit_id, ux, uy)
 
 	register_bought_unit(player, unit_id, town_id)
