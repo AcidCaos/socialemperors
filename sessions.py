@@ -5,6 +5,7 @@ import shutil
 import uuid
 import random
 import logging
+import re
 from flask import session
 # from flask_session import SqlAlchemySessionInterface, current_app
 
@@ -306,6 +307,19 @@ def new_village(username, skip_tutorial, draggy = None):
 	save_session(USERID)
 	log.info("Done.")
 	return USERID
+
+def check_player_name(playername):
+	if len(playername) < 3 or len(playername) > 16:
+		return redirect("/")
+
+	name = playername.strip()
+	valid = re.match(r'^[A-Za-z0-9 ]+', name)
+	if not valid:
+		return { "ok": False, "msg": "Player Name be between 3 - 16 characters and contain only letters and numbers" }
+	if valid.group() != name or len(name) < 3:
+		return { "ok": False, "msg": "Player Name must be between 3 - 16 characters and contain only letters and numbers" }
+
+	return { "ok": True }
 
 # Access functions
 def set_unit_pack_state(userid, randoms):

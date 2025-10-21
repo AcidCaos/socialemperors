@@ -2,7 +2,6 @@ import os
 import json
 import urllib
 import logging
-import re
 
 from flask import Flask, render_template, send_from_directory, request, redirect
 from flask import session as flasksession
@@ -121,15 +120,18 @@ def new_player_register():
 	do_logout()
 
 	#log.info("request: "+json.dumps(request.values, indent='\t'))
-	user = request.values["username"][:16]
+
+	result = check_player_name(request.values["playername"])
+	if not result["ok"]:
+		# TODO: show msg to user
+		#log.info(result["msg"])
+		return redirect("/reg")
+
+	playername = request.values["playername"].strip()
 	skiptutorial = 0
 	if "skiptutorial" in request.values:
 		skiptutorial = request.values["skiptutorial"] == "skiptutorial"
 	starting_draggy = request.values["STARTING_DRAGGY"]
-	result = bool(re.fullmatch(r'[A-Za-z0-9]+', user))
-
-	if not result:
-		return redirect("/reg")
 
 	flasksession['GAMEVERSION'] = request.form['GAMEVERSION']
 	flasksession['RUNNER'] = request.form['RUNNER']
@@ -137,7 +139,7 @@ def new_player_register():
 	if "0926" not in flasksession['GAMEVERSION']:
 		skiptutorial = 1
 
-	flasksession['USERID'] = new_village(user, skiptutorial, starting_draggy)
+	flasksession['USERID'] = new_village(playername, skiptutorial, starting_draggy)
 
 	if flasksession['RUNNER'] == "RUFFLE":
 		return redirect("/play/ruffle")
