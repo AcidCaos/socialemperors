@@ -175,7 +175,7 @@ def play():
 	GAMEVERSION = flasksession['GAMEVERSION']
 	log.info(f"[PLAY] USERID={USERID}, GAMEVERSION={GAMEVERSION}")
 
-	return render_template("play.html", save_info=save_info(USERID), serverTime=timestamp_now(), friendsInfo=fb_friends_str(USERID), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host, PORT=port)
+	return render_template("play.html", save_info=save_info(USERID, True), serverTime=timestamp_now(), friendsInfo=fb_friends_str(USERID), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host, PORT=port)
 
 @app.route("/play/ruffle")
 def ruffle():
@@ -194,7 +194,7 @@ def ruffle():
 	
 	log.info(f"[RUFFLE] USERID={USERID}, GAMEVERSION={GAMEVERSION}")
 
-	return render_template("ruffle.html", save_info=save_info(USERID), serverTime=timestamp_now(), friendsInfo=fb_friends_str(USERID), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host, PORT=port)
+	return render_template("ruffle.html", save_info=save_info(USERID, True), serverTime=timestamp_now(), friendsInfo=fb_friends_str(USERID), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host, PORT=port)
 
 
 @app.route("/new")

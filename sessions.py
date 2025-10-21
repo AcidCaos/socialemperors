@@ -596,16 +596,17 @@ def all_userid():
 	"Returns a list of the USERID of every village."
 	return list(__villages.keys()) + list(__saves.keys())
 
-def save_info(USERID: str):
+def save_info(USERID, is_login = False):
 	save = __saves[USERID]
 	migrate_loaded_save(save)
 	default_map = int(save["playerInfo"]["default_map"])
 	last_ts = save["playerInfo"]["last_logged_in"]
 
 	# don't know why but alerts aren't sending otherwise
-	if "_pvp_alert" in save["playerInfo"]:
-		del save["playerInfo"]["_pvp_alert"]
-		last_ts = 0
+	if is_login:
+		if "_pvp_alert" in save["playerInfo"]:
+			del save["playerInfo"]["_pvp_alert"]
+			last_ts = 0
 
 	return {
 		"userid": str(save["playerInfo"]["pid"]), 
