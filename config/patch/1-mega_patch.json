@@ -768,7 +768,7 @@
 	{
 		"op": "add",
 		"path": "/globals/SOUL_MIXER_MIN_LEVEL",
-		"value": 4
+		"value": 8
 	},
 	{
 		"_TITLE": "Nerroth - Hell's Forge Island Fixes - TODO: move to some event system later",
@@ -1358,7 +1358,7 @@
 			},
 			"4":
 			{
-				"text": "LEVELUP_TIP_SOULMIXER",
+				"text": "LEVELUP_TIP_4",
 				"image": ""
 			},
 			"6":
@@ -1368,7 +1368,7 @@
 			},
 			"8":
 			{
-				"text": "LEVELUP_TIP_4",
+				"text": "LEVELUP_TIP_SOULMIXER",
 				"image": ""
 			},
 			"10":
