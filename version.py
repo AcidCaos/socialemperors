@@ -6,7 +6,7 @@ log = logging.getLogger('__main__')
 # grab server settings
 from server_config import get_server_config
 
-from engine import timestamp_now, spaghetti_resurrected_units, hire_friends, autohire_ignore_buildings
+from engine import timestamp_now, spaghetti_resurrected_units, hire_friends, autohire_ignore_buildings, ROUND_TABLE
 from get_game_config import *
 
 version_name = "nerroth rewrite - beyond 0.04a"
@@ -238,6 +238,14 @@ def _fix_events():
 		}
 		idx += 1
 	return events
+
+def _reset_roundtable(items):
+	for item in items:
+		if item[0] == ROUND_TABLE:
+			if "sif" not in item[7]:
+				log.info("Fixed round table")
+				item[7]["sif"] = {}
+				item[7]["si"] = []
 
 def migrate_loaded_save(save):
 	# Migration always happens now, we check the data type this time and insert any new data if necessary
