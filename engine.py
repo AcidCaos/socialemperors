@@ -115,6 +115,7 @@ HELLFORGE_INVITE_ITEM = 5
 
 map_cost_multiple = [ "coins", "wood", "food", "stone" ]
 allies_market_resources = [ "n", "g", "w", "f", "s" ]
+autohire_ignore_buildings = [ 234, 266, 361 ]
 
 def get_nest(nest_type):
 	if nest_type in _nest_lut:
@@ -143,8 +144,8 @@ def map_add_item(map, item, x, y, orientation = 0, timestamp = None, attr = None
 	si_info = get_si_info(item_int)
 	
 	if si_info:
-		if item_int == 266:
-			# no auto hire for allies market
+		if item_int in autohire_ignore_buildings:
+			# no auto hire for specific buildings
 			attr["si"] = []
 		else:
 			if userid:
@@ -676,7 +677,10 @@ def push_si(item, friend):
 def finish_si(item):
 	if "si" not in item[7]:
 		return
-	del item[7]["si"]
+	if item[0] in autohire_ignore_buildings:
+		item[7]["si"] = []
+	else:
+		del item[7]["si"]
 
 def give_levelup_reward(player, map, level):
 	reward_type = level["reward_type"]

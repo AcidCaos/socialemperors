@@ -6,7 +6,7 @@ log = logging.getLogger('__main__')
 # grab server settings
 from server_config import get_server_config
 
-from engine import timestamp_now, spaghetti_resurrected_units, hire_friends
+from engine import timestamp_now, spaghetti_resurrected_units, hire_friends, autohire_ignore_buildings
 from get_game_config import *
 
 version_name = "nerroth rewrite - beyond 0.04a"
@@ -423,7 +423,7 @@ def _check_si(userid, item):
 		return
 
 	# no auto hire for allies market, get neighbour assists instead
-	if item[0] != 266:
+	if item[0] not in autohire_ignore_buildings:
 		item[7]["si"] = hire_friends(userid, si_info, item[0] == 470)
 
 def check_animals(save):
