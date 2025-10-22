@@ -86,6 +86,8 @@ commands = {
 	"time_ff":							cmd_tm_use_packet,
 	# great church --------------------------------------------------------------------------------------------
 	"increase_population":				cmd_increase_population,
+	# allies market -------------------------------------------------------------------------------------------
+	"set_resource_allies":				cmd_set_resource_allies,
 	# dragon nest ---------------------------------------------------------------------------------------------
 	"activate_dragon":					cmd_activate_dragon,
 	"desactivate_dragon":				cmd_deactivate_dragon,

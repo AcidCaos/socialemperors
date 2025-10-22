@@ -1487,6 +1487,21 @@ def cmd_increase_population(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_set_resource_allies(player, cmd, args, gameversion):
+	# resource, bx, by, town_id, bitem_id
+	resource = args[0]
+	bx = args[1]
+	by = args[2]
+	town_id = args[3]
+	bitem_id = args[4]
+
+	_map = player["maps"][town_id]
+	item = map_get_item(_map, bx, by, bitem_id)
+	if len(item) <= 0:
+		return False
+
+	return set_allies_market_resource(_map, item[0], resource)
+
 def cmd_activate_dragon(player, cmd, args, gameversion):
 	return _cmd_activate_nest(player, cmd, args, gameversion, "dragon")
 

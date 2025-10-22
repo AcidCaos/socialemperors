@@ -555,6 +555,7 @@ def assist_neighbor(userid, town_id, assists, assistant_id):
 		receivedAssists = _map["receivedAssists"]
 		receivedAssists[assistant_id] = assists
 		event_recruit_friend(save, assistant_id) # also fill slot for any active events
+		buildings_recruit_friend(save, assistant_id)
 
 		save_target_session(userid, save, session_type)
 

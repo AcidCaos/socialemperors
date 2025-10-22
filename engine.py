@@ -113,7 +113,8 @@ MARKET_AMOUNT_TRADE = [
 ]
 HELLFORGE_INVITE_ITEM = 5
 
-map_cost_multiple = ["coins", "wood", "food", "stone"]
+map_cost_multiple = [ "coins", "wood", "food", "stone" ]
+allies_market_resources = [ "n", "g", "w", "f", "s" ]
 
 def get_nest(nest_type):
 	if nest_type in _nest_lut:
@@ -137,15 +138,23 @@ def map_add_item(map, item, x, y, orientation = 0, timestamp = None, attr = None
 	if not timestamp:
 		timestamp = timestamp_now()
 
-	si_info = get_si_info(int(item))
+	item_int = int(item)
+
+	si_info = get_si_info(item_int)
+	
 	if si_info:
-		if userid:
-			attr["si"] = hire_friends(userid, si_info, int(item) == 470)
+		if item_int == 266:
+			# no auto hire for allies market
+			attr["si"] = []
 		else:
-			if int(item) == 470:
-				attr["si"] = []
+			if userid:
+					attr["si"] = hire_friends(userid, si_info, item_int == 470)
 			else:
-				attr["si"] = [ 1 ]
+				if item_int == 470:
+					# great church
+					attr["si"] = []
+				else:
+					attr["si"] = [ "0" ]
 
 	map["items"].append([item, x, y, orientation, timestamp, level, store, attr])
 
@@ -211,6 +220,15 @@ def building_activate(item, toggle):
 	else:
 		item[4] = timestamp_now()
 		del item[7]["cp"]
+
+def set_allies_market_resource(map, item, resource):
+	if resource not in allies_market_resources:
+		return False
+
+	map["resourceAlliesMarket"] = resource
+	item[4] = timestamp_now()
+	item[7]["si"] = []
+	return True
 
 def building_collect(player, _map, item, vills = 1, res_multiplier = 1.0):
 	item_id = item[0]
@@ -847,6 +865,13 @@ def event_recruit_friend(player, friend_uid):
 			continue
 
 		data["friends"].append(friend_uid)
+
+def buildings_recruit_friend(player, friend_uid):
+	for map in player["maps"]:
+		for item in map["items"]:
+			if "si" in item[7]:
+				if friend_uid not in item[7]["si"]:
+					item[7]["si"].append(friend_uid)
 
 def is_forge_quest(quest_id):
 	return str(quest_id) in _forge_quests

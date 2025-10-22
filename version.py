@@ -278,6 +278,7 @@ def migrate_loaded_save(save):
 		fix_variable(_map, "timestampLastTrade", 0)
 		fix_variable(_map, "numTradesDone", 0)
 		fix_variable(_map, "store", {})
+		fix_variable(_map, "resourceAlliesMarket", "n")
 
 	# darts rng seed if missing
 	fix_variable(privateState, "dartsRandomSeed", darts_seed)
@@ -421,7 +422,9 @@ def _check_si(userid, item):
 	if not si_info:
 		return
 
-	item[7]["si"] = hire_friends(userid, si_info, item[0] == 470)
+	# no auto hire for allies market, get neighbour assists instead
+	if item[0] != 266:
+		item[7]["si"] = hire_friends(userid, si_info, item[0] == 470)
 
 def check_animals(save):
 	animal_data = get_animals()
