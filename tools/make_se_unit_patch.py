@@ -432,10 +432,14 @@ def make_final(config, patch, sm_patch):
 	# enable golden hall upgrade
 	modify_item_upgrade(items, 141, 412)			# town hall 4
 	modify_item_xp(items, 412, 3000)				# golden hall
-	modify_item_price(items, 412, 150000, "all")	# golden hall
-	modify_item_barrack(items, 412, 500)			# golden hall
-	modify_item_attack(items, 412, 20)				# golden hall
-	modify_item_attack_range(items, 412, 8)			# golden hall
+	modify_item_price(items, 412, 150000, "all")
+	modify_item_barrack(items, 412, 500)
+	modify_item_attack(items, 412, 20)
+	modify_item_attack_range(items, 412, 8)
+
+	# necro king barracks fixes - based on imperial elf gryphon data
+	modify_item_price(items, 1329, 30, "c")			# necro king barracks
+	modify_item_price(items, 806, 6800, "g")		# necro king
 
 	# build final patch
 	final = []
