@@ -870,6 +870,9 @@ def buildings_recruit_friend(player, friend_uid):
 	for map in player["maps"]:
 		for item in map["items"]:
 			if "si" in item[7]:
+				if item[0] == 266:
+					if map["resourceAlliesMarket"] == "n":
+						continue
 				if friend_uid not in item[7]["si"]:
 					item[7]["si"].append(friend_uid)
 
