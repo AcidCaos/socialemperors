@@ -194,10 +194,14 @@ def cmd_collect_new(player, cmd, args, gameversion):
 
 def cmd_buy_si_help(player, cmd, args, gameversion):
 	# bx, by, town_id, bitem_id
+	# bx, by, town_id, bitem_id, no_cash == 1
 	bx = args[0]
 	by = args[1]
 	town_id = args[2]
 	bitem_id = args[3]
+	no_cash = False
+	if len(args) > 4:
+		no_cash = args[4] == 1
 
 	_map = player["maps"][town_id]
 	item = map_get_item(_map, bx, by, bitem_id)
@@ -208,8 +212,9 @@ def cmd_buy_si_help(player, cmd, args, gameversion):
 	si_info = get_si_info(int(bitem_id))
 	if not si_info:
 		return False
-	if not pay_cash(player, si_info["worker_cost"]):
-		return False
+	if not no_cash:
+		if not pay_cash(player, si_info["worker_cost"]):
+			return False
 
 	push_si(item[0], "0")
 
