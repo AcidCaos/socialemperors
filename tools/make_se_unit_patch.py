@@ -363,6 +363,24 @@ def modify_item_barrack(items, item_id, train_item_id):
 	name = item["name"]
 	print(f"set barracks training unit for {name}")
 
+def modify_item_attack(items, item_id, attack):
+	item = get_item(items, item_id)
+	if not item:
+		return
+	
+	item["attack"] = str(attack)
+	name = item["name"]
+	print(f"set attack power for {name}")
+
+def modify_item_attack_range(items, item_id, attack_range):
+	item = get_item(items, item_id)
+	if not item:
+		return
+	
+	item["attack_range"] = str(attack_range)
+	name = item["name"]
+	print(f"set attack range for {name}")
+
 def make_final(config, patch, sm_patch):
 	print(f"applying phase 1 patch...")
 	jsonpatch.apply_patch(config, patch, in_place = True)
@@ -422,6 +440,8 @@ def make_final(config, patch, sm_patch):
 	modify_item_xp(items, 412, 3000)				# golden hall
 	modify_item_price(items, 412, 150000, "all")	# golden hall
 	modify_item_barrack(items, 412, 500)			# golden hall
+	modify_item_attack(items, 412, 20)				# golden hall
+	modify_item_attack_range(items, 412, 8)			# golden hall
 
 	# build final patch
 	final = []
