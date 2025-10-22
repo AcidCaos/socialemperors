@@ -388,11 +388,11 @@ def graph_fb(path):
 	avatar = get_target_pic(uid)
 
 	if not avatar:
-		return ("", 404)
+		return send_from_directory(TEMPLATES_DIR, "img/profile/default.jpg")
 
 	pic = image_cache(avatar, uid)
 	if not pic:
-		return ("", 404)
+		return send_from_directory(TEMPLATES_DIR, "img/profile/default.jpg")
 	
 	return send_from_directory(CACHE_DIR, pic)
 

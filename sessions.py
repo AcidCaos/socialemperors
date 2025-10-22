@@ -652,7 +652,7 @@ def neighbor_session(USERID: str):
 
 def fb_friends_str(USERID: str):
 	DELETE_ME = [{"uid": "1111", "pic_square":"http://127.0.0.1:5050/img/profile/Paladin_Justiciero.jpg"},
-		{"uid": "aa_002", "pic_square":"/1025.png"}]
+		{"uid": "aa_002", "pic_square":"/default.jpg"}]
 	friends = []
 	# static villages
 	for key in __villages:
@@ -667,7 +667,7 @@ def fb_friends_str(USERID: str):
 		frie["first_name"] = vill["playerInfo"]["name"]
 		frie["name"] = vill["playerInfo"]["name"]
 		frie["pic_square"] = vill["playerInfo"]["pic"]
-		if not frie["pic_square"]: frie["pic_square"] = "/img/profile/1025.png"
+		if not frie["pic_square"]: frie["pic_square"] = "/img/profile/default.jpg"
 		friends += [frie]
 	# Friends
 	for key in __friend_info:
@@ -688,7 +688,7 @@ def fb_friends_str(USERID: str):
 		frie["first_name"] = vill["playerInfo"]["name"]
 		frie["pic_square"] = vill["playerInfo"]["pic"]
 		frie["name"] = vill["playerInfo"]["name"]
-		if not frie["pic_square"]: frie["pic_square"] = "/img/profile/1025.png"
+		if not frie["pic_square"]: frie["pic_square"] = "/img/profile/default.jpg"
 		friends += [frie]
 
 	return friends
