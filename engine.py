@@ -115,7 +115,8 @@ HELLFORGE_INVITE_ITEM = 5
 
 map_cost_multiple = [ "coins", "wood", "food", "stone" ]
 allies_market_resources = [ "n", "g", "w", "f", "s" ]
-autohire_ignore_buildings = [ 234, 266, 361 ]
+autohire_ignore_buildings = [ 234, 266, 352, 361, 389 ]
+allies_market_ids = [ 266, 352 ]
 
 def get_nest(nest_type):
 	if nest_type in _nest_lut:
@@ -674,13 +675,24 @@ def push_si(item, friend):
 		return
 	item[7]["si"].append(str(friend))
 
-def finish_si(item):
+def finish_si(player, map, item):
 	if "si" not in item[7]:
 		return
 	if item[0] in autohire_ignore_buildings:
+		if item[0] in allies_market_ids:
+			collect_allies_market(player, map, len(item[7]["si"]))
+
 		item[7]["si"] = []
 	else:
 		del item[7]["si"]
+
+def collect_allies_market(player, map, num_friends):
+	resource_type = map["resourceAlliesMarket"]
+	cfg_globals = get_game_config()["globals"]
+	initial = cfg_globals["ALLIES_MARKET_INITIAL_COLLECT"][resource_type]
+	incremental = cfg_globals["ALLIES_MARKET_INCREMENTAL_COLLECT"][resource_type]
+
+	give_resource_type(player, map, resource_type, initial + incremental * num_friends)
 
 def give_levelup_reward(player, map, level):
 	reward_type = level["reward_type"]

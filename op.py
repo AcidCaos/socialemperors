@@ -168,7 +168,7 @@ def cmd_activate(player, cmd, args, gameversion):
 
 def cmd_collect_new(player, cmd, args, gameversion):
 	# bx, by, town_id, bitem_id, num_vills, resource_multipler, cash_spent
-	# bx, by, town_id, bitem_id
+	# bx, by, town_id, bitem_id -> for round table
 	bx = args[0]
 	by = args[1]
 	town_id = args[2]
@@ -190,6 +190,7 @@ def cmd_collect_new(player, cmd, args, gameversion):
 
 		return building_collect(player, _map, item[0], vills, res_multiplier)
 	else:
+		
 		return False
 
 def cmd_buy_si_help(player, cmd, args, gameversion):
@@ -233,7 +234,7 @@ def cmd_finish_si(player, cmd, args, gameversion):
 	if len(item) <= 0:
 		return False
 
-	finish_si(item[0])
+	finish_si(player, _map, item[0])
 
 	return True
 
