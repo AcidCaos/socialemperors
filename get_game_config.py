@@ -18,6 +18,9 @@ __rotation = json.load(open(os.path.join(CONFIG_DIR, "shop_rotation.json"), 'r',
 __shop_rotation_refresh = None
 __animals = {}
 
+# grab server settings
+from server_config import get_server_config
+
 # Since we use mega patches now, better to make sure any old patches don't load as they will load after and will mess things up!
 patch_ignore = [ 
 	"dragon_boss_fix",
@@ -155,7 +158,9 @@ def apply_shop_rotation(ts, refresh = False):
 
 	_rng = random.getstate()
 
-	seconds_interval = int(__rotation["rotation_hours"] * 3600)
+	__settings = get_server_config()["shop"]
+
+	seconds_interval = int(__settings["rotation_hours"] * 3600)
 	seed = ts // seconds_interval
 	next_expiration_ts = (seed + 1) * seconds_interval
 	next_expiration_date = ts_to_date(next_expiration_ts)
@@ -167,14 +172,14 @@ def apply_shop_rotation(ts, refresh = False):
 	log.info(f" * Shop: Limited Items will expire on {next_expiration_date}")
 
 	# halloween settings
-	spooktober = __rotation["spooktober"]
+	spooktober = __settings["spooktober"]
 	now = datetime.datetime.today()
 	is_spooktober = now.month == 10 and now.day == 31
 
 	factions = __rotation["factions"]
 
-	if __rotation["full_random"]:
-		max_items = __rotation["max_items_full_random"]
+	if __settings["full_random"]:
+		max_items = __settings["max_items_full_random"]
 
 		all_items = []
 		for name in factions:
@@ -213,7 +218,7 @@ def apply_shop_rotation(ts, refresh = False):
 			# Remove halloween from rotation, it's always picked for halloween anyway
 			faction_names.remove("Halloween")
 		
-		max_factions = min(__rotation["max_factions"], len(faction_names))
+		max_factions = min(__settings["max_factions"], len(faction_names))
 		chosen = []
 
 		if spooktober and is_spooktober:
@@ -235,8 +240,8 @@ def apply_shop_rotation(ts, refresh = False):
 
 				item["in_store"] = "1"
 				
-	if "always_enabled" in __rotation:
-		force_enable = __rotation["always_enabled"]
+	if "always_enabled" in __settings:
+		force_enable = __settings["always_enabled"]
 		for name in force_enable:
 			if name in factions:
 				log.info(f" * Shop: FORCE-ENABLED Faction {name}!")
@@ -248,6 +253,9 @@ def apply_shop_rotation(ts, refresh = False):
 					item["in_store"] = "1"
 
 	random.setstate(_rng)
+
+def apply_server_config():
+	__game_config["globals"]["PVP_TIMER_SECONDS"] = int(get_server_config()["pvp"]["time_limit_minutes"] * 60)
 
 def apply_patches():
 	log.info(" [+] Applying config patches...")
@@ -312,6 +320,7 @@ apply_mods()
 check_unit_packs()
 apply_shop_rotation(_ts)
 apply_events(_ts)
+apply_server_config()
 grab_animals()
 
 # access functions

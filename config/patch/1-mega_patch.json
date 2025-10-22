@@ -22,6 +22,16 @@
 	},
 	{
 		"op": "add",
+		"path": "/globals/HONOR_POINT_QUEST_LOSE",
+		"value": 0
+	},
+	{
+		"op": "add",
+		"path": "/globals/HONOR_POINT_HELP_FRIEND",
+		"value": 1
+	},
+	{
+		"op": "add",
 		"path": "/globals/QUEST_GOLD_REWARD",
 		"value": {
 			"QUEST_ISLA_TROLLS_1":		{ "g": 4500 },
@@ -1498,6 +1508,7 @@
 		"path": "/globals/TOURNAMENT_ACTIVATED",
 		"value": 0
 	},
+
 	{
 		"_TITLE": "Nerroth - PVP Fixes",
 		"op": "add",
@@ -1689,6 +1700,27 @@
 		"op": "add",
 		"path": "/globals/GRAVEYARD_MAX_CAPACITY",
 		"value": 10000
+	},
+	{
+		"_TITLE": "Nerroth/Neutral - Misc config globals",
+		"op": "add",
+		"path": "/globals/HONOR_POINT_HELP_FRIEND",
+		"value": 1
+	},
+	{
+		"op": "add",
+		"path": "/globals/KOMPU_MIN_LEVEL",
+		"value": 10
+	},
+	{
+		"op": "add",
+		"path": "/globals/KOMPU_WIZZARD_COSTS",
+		"value": [ 0, 15000, 20 ]
+	},
+	{
+		"op": "add",
+		"path": "/globals/CHAINED_PACK_TRACKING",
+		"value": ""
 	},
 	{
 		"_TITLE": "AcidCaos - Goal not working fixes - 1.1.5+",

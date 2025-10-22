@@ -140,13 +140,7 @@ def make_shop_rotation(items, csv, filename):
 		factions[faction].append(int(int(entry[0])))
 
 	rotation = {
-		"rotation_hours": 48,
-		"max_factions": 2,
-		"max_items_full_random": 80,
-		"full_random": False,
-		"spooktober": True,
 		"factions": factions,
-		"always_enabled": []
 	}
 
 	with open(filename, 'w') as f:

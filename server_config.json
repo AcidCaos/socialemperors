@@ -12,12 +12,25 @@
 		"shield_allow_original_bug":		true,
 		"resource_stealing_enabled":		true,
 		"resource_regeneration_hours":		48,
+		"time_limit_minutes":				7,
 		"search": 
 		{
 			"max_attempts":					2200,
 			"attempts_before_expanding":	200,
 			"level_range":					10
 		}
+	},
+	"shop":
+	{
+		"rotation_hours":					48,
+		"max_factions":						2,
+		"max_items_full_random":			80,
+		"full_random":						false,
+		"spooktober":						true,
+		"always_enabled": 
+		[
+
+		]
 	},
 	"misc": 
 	{
