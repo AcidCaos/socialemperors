@@ -895,6 +895,7 @@ def cmd_end_quest(player, cmd, args, gameversion):
 
 	_map = player["maps"][town_id]
 
+	cfg_globals = get_game_config()["globals"]
 	if win:
 		#if set_unlocked_index == 1:
 		# if we won then unlock next quest
@@ -907,7 +908,6 @@ def cmd_end_quest(player, cmd, args, gameversion):
 
 		# if we won, also set quest rank and add honor points
 		rank = privateState["questsRank"][str(quest_id)]
-		cfg_globals = get_game_config()["globals"]
 		honor_points = 0
 		if rank == None:
 			rank = 0
@@ -918,6 +918,8 @@ def cmd_end_quest(player, cmd, args, gameversion):
 			
 		privateState["questsRank"][str(quest_id)] = max(difficulty, rank)
 		player["playerInfo"]["honor_points"] += honor_points
+	else:
+		player["playerInfo"]["honor_points"] += cfg_globals["HONOR_POINT_QUEST_LOSE"]
 
 	# give player gold and xp
 	add_map_currency(_map, "coins", resources["g"])
@@ -1407,6 +1409,10 @@ def cmd_assist_neighbor_new(player, cmd, args, gameversion):
 
 	privateState = player["privateState"]
 	privateState["neighborAssists"][userid] = timestamp_now()
+	
+	if len(assists) >= 5:
+		cfg_globals = get_game_config()["globals"]
+		player["playerInfo"]["honor_points"] += cfg_globals["HONOR_POINT_HELP_FRIEND"]
 
 	return True
 
