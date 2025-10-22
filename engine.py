@@ -113,6 +113,8 @@ MARKET_AMOUNT_TRADE = [
 ]
 HELLFORGE_INVITE_ITEM = 5
 
+map_cost_multiple = ["coins", "wood", "food", "stone"]
+
 def get_nest(nest_type):
 	if nest_type in _nest_lut:
 		return _nest_lut[nest_type]
@@ -624,6 +626,19 @@ def pay_map_currency(map, currency, amount):
 
 	map[currency] -= int(amount)
 	return True
+
+def add_map_mulitple(map, amount):
+	for cost_type in map_cost_multiple:
+		map[cost_type] += amount
+
+def pay_map_multiple(map, amount):
+	for cost_type in map_cost_multiple:
+		if map[cost_type] < int(amount):
+			return False
+
+	for cost_type in map_cost_multiple:
+		map[cost_type] -= int(amount)
+	return True
 	
 def add_potions(player, amount = 1):
 	player["privateState"]["potion"] += amount
@@ -666,6 +681,8 @@ def give_resource_type(player, map, resource, amount):
 		player["privateState"]["mana"] += amount
 	elif resource == "p":
 		player["privateState"]["potion"] += amount
+	elif resource == "all":
+		add_map_mulitple(map, amount)
 
 def pay_resource_type(player, map, resource, amount):
 	if resource == "w":
@@ -682,6 +699,8 @@ def pay_resource_type(player, map, resource, amount):
 		return pay_mana(player, amount)
 	elif resource == "p":
 		return pay_potions(player, amount)
+	elif resource == "all":
+		return pay_map_multiple(map, amount)
 	return False
 
 def sb_offer_unit(player, map, item_id):

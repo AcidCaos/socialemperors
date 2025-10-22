@@ -345,6 +345,24 @@ def modify_item_xp(items, item_id, xp):
 	name = item["name"]
 	print(f"adjusted xp of {name}")
 
+def modify_item_upgrade(items, item_id, upgrade_item_id):
+	item = get_item(items, item_id)
+	if not item:
+		return
+	
+	item["upgrades_to"] = str(upgrade_item_id)
+	name = item["name"]
+	print(f"set upgrade for {name}")
+	
+def modify_item_barrack(items, item_id, train_item_id):
+	item = get_item(items, item_id)
+	if not item:
+		return
+	
+	item["trains"] = str(train_item_id)
+	name = item["name"]
+	print(f"set barracks training unit for {name}")
+
 def make_final(config, patch, sm_patch):
 	print(f"applying phase 1 patch...")
 	jsonpatch.apply_patch(config, patch, in_place = True)
@@ -398,6 +416,12 @@ def make_final(config, patch, sm_patch):
 	modify_item_xp(items, 125, 70)				# unused soldier statues
 	modify_item_xp(items, 127, 70)				# unused soldier statues
 	modify_item_xp(items, 1233, 0)				# dragon breeding nest
+
+	# enable golden hall upgrade
+	modify_item_upgrade(items, 141, 412)			# town hall 4
+	modify_item_xp(items, 412, 3000)				# golden hall
+	modify_item_price(items, 412, 150000, "all")	# golden hall
+	modify_item_barrack(items, 412, 500)			# golden hall
 
 	# build final patch
 	final = []
