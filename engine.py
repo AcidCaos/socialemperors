@@ -115,8 +115,18 @@ HELLFORGE_INVITE_ITEM = 5
 
 map_cost_multiple = [ "coins", "wood", "food", "stone" ]
 allies_market_resources = [ "n", "g", "w", "f", "s" ]
-autohire_ignore_buildings = [ 234, 266, 352, 361, 389 ]
-allies_market_ids = [ 266, 352 ]
+ROUND_TABLE = get_game_config()["globals"]["ROUND_TABLE"]
+autohire_ignore_buildings = [
+	ROUND_TABLE,
+	get_game_config()["globals"]["ALLIES_BUILDING"],
+	361, # allies building for trolls
+	get_game_config()["globals"]["ALLIES_MARKET"],
+	get_game_config()["globals"]["ALLIES_MARKET_TROLLS"]
+]
+allies_market_ids = [ 
+	get_game_config()["globals"]["ALLIES_MARKET"], 
+	get_game_config()["globals"]["ALLIES_MARKET_TROLLS"]
+]
 
 def get_nest(nest_type):
 	if nest_type in _nest_lut:
@@ -148,6 +158,8 @@ def map_add_item(map, item, x, y, orientation = 0, timestamp = None, attr = None
 		if item_int in autohire_ignore_buildings:
 			# no auto hire for specific buildings
 			attr["si"] = []
+			if item_int == ROUND_TABLE:
+				attr["sif"] = {}
 		else:
 			if userid:
 					attr["si"] = hire_friends(userid, si_info, item_int == 470)
@@ -681,10 +693,22 @@ def finish_si(player, map, item):
 	if item[0] in autohire_ignore_buildings:
 		if item[0] in allies_market_ids:
 			collect_allies_market(player, map, len(item[7]["si"]))
+		if item[0] == ROUND_TABLE:
+			item[7]["sif"] = {}
 
 		item[7]["si"] = []
 	else:
 		del item[7]["si"]
+
+def roundtable_ask_help(item, friend_uid):
+	if "sif" not in item[7]:
+		item[7]["sif"] = {}
+
+	if friend_uid in item[7]["sif"]:
+		return False
+
+	item[7]["sif"][friend_uid] = timestamp_now()
+	return True
 
 def collect_allies_market(player, map, num_friends):
 	resource_type = map["resourceAlliesMarket"]
@@ -886,8 +910,13 @@ def buildings_recruit_friend(player, friend_uid):
 	for map in player["maps"]:
 		for item in map["items"]:
 			if "si" in item[7]:
-				if item[0] == 266:
+				if item[0] in allies_market_ids:
 					if map["resourceAlliesMarket"] == "n":
+						continue
+				if item[0] == ROUND_TABLE:
+					if "sif" not in item[7]:
+						continue
+					if friend_uid not in item[7]["sif"]:
 						continue
 				if friend_uid not in item[7]["si"]:
 					item[7]["si"].append(friend_uid)

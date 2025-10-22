@@ -88,6 +88,8 @@ commands = {
 	"increase_population":				cmd_increase_population,
 	# allies market -------------------------------------------------------------------------------------------
 	"set_resource_allies":				cmd_set_resource_allies,
+	# round table ---------------------------------------------------------------------------------------------
+	"assist_send_feed":					cmd_roundtable_ask_help,
 	# dragon nest ---------------------------------------------------------------------------------------------
 	"activate_dragon":					cmd_activate_dragon,
 	"desactivate_dragon":				cmd_deactivate_dragon,

@@ -173,7 +173,7 @@ def cmd_collect_new(player, cmd, args, gameversion):
 	by = args[1]
 	town_id = args[2]
 	bitem_id = args[3]
-	if len(args) >= 4:
+	if len(args) > 4:
 		vills = args[4]
 		res_multiplier = args[5]
 		cash_spent = args[6]
@@ -190,8 +190,13 @@ def cmd_collect_new(player, cmd, args, gameversion):
 
 		return building_collect(player, _map, item[0], vills, res_multiplier)
 	else:
-		
-		return False
+		# round table
+		_map = player["maps"][town_id]
+		item = map_get_item(_map, bx, by, bitem_id)
+		if len(item) <= 0:
+			return False
+
+		return building_collect(player, _map, item[0], 0, 0)
 
 def cmd_buy_si_help(player, cmd, args, gameversion):
 	# bx, by, town_id, bitem_id
@@ -221,18 +226,50 @@ def cmd_buy_si_help(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_finish_si(player, cmd, args, gameversion):
-	# bx, by, town_id, bitem_id
+def cmd_roundtable_ask_help(player, cmd, args, gameversion):
+	# bx, by, town_id, bitem_id, friend_uid
 	bx = args[0]
 	by = args[1]
 	town_id = args[2]
 	bitem_id = args[3]
+	friend_uid = args[4]
 
 	_map = player["maps"][town_id]
 	item = map_get_item(_map, bx, by, bitem_id)
 
 	if len(item) <= 0:
 		return False
+
+	return roundtable_ask_help(item[0], friend_uid)
+
+def cmd_finish_si(player, cmd, args, gameversion):
+	# bx, by, town_id, bitem_id
+	# bx, by, town_id, bitem_id, gold, xp, hero -> round table
+	bx = args[0]
+	by = args[1]
+	town_id = args[2]
+	bitem_id = args[3]
+	gold = 0
+	xp = 0
+	hero = 0
+
+	if len(args) > 4:
+		gold = args[4]
+		xp = args[5]
+		hero = args[6]
+
+	_map = player["maps"][town_id]
+	item = map_get_item(_map, bx, by, bitem_id)
+
+	if len(item) <= 0:
+		return False
+
+	if gold > 0:
+		add_map_currency(_map, "coins", gold)
+	if xp > 0:
+		add_map_currency(_map, "xp", xp)
+	if hero > 0:
+		add_store_item(_map, hero)
 
 	finish_si(player, _map, item[0])
 
