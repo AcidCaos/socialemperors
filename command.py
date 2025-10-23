@@ -148,7 +148,7 @@ commands = {
 	# quests, tournament --------------------------------------------------------------------------------------
 	"set_attack_team":					cmd_set_attack_team,
 	"start_quest":						cmd_start_quest,
-	"start_quest_new":					cmd_nop,
+	"start_quest_new":					cmd_start_quest_new,
 	"end_quest":						cmd_end_quest,
 	# pvp -----------------------------------------------------------------------------------------------------
 	"buy_shield":						cmd_buy_shield,

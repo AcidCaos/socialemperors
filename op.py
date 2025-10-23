@@ -942,7 +942,11 @@ def cmd_start_quest(player, cmd, args, gameversion):
 
 	if not is_forge_quest(quest_id):
 		_map["questTimes"][str(quest_id)] = ts_now
-		_map["lastQuestTimes"].append(ts_now)
+
+	return True
+
+def cmd_start_quest_new(player, cmd, args, gameversion):
+	_map["lastQuestTimes"].append(timestamp_now())
 
 	return True
 
