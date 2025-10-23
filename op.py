@@ -270,6 +270,7 @@ def cmd_finish_si(player, cmd, args, gameversion):
 		add_map_currency(_map, "xp", xp)
 	if hero > 0:
 		add_store_item(_map, hero)
+		register_bought_unit(player, hero, town_id)
 
 	finish_si(player, _map, item[0])
 
