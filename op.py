@@ -53,6 +53,33 @@ def cmd_buy(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_buy_cash(player, cmd, args, gameversion):
+	# item_id, x, y, orientation, town_id
+	item_id = args[0]
+	x = args[1]
+	y = args[2]
+	orientation = args[3]
+	town_id = args[4]
+
+	_map = player["maps"][town_id]
+
+	item = get_item_from_id(item_id)
+	if not item:
+		return False
+
+	cfg_globals = get_game_config()["globals"]
+	if item_id not in cfg_globals["HEROES"]:
+		return False
+
+	if not pay_cash(player, int(item["cost_unit_cash"])):
+		return False
+
+	add_map_currency(_map, "xp", int(item["xp"]))
+	map_add_item(_map, item_id, x, y, orientation = orientation, userid = player["playerInfo"]["pid"])
+	register_bought_unit(player, item_id, town_id)
+
+	return True
+
 def cmd_move(player, cmd, args, gameversion):
 	# x1, y1, item_id, x2, y2, orientation, town_id, reason
 	# reason varies from  "Unitat", "moveTo", "colisio", "MouseUsed"
@@ -595,8 +622,9 @@ def cmd_resurrect_hero(player, cmd, args, gameversion):
 	y = args[2]
 	town_id = args[3]
 	used_potion = False
-	if len(args) >= 4:
+	if len(args) > 4:
 		used_potion = args[4]
+	_map = player["maps"][town_id]
 
 	if used_potion:
 		item = get_item_from_id(item_id)
@@ -608,15 +636,23 @@ def cmd_resurrect_hero(player, cmd, args, gameversion):
 			return False
 		if not pay_potions(player, potion_price):
 			return False
+
+		graveyard_remove(player, item_id)
 	else:
-		log.info("cmd_resurrect_hero EDGE CASE NOT IMPLEMENTED!")
-		return False
-		# TODO: resurrected a dead hero instead? idk
+		item = get_item_from_id(item_id)
+		if not item:
+			return False
 
-	_map = player["maps"][town_id]
+		# TODO: COST
+		gold_price = int(int(item["cost_unit_cash"]) * RESURRECT_MULTIPLIER)
+		if not pay_map_currency(_map, "coins", gold_price):
+			return False
+
+		graveyard_remove_hero(player, item_id)
+
+	
 	map_add_item(_map, item_id, x, y)
-	graveyard_remove(player, item_id)
-
+	
 	register_bought_unit(player, item_id, town_id)
 
 	return True

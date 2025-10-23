@@ -112,6 +112,7 @@ MARKET_AMOUNT_TRADE = [
 	300
 ]
 HELLFORGE_INVITE_ITEM = 5
+RESURRECT_MULTIPLIER = 500
 
 map_cost_multiple = [ "coins", "wood", "food", "stone" ]
 allies_market_resources = [ "n", "g", "w", "f", "s" ]
@@ -448,70 +449,35 @@ def try_push_graveyard(player, item_id, amount = 1):
 		return False
 	
 	if item_id in resurrectable_heroes:
-		graveyard_set(player, item_id, 1)
+		graveyard_add_hero(player, item_id)
 		return True
 
 	graveyard_add(player, item_id)
 	return True
 
-# I hate SP's cringe implementation, why is there 2 different variables between game versions
-# what kind of bullshit system is this!?
-def graveyard_set(player, item_id, amount):
-	resunits = player["privateState"]["resurrectableUnits"]
-
-	while item_id in resunits:
-		resunits.remove(item_id)
-	while amount > 0:
-		_graveyard_add(player, item_id)
-
-	spaghetti_dead_heroes(player["privateState"], resunits)
-
 def graveyard_add(player, item_id):
-	_graveyard_add(player, item_id)
-
-	spaghetti_dead_heroes(player["privateState"], resunits = player["privateState"]["resurrectableUnits"])
-
-def _graveyard_add(player, item_id):
 	resunits = player["privateState"]["resurrectableUnits"]
-
-	# no way to expand graveyard capacity
-	# do not use
-
-	# # respect the damn cap
-	# if len(resunits) >= player["privateState"]["graveyardCapacity"]:
-	# 	return
-
 	resunits.append(item_id)
 
 def graveyard_remove(player, item_id):
 	resunits = player["privateState"]["resurrectableUnits"]
 	resunits.remove(item_id)
 
-	spaghetti_dead_heroes(player["privateState"], resunits)
+def graveyard_add_hero(player, item_id):
+	dead = player["privateState"]["deadHeroes"]
+	if str(item_id) in dead:
+		dead[str(item_id)] += 1
+	else:
+		dead[str(item_id)] = 1
 
-def spaghetti_dead_heroes(privateState, resunits):
-	# I hate this, I really hate this!
-	cringe = {}
+def graveyard_remove_hero(player, item_id):
+	dead = player["privateState"]["deadHeroes"]
+	if str(item_id) not in dead:
+		return
 
-	for more_cringe in resunits:
-		if str(more_cringe) not in cringe:
-			cringe[str(more_cringe)] = 1
-		else:
-			cringe[str(more_cringe)] += 1
-
-	privateState["deadHeroes"] = cringe
-
-def spaghetti_resurrected_units(privateState, deadunits):
-	# even more cringe, amazing
-	cringe = []
-
-	for more_cringe in deadunits:
-		super_cringe = deadunits[more_cringe]
-		while super_cringe > 0:
-			cringe.append(int(more_cringe))
-			super_cringe -= 1
-
-	privateState["resurrectableUnits"] = cringe
+	dead[str(item_id)] -= 1
+	if dead[str(item_id)] <= 0:
+		del dead[str(item_id)]
 
 def player_lose_item(player, map, item_id, amount, push_graveyard = True):
 	items = map_get_items_of_id(map, item_id)

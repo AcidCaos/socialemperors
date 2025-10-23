@@ -39,6 +39,7 @@ commands = {
 	"ping":								cmd_ping,
 	# map item placement --------------------------------------------------------------------------------------
 	"buy":								cmd_buy,
+	"buy_cash":							cmd_buy_cash,
 	"move":								cmd_move,
 	"orient":							cmd_orient,
 	"sell":								cmd_sell,

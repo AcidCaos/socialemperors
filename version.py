@@ -6,7 +6,7 @@ log = logging.getLogger('__main__')
 # grab server settings
 from server_config import get_server_config
 
-from engine import timestamp_now, spaghetti_resurrected_units, hire_friends, autohire_ignore_buildings, ROUND_TABLE
+from engine import timestamp_now, hire_friends, autohire_ignore_buildings, ROUND_TABLE, resurrectable_heroes
 from get_game_config import *
 
 version_name = "nerroth rewrite - beyond 0.04a"
@@ -247,6 +247,20 @@ def _reset_roundtable(items):
 				item[7]["sif"] = {}
 				item[7]["si"] = []
 
+def _reset_graveyard(privateState):
+	privateState["deadHeroes"] = {}
+	privateState["resurrectableUnits"] = []
+
+def _clean_graveyard(privateState):
+	dead = privateState["deadHeroes"]
+	clean = []
+	for item_id in dead:
+		if int(item_id) not in resurrectable_heroes:
+			clean.append(item_id)
+	for item_id in clean:
+		del dead[item_id]
+		log.info(f"Cleaned non hero unit ID={item_id} from graveyard")
+
 def migrate_loaded_save(save):
 	# Migration always happens now, we check the data type this time and insert any new data if necessary
 	# This should make sure the save file isn't "half fixed"
@@ -326,10 +340,12 @@ def migrate_loaded_save(save):
 	if len(privateState["collectionsCompleted"]) == 0:
 		fix_collections_completed(privateState)						# oopsie daisy
 
-	# SP's spaghetti is annoying
-	fix_variable(privateState, "deadHeroes", {})					# graveyard old version
-	if fix_variable(privateState, "resurrectableUnits", []):		# graveyard new version
-		spaghetti_resurrected_units(privateState, privateState["deadHeroes"])
+	# dead units - SP butchered this, say goodbye to 0.9.26b graveyard support
+	#				all because one "smart" person at SP decided to ruin
+	#				the implementation in a later version of the game
+	fix_variable(privateState, "deadHeroes", {})					# heroes grave
+	fix_variable(privateState, "resurrectableUnits", [])			# graveyard new version
+	#_clean_graveyard(privateState)
 
 	# survival arena
 	fix_variable(privateState, "survivalVidaTimeStamp", [])
@@ -389,6 +405,10 @@ def migrate_loaded_save(save):
 		_fix_map_items(maps)
 		_fix_level_mana(maps[0], privateState)
 		privateState["monsterNestActive"] = 1
+
+		# reset graveyard because this is important
+		_graveyard_reset(privateState)
+
 		save.pop("version")
 
 	return True
