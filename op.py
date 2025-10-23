@@ -946,6 +946,10 @@ def cmd_start_quest(player, cmd, args, gameversion):
 	return True
 
 def cmd_start_quest_new(player, cmd, args, gameversion):
+	# no support for other town IDs, sad :(
+	town_id = 0
+	_map = player["maps"][town_id]
+
 	_map["lastQuestTimes"].append(timestamp_now())
 
 	return True
