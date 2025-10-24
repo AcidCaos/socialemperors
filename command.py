@@ -161,7 +161,7 @@ commands = {
 	"trade_resource_b":					cmd_market_trade_resource,
 	# shop ----------------------------------------------------------------------------------------------------
 	"buy_super_offer_pack":				cmd_buy_super_offer_pack,
-	"buy_offer_pack":					NOT_IMPLEMENTED,
+	"buy_offer_pack":					cmd_buy_offer_pack,
 	# unit packs ----------------------------------------------------------------------------------------------
 	"buy_unit_pack":					cmd_buy_unit_pack,
 	"store_add_items":					cmd_store_add_items,

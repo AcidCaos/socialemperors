@@ -1204,8 +1204,6 @@ def cmd_buy_super_offer_pack(player, cmd, args, gameversion):
 	items = args[2]
 	cost = args[3]
 
-	_map = player["maps"][town_id]
-
 	items = items.split(",")
 	pack = get_offer_pack_id(pack_id)
 
@@ -1232,6 +1230,8 @@ def cmd_buy_super_offer_pack(player, cmd, args, gameversion):
 	if not pay_cash(player, cost):
 		return False
 
+	_map = player["maps"][town_id]
+
 	add_map_currency(_map, "coins", pack["gold"])
 	add_map_currency(_map, "food", pack["food"])
 	add_map_currency(_map, "wood", pack["wood"])
@@ -1240,8 +1240,38 @@ def cmd_buy_super_offer_pack(player, cmd, args, gameversion):
 	add_mana(player, pack["mana"])
 
 	for item_id in items:
-		add_gift_item(player, item_id)
+		add_store_item(_map, item_id)
 		register_bought_unit(player, item_id, town_id)
+
+	return True
+
+def cmd_buy_offer_pack(player, cmd, args, gameversion):
+	# town_id, pack_id
+	town_id = args[0]
+	pack_id = args[1]
+
+	pack = get_offer_pack_id(pack_id)
+
+	if not pack:
+		return False
+	if pack["enabled"] == 0:
+		return False
+
+	if not pay_cash(player, pack["cost_cash"]):
+		return False
+
+	_map = player["maps"][town_id]
+
+	for item_id in pack["items"]:
+		add_store_item(_map, item_id)
+		register_bought_unit(player, item_id, town_id)
+
+	add_map_currency(_map, "coins", pack["gold"])
+	add_map_currency(_map, "food", pack["food"])
+	add_map_currency(_map, "wood", pack["wood"])
+	add_map_currency(_map, "stone", pack["stone"])
+	add_map_currency(_map, "xp", pack["xp"])
+	add_mana(player, pack["mana"])
 
 	return True
 

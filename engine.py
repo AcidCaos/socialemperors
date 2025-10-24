@@ -420,6 +420,8 @@ def remove_store_item(map, item, quantity = 1):
 			map["store"][itemstr] = new_quantity
 
 def add_gift_item(player, item, quantity = 1):
+	# DO NOT USE, THIS IS ONLY FOR WHEN PLAYERS SEND EACHOTHER GIFTS
+	# USE ADD_STORE_ITEM()
 	itemstr = str(item)
 	if itemstr not in player["privateState"]["gifts"]:
 		player["privateState"]["gifts"][itemstr] = quantity
@@ -427,6 +429,8 @@ def add_gift_item(player, item, quantity = 1):
 		player["privateState"]["gifts"][itemstr] += quantity
 
 def remove_gift_item(player, item, quantity = 1):
+	# DO NOT USE, THIS IS ONLY FOR WHEN PLAYERS SEND EACHOTHER GIFTS
+	# USE REMOVE_STORE_ITEM()
 	itemstr = str(item)
 	if itemstr in player["privateState"]["gifts"]:
 		new_quantity = player["privateState"]["gifts"][itemstr] - quantity
