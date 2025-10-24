@@ -6,6 +6,10 @@ log = logging.getLogger('__main__')
 # grab server settings
 from server_config import get_server_config
 
+banned_items = []
+if "banned_items" in get_server_config()["misc"]:
+	banned_items = get_server_config()["misc"]["banned_items"]
+
 from engine import timestamp_now, hire_friends, autohire_ignore_buildings, ROUND_TABLE, resurrectable_heroes
 from get_game_config import *
 
@@ -261,6 +265,69 @@ def _clean_graveyard(privateState):
 		del dead[item_id]
 		log.info(f"Cleaned non hero unit ID={item_id} from graveyard")
 
+def _remove_banned_units(player, item_ids):
+	name = player["playerInfo"]["name"]
+
+	log.info(f" * Checking banned items for {name}")
+
+	maps = player["maps"]
+	
+	# gifts storage
+	gifts = player["privateState"]["gifts"]
+	for it in item_ids:
+		item_str = str(it)
+		if item_str in gifts:
+			del gifts[item_str]
+			item_data = get_item_from_id(it)
+			i_id = item[0]
+			i_name = item_data["name"]
+			log.info(f" * Removed banned unit [{i_id}] {i_name} from player gifts!")
+
+	# map
+	for map in maps:
+		# map storage
+		store = map["store"]
+		for it in item_ids:
+			item_str = str(it)
+			if item_str in store:
+				del store[item_str]
+				item_data = get_item_from_id(it)
+				i_id = item[0]
+				i_name = item_data["name"]
+				log.info(f" * Removed banned unit [{i_id}] {i_name} from map storage!")
+
+		# warehouse storage
+		warehouse = map["warehousedUnits"]
+		for it in item_ids:
+			item_str = str(it)
+			if item_str in warehouse:
+				del warehouse[item_str]
+				item_data = get_item_from_id(it)
+				i_id = item[0]
+				i_name = item_data["name"]
+				log.info(f" * Removed banned unit [{i_id}] {i_name} from map warehouse!")
+
+		# map items
+		to_remove = []
+		map_items = map["items"]
+		for item in map_items:
+			if item[0] in item_ids:
+				to_remove.append(item)
+			
+			# item in item
+			for it in item_ids:
+				while it in item[6]:
+					item[6].remove(it)
+		
+		for item in to_remove:
+			item_data = get_item_from_id(item[0])
+			i_id = item[0]
+			i_name = item_data["name"]
+			log.info(f" * Removed banned unit [{i_id}] {i_name} from map items!")
+			map_items.remove(item)
+
+
+
 def migrate_loaded_save(save):
 	# Migration always happens now, we check the data type this time and insert any new data if necessary
 	# This should make sure the save file isn't "half fixed"
@@ -410,6 +477,10 @@ def migrate_loaded_save(save):
 		_reset_graveyard(privateState)
 
 		save.pop("version")
+
+	# remove any banned items
+	if len(banned_items) > 0:
+		_remove_banned_units(save, banned_items)
 
 	return True
 

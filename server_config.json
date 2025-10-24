@@ -35,7 +35,8 @@
 	"misc": 
 	{
 		"quests_reset_hours":				6,
-		"graveyard_max_slots":				10000
+		"graveyard_max_slots":				10000,
+		"banned_items":						[]
 	},
 	"events": 
 	[
