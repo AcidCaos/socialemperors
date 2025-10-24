@@ -514,7 +514,7 @@ def get_public_player_info_response():
 	if not player:
 		return ("", 404)
 
-	town_id = get_default_town_id(player)
+	town_id = get_default_town_id(player, flasksession["GAMEVERSION"])
 	playerInfo = player["playerInfo"]
 	_map = player["maps"][town_id]
 	privateState = player["privateState"]
