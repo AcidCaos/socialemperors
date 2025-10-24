@@ -363,7 +363,7 @@ def cmd_push_queue_unit(player, cmd, args, gameversion):
 		not_soulmixer = args[5]
 
 	# no support for other town IDs, sad :(
-	town_id = 0
+	town_id = get_default_town_id(player)
 	_map = player["maps"][town_id]
 
 	building = map_get_item(_map, bx, by)
@@ -414,7 +414,7 @@ def cmd_pop_queue_unit(player, cmd, args, gameversion):
 	bitem_id = args[3]
 
 	# no support for other town IDs, sad :(
-	town_id = 0
+	town_id = get_default_town_id(player)
 	_map = player["maps"][town_id]
 
 	building = player_get_item_with_bq(player, bq)
@@ -446,7 +446,7 @@ def cmd_unqueue_unit(player, cmd, args, gameversion):
 	bitem_id = args[1]
 
 	# no support for other town IDs, sad :(
-	town_id = 0
+	town_id = get_default_town_id(player)
 	_map = player["maps"][town_id]
 
 	building = player_get_item_with_bq(player, bq)
@@ -881,7 +881,7 @@ def cmd_rt_level_up(player, cmd, args, gameversion):
 	level_now = int(args[0])
 
 	# no support for other town IDs, sad :(
-	town_id = 0
+	town_id = get_default_town_id(player)
 	_map = player["maps"][town_id]
 	level_old = _map["level"]
 
@@ -908,7 +908,7 @@ def cmd_rt_publish_score(player, cmd, args, gameversion):
 	xp_now = int(args[0])
 
 	# no support for other town IDs, sad :(
-	town_id = 0
+	town_id = get_default_town_id(player)
 	_map = player["maps"][town_id]
 
 	_map["xp"] = xp_now
@@ -947,7 +947,7 @@ def cmd_start_quest(player, cmd, args, gameversion):
 
 def cmd_start_quest_new(player, cmd, args, gameversion):
 	# no support for other town IDs, sad :(
-	town_id = 0
+	town_id = get_default_town_id(player)
 	_map = player["maps"][town_id]
 
 	_map["lastQuestTimes"].append(timestamp_now())
@@ -1032,7 +1032,7 @@ def cmd_buy_shield(player, cmd, args, gameversion):
 	shield_id = args[0]
 
 	# no support for other town IDs, sad :(
-	town_id = 0
+	town_id = get_default_town_id(player)
 	_map = player["maps"][town_id]
 	privateState = player["privateState"]
 
@@ -1098,7 +1098,7 @@ def cmd_pvp_get_enemy_new(player, cmd, args, gameversion):
 	searches = args[1]
 
 	# no support for other town IDs, sad :(
-	town_id = 0
+	town_id = get_default_town_id(player)
 	_map = player["maps"][town_id]
 
 	if not pay_map_currency(_map, "coins", cost):
@@ -1134,7 +1134,7 @@ def cmd_pvp_end_attack_new(player, cmd, args, gameversion):
 	#	return False
 
 	# no support for other town IDs, sad :(
-	town_id = 0
+	town_id = get_default_town_id(player)
 	_map = player["maps"][town_id]
 
 	add_map_currency(_map, "coins", gold)
@@ -1289,7 +1289,7 @@ def cmd_buy_unit_pack(player, cmd, args, gameversion):
 		return True
 
 	# no support for other town IDs, sad :(
-	town_id = 0
+	town_id = get_default_town_id(player)
 	_map = player["maps"][town_id]
 
 	# if n is between >= 2 and < 8, apply 10% discount (* 0.9)
@@ -1345,7 +1345,7 @@ def cmd_store_add_items(player, cmd, args, gameversion):
 	items = json.loads(args[0])
 
 	# no support for other town IDs, sad :(
-	town_id = 0
+	town_id = get_default_town_id(player)
 	_map = player["maps"][town_id]
 
 	for item_id in items:
@@ -1413,7 +1413,7 @@ def cmd_finish_collection(player, cmd, args, gameversion):
 		finished.append(collection_id)
 
 	# no support for other town IDs, sad :(
-	town_id = 0
+	town_id = get_default_town_id(player)
 	_map = player["maps"][town_id]
 
 	add_store_item(_map, reward)
@@ -1661,7 +1661,7 @@ def _cmd_activate_nest(player, cmd, args, gameversion, nest_type):
 	resource = str(args[0])
 
 	# no support for other town IDs, sad :(
-	town_id = 0
+	town_id = get_default_town_id(player)
 	_map = player["maps"][town_id]
 
 	nest = get_nest(nest_type)
@@ -1836,7 +1836,7 @@ def cmd_sb_next_step(player, cmd, args, gameversion):
 	step_id = int(args[1])
 
 	# no support for other town IDs, sad :(
-	town_id = 0
+	town_id = get_default_town_id(player)
 	_map = player["maps"][town_id]
 
 	if len(offering) != 1:

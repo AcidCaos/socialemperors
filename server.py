@@ -62,7 +62,7 @@ load_saved_villages()
 log.info(" [+] Loading server...")
 
 from command import command
-from engine import timestamp_now
+from engine import timestamp_now, get_default_town_id
 from version import version_name, quest_ids, survival_arenas
 from constants import Constant
 from server_hmac import construct_hash_and_payload, check_hmac
@@ -514,7 +514,7 @@ def get_public_player_info_response():
 	if not player:
 		return ("", 404)
 
-	town_id = 0
+	town_id = get_default_town_id(player)
 	playerInfo = player["playerInfo"]
 	_map = player["maps"][town_id]
 	privateState = player["privateState"]
