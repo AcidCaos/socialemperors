@@ -496,7 +496,9 @@ def player_fast_forward(player, seconds, time_machine = False):
 	maps = player["maps"]
 	privateState = player["privateState"]
 
+	# stuff in maps
 	for map in maps:
+		# quests
 		questTimes = map["questTimes"]
 		for quest in questTimes:
 			modify_ts(questTimes, quest, -seconds)
@@ -507,15 +509,29 @@ def player_fast_forward(player, seconds, time_machine = False):
 			modify_ts_array(lastQuestTimes, idx, -seconds)
 			idx -= 1
 
+		# item timestamps
 		for item in map["items"]:
 			modify_ts_array(item, 4, -seconds)
 
-	privateState["kompuLastTimeStamp"] = max(0, privateState["kompuLastTimeStamp"] - seconds)
-	privateState["timestampLastBonus"] = max(0, privateState["timestampLastBonus"] - seconds)
-	privateState["timeStampHeavySiegePeriod"] = max(0, privateState["timeStampHeavySiegePeriod"] - seconds)
-	privateState["timeStampHeavySiegeAttack"] = max(0, privateState["timeStampHeavySiegeAttack"] - seconds)
-	privateState["timeStampDartsReset"] = max(0, privateState["timeStampDartsReset"] - seconds)
-	privateState["timeStampDartsNewFree"] = max(0, privateState["timeStampDartsNewFree"] - seconds)
+			if item[0] == ROUND_TABLE:
+				if "sif" in item[7]:
+					sif = item[7]["sif"]
+					for user in sif:
+						modify_ts(sif, user, -seconds)
+
+		# market
+		modify_ts(map, "timestampLastTrade", -seconds)
+
+		# ? (probably 0.9.26b stuff)
+		modify_ts(map, "timestampLastTreasure", -seconds)
+
+	# privateState stuff
+	modify_ts(privateState, "kompuLastTimeStamp", -seconds)
+	modify_ts(privateState, "timestampLastBonus", -seconds)
+	modify_ts(privateState, "timeStampHeavySiegePeriod", -seconds)
+	modify_ts(privateState, "timeStampHeavySiegeAttack", -seconds)
+	modify_ts(privateState, "timeStampDartsReset", -seconds)
+	modify_ts(privateState, "timeStampDartsNewFree", -seconds)
 
 	# nests, rider, supreme bahamut
 	for n in _nest_lut:
@@ -523,11 +539,16 @@ def player_fast_forward(player, seconds, time_machine = False):
 		modify_ts(privateState, nest["ts"], -seconds)
 	modify_ts(privateState, _rider_lut["ts"], -seconds)
 	modify_ts(privateState, _sb_lut["ts"], -seconds)
-
-	# shields
+	
 	if not time_machine:
+		# shields
 		modify_ts(privateState, "shieldEndTime", -seconds)
 		modify_ts(privateState, "shieldCooldown", -seconds)
+
+		# neighbour assists
+		assists = privateState["neighborAssists"]
+		for user in assists:
+			modify_ts(assists, user, -seconds)
 
 	# survival arena
 	survivalVidaTimeStamp = privateState["survivalVidaTimeStamp"]
@@ -546,6 +567,12 @@ def player_fast_forward(player, seconds, time_machine = False):
 	for queue in barracksQueues:
 		q = barracksQueues[queue]
 		modify_ts(q, "ts", -seconds)
+
+	# events
+	collect_game = privateState["collectGame"]
+	for it in collect_game:
+		item = collect_game[it]
+		modify_ts(item, "counter", -seconds)
 
 def warehouse_add(map, item):
 	item_id = str(item[0])
