@@ -407,7 +407,7 @@ def migrate_loaded_save(save):
 		privateState["monsterNestActive"] = 1
 
 		# reset graveyard because this is important
-		_graveyard_reset(privateState)
+		_reset_graveyard(privateState)
 
 		save.pop("version")
 
