@@ -220,6 +220,10 @@ async def images(path):
 async def css(path):
 	return send_from_directory(TEMPLATES_DIR + "/css", path)
 
+@app.route("/js/<path:path>")
+async def js(path):
+	return send_from_directory(TEMPLATES_DIR + "/js", path)
+
 ## GAME STATIC
 
 
@@ -380,6 +384,15 @@ async def pvp_end():
 	pvp_modify_victim(data, 0)
 
 	return ("", 200)
+
+@app.route("/pvp/ranking", methods=['GET'])
+async def pvp_ranking():
+	if 'USERID' not in flasksession:
+		return redirect("/")
+	if 'GAMEVERSION' not in flasksession:
+		return redirect("/")
+
+	return render_template("pvp_ranking.html", version=version_name, player_rank=pvp_get_ranks());
 
 # graph.facebook.com reroute
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/graph.facebook.com/<path:path>", methods=['GET'])

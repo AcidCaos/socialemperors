@@ -637,6 +637,22 @@ def all_saves_info():
 		saves_info.append(save_info(userid))
 	return list(saves_info)
 
+def pvp_get_ranks():
+	ranks = []
+	for userid in all_saves_userid():
+		info = session(userid)["playerInfo"]
+		ranks.append({
+			# "avatar": info["pic"] if info["pic"] != "" else None,
+			"name": info["name"],
+			"honor": info["honor_points"],
+			"w": info["attacks_won"],
+			"l": info["attacks_lost"]
+		})
+
+	ranks.sort(key=lambda x: x["honor"], reverse=True)
+
+	return ranks
+
 def session(USERID: str):
 	assert(isinstance(USERID, str))
 	return __saves[USERID] if USERID in __saves else None
