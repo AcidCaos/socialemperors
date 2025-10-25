@@ -1,2 +1,2 @@
-flask
+flask[async]
 jsonpatch

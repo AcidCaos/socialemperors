@@ -2,6 +2,7 @@ import os
 import json
 import urllib
 import logging
+import asyncio
 
 from flask import Flask, render_template, send_from_directory, request, redirect
 from flask import session as flasksession
@@ -82,7 +83,7 @@ def do_logout():
 	flasksession.pop('RUNNER', default=None)
 
 @app.route("/", methods=['GET', 'POST'])
-def login():
+async def login():
 	do_logout()
 
 	# Reload saves. Allows saves modification without server reset
@@ -111,12 +112,12 @@ def login():
 		return render_template("login.html", saves_info=saves_info, version=version_name)
 
 @app.route("/reg", methods=['GET', 'POST'])
-def new_player():
+async def new_player():
 	do_logout()
 	return render_template("new_empire.html", version=version_name)
 
 @app.route("/reg/new", methods=['POST'])
-def new_player_register():
+async def new_player_register():
 	do_logout()
 
 	#log.info("request: "+json.dumps(request.values, indent='\t'))
@@ -150,19 +151,19 @@ def new_player_register():
 
 # old redirects
 @app.route("/new.html")
-def new_redirect():
+async def new_redirect():
 	return redirect("/new")
 
 @app.route("/ruffle.html")
-def ruffle_redirect():
+async def ruffle_redirect():
 	return redirect("/play/ruffle")
 
 @app.route("/play.html")
-def play_redirect():
+async def play_redirect():
 	return redirect("/play")
 
 @app.route("/play")
-def play():
+async def play():
 	log.info(flasksession)
 
 	if 'USERID' not in flasksession:
@@ -180,7 +181,7 @@ def play():
 	return render_template("play.html", save_info=save_info(USERID, True), serverTime=timestamp_now(), friendsInfo=fb_friends_str(USERID), version=version_name, GAMEVERSION=GAMEVERSION, SERVERIP=host, PORT=port)
 
 @app.route("/play/ruffle")
-def ruffle():
+async def ruffle():
 	log.info(flasksession)
 
 	if 'USERID' not in flasksession:
@@ -200,7 +201,7 @@ def ruffle():
 
 
 @app.route("/new")
-def new():
+async def new():
 	return redirect("/")
 	#flasksession['USERID'] = new_village()
 	#flasksession['GAMEVERSION'] = "SocialEmpires0926bsec.swf"
@@ -208,34 +209,34 @@ def new():
 	#return redirect("play")
 
 @app.route("/crossdomain.xml")
-def crossdomain():
+async def crossdomain():
 	return send_from_directory(STUB_DIR, "crossdomain.xml")
 
 @app.route("/img/<path:path>")
-def images(path):
+async def images(path):
 	return send_from_directory(TEMPLATES_DIR + "/img", path)
 
 @app.route("/css/<path:path>")
-def css(path):
+async def css(path):
 	return send_from_directory(TEMPLATES_DIR + "/css", path)
 
 ## GAME STATIC
 
 
 @app.route("/default01.static.socialpointgames.com/static/socialempires/swf/05122012_projectiles.swf")
-def similar_05122012_projectiles():
+async def similar_05122012_projectiles():
 	return send_from_directory(ASSETS_DIR + "/swf", "20130417_projectiles.swf")
 
 @app.route("/default01.static.socialpointgames.com/static/socialempires/swf/05122012_magicParticles.swf")
-def similar_05122012_magicParticles():
+async def similar_05122012_magicParticles():
 	return send_from_directory(ASSETS_DIR + "/swf", "20131010_magicParticles.swf")
 
 @app.route("/default01.static.socialpointgames.com/static/socialempires/swf/05122012_dynamic.swf")
-def similar_05122012_dynamic():
+async def similar_05122012_dynamic():
 	return send_from_directory(ASSETS_DIR + "/swf", "120608_dynamic.swf")
 
 @app.route("/default01.static.socialpointgames.com/static/socialempires/<path:path>")
-def static_assets_loader(path):
+async def static_assets_loader(path):
 	# return send_from_directory(ASSETS_DIR, path)
 	if not os.path.exists(ASSETS_DIR + "/"+ path):
 		# File does not exists in provided assets
@@ -267,7 +268,7 @@ def static_assets_loader(path):
 ## GAME DYNAMIC
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_up_data.php", methods=['POST'])
-def units_pack_get_data():
+async def units_pack_get_data():
 	USERID = request.values['USERID']
 	user_key = request.values['user_key']
 	if 'spdebug' in request.values:
@@ -279,28 +280,36 @@ def units_pack_get_data():
 	#log.info("data: "+json.dumps(data, indent='\t'))
 
 	if not correct: # Invalid HMAC
+		log.info("hmac error")
 		return (construct_hash_and_payload({
 			"result": "error"
 		}), 403)
 
 	state = pop_unit_pack_state(USERID)
-	if not state:
-		return (construct_hash_and_payload({
-			"result": "error"
-		}), 403)
+	retries = 100
+	while not state:
+		if retries < 0:
+			return (construct_hash_and_payload({
+				"result": "error"
+			}), 403)
+
+		retries -= 1
+		await asyncio.sleep(0.1)
+		state = pop_unit_pack_state(USERID)
 
 	if state["n"] != int(data["n"]):
 		return (construct_hash_and_payload({
 			"result": "error"
 		}), 403)
 
+	randoms = state["r"]
 	return (construct_hash_and_payload({
 		"result": "success",
 		"data": state["r"]
 	}), 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/enemy", methods=['POST'])
-def pvp_lookup():
+async def pvp_lookup():
 	USERID = request.values['USERID']
 	user_key = request.values['user_key']
 	if 'spdebug' in request.values:
@@ -314,7 +323,7 @@ def pvp_lookup():
 	return (construct_hash_and_payload(get_enemy_info(USERID, 0)), 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/attack/begin", methods=['POST'])
-def pvp_begin():
+async def pvp_begin():
 	USERID = request.values['USERID']
 	user_key = request.values['user_key']
 	if 'spdebug' in request.values:
@@ -346,7 +355,7 @@ def pvp_begin():
 	return ("", 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/pvp/web/app.php/pvp/attack/end", methods=['POST'])
-def pvp_end():
+async def pvp_end():
 	USERID = request.values['USERID']
 	user_key = request.values['user_key']
 	if 'spdebug' in request.values:
@@ -375,7 +384,7 @@ def pvp_end():
 
 # graph.facebook.com reroute
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/graph.facebook.com/<path:path>", methods=['GET'])
-def graph_fb(path):
+async def graph_fb(path):
 	_path = path.split("/")
 	if len(_path) != 2:
 		return ("", 404)
@@ -443,7 +452,7 @@ def image_cache(url, userid):
 image_cache_load()
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/track_game_status.php", methods=['POST'])
-def track_game_status_response():
+async def track_game_status_response():
 	status = request.values['status']
 	installId = request.values['installId']
 	user_id = request.values['user_id']
@@ -452,7 +461,7 @@ def track_game_status_response():
 	return ("", 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_game_config.php", methods=['GET','POST'])
-def get_game_config_response():
+async def get_game_config_response():
 	spdebug = None
 
 	USERID = request.values['USERID']
@@ -468,7 +477,7 @@ def get_game_config_response():
 	return construct_hash_and_payload(get_game_config())
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_player_info.php", methods=['POST'])
-def get_player_info_response():
+async def get_player_info_response():
 	player_user = flasksession['USERID']
 
 	USERID = request.values['USERID']
@@ -505,7 +514,7 @@ def get_player_info_response():
 		return (construct_hash_and_payload(get_target_info(user, map)), 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_public_player_info.php", methods=['GET'])
-def get_public_player_info_response():
+async def get_public_player_info_response():
 	USERID = request.values['USERID']
 	user_key = request.values['user_key']
 	language = request.values['language']
@@ -536,7 +545,7 @@ def get_public_player_info_response():
 
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/sync_error_track.php", methods=['POST'])
-def sync_error_track_response():
+async def sync_error_track_response():
 	spdebug = None
 
 	USERID = request.values['USERID']
@@ -556,7 +565,7 @@ def sync_error_track_response():
 	return ("", 200)
 
 @app.route("/null")
-def flash_sync_error_response():
+async def flash_sync_error_response():
 	sp_ref_cat = request.values['sp_ref_cat']
 
 	if sp_ref_cat == "flash_sync_error":
@@ -570,7 +579,7 @@ def flash_sync_error_response():
 	return redirect("/play.html")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/command.php", methods=['POST'])
-def command_response():
+async def command_response():
 	spdebug = None
 
 	USERID = request.values['USERID']
@@ -593,7 +602,7 @@ def command_response():
 	return ({"result": "success"}, 200)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_continent_ranking.php")
-def get_continent_ranking_response():
+async def get_continent_ranking_response():
 
 	USERID = request.values['USERID']
 	worldChange = request.values['worldChange']
@@ -620,7 +629,7 @@ def get_continent_ranking_response():
 
 # UNIMPLEMENTED APIS
 
-def _api_not_implemented(request, api_call):
+async def _api_not_implemented(request, api_call):
 	log.info(f"API NOT IMPLEMENTED: {api_call}")
 	log.info("request: "+json.dumps(request.values, indent='\t'))
 	data, correct = check_hmac(request.values['data'])
@@ -632,59 +641,59 @@ def _api_not_implemented(request, api_call):
 	return ("", 404)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/register_found_item.php", methods=['POST'])
-def register_found_item():
+async def register_found_item():
 	return _api_not_implemented(request, "register_found_item.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_continent.php", methods=['POST'])
-def get_continent():
+async def get_continent():
 	return _api_not_implemented(request, "get_continent.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_user_world.php", methods=['POST'])
-def get_user_world():
+async def get_user_world():
 	return _api_not_implemented(request, "get_user_world.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/report_error.php", methods=['POST'])
-def report_error():
+async def report_error():
 	return _api_not_implemented(request, "report_error.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/cancel_tournament.php", methods=['POST'])
-def tournaments_cancel_tournament():
+async def tournaments_cancel_tournament():
 	return _api_not_implemented(request, "tournaments/cancel_tournament.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/create_tournament.php", methods=['POST'])
-def tournaments_create_tournament():
+async def tournaments_create_tournament():
 	return _api_not_implemented(request, "tournaments/create_tournament.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/join_tournament.php", methods=['POST'])
-def tournaments_join_tournament():
+async def tournaments_join_tournament():
 	return _api_not_implemented(request, "tournaments/join_tournament.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/start_tournament_match.php", methods=['POST'])
-def tournaments_start_tournament_match():
+async def tournaments_start_tournament_match():
 	return _api_not_implemented(request, "tournaments/start_tournament_match.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/finish_tournament_match.php", methods=['POST'])
-def tournaments_finish_tournament_match():
+async def tournaments_finish_tournament_match():
 	return _api_not_implemented(request, "tournaments/finish_tournament_match.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/clean_tournament.php", methods=['POST'])
-def tournaments_clean_tournament():
+async def tournaments_clean_tournament():
 	return _api_not_implemented(request, "tournaments/clean_tournament.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/leave_tournament.php", methods=['POST'])
-def tournaments_leave_tournament():
+async def tournaments_leave_tournament():
 	return _api_not_implemented(request, "tournaments/leave_tournament.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/kompu_try.php", methods=['POST'])
-def kompu_try():
+async def kompu_try():
 	return _api_not_implemented(request, "tournaments/kompu_try.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/kompu_hurry_up.php", methods=['POST'])
-def kompu_hurry_up():
+async def kompu_hurry_up():
 	return _api_not_implemented(request, "tournaments/kompu_hurry_up.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/clean_assaults.php", methods=['POST'])
-def clean_assaults():
+async def clean_assaults():
 	return _api_not_implemented(request, "tournaments/clean_assaults.php")
 
 
