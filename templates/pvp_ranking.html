@@ -37,14 +37,14 @@
 							<th width="60">Defeats</th>
 						</tr>
 					</thead>
-					<tbody style="font-size:11px;">
+					<tbody style="font-size:13px;">
 						{% for p in player_rank %}
 						<tr>
-							<th>{{loop.index}}.</th>
-							<th>{{p.name}}</th>
-							<th>{{p.honor}}</th>
-							<th>{{p.w}}</th>
-							<th>{{p.l}}</th>
+							<td>{{loop.index}}.</td>
+							<td>{% if p.img %}<img src="{{p.img}}" width="28" height="28" style="vertical-align: middle;"> {% endif %}<span>{{p.name}}</span></td>
+							<td>{{p.honor}}</td>
+							<td>{{p.w}}</td>
+							<td>{{p.l}}</td>
 						</tr>
 						{% endfor %}
 					</tbody>
