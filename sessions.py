@@ -642,7 +642,7 @@ def pvp_get_ranks():
 	for userid in all_saves_userid():
 		info = session(userid)["playerInfo"]
 		ranks.append({
-			"img": info["pic"] if info["pic"] != "" else None,
+			"img": info["pic"] if info["pic"] != "" else "/img/profile/default.jpg",
 			"name": info["name"],
 			"honor": info["honor_points"],
 			"w": info["attacks_won"],
