@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Meta -->
+	<meta charset="utf-8" />
+	<!-- Title and Icon -->
+	<title id="pageTitle">Social Empires</title>
+	<link rel="shortcut icon" href="/img/icon.gif" />
+	<link rel="icon" type="image/png" href="/img/icon.gif" />
+	<!-- CSS -->
+	<link rel="stylesheet" href="/css/facebook.css" />
+</head>
+<body class="ego_wide canvas center_fixed_width_app fbx UIPage_LoggedOut liquid hideBanner Locale_en_US" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); overflow: auto;">
+	<center><img src="/img/logo.png" style="width: 200px;" /></center>
+	<div class="mvl ptm uiInterstitial canvas_error_page uiInterstitialLarge uiBoxWhite">
+		<!-- HEAD TITLE -->
+		<div class="uiHeader uiHeaderBottomBorder mhl mts uiHeaderPage interstitialHeader">
+			<div class="clearfix uiHeaderTop">
+				<div>
+					<img src="/img/sword.png" height="18px" style="margin-left: 5px;">
+					<h2 class="uiHeaderTitle" aria-hidden="true" style="margin-left: 2px; display: inline-block;">
+						<a href="/" style="text-decoration: none;">PVP Ranking </a>
+					</h2>
+				</div>
+			</div>
+		</div>
+		<!-- LOGIN CONTENT -->
+		<div class="phl ptm uiInterstitialContent" style="overflow: auto; display: inblock;">
+			<div style="margin-left:20px; font-size:13px;">
+				<table>
+					<thead>
+						<tr>
+							<th width="40">Rank</th>
+							<th width="200">Player</th>
+							<th width="60">Honor</th>
+							<th width="70">Victories</th>
+							<th width="60">Defeats</th>
+						</tr>
+					</thead>
+					<tbody style="font-size:11px;">
+						{% for p in player_rank %}
+						<tr>
+							<th>{{loop.index}}.</th>
+							<th>{{p.name}}</th>
+							<th>{{p.honor}}</th>
+							<th>{{p.w}}</th>
+							<th>{{p.l}}</th>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
