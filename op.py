@@ -48,8 +48,7 @@ def cmd_buy(player, cmd, args, gameversion):
 	add_map_currency(_map, "xp", int(item["xp"]))
 	map_add_item(_map, item_id, x, y, orientation = orientation, userid = player["playerInfo"]["pid"])
 
-	if not is_free:
-		register_bought_unit(player, item_id, town_id)
+	register_bought_unit(player, item_id, town_id)
 
 	return True
 
