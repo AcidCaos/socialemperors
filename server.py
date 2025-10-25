@@ -280,7 +280,6 @@ async def units_pack_get_data():
 	#log.info("data: "+json.dumps(data, indent='\t'))
 
 	if not correct: # Invalid HMAC
-		log.info("hmac error")
 		return (construct_hash_and_payload({
 			"result": "error"
 		}), 403)
