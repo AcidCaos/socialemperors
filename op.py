@@ -385,7 +385,8 @@ def cmd_push_queue_unit(player, cmd, args, gameversion):
 		if cost_type != "f":
 			cost_food = cost << 1			# x2 food
 
-		refund_res =  pay_resource_type(player, _map, cost_type, cost)
+		refund_res = pay_resource_type(player, _map, cost_type, cost)
+
 		if not refund_res:
 			# not paid, no stealing!!!!
 			return False
@@ -393,7 +394,7 @@ def cmd_push_queue_unit(player, cmd, args, gameversion):
 		if not pay_resource_type(player, _map, "f", cost_food):
 			if refund_res and cost_type != "c":
 				# lets not steal resources for no reason
-				give_resource_type(player, _map, cost_type, cost_food)
+				give_resource_type(player, _map, cost_type, cost)
 			return False
 
 	if not player_push_queue_unit(player, building[0], uitem_id, bq, not not_soulmixer):
