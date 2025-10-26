@@ -13,6 +13,7 @@ from get_game_config import *
 from constants import Constant
 from engine import *
 from event_system import hellforge_buy_all_price
+from daily_bonus import claim_daily_bonus
 
 def cmd_nop(player, cmd, args, gameversion):
 	return True
@@ -22,6 +23,11 @@ def cmd_ping(player, cmd, args, gameversion):
 	return True
 
 def cmd_game_status(player, cmd, args, gameversion):
+	if len(args) == 3:
+		if args[0] == "MapLoaded" and args[1] == "INIT" and args[2] == "":
+			if "0926" not in gameversion:
+				claim_daily_bonus(player, timestamp_now())
+
 	return True
 
 def cmd_buy(player, cmd, args, gameversion):

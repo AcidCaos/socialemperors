@@ -550,6 +550,9 @@ def player_fast_forward(player, seconds, time_machine = False):
 		for user in assists:
 			modify_ts(assists, user, -seconds)
 
+		# new daily login bonus
+		modify_ts(privateState, "_tsNewDailyBonus", -seconds)
+
 	# survival arena
 	survivalVidaTimeStamp = privateState["survivalVidaTimeStamp"]
 	idx = len(survivalVidaTimeStamp) - 1

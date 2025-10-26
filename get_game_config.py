@@ -393,3 +393,9 @@ def get_hellforge_item(item_id):
 		if item["id"] == item_id:
 			return item
 	return None
+
+def get_daily_bonus(day):
+	for data in __game_config["daily_bonus"]:
+		if data["reward_day"] == day:
+			return data
+	return None

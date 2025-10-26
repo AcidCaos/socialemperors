@@ -12,6 +12,7 @@ if "banned_items" in get_server_config()["misc"]:
 
 from engine import timestamp_now, hire_friends, autohire_ignore_buildings, ROUND_TABLE, resurrectable_heroes
 from get_game_config import *
+from daily_bonus import daily_bonus_process
 
 version_name = "nerroth rewrite - beyond 0.04a"
 version_code = ""
@@ -399,6 +400,12 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "templeStep", [])					# supreme bahamut
 	fix_variable(privateState, "timeStampTemple", 0)
 
+	fix_variable(privateState, "numDayLogged", 1)					# new daily bonus
+	fix_variable(privateState, "lastDayRewarded", 0)
+	fix_variable(privateState, "nextDayReward", 1)
+	fix_variable(privateState, "showDailyBonus", 1)
+	fix_variable(privateState, "_tsNewDailyBonus", 0)				# last login TS (not used by game)
+
 	# item collections
 	if fix_variable(privateState, "collections", []):
 		fix_collections(privateState)
@@ -508,6 +515,7 @@ def save_reset_stuff(save, player_visiting_own_save = False):
 		check_quest_times(map["lastQuestTimes"], now)
 		check_animals(save)
 		check_si_buildings(save)
+		daily_bonus_process(save, now)
 
 def check_si_buildings(save):
 	userid = save["playerInfo"]["pid"]
