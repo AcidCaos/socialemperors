@@ -1318,32 +1318,50 @@
 			{
 				"id": 1,
 				"reward_day": 1,
-				"reward": {},
-				"img": "temp.png"
+				"reward":
+				{
+					"g": 250,
+					"w": 250,
+					"f": 250,
+					"s": 250
+				},
+				"img": "day1.png"
 			},
 			{
 				"id": 2,
 				"reward_day": 2,
-				"reward": {},
-				"img": "temp.png"
+				"reward":
+				{
+					"u": 722
+				},
+				"img": "day2.png"
 			},
 			{
 				"id": 3,
 				"reward_day": 3,
-				"reward": {},
-				"img": "temp.png"
+				"reward":
+				{
+					"c": 10
+				},
+				"img": "day3.png"
 			},
 			{
 				"id": 4,
 				"reward_day": 4,
-				"reward": {},
-				"img": "temp.png"
+				"reward":
+				{
+					"p": 25
+				},
+				"img": "day4.png"
 			},
 			{
 				"id": 5,
 				"reward_day": 5,
-				"reward": {},
-				"img": "temp.png"
+				"reward":
+				{
+					"u": 714
+				},
+				"img": "day5.png"
 			}
 		]
 	},
