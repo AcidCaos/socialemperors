@@ -366,7 +366,7 @@ def player_pop_queue_unit(player, building, bq):
 	unit_id = queue["unit"]
 	costs = None
 	if "r" in queue:
-		costs = queue["r"].pop(str(queue["amount"], None))
+		costs = queue["r"].pop(str(queue["amount"]), None)
 
 	queue["amount"] -= 1
 	if queue["amount"] <= 0:
