@@ -37,6 +37,18 @@ resurrectable_heroes = [
 	Constant.ID_UNIT_HIGHELF
 ]
 
+# training discount subcats
+blacksmith_discount_subcats = [
+	Constant.SUBCATFUNC_UNIT_ARCHER,
+	Constant.SUBCATFUNC_UNIT_FOOTMAN,
+	Constant.SUBCATFUNC_UNIT_MOUNTED
+]
+university_discount_subcats = [
+	Constant.SUBCATFUNC_UNIT_SIEGE
+]
+BUILDING_BLACKSMITH = get_blacksmith_id()
+BUILDING_UNIVERSITY = get_university_id()
+
 # collect multipliers
 collect_multiplier = [
 	0.0,
@@ -113,6 +125,8 @@ MARKET_AMOUNT_TRADE = [
 ]
 HELLFORGE_INVITE_ITEM = 5
 RESURRECT_MULTIPLIER = 500
+REDUCTION_MULTIPLIER_BLACKSMITH = 0.9
+REDUCTION_MULTIPLIER_UNIVERSITY = 0.9
 
 map_cost_multiple = [ "coins", "wood", "food", "stone" ]
 allies_market_resources = [ "n", "g", "w", "f", "s" ]
@@ -299,17 +313,17 @@ def map_pop_unit_short(map, building, item_id):
 	building[6].remove(item_id)
 	return True
 
-def player_push_queue_unit(player, building, item_id, bq, is_soulmixer):
+def player_push_queue_unit(player, building, item_id, bq, is_soulmixer, costs = None):
 	attr = building[7]
 
 	if is_soulmixer:
 		attr["bq"] = str(bq)
-		push_queued_unit(player, bq, item_id, 1)
+		push_queued_unit(player, bq, item_id, costs)
 
 		return True
 	else:
 		attr["bq"] = str(bq)
-		push_queued_unit(player, bq, item_id, 1)
+		push_queued_unit(player, bq, item_id, costs)
 
 		return True
 
@@ -350,6 +364,10 @@ def player_pop_queue_unit(player, building, bq):
 	is_soulmixer = building[0] == Constant.ID_BUILDING_SOUL_MIXER
 
 	unit_id = queue["unit"]
+	costs = None
+	if "r" in queue:
+		costs = queue["r"].pop(str(queue["amount"], None))
+
 	queue["amount"] -= 1
 	if queue["amount"] <= 0:
 		# remove queue
@@ -364,15 +382,17 @@ def player_unqueue_unit(player, building, bq):
 		return None
 
 	unit_id = queue["unit"]
+	costs = None
+	if "r" in queue:
+		costs = queue["r"].pop(str(queue["amount"]), None)
+
 	queue["amount"] -= 1
 	if queue["amount"] <= 0:
 		# remove queue
 		remove_unit_queue(player, bq)
 		del building[7]["bq"]
 
-	# refund resources
-
-	return unit_id
+	return unit_id, costs
 
 def get_unit_queue(player, queue_id):
 	barracksQueues = player["privateState"]["barracksQueues"]
@@ -388,19 +408,22 @@ def remove_unit_queue(player, queue_id):
 
 	del barracksQueues[str(queue_id)]
 
-def push_queued_unit(player, queue_id, unit_id, amount = 1):
+def push_queued_unit(player, queue_id, unit_id, costs = None):
 	barracksQueues = player["privateState"]["barracksQueues"]
 	if str(queue_id) in barracksQueues:
 		q = barracksQueues[str(queue_id)]
-		q["amount"] += amount
+		q["amount"] += 1
+		if "r" in q:
+			q["r"][str(q["amount"])] = costs
 
 		# SP butchered this code hard, so don't extend timestamp
 		# after a reload you can train 5 at the time of 1
 	else:
 		barracksQueues[str(queue_id)] = {
 			"ts":		timestamp_now(),
-			"amount":	amount,
-			"unit":		unit_id
+			"amount":	1,
+			"unit":		unit_id,
+			"r":		{ "1": costs }
 		}
 
 def add_store_item(map, item, quantity = 1):
@@ -952,6 +975,25 @@ def get_unit_pack_randoms(n = 1):
 		])
 
 	return randoms
+
+def get_training_cost(item, map):
+	cost = int(item["cost"])
+	subcat = int(item["subcat_functional"])
+
+	if subcat in blacksmith_discount_subcats:
+		if map_has_blacksmith(map):
+			cost = int(math.ceil(cost * REDUCTION_MULTIPLIER_BLACKSMITH))
+	elif subcat in university_discount_subcats:
+		if map_has_university(map):
+			cost = int(math.ceil(cost * REDUCTION_MULTIPLIER_UNIVERSITY))
+	
+	return cost
+
+def map_has_blacksmith(map):
+	return len(map_get_items_of_id(map, BUILDING_BLACKSMITH)) > 0
+
+def map_has_university(map):
+	return len(map_get_items_of_id(map, BUILDING_UNIVERSITY)) > 0
 
 def get_default_town_id(player, gameversion):
 	return 0

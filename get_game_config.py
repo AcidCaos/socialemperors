@@ -338,6 +338,13 @@ def game_config():
 def get_item_from_id(id: int):
 	items_index = items_dict_id_to_items_index[int(id)] if int(id) in items_dict_id_to_items_index else None
 	return __game_config["items"][items_index] if items_index is not None else None
+	
+def get_items_with_subcat(subcat: int):
+	result = []
+	for item in __game_config["items"]:
+		if int(item["subcat_functional"]) == subcat:
+			result.append(item)
+	return result
 
 def get_si_info(item_id):
 	for si in __game_config["social_items"]:
@@ -399,3 +406,9 @@ def get_daily_bonus(day):
 		if data["reward_day"] == day:
 			return data
 	return None
+
+def get_blacksmith_id():
+	return int(get_items_with_subcat(Constant.SUBCATFUNC_BUILDING_BLACKSMITH)[0]["id"])
+
+def get_university_id():
+	return int(get_items_with_subcat(Constant.SUBCATFUNC_BUILDING_UNIVERSITY)[0]["id"])

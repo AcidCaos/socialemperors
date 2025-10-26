@@ -375,15 +375,21 @@ def cmd_push_queue_unit(player, cmd, args, gameversion):
 	if len(building) <= 0:
 		return False	# map error, multiple buildings in same location
 
+	costs = None
+
 	if not_soulmixer:
 		# charge for training costs
 		item_data = get_item_from_id(uitem_id)
-		cost = int(item_data["cost"])
+		cost = get_training_cost(item_data, _map)
 		cost_type = item_data["cost_type"]
-
+		
+		costs = {}
+		costs[cost_type] = cost
+		
 		cost_food = 0
 		if cost_type != "f":
 			cost_food = cost << 1			# x2 food
+			costs["f"] = cost_food
 
 		refund_res = pay_resource_type(player, _map, cost_type, cost)
 
@@ -397,7 +403,7 @@ def cmd_push_queue_unit(player, cmd, args, gameversion):
 				give_resource_type(player, _map, cost_type, cost)
 			return False
 
-	if not player_push_queue_unit(player, building[0], uitem_id, bq, not not_soulmixer):
+	if not player_push_queue_unit(player, building[0], uitem_id, bq, not not_soulmixer, costs):
 		return False	# well damn
 
 	return True
@@ -460,18 +466,22 @@ def cmd_unqueue_unit(player, cmd, args, gameversion):
 		return False	# map error, multiple buildings in same location
 
 	# result is None if fail or unit_id that was unqueued
-	unit_id = player_unqueue_unit(player, building[0], bq)
+	unit_id, costs = player_unqueue_unit(player, building[0], bq)
 	if not unit_id:
 		return False
 
-	item_data = get_item_from_id(unit_id)
-	cost = int(item_data["cost"])
-	cost_type = item_data["cost_type"]
-	cost_food = cost << 1			# x2 food
-
 	# refund
-	give_resource_type(player, _map, cost_type, cost)
-	give_resource_type(player, _map, "f", cost_food)
+	if not costs:
+		item_data = get_item_from_id(unit_id)
+		cost = get_training_cost(item_data, _map)
+		cost_type = item_data["cost_type"]
+		cost_food = cost << 1			# x2 food
+
+		give_resource_type(player, _map, cost_type, cost)
+		give_resource_type(player, _map, "f", cost_food)
+	else:
+		for cost_type in costs:
+			give_resource_type(player, _map, cost_type, costs[cost_type])
 
 	return True
 
