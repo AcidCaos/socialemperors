@@ -7,6 +7,9 @@ from get_game_config import *
 from constants import *
 from event_system import get_active_events
 
+# grab server settings
+from server_config import get_server_config
+
 log = logging.getLogger('__main__')
 
 # cannot be resurrected
@@ -127,6 +130,7 @@ HELLFORGE_INVITE_ITEM = 5
 RESURRECT_MULTIPLIER = 500
 REDUCTION_MULTIPLIER_BLACKSMITH = 0.9
 REDUCTION_MULTIPLIER_UNIVERSITY = 0.9
+POTIONS_PER_FRIEND = get_server_config()["misc"]["graveyard_potions_per_friend"]
 
 map_cost_multiple = [ "coins", "wood", "food", "stone" ]
 allies_market_resources = [ "n", "g", "w", "f", "s" ]

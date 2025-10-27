@@ -75,6 +75,7 @@ commands = {
 	# graveyard -----------------------------------------------------------------------------------------------
 	"resurrect_hero":					cmd_resurrect_hero,
 	"graveyard_buy_potions":			cmd_graveyard_buy_potions,
+	"reset_potions_received":			cmd_graveyard_reset_potions_received,
 	# spell book ----------------------------------------------------------------------------------------------
 	"buy_mana_new":						cmd_buy_mana,
 	"buy_magic":						cmd_buy_magic,

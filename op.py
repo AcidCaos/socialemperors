@@ -630,6 +630,11 @@ def cmd_graveyard_buy_potions(player, cmd, args, gameversion):
 		return True
 
 	return False
+	
+def cmd_graveyard_reset_potions_received(player, cmd, args, gameversion):
+	player["privateState"]["potionsReceived"] = 0
+
+	return True
 
 def cmd_resurrect_hero(player, cmd, args, gameversion):
 	# item_id, x, y, town_id, [used_potion]

@@ -394,6 +394,30 @@ async def pvp_ranking():
 
 	return render_template("pvp_ranking.html", version=version_name, player_rank=pvp_get_ranks());
 
+@app.route("/graveyard/potions", methods=['GET'])
+async def graveyard_potions():
+	if 'USERID' not in flasksession:
+		return redirect("/")
+	if 'GAMEVERSION' not in flasksession:
+		return redirect("/")
+
+	player = session(flasksession['USERID'])
+	can = player_can_receive_potions(player)
+	log.info(can)
+
+	return render_template("graveyard_potions.html", version=version_name, can_receive=can, num=POTIONS_PER_FRIEND);
+
+@app.route("/graveyard/potions/request", methods=['GET'])
+async def graveyard_potions_request():
+	if 'USERID' not in flasksession:
+		return redirect("/")
+	if 'GAMEVERSION' not in flasksession:
+		return redirect("/")
+
+	player_ask_potions(flasksession['USERID'])
+
+	return redirect("/graveyard/potions")
+
 # graph.facebook.com reroute
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/graph.facebook.com/<path:path>", methods=['GET'])
 async def graph_fb(path):

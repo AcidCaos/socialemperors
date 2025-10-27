@@ -556,10 +556,54 @@ def assist_neighbor(userid, town_id, assists, assistant_id):
 		receivedAssists[assistant_id] = assists
 		event_recruit_friend(save, assistant_id) # also fill slot for any active events
 		buildings_recruit_friend(save, assistant_id)
+		player_receive_potions(save, assistant_id)
 
 		save_target_session(userid, save, session_type)
 
 	return True
+
+def player_ask_potions(userid):
+	save = session(userid)
+	data = save["privateState"]["_potionReq"]
+
+	ts_now = timestamp_now()
+	if "ts" in data:
+		ts_last = data["ts"]
+		if abs(ts_last - ts_now) < 86400:
+			return False
+
+	data["ts"] = timestamp_now()
+	data["f"] = []
+
+	save_session(userid, False)
+
+	return True
+
+def player_can_receive_potions(save):
+	ts_now = timestamp_now()
+	data = save["privateState"]["_potionReq"]
+	if "ts" not in data:
+		return False
+	ts_last = data["ts"]
+	if abs(ts_last - ts_now) < 86400:
+		return True
+
+	return False
+
+def player_receive_potions(save, assistant_id):
+	ts_now = timestamp_now()
+	data = save["privateState"]["_potionReq"]
+	if "ts" not in data:
+		return
+	ts_last = data["ts"]
+	if abs(ts_last - ts_now) >= 86400:
+		return
+	if assistant_id in data["f"]:
+		return
+
+	data["f"].append(assistant_id)
+	save["privateState"]["potionsReceived"] += POTIONS_PER_FRIEND
+	save["privateState"]["potion"] += POTIONS_PER_FRIEND
 
 def get_pvp_session(userid):
 	if userid in __pvp_data:

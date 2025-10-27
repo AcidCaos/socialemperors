@@ -381,7 +381,8 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "graveyardCapacity", graveyard_cap)			# graveyard cap
 	if privateState["graveyardCapacity"] != graveyard_cap:
 		privateState["graveyardCapacity"] = graveyard_cap
-	fix_variable(privateState, "potionsReceived", {})				# graveyard potions received
+	fix_variable(privateState, "potionsReceived", 0)				# graveyard potions received
+	fix_variable(privateState, "_potionReq", {})					# potion requests (server only)
 	fix_variable(privateState, "barracksQueues", {})				# unit queues (and soul mixer)
 	fix_variable(privateState, "unlockedQuestIndex", 0)				# quest index
 	fix_variable(privateState, "PVPattacksReceived", {})			# PVP attack log

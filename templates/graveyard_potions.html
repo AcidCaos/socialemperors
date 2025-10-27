@@ -17,9 +17,9 @@
 		<div class="uiHeader uiHeaderBottomBorder mhl mts uiHeaderPage interstitialHeader">
 			<div class="clearfix uiHeaderTop">
 				<div>
-					<img src="/img/sword.png" height="18px" style="margin-left: 5px;">
+					<img src="/img/potion.png" height="18px" style="margin-left: 5px;">
 					<h2 class="uiHeaderTitle" aria-hidden="true" style="margin-left: 2px; display: inline-block;">
-						<a href="/" style="text-decoration: none;">PVP Ranking </a>
+						<a href="/" style="text-decoration: none;">Ask for Potions</a>
 					</h2>
 				</div>
 			</div>
@@ -27,28 +27,22 @@
 		<!-- CONTENT -->
 		<div class="phl ptm uiInterstitialContent" style="overflow: auto; display: inblock;">
 			<div style="margin-left:20px; font-size:13px;">
-				<table>
-					<thead>
-						<tr>
-							<th width="40">Rank</th>
-							<th width="200">Player</th>
-							<th width="60">Honor</th>
-							<th width="70">Victories</th>
-							<th width="60">Defeats</th>
-						</tr>
-					</thead>
-					<tbody style="font-size:13px;">
-						{% for p in player_rank %}
-						<tr>
-							<td>{{loop.index}}.</td>
-							<td>{% if p.img %}<img src="{{p.img}}" width="28" height="28" style="vertical-align: middle;"> {% endif %}<span>{{p.name}}</span></td>
-							<td>{{p.honor}}</td>
-							<td>{{p.w}}</td>
-							<td>{{p.l}}</td>
-						</tr>
-						{% endfor %}
-					</tbody>
-				</table>
+				{% if can_receive %}
+				<p>You've asked your friends for potions! Come back <b>tomorrow</b> to ask again!</p>
+				{% else %}
+				<p>You must ask your <b>Friends</b> to give you potions, to do so click the button below!</p>
+				{% endif %}
+				<ul>
+					<li>- You will get your <b>potions</b> when your <b>friends</b> assist you!</li>
+					<li>- You will get <b>{{num}}x</b> <img src="/img/potion.png" height="13"> for each friend that <b>assists</b> you in game!</li>
+					<li>- When you request potions, you can ask again after <b>24 hours</b>.</li>
+				</ul>
+				{% if can_receive is false %}
+				<br /><br /><br /><br />
+				<form method="get" action="/graveyard/potions/request">
+					<button type="submit" style="font-size:14px; height: 25px">Ask for potions</button>
+				</form>
+				{% endif %}
 			</div>
 		</div>
 	</div>
