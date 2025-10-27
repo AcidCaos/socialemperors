@@ -403,7 +403,6 @@ async def graveyard_potions():
 
 	player = session(flasksession['USERID'])
 	can = player_can_receive_potions(player)
-	log.info(can)
 
 	return render_template("graveyard_potions.html", version=version_name, can_receive=can, num=POTIONS_PER_FRIEND);
 
