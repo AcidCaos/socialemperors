@@ -12,7 +12,7 @@ def daily_bonus_process(player, ts_now):
 
 	if days_passed == 1:
 		#log.info("Consecutive login!")
-		privateState["numDayLogged"] += 1
+		privateState["numDayLogged"] = privateState["lastDayRewarded"] + 1
 		privateState["showDailyBonus"] = 1
 	if days_passed >= 2 or privateState["numDayLogged"] >= 6:
 		privateState["numDayLogged"] = 1
