@@ -8,7 +8,8 @@
 	},
 	"pvp": 
 	{
-		"shield_hours_after_attack":		12,
+		"shield_hours_after_attack_pvp":	12,
+		"shield_hours_after_attack_pve":	12,
 		"shield_allow_original_bug":		true,
 		"resource_stealing_enabled":		true,
 		"resource_regeneration_hours":		48,

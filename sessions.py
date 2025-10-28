@@ -40,7 +40,8 @@ _PVP_MIN_LEVEL = 8
 
 # How long the PVP Shield will be enabled on the player you attack
 # after finishing the attack. Set to 0 to disable, default is 12h (0.5 days)
-_PVP_SHIELD_AFTER_ATTACK = int(get_server_config()["pvp"]["shield_hours_after_attack"] * 3600)
+_PVP_SHIELD_AFTER_ATTACK_SAVES = int(get_server_config()["pvp"]["shield_hours_after_attack_pvp"] * 3600)
+_PVP_SHIELD_AFTER_ATTACK_STATIC = int(get_server_config()["pvp"]["shield_hours_after_attack_pve"] * 3600)
 
 # Resource stealing settings
 _PVP_RESOURCE_STEALING = get_server_config()["pvp"]["resource_stealing_enabled"]
@@ -518,7 +519,11 @@ def pvp_modify_victim(request, town_id = 0):
 		attacker["playerInfo"]["attacks_lost"] += 1
 
 	# give PVP shield to victim
-	save["privateState"]["shieldEndTime"] = int(max(save["privateState"]["shieldEndTime"], int(ts_now + _PVP_SHIELD_AFTER_ATTACK)))
+	time_extend = _PVP_SHIELD_AFTER_ATTACK_STATIC
+	if session_type == SESSION_SAVE:
+		time_extend = _PVP_SHIELD_AFTER_ATTACK_SAVES
+
+	save["privateState"]["shieldEndTime"] = int(max(save["privateState"]["shieldEndTime"], int(ts_now + time_extend)))
 
 	# steal resources if allowed (saves only)
 	if _PVP_RESOURCE_STEALING and stealing_allowed:
