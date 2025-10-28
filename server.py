@@ -677,59 +677,59 @@ async def _api_not_implemented(request, api_call):
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/register_found_item.php", methods=['POST'])
 async def register_found_item():
-	return _api_not_implemented(request, "register_found_item.php")
+	return await _api_not_implemented(request, "register_found_item.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_continent.php", methods=['POST'])
 async def get_continent():
-	return _api_not_implemented(request, "get_continent.php")
+	return await _api_not_implemented(request, "get_continent.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_user_world.php", methods=['POST'])
 async def get_user_world():
-	return _api_not_implemented(request, "get_user_world.php")
+	return await _api_not_implemented(request, "get_user_world.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/report_error.php", methods=['POST'])
 async def report_error():
-	return _api_not_implemented(request, "report_error.php")
+	return await _api_not_implemented(request, "report_error.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/cancel_tournament.php", methods=['POST'])
 async def tournaments_cancel_tournament():
-	return _api_not_implemented(request, "tournaments/cancel_tournament.php")
+	return await _api_not_implemented(request, "tournaments/cancel_tournament.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/create_tournament.php", methods=['POST'])
 async def tournaments_create_tournament():
-	return _api_not_implemented(request, "tournaments/create_tournament.php")
+	return await _api_not_implemented(request, "tournaments/create_tournament.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/join_tournament.php", methods=['POST'])
 async def tournaments_join_tournament():
-	return _api_not_implemented(request, "tournaments/join_tournament.php")
+	return await _api_not_implemented(request, "tournaments/join_tournament.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/start_tournament_match.php", methods=['POST'])
 async def tournaments_start_tournament_match():
-	return _api_not_implemented(request, "tournaments/start_tournament_match.php")
+	return await _api_not_implemented(request, "tournaments/start_tournament_match.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/finish_tournament_match.php", methods=['POST'])
 async def tournaments_finish_tournament_match():
-	return _api_not_implemented(request, "tournaments/finish_tournament_match.php")
+	return await _api_not_implemented(request, "tournaments/finish_tournament_match.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/clean_tournament.php", methods=['POST'])
 async def tournaments_clean_tournament():
-	return _api_not_implemented(request, "tournaments/clean_tournament.php")
+	return await _api_not_implemented(request, "tournaments/clean_tournament.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/leave_tournament.php", methods=['POST'])
 async def tournaments_leave_tournament():
-	return _api_not_implemented(request, "tournaments/leave_tournament.php")
+	return await _api_not_implemented(request, "tournaments/leave_tournament.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/kompu_try.php", methods=['POST'])
 async def kompu_try():
-	return _api_not_implemented(request, "tournaments/kompu_try.php")
+	return await _api_not_implemented(request, "tournaments/kompu_try.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/kompu_hurry_up.php", methods=['POST'])
 async def kompu_hurry_up():
-	return _api_not_implemented(request, "tournaments/kompu_hurry_up.php")
+	return await _api_not_implemented(request, "tournaments/kompu_hurry_up.php")
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/tournaments/clean_assaults.php", methods=['POST'])
 async def clean_assaults():
-	return _api_not_implemented(request, "tournaments/clean_assaults.php")
+	return await _api_not_implemented(request, "tournaments/clean_assaults.php")
 
 
 ########
