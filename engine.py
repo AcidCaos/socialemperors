@@ -130,7 +130,7 @@ HELLFORGE_INVITE_ITEM = 5
 RESURRECT_MULTIPLIER = 500
 REDUCTION_MULTIPLIER_BLACKSMITH = 0.9
 REDUCTION_MULTIPLIER_UNIVERSITY = 0.9
-POTIONS_PER_FRIEND = get_server_config()["misc"]["graveyard_potions_per_friend"]
+POTIONS_PER_FRIEND = max(1, min(10000, get_server_config()["misc"]["graveyard_potions_per_friend"]))
 
 map_cost_multiple = [ "coins", "wood", "food", "stone" ]
 allies_market_resources = [ "n", "g", "w", "f", "s" ]
