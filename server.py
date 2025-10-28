@@ -438,8 +438,9 @@ async def external_friends_hire():
 	hired = len(data[4].split(","))
 	required = len(si["workers"].split(','))
 	cost = si["worker_cost"]
+	autohire = int(item["id"]) not in autohire_ignore_buildings
 
-	return render_template("friends_hire.html", version=version_name, building=item, num=hired, required=required, cost=cost)
+	return render_template("friends_hire.html", version=version_name, building=item, num=hired, required=required, cost=cost, autohire=autohire)
 
 
 # graph.facebook.com reroute

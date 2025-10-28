@@ -28,6 +28,7 @@
 		<div class="phl ptm uiInterstitialContent" style="overflow: auto; display: inblock;">
 			<div style="margin-left:20px; font-size:13px;">
 				<p>To hire <b>friends</b> to work in your <b>{{building.name}}</b>, you have to do the following steps</p>
+				{% if autohire %}
 				<p>
 					1. In game, <b>close</b> the hire friends window<br />
 					2. <b>Visit</b> any friend or reload your town<br />
@@ -38,7 +39,26 @@
 					{% if building.id | int != 470 %}- Hire villagers to fill a slot by spending <b>{{cost}}</b> <img src="/img/cash.png" height="13"><br />{% endif %}
 					- Create a <b>new empire</b> or add a save to the <b>saves</b> or <b>friends</b> folder
 				</p>
-				<hr/>
+				{% else %}
+				<p>
+					1. Read the instructions in game for your <b>{{building.name}}</b><br />
+					2. You will see your friend get hired by <b>receiving</b> a <b>neighbor assist</b> from a friend
+				</p>
+				<p><b>To receive a neighbor assist</b></p>
+				<p>
+					1. Log out of your <b>current save</b><br />
+					2. Log in to <b>another save</b> that is able to assist you under friends<br />
+					3. <b>Visit</b> your friend that has <b>{{building.name}}</b><br />
+					4. <b>Click on buildings</b> to send neighbor assists<br />
+					5. When you <b>return</b> to town you can log out<br />
+					6. Log in to your save that has <b>{{building.name}}</b> and you will see your friend hired
+				</p>
+				<p>If you still need friends you have a few more options</p>
+				<p>
+					{% if building.id | int != 470 %}- You can hire villagers to fill a slot by spending <b>{{cost}}</b> <img src="/img/cash.png" height="13"><br />{% endif %}
+				</p>
+				{% endif %}
+				<hr />
 				<p>You have hired <b>{{num}}/{{required}}</b> friends for your <b>{{building.name}}</b>
 			</div>
 		</div>
