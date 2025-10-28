@@ -14,6 +14,7 @@
 		"resource_stealing_enabled":		true,
 		"resource_regeneration_hours":		48,
 		"time_limit_minutes":				7,
+		"resource_cap_multiplier":			25,
 		"search": 
 		{
 			"max_attempts":					2200,

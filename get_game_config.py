@@ -256,6 +256,12 @@ def apply_shop_rotation(ts, refresh = False):
 
 def apply_server_config():
 	__game_config["globals"]["PVP_TIMER_SECONDS"] = int(get_server_config()["pvp"]["time_limit_minutes"] * 60)
+	cap_mult = max(1, min(10000, int(get_server_config()["pvp"]["resource_cap_multiplier"])))
+
+	data = __game_config["globals"]["PVP_MAX_RESOURCES"]
+	for key in data:
+		amount = data[key]
+		amount["g"] = str(int(amount["g"]) * cap_mult)
 
 def apply_patches():
 	log.info(" [+] Applying config patches...")
