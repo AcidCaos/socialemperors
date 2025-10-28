@@ -7,6 +7,7 @@ log = logging.getLogger('__main__')
 # grab server settings
 from server_config import get_server_config
 _allow_shield_bug = get_server_config()["pvp"]["shield_allow_original_bug"]
+_allow_shield_stacking = get_server_config()["pvp"]["allow_shield_stacking"]
 
 from sessions import *
 from get_game_config import *
@@ -1099,6 +1100,12 @@ def cmd_buy_shield(player, cmd, args, gameversion):
 	cooldown = privateState["shieldCooldown"]
 
 	ts_now = timestamp_now()
+
+	if not _allow_shield_stacking:
+		if cooldown < ts_now and len(bought) == 1:
+			# no shield time stacking allowed
+			end_time = 0
+
 	if ts_now >= end_time:
 		end_time = ts_now + shield_duration
 	else:
