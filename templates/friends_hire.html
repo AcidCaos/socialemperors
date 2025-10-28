@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Meta -->
+	<meta charset="utf-8" />
+	<!-- Title and Icon -->
+	<title id="pageTitle">Social Empires</title>
+	<link rel="shortcut icon" href="/img/icon.gif" />
+	<link rel="icon" type="image/png" href="/img/icon.gif" />
+	<!-- CSS -->
+	<link rel="stylesheet" href="/css/facebook.css" />
+</head>
+<body class="ego_wide canvas center_fixed_width_app fbx UIPage_LoggedOut liquid hideBanner Locale_en_US" style="position: absolute; left: 50%; transform: translate(-50%, 0); overflow: auto;">
+	<center><img src="/img/logo.png" style="width: 200px;" /></center>
+	<div class="mvl ptm uiInterstitial canvas_error_page uiInterstitialLarge uiBoxWhite">
+		<!-- HEAD TITLE -->
+		<div class="uiHeader uiHeaderBottomBorder mhl mts uiHeaderPage interstitialHeader">
+			<div class="clearfix uiHeaderTop">
+				<div>
+					<img src="/img/villager.png" height="18px" style="margin-left: 5px;">
+					<h2 class="uiHeaderTitle" aria-hidden="true" style="margin-left: 2px; display: inline-block;">
+						<a href="/" style="text-decoration: none;">How to Hire Friends for <img src="/default01.static.socialpointgames.com/static/socialempires/buildingthumbs/{{building.img_name}}.jpg" height="18", style="transform: translate(0, 3px);" /> <b>{{building.name}}</b></a>
+					</h2>
+				</div>
+			</div>
+		</div>
+		<!-- CONTENT -->
+		<div class="phl ptm uiInterstitialContent" style="overflow: auto; display: inblock;">
+			<div style="margin-left:20px; font-size:13px;">
+				<p>To hire <b>friends</b> to work in your <b>{{building.name}}</b>, you have to do the following steps</p>
+				<p>
+					1. In game, <b>close</b> the hire friends window<br />
+					2. <b>Visit</b> any friend or reload your town<br />
+					3. When you <b>return</b> to town you will see all your friends hired in your <b>{{building.name}}</b>
+				</p>
+				<p>If you still need friends you have a few more options</p>
+				<p>
+					{% if building.id | int != 470 %}- Hire villagers to fill a slot by spending <b>{{cost}}</b> <img src="/img/cash.png" height="13"><br />{% endif %}
+					- Create a <b>new empire</b> or add a save to the <b>saves</b> or <b>friends</b> folder
+				</p>
+				<hr/>
+				<p>You have hired <b>{{num}}/{{required}}</b> friends for your <b>{{building.name}}</b>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

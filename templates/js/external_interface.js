@@ -35,8 +35,13 @@ function showPopupSEHelpOffer(...param)
 // SI Building Hiring
 function showPopupSEHelpSocialItem(...param)
 {
-	// bx, by, town_id, b_id, si, b_name
+	// bx, by, town_id, bitem_id, hired_si, bitem_name
 	_ei_debug("showPopupSEHelpSocialItem", param);
+
+	if (param.length == 6) 
+	{
+		_open_window_post_request("/friends/hire", param);
+	}
 }
 // ??
 function showFeed(...param)
@@ -56,6 +61,24 @@ function showPopupSEHelpNest(...param)
 	// use privateState.dragonSocialHelp as SI
 	// client sends Constants.CMD_CLEAR_DRAGON_HIRES command with SI data
 	_ei_debug("showPopupSEHelpNest", param);
+}
+
+function _open_window_post_request(url, ...param) {
+	var form = document.createElement("form");
+	form.setAttribute("method", "post");
+	form.setAttribute("action", url);
+	form.setAttribute("target", "_blank");
+	form.style.display = "none";
+	
+	var input = document.createElement("input");
+	input.type = "hidden";
+	input.name = "data";
+	input.value = JSON.stringify(param[0], null, '');
+	form.appendChild(input);
+
+	document.body.appendChild(form);
+	form.submit();
+	document.body.removeChild(form);
 }
 
 // Debug

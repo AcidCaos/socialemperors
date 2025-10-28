@@ -392,7 +392,7 @@ async def pvp_ranking():
 	if 'GAMEVERSION' not in flasksession:
 		return redirect("/")
 
-	return render_template("pvp_ranking.html", version=version_name, player_rank=pvp_get_ranks());
+	return render_template("pvp_ranking.html", version=version_name, player_rank=pvp_get_ranks())
 
 @app.route("/graveyard/potions", methods=['GET'])
 async def graveyard_potions():
@@ -404,7 +404,7 @@ async def graveyard_potions():
 	player = session(flasksession['USERID'])
 	can = player_can_receive_potions(player)
 
-	return render_template("graveyard_potions.html", version=version_name, can_receive=can, num=POTIONS_PER_FRIEND);
+	return render_template("graveyard_potions.html", version=version_name, can_receive=can, num=POTIONS_PER_FRIEND)
 
 @app.route("/graveyard/potions/request", methods=['GET'])
 async def graveyard_potions_request():
@@ -416,6 +416,31 @@ async def graveyard_potions_request():
 	player_ask_potions(flasksession['USERID'])
 
 	return redirect("/graveyard/potions")
+
+@app.route("/friends/hire", methods=['POST'])
+async def external_friends_hire():
+	if 'USERID' not in flasksession:
+		return redirect("/")
+	if 'GAMEVERSION' not in flasksession:
+		return redirect("/")
+
+	if "data" not in request.values:
+		return redirect("/")
+	data = json.loads(request.values["data"])
+	# bx, by, town_id, bitem_id, hired_si, bitem_name
+
+	item = get_item_from_id(data[3])
+	si = get_si_info(data[3])
+	
+	if not item or not si:
+		return redirect("/")
+
+	hired = len(data[4].split(","))
+	required = len(si["workers"].split(','))
+	cost = si["worker_cost"]
+
+	return render_template("friends_hire.html", version=version_name, building=item, num=hired, required=required, cost=cost)
+
 
 # graph.facebook.com reroute
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/graph.facebook.com/<path:path>", methods=['GET'])
