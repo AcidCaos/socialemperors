@@ -125,6 +125,9 @@ commands = {
 	"buy_viral_offer_friend":			cmd_event_buy_friend,
 	"buy_viral_offer_all":				cmd_event_buy_friend_all,
 	"reward_viral_offer":				cmd_event_get_reward,
+	# PopupFirstBuy (event) -----------------------------------------------------------------------------------
+	"set_first_purchase_timestamp":		cmd_set_first_purchase_ts,
+	"buy_first_purchase":				cmd_buy_first_purchase,
 	# missions/goals ------------------------------------------------------------------------------------------
 	"complete_mission":					cmd_complete_goal,
 	"reward_mission":					cmd_reward_goal,

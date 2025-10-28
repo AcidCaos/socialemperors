@@ -89,6 +89,26 @@
 		]
 	},
 	{
+		"_TITLE": "Nerroth - PopupFirstBuy",
+		"op": "add",
+		"path": "/globals/POPUP_FIRST_PURCHASE_OFFER_REWARD",
+		"value": { 
+			"units": [ 2245, 2248, 2242 ],
+			"g": 20000,
+			"f": 40000
+		}
+	},
+	{
+		"op": "add",
+		"path": "/globals/POPUP_FIRST_PURCHASE_OFFER_TIME",
+		"value": 86400
+	},
+	{
+		"op": "add",
+		"path": "/globals/POPUP_FIRST_PURCHASE_OFFER_COST",
+		"value": 28
+	},
+	{
 		"_TITLE": "Nerroth - Unit Packs",
 		"op": "add",
 		"path": "/globals/MAX_PACKS_ALLOWED_TO_BUY",
@@ -1432,8 +1452,8 @@
 		"value": [
 			{
 				"asclass": "FirstOfferButton",
-				"active": 0,
-				"swf": "first_offer_icon.swf",
+				"active": 1,
+				"swf": "easterDragon",
 				"offset": { "x": 0, "y": 0 },
 				"scale": 1.0,
 				"priority": 1
@@ -1441,80 +1461,80 @@
 			{
 				"asclass": "CrossDCiViralIcon",
 				"active": 0,
-				"swf": "cross_dci_icon.swf",
-				"offset": { "x": 10, "y": 0 },
+				"swf": "crossDCi",
+				"offset": { "x": 0, "y": 0 },
 				"scale": 1.0,
 				"priority": 2
 			},
 			{
 				"asclass": "RecruitmentTavernButton",
 				"active": 0,
-				"swf": "recruitment_tavern_icon.swf",
-				"offset": { "x": 20, "y": 0 },
+				"swf": "viralRecruitment",
+				"offset": { "x": 0, "y": 0 },
 				"scale": 1.0,
 				"priority": 2
 			},
 			{
 				"asclass": "DailyBonusButton",
 				"active": 0,
-				"swf": "daily_bonus_icon.swf",
-				"offset": { "x": 30, "y": 0 },
+				"swf": "easterDragon",
+				"offset": { "x": 0, "y": 0 },
 				"scale": 1.0,
 				"priority": 2
 			},
 			{
 				"asclass": "MobileGuiGiftButton",
 				"active": 0,
-				"swf": "mobile_gift_icon.swf",
-				"offset": { "x": 40, "y": 0 },
+				"swf": "easterDragon",
+				"offset": { "x": 0, "y": 0 },
 				"scale": 1.0,
 				"priority": 2
 			},
 			{
 				"asclass": "comebackButtonViral",
 				"active": 0,
-				"swf": "comeback_icon.swf",
-				"offset": { "x": 50, "y": 0 },
+				"swf": "easterDragon",
+				"offset": { "x": 0, "y": 0 },
 				"scale": 1.0,
 				"priority": 2
 			},
 			{
 				"asclass": "MondayBonusButton",
 				"active": 0,
-				"swf": "monday_bonus_icon.swf",
-				"offset": { "x": 60, "y": 0 },
+				"swf": "easterDragon",
+				"offset": { "x": 0, "y": 0 },
 				"scale": 1.0,
 				"priority": 2
 			},
 			{
 				"asclass": "askForAchievementsButton",
 				"active": 0,
-				"swf": "ask_achievements_icon.swf",
-				"offset": { "x": 70, "y": 0 },
+				"swf": "easterDragon",
+				"offset": { "x": 0, "y": 0 },
 				"scale": 1.0,
 				"priority": 2
 			},
 			{
 				"asclass": "specialDayOffer",
 				"active": 0,
-				"swf": null,
-				"offset": { "x": 80, "y": 0 },
+				"swf": "easterDragon",
+				"offset": { "x": 0, "y": 0 },
 				"scale": 1.0,
 				"priority": 2
 			},
 			{
 				"asclass": "CrossViralIcon",
 				"active": 0,
-				"swf": "cross_viral_icon.swf",
-				"offset": { "x": 90, "y": 0 },
+				"swf": "crossDCi",
+				"offset": { "x": 0, "y": 0 },
 				"scale": 1.0,
 				"priority": 2
 			},
 			{
 				"asclass": "FBLikeButton",
 				"active": 0,
-				"swf": "fb_like_icon.swf",
-				"offset": { "x": 100, "y": 0 },
+				"swf": "like",
+				"offset": { "x": 0, "y": 0 },
 				"scale": 1.0,
 				"priority": 2
 			}

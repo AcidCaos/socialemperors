@@ -2104,6 +2104,33 @@ def cmd_event_get_reward(player, cmd, args, gameversion):
 		
 	return True
 
+def cmd_set_first_purchase_ts(player, cmd, args, gameversion):
+	player["privateState"]["firstPurchaseTimestamp"] = timestamp_now()
+
+	return True
+
+def cmd_buy_first_purchase(player, cmd, args, gameversion):
+	# no support for other town IDs, sad :(
+	town_id = get_default_town_id(player, gameversion)
+	_map = player["maps"][town_id]
+
+	cfg_globals = get_game_config()["globals"]
+	if not pay_cash(player, cfg_globals["POPUP_FIRST_PURCHASE_OFFER_COST"]):
+		return False
+
+	rewards = cfg_globals["POPUP_FIRST_PURCHASE_OFFER_REWARD"]
+	for r in rewards:
+		if r == "units":
+			continue
+		if r == "exp":
+			add_map_currency(_map, "xp", int(rewards[r]))
+			continue
+		give_resource_type(player, _map, r, int(rewards[r]))
+
+	player["privateState"]["firstPurchaseTimestamp"] = 1
+
+	return True
+
 def cmd_complete_tutorial(player, cmd, args, gameversion):
 	# step
 	step = str(args[0])

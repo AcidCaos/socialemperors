@@ -407,6 +407,8 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "showDailyBonus", 1)
 	fix_variable(privateState, "_tsNewDailyBonus", 0)				# last login TS (not used by game)
 
+	fix_variable(privateState, "firstPurchaseTimestamp", 0)			# PopupFirstBuy
+
 	# item collections
 	if fix_variable(privateState, "collections", []):
 		fix_collections(privateState)
