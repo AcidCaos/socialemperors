@@ -1453,7 +1453,7 @@
 			{
 				"asclass": "FirstOfferButton",
 				"active": 1,
-				"swf": "easterDragon",
+				"swf": "viralFirstOffer",
 				"offset": { "x": 0, "y": 0 },
 				"scale": 1.0,
 				"priority": 1
