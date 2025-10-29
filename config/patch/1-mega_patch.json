@@ -1892,7 +1892,7 @@
 			"45":	{ "category_id": 45,	"category_lang_id": 10030,	"units": [880, 881, 882, 885],				"rewards": 778,		"cost": 75,		"costs": [85, 85, 80, 75, 75],		"position": 270 },
 			"48":	{ "category_id": 48,	"category_lang_id": 10031,	"units": [619, 620, 621, 622],				"rewards": 795,		"cost": 60,		"costs": null,						"position": 275 },
 			"49":	{ "category_id": 49,	"category_lang_id": 10032,	"units": [626, 627, 628, 629],				"rewards": 794,		"cost": 75,		"costs": [75, 80, 75, 85, 80],		"position": 280 },
-			"50":	{ "category_id": 50,	"category_lang_id": 10033,	"units": [636, 633, 634],					"rewards": 807,		"cost": 75,		"costs": [75, 80, 85, 85, 75],		"position": 285 },
+			"50":	{ "category_id": 50,	"category_lang_id": 10033,	"units": [632, 633, 634],					"rewards": 807,		"cost": 75,		"costs": [75, 80, 85, 85, 75],		"position": 285 },
 			"51":	{ "category_id": 51,	"category_lang_id": 10034,	"units": [2005, 2006, 2007, 2008, 2009],	"rewards": 806,		"cost": 75,		"costs": [85, 80, 75, 90, 75],		"position": 290 },
 			"54":	{ "category_id": 54,	"category_lang_id": 10035,	"units": [2010, 2011, 2012, 2019, 2020],	"rewards": 827,		"cost": 75,		"costs": [85, 60],					"position": 295 },
 			"53":	{ "category_id": 53,	"category_lang_id": 10036,	"units": [2021, 2022, 2036],				"rewards": 778,		"cost": 75,		"costs": [80, 85, 90],				"position": 300 },
