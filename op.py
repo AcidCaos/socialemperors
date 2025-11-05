@@ -134,14 +134,16 @@ def cmd_sell(player, cmd, args, gameversion):
 	if not item:
 		return False
 	
+	if map_remove_item(_map, x, y, item_id) == 0:
+		log.info("[DEBUG] Invalid sell command tripped")
+		return True
+
 	if not is_free:
 		cost_type = item["cost_type"]
 		if cost_type != "c":
 			give_resource_type(player, _map, cost_type, int(int(item["cost"]) * SELL_DIVISOR))
 	if resurrectable:
 		try_push_graveyard(player, item_id)
-
-	map_remove_item(_map, x, y, item_id)
 
 	return True
 
@@ -505,7 +507,9 @@ def cmd_store_item(player, cmd, args, gameversion):
 
 	_map = player["maps"][town_id]
 
-	map_remove_item(_map, x, y, item_id)
+	if map_remove_item(_map, x, y, item_id) == 0:
+		return False
+
 	add_store_item(_map, item_id, 1)
 
 	return True

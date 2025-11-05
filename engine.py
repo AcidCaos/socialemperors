@@ -195,6 +195,7 @@ def map_remove_item(map, x, y, item_id = None):
 	items = map_get_item(map, x, y, item_id)
 	for item in items:
 		map["items"].remove(item)
+	return len(items)
 
 def map_kill_item(map, x, y, item_id, item_type = None):
 	items = map_get_item(map, x, y, item_id)
