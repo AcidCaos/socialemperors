@@ -347,8 +347,6 @@ def _graveyard_cap_units(privateState):
 
 		idx += 1
 
-	log.info(json.dumps(count))
-
 def migrate_loaded_save(save):
 	# Migration always happens now, we check the data type this time and insert any new data if necessary
 	# This should make sure the save file isn't "half fixed"
