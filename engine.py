@@ -131,6 +131,8 @@ RESURRECT_MULTIPLIER = 500
 REDUCTION_MULTIPLIER_BLACKSMITH = 0.9
 REDUCTION_MULTIPLIER_UNIVERSITY = 0.9
 POTIONS_PER_FRIEND = max(1, min(10000, get_server_config()["misc"]["graveyard_potions_per_friend"]))
+GRAVEYARD_MAX_EACH_UNIT = get_server_config()["misc"]["graveyard_max_each_unit"]
+GRAVEYARD_MAX_SLOTS = get_server_config()["misc"]["graveyard_max_slots"]
 
 map_cost_multiple = [ "coins", "wood", "food", "stone" ]
 allies_market_resources = [ "n", "g", "w", "f", "s" ]
@@ -488,6 +490,11 @@ def try_push_graveyard(player, item_id, amount = 1):
 	return True
 
 def graveyard_add(player, item_id):
+	if len(player["privateState"]["resurrectableUnits"]) >= max(GRAVEYARD_MAX_SLOTS, player["privateState"]["graveyardCapacity"]):
+		return
+	if player["privateState"]["resurrectableUnits"].count(item_id) >= GRAVEYARD_MAX_EACH_UNIT:
+		return
+
 	resunits = player["privateState"]["resurrectableUnits"]
 	resunits.append(item_id)
 

@@ -10,7 +10,7 @@ banned_items = []
 if "banned_items" in get_server_config()["misc"]:
 	banned_items = get_server_config()["misc"]["banned_items"]
 
-from engine import timestamp_now, hire_friends, autohire_ignore_buildings, ROUND_TABLE, resurrectable_heroes
+from engine import timestamp_now, hire_friends, autohire_ignore_buildings, ROUND_TABLE, resurrectable_heroes, GRAVEYARD_MAX_SLOTS, GRAVEYARD_MAX_EACH_UNIT
 from get_game_config import *
 from daily_bonus import daily_bonus_process
 
@@ -327,7 +327,27 @@ def _remove_banned_units(player, item_ids):
 			log.info(f" * Removed banned unit [{i_id}] {i_name} from map items!")
 			map_items.remove(item)
 
+def _graveyard_cap_units(privateState):
+	count = {}
+	dead = privateState["resurrectableUnits"]
+	num = len(dead)
+	idx = 0
 
+	while idx < num:
+		item_id = str(dead[idx])
+		if item_id in count:
+			count[item_id] += 1
+		else:
+			count[item_id] = 1
+
+		if count[item_id] > GRAVEYARD_MAX_EACH_UNIT:
+			del dead[idx]
+			num -= 1
+			continue
+
+		idx += 1
+
+	log.info(json.dumps(count))
 
 def migrate_loaded_save(save):
 	# Migration always happens now, we check the data type this time and insert any new data if necessary
@@ -377,12 +397,6 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "strategy", 8)						# fix crash when attacking player
 	fix_variable(privateState, "universAttackWin", [])				# pvp current island progress (old game builds)
 	
-	graveyard_cap = get_server_config()["misc"]["graveyard_max_slots"]
-	fix_variable(privateState, "graveyardCapacity", graveyard_cap)			# graveyard cap
-	if privateState["graveyardCapacity"] != graveyard_cap:
-		privateState["graveyardCapacity"] = graveyard_cap
-	fix_variable(privateState, "potionsReceived", 0)				# graveyard potions received
-	fix_variable(privateState, "_potionReq", {})					# potion requests (server only)
 	fix_variable(privateState, "barracksQueues", {})				# unit queues (and soul mixer)
 	fix_variable(privateState, "unlockedQuestIndex", 0)				# quest index
 	fix_variable(privateState, "PVPattacksReceived", {})			# PVP attack log
@@ -417,12 +431,16 @@ def migrate_loaded_save(save):
 	if len(privateState["collectionsCompleted"]) == 0:
 		fix_collections_completed(privateState)						# oopsie daisy
 
-	# dead units - SP butchered this, say goodbye to 0.9.26b graveyard support
-	#				all because one "smart" person at SP decided to ruin
-	#				the implementation in a later version of the game
+	# graveyard
+	fix_variable(privateState, "graveyardCapacity", GRAVEYARD_MAX_SLOTS)	# graveyard cap
+	if privateState["graveyardCapacity"] != GRAVEYARD_MAX_SLOTS:
+		privateState["graveyardCapacity"] = GRAVEYARD_MAX_SLOTS
+	fix_variable(privateState, "potionsReceived", 0)				# graveyard potions received
+	fix_variable(privateState, "_potionReq", {})					# potion requests (server only)
 	fix_variable(privateState, "deadHeroes", {})					# heroes grave
-	fix_variable(privateState, "resurrectableUnits", [])			# graveyard new version
-	#_clean_graveyard(privateState)
+	if fix_variable(privateState, "resurrectableUnits", []):		# graveyard
+		_clean_graveyard(privateState)
+		_graveyard_cap_units(privateState)
 
 	# survival arena
 	fix_variable(privateState, "survivalVidaTimeStamp", [])

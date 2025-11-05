@@ -39,6 +39,7 @@
 	{
 		"quests_reset_hours":				6,
 		"graveyard_max_slots":				10000,
+		"graveyard_max_each_unit":			100,
 		"graveyard_potions_per_friend":		1,
 		"banned_items":						[]
 	},
