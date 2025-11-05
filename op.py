@@ -323,7 +323,9 @@ def cmd_push_unit(player, cmd, args, gameversion):
 	building = map_get_item(_map, bx, by)
 	unit = map_get_item(_map, ux, uy, uitem_id)
 	if len(building) <= 0 or len(unit) <= 0:
-		return False	# map error, multiple units or buildings in same location
+		return uitem_id == 501	# map error, multiple units or buildings in same location
+		# ID 501 is villager spawned by raid events
+		# they don't exist in the save so we can ignore the error here
 
 	map_push_unit(_map, unit[0], building[0])
 
@@ -345,14 +347,18 @@ def cmd_pop_unit(player, cmd, args, gameversion):
 		if len(building) <= 0:
 			return False	# map error, multiple buildings in same location
 		if not map_pop_unit(_map, building[0], uitem_id, ux, uy, uorientation):
-			return False	# unit was never in this building
+			return uitem_id == 501
+			# ID 501 is villager spawned by raid events
+			# they don't exist in the save so we can ignore the error here
 	else:
 		_map = player["maps"][town_id]
 		building = map_get_item(_map, bx, by)
 		if len(building) <= 0:
 			return False	# map error, multiple buildings in same location
 		if not map_pop_unit_short(_map, building[0], uitem_id):
-			return False	# unit was never in this building
+			return uitem_id == 501
+			# ID 501 is villager spawned by raid events
+			# they don't exist in the save so we can ignore the error here
 
 	register_bought_unit(player, uitem_id, town_id)
 
@@ -787,7 +793,9 @@ def cmd_add_warehoused_item(player, cmd, args, gameversion):
 	if len(items) <= 0:	# teleporting units are broken
 		items = map_get_items_of_id(_map, uitem_id)
 	if len(items) <= 0:
-		return False
+		return uitem_id == 501
+		# ID 501 is villager spawned by raid events
+		# they don't exist in the save so we can ignore the error here
 	
 	warehouse_add(_map, items[0])
 
@@ -804,7 +812,9 @@ def cmd_place_warehoused_item(player, cmd, args, gameversion):
 	_map = player["maps"][town_id]
 
 	if not warehouse_remove(_map, uitem_id):
-		return False
+		return uitem_id == 501
+		# ID 501 is villager spawned by raid events
+		# they don't exist in the save so we can ignore the error here
 
 	map_add_item(_map, uitem_id, ux, uy)
 
