@@ -135,7 +135,6 @@ def cmd_sell(player, cmd, args, gameversion):
 		return False
 	
 	if map_remove_item(_map, x, y, item_id) == 0:
-		log.info("[DEBUG] Invalid sell command tripped")
 		return True
 
 	if not is_free:
