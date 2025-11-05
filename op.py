@@ -641,41 +641,68 @@ def cmd_graveyard_reset_potions_received(player, cmd, args, gameversion):
 	return True
 
 def cmd_resurrect_hero(player, cmd, args, gameversion):
-	# item_id, x, y, town_id, [used_potion]
+	# item_id, x, y, town_id, used_potion -> graveyard
+	# item_id, x, y, town_id -> heroes grave
 	item_id = args[0]
 	x = args[1]
 	y = args[2]
 	town_id = args[3]
-	used_potion = False
-	if len(args) > 4:
-		used_potion = args[4]
+		
 	_map = player["maps"][town_id]
 
-	if used_potion:
-		item = get_item_from_id(item_id)
-		if not item:
+	item = get_item_from_id(item_id)
+	if not item:
+		return False
+
+	if len(args) > 4:
+		# graveyard
+		used_potion = args[4]
+
+		if not in_graveyard(player, item_id):
 			return False
 
-		potion_price = item["potion"]
-		if not potion_price:
-			return False
-		if not pay_potions(player, potion_price):
-			return False
+		if used_potion:
+			potion_price = item["potion"]
+			if not potion_price:
+				return False
+			if not pay_potions(player, potion_price):
+				return False
 
-		graveyard_remove(player, item_id)
+			graveyard_remove(player, item_id)
+		else:
+			# charge for training costs
+			item_data = get_item_from_id(item_id)
+			cost = int(round(get_training_cost(item_data, _map, False) * RESURRECT_MULTIPLIER_GRAVEYARD))
+			cost_type = item_data["cost_type"]
+		
+			cost_food = 0
+			if cost_type != "f":
+				cost_food = cost << 1			# x2 food
+
+			refund_res = pay_resource_type(player, _map, cost_type, cost)
+
+			if not refund_res:
+				# not paid, no stealing!!!!
+				return False
+
+			if not pay_resource_type(player, _map, "f", cost_food):
+				if refund_res and cost_type != "c":
+					# lets not steal resources for no reason
+					give_resource_type(player, _map, cost_type, cost)
+				return False
+
+			graveyard_remove(player, item_id)
 	else:
-		item = get_item_from_id(item_id)
-		if not item:
+		# heroes grave
+		if not in_heroes_grave(player, item_id):
 			return False
 
-		# TODO: COST
 		gold_price = int(int(item["cost_unit_cash"]) * RESURRECT_MULTIPLIER)
 		if not pay_map_currency(_map, "coins", gold_price):
 			return False
 
 		graveyard_remove_hero(player, item_id)
 
-	
 	map_add_item(_map, item_id, x, y)
 	
 	register_bought_unit(player, item_id, town_id)

@@ -128,6 +128,7 @@ MARKET_AMOUNT_TRADE = [
 ]
 HELLFORGE_INVITE_ITEM = 5
 RESURRECT_MULTIPLIER = 500
+RESURRECT_MULTIPLIER_GRAVEYARD = 0.5
 REDUCTION_MULTIPLIER_BLACKSMITH = 0.9
 REDUCTION_MULTIPLIER_UNIVERSITY = 0.9
 POTIONS_PER_FRIEND = max(1, min(10000, get_server_config()["misc"]["graveyard_potions_per_friend"]))
@@ -502,6 +503,9 @@ def graveyard_remove(player, item_id):
 	resunits = player["privateState"]["resurrectableUnits"]
 	resunits.remove(item_id)
 
+def in_graveyard(player, item_id):
+	return item_id in player["privateState"]["resurrectableUnits"]
+
 def graveyard_add_hero(player, item_id):
 	dead = player["privateState"]["deadHeroes"]
 	if str(item_id) in dead:
@@ -517,6 +521,9 @@ def graveyard_remove_hero(player, item_id):
 	dead[str(item_id)] -= 1
 	if dead[str(item_id)] <= 0:
 		del dead[str(item_id)]
+
+def in_heroes_grave(player, item_id):
+	return str(item_id) in player["privateState"]["deadHeroes"]
 
 def player_lose_item(player, map, item_id, amount, push_graveyard = True):
 	items = map_get_items_of_id(map, item_id)
@@ -988,16 +995,17 @@ def get_unit_pack_randoms(n = 1):
 
 	return randoms
 
-def get_training_cost(item, map):
+def get_training_cost(item, map, allow_discount = True):
 	cost = int(item["cost"])
-	subcat = int(item["subcat_functional"])
+	if allow_discount:
+		subcat = int(item["subcat_functional"])
 
-	if subcat in blacksmith_discount_subcats:
-		if map_has_blacksmith(map):
-			cost = int(math.ceil(cost * REDUCTION_MULTIPLIER_BLACKSMITH))
-	elif subcat in university_discount_subcats:
-		if map_has_university(map):
-			cost = int(math.ceil(cost * REDUCTION_MULTIPLIER_UNIVERSITY))
+		if subcat in blacksmith_discount_subcats:
+			if map_has_blacksmith(map):
+				cost = int(math.ceil(cost * REDUCTION_MULTIPLIER_BLACKSMITH))
+		elif subcat in university_discount_subcats:
+			if map_has_university(map):
+				cost = int(math.ceil(cost * REDUCTION_MULTIPLIER_UNIVERSITY))
 	
 	return cost
 
