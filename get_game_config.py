@@ -265,7 +265,11 @@ def apply_server_config():
 
 def apply_patches():
 	log.info(" [+] Applying config patches...")
-	for patch_file in os.listdir(CONFIG_PATCH_DIR):
+
+	patches = os.listdir(CONFIG_PATCH_DIR)
+	patches.sort()
+
+	for patch_file in patches:
 		if patch_file.endswith(".json"):
 			f = os.path.join(CONFIG_PATCH_DIR, patch_file)
 			apply_config_patch(f)
