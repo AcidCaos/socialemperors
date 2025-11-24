@@ -253,11 +253,27 @@ def do_command(USERID, cmd, args):
             if item[0] == item_id and item[1] == x and item[2] == y:
                 map["items"].remove(item)
                 break
-        length = len(save["privateState"]["gifts"])
+        length = len(map["store"])
         if length <= item_id:
             for i in range(item_id - length + 1):
-                save["privateState"]["gifts"].append(0)
-        save["privateState"]["gifts"][item_id] += 1
+                map["store"].append(0)
+        map["store"][item_id] += 1
+
+    elif cmd == Constant.CMD_PLACE_STORED_ITEM:
+        item_id = args[0]
+        x = args[1]
+        y = args[2]
+        orientation = args[3]
+        town_id =  args[4] 
+        print("Place stored", str(get_name_from_item_id(item_id)), "at", f"({x},{y})")
+        map = save["maps"][town_id]
+        length = len(map["store"])
+        if length <= item_id or map["store"][item_id] == 0:
+            print("  [!] No stored item available to place.")
+            return
+        map["store"][item_id] -= 1
+        collected_at_timestamp = timestamp_now()
+        map["items"] += [[item_id, x, y, orientation, collected_at_timestamp]]
 
     elif cmd == Constant.CMD_PLACE_GIFT:
         item_id = args[0]
