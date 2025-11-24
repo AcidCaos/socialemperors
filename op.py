@@ -1470,11 +1470,12 @@ def cmd_finish_collection(player, cmd, args, gameversion):
 
 	data[0] = 1
 	
-	# subtract one of each
-	idx = 1
-	while idx <= 5:
-		data[idx] -= 1
-		idx += 1
+	if len(args) < 3:
+		# subtract one of each (if no cash was used)
+		idx = 1
+		while idx <= 5:
+			data[idx] -= 1
+			idx += 1
 
 	finished = player["privateState"]["collectionsCompleted"]
 	if collection_id not in finished:
