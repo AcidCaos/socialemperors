@@ -1315,8 +1315,12 @@ def cmd_buy_super_offer_pack(player, cmd, args, gameversion):
 
 def cmd_buy_offer_pack(player, cmd, args, gameversion):
 	# town_id, pack_id
+	# town_id, pack_id, winning_id
 	town_id = args[0]
 	pack_id = args[1]
+	is_gacha = len(args) > 2
+	if is_gacha:
+		winning_id = args[2]
 
 	pack = get_offer_pack_id(pack_id)
 
@@ -1325,21 +1329,36 @@ def cmd_buy_offer_pack(player, cmd, args, gameversion):
 	if pack["enabled"] == 0:
 		return False
 
-	if not pay_cash(player, pack["cost_cash"]):
-		return False
-
 	_map = player["maps"][town_id]
 
-	for item_id in pack["items"]:
-		add_store_item(_map, item_id)
-		register_bought_unit(player, item_id, town_id)
+	if is_gacha:
+		found = False
+		for entry in pack["items"]:
+			if entry[0] == winning_id:
+				found = True
 
-	add_map_currency(_map, "coins", pack["gold"])
-	add_map_currency(_map, "food", pack["food"])
-	add_map_currency(_map, "wood", pack["wood"])
-	add_map_currency(_map, "stone", pack["stone"])
-	add_map_currency(_map, "xp", pack["xp"])
-	add_mana(player, pack["mana"])
+		if not found:
+			return False
+
+		if not pay_cash(player, pack["cost_cash"]):
+			return False
+
+		add_store_item(_map, winning_id)
+		register_bought_unit(player, winning_id, town_id)
+	else:
+		if not pay_cash(player, pack["cost_cash"]):
+			return False
+
+		for item_id in pack["items"]:
+			add_store_item(_map, item_id)
+			register_bought_unit(player, item_id, town_id)
+
+		add_map_currency(_map, "coins", pack["gold"])
+		add_map_currency(_map, "food", pack["food"])
+		add_map_currency(_map, "wood", pack["wood"])
+		add_map_currency(_map, "stone", pack["stone"])
+		add_map_currency(_map, "xp", pack["xp"])
+		add_mana(player, pack["mana"])
 
 	return True
 
