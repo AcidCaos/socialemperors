@@ -1353,12 +1353,12 @@ def cmd_buy_offer_pack(player, cmd, args, gameversion):
 			add_store_item(_map, item_id)
 			register_bought_unit(player, item_id, town_id)
 
-		add_map_currency(_map, "coins", pack["gold"])
-		add_map_currency(_map, "food", pack["food"])
-		add_map_currency(_map, "wood", pack["wood"])
-		add_map_currency(_map, "stone", pack["stone"])
-		add_map_currency(_map, "xp", pack["xp"])
-		add_mana(player, pack["mana"])
+	add_map_currency(_map, "coins", pack["gold"])
+	add_map_currency(_map, "food", pack["food"])
+	add_map_currency(_map, "wood", pack["wood"])
+	add_map_currency(_map, "stone", pack["stone"])
+	add_map_currency(_map, "xp", pack["xp"])
+	add_mana(player, pack["mana"])
 
 	return True
 
