@@ -202,10 +202,17 @@ def map_remove_item(map, x, y, item_id = None):
 
 def map_kill_item(map, x, y, item_id, item_type = None):
 	items = map_get_item(map, x, y, item_id)
-	for item in items:
-		map["items"].remove(item)
-		if item_type == "u":
-			apply_collect_xp(map, item_id)
+
+	# Yeah you can kill units that aren't there, good job SP
+	if item_type == "u":
+		apply_collect_xp(map, item_id)
+		add_map_currency(map, "coins", 5)
+
+	if len(items) <= 0:
+		return False
+
+	map["items"].remove(items[0])
+	return True
 
 def map_get_item(map, x, y, item_id = None):
 	found = []
@@ -670,7 +677,6 @@ def apply_collect_xp(map, item_id):
 		return
 
 	add_map_currency(map, "xp", int(amount))
-	add_map_currency(map, "coins", 5)
 
 def add_cash(player, amount):
 	player["playerInfo"]["cash"] += int(amount)
