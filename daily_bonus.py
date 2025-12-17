@@ -1,8 +1,10 @@
 import logging
 
 from get_game_config import get_daily_bonus
-from engine import timestamp_now, give_resource_type
+from engine import timestamp_now, give_resource_type, DAILY_BONUS_REPEATABLE
 log = logging.getLogger('__main__')
+
+log.info(f" * Daily login bonus repeatable: {DAILY_BONUS_REPEATABLE}")
 
 def daily_bonus_process(player, ts_now):
 	privateState = player["privateState"]
@@ -10,23 +12,35 @@ def daily_bonus_process(player, ts_now):
 	days_passed = _check_login_ts(privateState["_tsNewDailyBonus"], ts_now)
 	#log.info(f"{days_passed} days passed since last daily login")
 
-	if days_passed == 1:
-		#log.info("Consecutive login!")
-		privateState["numDayLogged"] = privateState["lastDayRewarded"] + 1
-		privateState["showDailyBonus"] = 1
-	if days_passed >= 2 or privateState["numDayLogged"] >= 6:
-		privateState["numDayLogged"] = 1
-		privateState["lastDayRewarded"] = 0
-		privateState["nextDayReward"] = 1
-		privateState["showDailyBonus"] = 1
-		privateState["_tsNewDailyBonus"] = 0
-		#log.info("Reset daily login bonus as the streak was broken or all rewards were claimed")
+	if not DAILY_BONUS_REPEATABLE:
+		if days_passed > 0:
+			days_passed = 1
+
+	if days_passed > 0:
+		advance_daily_bonus(privateState, days_passed)
 	else:
 		#log.info("Daily login bonus already given")
 		return
 
 	#log.info("Daily login bonus should be shown soon")
 	return
+
+def advance_daily_bonus(privateState, days_passed):
+	if days_passed == 1:
+		#log.info("Consecutive login!")
+		privateState["numDayLogged"] = privateState["lastDayRewarded"] + 1
+		privateState["showDailyBonus"] = 1
+	if DAILY_BONUS_REPEATABLE:
+		if days_passed >= 2 or privateState["numDayLogged"] >= 6:
+			privateState["numDayLogged"] = 1
+			privateState["lastDayRewarded"] = 0
+			privateState["nextDayReward"] = 1
+			privateState["showDailyBonus"] = 1
+			privateState["_tsNewDailyBonus"] = 0
+			#log.info("Reset daily login bonus as the streak was broken or all rewards were claimed")
+	elif privateState["numDayLogged"] >= 6:
+		privateState["showDailyBonus"] = 0
+		#log.info("Turned off daily login bonus as all days were claimed")
 
 def claim_daily_bonus(player, ts_now):
 	privateState = player["privateState"]
@@ -71,7 +85,5 @@ def _give_daily_reward(player, ts_now, reward):
 	for res in reward:
 		if res != "u": # game calls a command for units
 			give_resource_type(player, _map, res, reward[res])
-			#amount = reward[res]
-			#log.info(f"Given {amount}{res}")
 
 	return True

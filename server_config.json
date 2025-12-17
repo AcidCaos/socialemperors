@@ -37,6 +37,7 @@
 	},
 	"misc": 
 	{
+		"daily_bonus_repeatable":			false,
 		"quests_reset_hours":				6,
 		"graveyard_max_slots":				10000,
 		"graveyard_max_each_unit":			100,

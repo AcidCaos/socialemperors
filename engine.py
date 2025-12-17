@@ -134,6 +134,9 @@ REDUCTION_MULTIPLIER_UNIVERSITY = 0.9
 POTIONS_PER_FRIEND = max(1, min(10000, get_server_config()["misc"]["graveyard_potions_per_friend"]))
 GRAVEYARD_MAX_EACH_UNIT = get_server_config()["misc"]["graveyard_max_each_unit"]
 GRAVEYARD_MAX_SLOTS = get_server_config()["misc"]["graveyard_max_slots"]
+DAILY_BONUS_REPEATABLE = False
+if "daily_bonus_repeatable" in get_server_config()["misc"]:
+	DAILY_BONUS_REPEATABLE = get_server_config()["misc"]["daily_bonus_repeatable"]
 
 map_cost_multiple = [ "coins", "wood", "food", "stone" ]
 allies_market_resources = [ "n", "g", "w", "f", "s" ]
