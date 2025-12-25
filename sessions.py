@@ -116,7 +116,7 @@ def show_player_info(save, player_type):
 	USERID = save["playerInfo"]["pid"]
 	name = save["playerInfo"]["name"]
 	try:
-		map_name = save["playerInfo"]["map_names"][ save["playerInfo"]["default_map"] ]
+		map_name = save["playerInfo"]["map_names"][ int(save["playerInfo"]["default_map"]) ]
 	except:
 		map_name = '?'
 	log.info(f" * {player_type} OK! -> {USERID} | {name} | {map_name}")
