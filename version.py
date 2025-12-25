@@ -216,7 +216,7 @@ def fix_bought_units(maps, privateState):
 def _fix_level_mana(map, privateState):
 	# applies fix for mana not being gained after specific level
 	cfg_globals = get_game_config()["globals"]
-	gain = int(max(0, 1 + min(100, map["level"]) - cfg_globals["START_LEVEL_MANA_REWARD"]) * cfg_globals["MANA_REWARD_PER_LEVEL"])
+	gain = int(max(0, 1 + min(100, int(map["level"])) - cfg_globals["START_LEVEL_MANA_REWARD"]) * cfg_globals["MANA_REWARD_PER_LEVEL"])
 	if gain > 0:
 		privateState["mana"] += gain
 
@@ -357,6 +357,10 @@ def migrate_loaded_save(save):
 	ts_now = timestamp_now()
 	darts_seed = abs(int((2**16 - 1) * random.random()))
 
+	# force full migration if version is present (very old saves)
+	if "version" in save:
+		_fix_map_items(maps)
+
 	# whoops, these go into maps
 	remove_variable(privateState, "questTimes")
 	remove_variable(privateState, "lastQuestTimes")
@@ -404,6 +408,7 @@ def migrate_loaded_save(save):
 		privateState["countTimePacket"] = [ 0, 0, 0, 0, 0, 0 ]
 	fix_variable(privateState, "helpMap", [])						# shown help pages
 	fix_variable(privateState, "unitPacks", {})						# unit packs
+	fix_variable(privateState, "mana", 0)
 	fix_variable(privateState, "teams", {})							# teams
 	fix_variable(privateState["teams"], "tournament", [
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -422,7 +427,8 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "firstPurchaseTimestamp", 0)			# PopupFirstBuy
 
 	# item collections
-	if fix_variable(privateState, "collections", []):
+	fix_variable(privateState, "collections", [])
+	if len(privateState["collections"]) == 0:
 		fix_collections(privateState)
 
 	fix_variable(privateState, "collectionsCompleted", [])
@@ -493,15 +499,15 @@ def migrate_loaded_save(save):
 		privateState["collectGame"] = _fix_hellforge()
 	fix_variable(privateState, "collectGameGivenPrizes", [])
 
-	# remove version tag as it's useless now
+	# reset graveyard because this is important
+	_reset_graveyard(privateState)
+
+	# more fixes if save is very old version
 	if "version" in save:
-		_fix_map_items(maps)
 		_fix_level_mana(maps[0], privateState)
 		privateState["monsterNestActive"] = 1
 
-		# reset graveyard because this is important
-		_reset_graveyard(privateState)
-
+		# remove version tag as it's useless now
 		save.pop("version")
 
 	# remove any banned items

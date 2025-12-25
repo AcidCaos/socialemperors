@@ -15,7 +15,11 @@
 		"world_id": null,
 		"sp_ref_uid": 1111,
 		"sp_ref_cat_install": "ts",
-		"last_logged_in": 0
+		"last_logged_in": 0,
+		"country": "Social World",
+		"attacks_won": 0,
+		"attacks_lost": 0,
+		"honor_points": 0
 	},
 	"maps": [
 		{
@@ -3403,7 +3407,11 @@
 			"questTimes": {},
 			"lastQuestTimes": [],
 			"warehouseAditionalCapacitySingle": 50,
-			"warehousedUnits": {}
+			"warehousedUnits": {},
+			"timestampLastTrade": 0,
+			"numTradesDone": 0,
+			"store": {},
+			"resourceAlliesMarket": "n"
 		}
 	],
 	"privateState": {
@@ -3490,7 +3498,13 @@
 		},
 		"magics": {},
 		"mana": 0,
-		"boughtUnits": [],
+		"boughtUnits": [
+			512,
+			516,
+			500,
+			698,
+			509
+		],
 		"unitCollectionsCompleted": [],
 		"dragonNumber": 0,
 		"stepNumber": 0,
@@ -3511,16 +3525,44 @@
 		"dartsRandomSeed": 10000000000001,
 		"dartsHasFree": true,
 		"dartsGotExtra": true,
-		"countTimePacket": [],
+		"countTimePacket": [
+			0,
+			0,
+			0,
+			0,
+			0,
+			0
+		],
 		"infoShowed": [],
 		"teams": {
-			"tournament": null
+			"tournament": [
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			]
 		},
 		"arrayAnimals": {},
 		"strategy": 8,
 		"universAttackWin": [],
 		"graveyardCapacity": 10000,
-		"potionsReceived": {},
+		"potionsReceived": 0,
 		"barracksQueues": {},
 		"deadHeroes": {},
 		"resurrectableUnits": [],
@@ -3543,6 +3585,267 @@
 		"tournamentFormation": 0,
 		"shieldEndTime": 0,
 		"shieldCooldown": 0,
-		"purchasedShields": []
+		"purchasedShields": [],
+		"PVPattacksReceived": {},
+		"helpMap": [],
+		"unitPacks": {},
+		"templeStep": [],
+		"timeStampTemple": 0,
+		"numDayLogged": 1,
+		"lastDayRewarded": 0,
+		"nextDayReward": 1,
+		"showDailyBonus": 1,
+		"_tsNewDailyBonus": 0,
+		"firstPurchaseTimestamp": 0,
+		"collections": [
+			[],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			]
+		],
+		"collectionsCompleted": [],
+		"_potionReq": {},
+		"iphoneBox": {},
+		"viralOffers": {
+			"1": {
+				"id": 1,
+				"friends": [],
+				"rewarded": 0
+			},
+			"2": {
+				"id": 2,
+				"friends": [],
+				"rewarded": 0
+			},
+			"3": {
+				"id": 3,
+				"friends": [],
+				"rewarded": 0
+			},
+			"4": {
+				"id": 4,
+				"friends": [],
+				"rewarded": 0
+			},
+			"5": {
+				"id": 5,
+				"friends": [],
+				"rewarded": 0
+			}
+		},
+		"collectGame": {
+			"1": {
+				"id": 1,
+				"counter": 0,
+				"timestamp": 0
+			},
+			"2": {
+				"id": 2,
+				"counter": 0,
+				"timestamp": 0
+			},
+			"3": {
+				"id": 3,
+				"counter": 0,
+				"timestamp": 0
+			},
+			"4": {
+				"id": 4,
+				"counter": 0,
+				"timestamp": 0
+			},
+			"5": {
+				"id": 5,
+				"counter": 0,
+				"timestamp": 0
+			},
+			"6": {
+				"id": 6,
+				"counter": 0,
+				"timestamp": 0
+			}
+		},
+		"collectGameGivenPrizes": []
 	}
 }
