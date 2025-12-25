@@ -1026,7 +1026,7 @@ def map_has_university(map):
 
 def get_default_town_id(player, gameversion):
 	return 0
-	#return max(player["playerInfo"]["default_map"], len(player["maps"]) - 1)
+	#return max(int(player["playerInfo"]["default_map"]), len(player["maps"]) - 1)
 
 def get_strategy_type(id):
 	if id == 8:
