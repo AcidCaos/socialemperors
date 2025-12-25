@@ -765,23 +765,23 @@
 			},
 			{
 				"cash_cost": 2,
-				"order_increment": 2
+				"order_increment": 1
 			},
 			{
 				"cash_cost": 4,
-				"order_increment": 4
+				"order_increment": 1
 			},
 			{
 				"cash_cost": 8,
-				"order_increment": 8
+				"order_increment": 2
 			},
 			{
 				"cash_cost": 15,
-				"order_increment": 15
+				"order_increment": 3
 			},
 			{
 				"cash_cost": 20,
-				"order_increment": 20
+				"order_increment": 4
 			}
 		]
 	},
