@@ -3,7 +3,7 @@
 		"pid": "100000023",
 		"name": "Desert Quest",
 		"pic": "http://profile.ak.fbcdn.net/hprofile-ak-snc4/hs462.snc4/48820_1453192189_8190792_s.jpg",
-		"cash": "7299",
+		"cash": 7299,
 		"completed_tutorial": "15",
 		"default_map": "0",
 		"map_names": [
