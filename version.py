@@ -98,6 +98,12 @@ def fix_variable_array(arr, idx, expected):
 		return True
 	return False
 
+def fix_resource_type(dictionary, key):
+	if type(dictionary[key]) == str:
+		dictionary[key] = int(dictionary[key])
+		return True
+	return False
+
 def _fix_quest_ranks(ranks, quests):
 	for quest in quests:
 		if quest not in ranks:
@@ -379,6 +385,9 @@ def migrate_loaded_save(save):
 	remove_variable(playerInfo, "wood")
 	remove_variable(playerInfo, "food")
 
+	# convert data types as this can cause a crash later on (old quest maps, etc)
+	fix_resource_type(playerInfo, "cash")
+
 	# fixes for maps
 	for _map in maps:
 		remove_variable(_map, "__#__ITEMS_hint")
@@ -391,6 +400,14 @@ def migrate_loaded_save(save):
 		fix_variable(_map, "numTradesDone", 0)
 		fix_variable(_map, "store", {})
 		fix_variable(_map, "resourceAlliesMarket", "n")
+
+		# convert resource data types from str to int
+		fix_resource_type(_map, "coins")
+		fix_resource_type(_map, "wood")
+		fix_resource_type(_map, "food")
+		fix_resource_type(_map, "stone")
+		fix_resource_type(_map, "xp")
+		fix_resource_type(_map, "level")
 
 	# darts rng seed if missing
 	fix_variable(privateState, "dartsRandomSeed", darts_seed)
