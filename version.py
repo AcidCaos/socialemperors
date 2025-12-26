@@ -516,13 +516,13 @@ def migrate_loaded_save(save):
 		privateState["collectGame"] = _fix_hellforge()
 	fix_variable(privateState, "collectGameGivenPrizes", [])
 
-	# reset graveyard because this is important
-	_reset_graveyard(privateState)
-
 	# more fixes if save is very old version
 	if "version" in save:
 		_fix_level_mana(maps[0], privateState)
 		privateState["monsterNestActive"] = 1
+
+		# reset graveyard because this is important
+		_reset_graveyard(privateState)
 
 		# remove version tag as it's useless now
 		save.pop("version")
