@@ -627,7 +627,7 @@ def player_fast_forward(player, seconds, time_machine = False):
 	collect_game = privateState["collectGame"]
 	for it in collect_game:
 		item = collect_game[it]
-		modify_ts(item, "counter", -seconds)
+		modify_ts(item, "timestamp", -seconds)
 
 def warehouse_add(map, item):
 	item_id = str(item[0])
