@@ -266,7 +266,8 @@ def building_activate(item, toggle):
 		item[7]["cp"] = toggle
 	else:
 		item[4] = timestamp_now()
-		del item[7]["cp"]
+		if "cp" in item[7]:
+			del item[7]["cp"]
 
 def set_allies_market_resource(map, item, resource):
 	if resource not in allies_market_resources:
