@@ -1983,9 +1983,9 @@
 				"unlock_level": 4,
 				"description": "POPUP_RECRUIT_DESC_1",
 				"img": "1.png",
-				"scale": 1.5,
-				"offsetX": 60,
-				"offsetY": -40
+				"scale": 1.3,
+				"offsetX": 50,
+				"offsetY": -20
 			},
 			{
 				"id": 2,
@@ -1994,42 +1994,42 @@
 				"unlock_level": 8,
 				"description": "POPUP_RECRUIT_DESC_2",
 				"img": "2.png",
-				"scale": 0.8,
-				"offsetX": 80,
-				"offsetY": -20
+				"scale": 0.9,
+				"offsetX": 75,
+				"offsetY": -15
 			},
 			{
 				"id": 3,
-				"units": "569,569",
+				"units": "602",
 				"num_recruitments": 1,
 				"unlock_level": 10,
 				"description": "POPUP_RECRUIT_DESC_3",
-				"img": "3.png",
-				"scale": 1.2,
-				"offsetX": 20,
+				"img": "5.png",
+				"scale": 0.8,
+				"offsetX": 70,
 				"offsetY": -20
 			},
 			{
 				"id": 4,
-				"units": "630",
+				"units": "569,569",
 				"num_recruitments": 2,
 				"unlock_level": 12,
 				"description": "POPUP_RECRUIT_DESC_4",
-				"img": "4.png",
-				"scale": 0.7,
-				"offsetX": 120,
-				"offsetY": -10
+				"img": "3.png",
+				"scale": 1.2,
+				"offsetX": 0,
+				"offsetY": 0
 			},
 			{
 				"id": 5,
-				"units": "602",
+				"units": "630",
 				"num_recruitments": 2,
 				"unlock_level": 14,
 				"description": "POPUP_RECRUIT_DESC_5",
-				"img": "5.png",
-				"scale": 0.8,
-				"offsetX": 80,
-				"offsetY": -40
+				"img": "4.png",
+				"scale": 0.6,
+				"offsetX": 110,
+				"offsetY": 20
 			},
 			{
 				"id": 6,
@@ -2040,7 +2040,7 @@
 				"img": "6.png",
 				"scale": 0.8,
 				"offsetX": 20,
-				"offsetY": 0
+				"offsetY": 30
 			},
 			{
 				"id": 7,
@@ -2049,9 +2049,9 @@
 				"unlock_level": 20,
 				"description": "POPUP_RECRUIT_DESC_7",
 				"img": "7.png",
-				"scale": 0.8,
+				"scale": 1,
 				"offsetX": 80,
-				"offsetY": -20
+				"offsetY": -8
 			},
 			{
 				"id": 8,
@@ -2060,9 +2060,9 @@
 				"unlock_level": 24,
 				"description": "POPUP_RECRUIT_DESC_8",
 				"img": "8.png",
-				"scale": 0.8,
-				"offsetX": 100,
-				"offsetY": -20
+				"scale": 1,
+				"offsetX": 110,
+				"offsetY": 20
 			},
 			{
 				"id": 9,
@@ -2071,9 +2071,9 @@
 				"unlock_level": 28,
 				"description": "POPUP_RECRUIT_DESC_9",
 				"img": "9.png",
-				"scale": 0.8,
+				"scale": 0.7,
 				"offsetX": 20,
-				"offsetY": 10
+				"offsetY": 30
 			},
 			{
 				"id": 10,
@@ -2082,8 +2082,8 @@
 				"unlock_level": 32,
 				"description": "POPUP_RECRUIT_DESC_10",
 				"img": "10.png",
-				"scale": 0.4,
-				"offsetX": 160,
+				"scale": 0.5,
+				"offsetX": 180,
 				"offsetY": 0
 			},
 			{
@@ -2093,9 +2093,9 @@
 				"unlock_level": 38,
 				"description": "POPUP_RECRUIT_DESC_11",
 				"img": "11.png",
-				"scale": 0.4,
-				"offsetX": 160,
-				"offsetY": 0
+				"scale": 0.5,
+				"offsetX": 165,
+				"offsetY": 30
 			},
 			{
 				"id": 12,
@@ -2106,7 +2106,7 @@
 				"img": "12.png",
 				"scale": 0.4,
 				"offsetX": 180,
-				"offsetY": -20
+				"offsetY": -80
 			}
 		]
 	}
