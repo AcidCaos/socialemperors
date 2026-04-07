@@ -146,7 +146,8 @@ autohire_ignore_buildings = [
 	get_game_config()["globals"]["ALLIES_BUILDING"],
 	361, # allies building for trolls
 	get_game_config()["globals"]["ALLIES_MARKET"],
-	get_game_config()["globals"]["ALLIES_MARKET_TROLLS"]
+	get_game_config()["globals"]["ALLIES_MARKET_TROLLS"],
+	get_game_config()["globals"]["RECRUITMENT_PRIZE"]
 ]
 allies_market_ids = [ 
 	get_game_config()["globals"]["ALLIES_MARKET"], 

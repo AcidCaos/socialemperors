@@ -53,13 +53,17 @@
 					5. When you <b>return</b> to town you can log out<br />
 					6. Log in to your save that has <b>{{building.name}}</b> and you will see your friend hired
 				</p>
+				{% if cost | int > 0 %}
 				<p>If you still need friends you have a few more options</p>
 				<p>
 					{% if building.id | int != 470 %}- You can hire villagers to fill a slot by spending <b>{{cost}}</b> <img src="/img/cash.png" height="13"><br />{% endif %}
 				</p>
 				{% endif %}
+				{% endif %}
+				{% if building.id | int != 387 %}
 				<hr />
 				<p>You have hired <b>{{num}}/{{required}}</b> friends for your <b>{{building.name}}</b>
+				{% endif %}
 			</div>
 		</div>
 	</div>

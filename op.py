@@ -310,6 +310,53 @@ def cmd_finish_si(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_finish_si_recruitment(player, cmd, args, gameversion):
+	# bx, by, town_id, bitem_id, prize_id
+	bx = args[0]
+	by = args[1]
+	town_id = args[2]
+	bitem_id = args[3]
+	prize_id = int(args[4])
+
+	_map = player["maps"][town_id]
+	item = map_get_item(_map, bx, by, bitem_id)
+
+	if len(item) <= 0:
+		return False
+
+	prize = get_recruitment_prize(prize_id)
+	if not prize:
+		return False
+
+	attr = item[0][7]
+
+	num_hired = 0
+	if "si" in attr:
+		num_hired = len(attr["si"])
+
+	friends_needed = prize["num_recruitments"]
+	if num_hired < friends_needed:
+		return False
+
+	if _map["level"] < prize["unlock_level"]:
+		return False
+
+	rewarded = player["privateState"]["recruitmentPrices"]
+	if prize_id in rewarded:
+		return False
+
+	units = prize["units"].split(",")
+	for unit in units:
+		add_store_item(_map, unit)
+
+	# hired friends are capped at 4 and removed right to left (any after 4th are essentially removed)
+	n = max(0, min(4, num_hired) - friends_needed)
+	attr["si"] = attr["si"][:n]
+
+	rewarded.append(prize_id)
+
+	return True
+
 def cmd_push_unit(player, cmd, args, gameversion):
 	# ux, uy, uitem_id, bx, by, town_id
 	ux = args[0]

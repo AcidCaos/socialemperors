@@ -383,6 +383,13 @@ def get_unit_pack(pack_id):
 			return pack
 	return None
 
+def get_recruitment_prize(prize_id):
+	prizes = __game_config["recruitment_prices"]
+	for prize in prizes:
+		if prize["id"] == prize_id:
+			return prize
+	return None
+
 def get_collection_reward(collection_id):
 	rewards = __game_config["globals"]["COLLECTION_REWARDS"]
 	if collection_id <= 0 or collection_id >= len(rewards):

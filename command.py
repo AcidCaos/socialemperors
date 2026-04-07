@@ -92,6 +92,8 @@ commands = {
 	"set_resource_allies":				cmd_set_resource_allies,
 	# round table ---------------------------------------------------------------------------------------------
 	"assist_send_feed":					cmd_roundtable_ask_help,
+	# recruitment prizes --------------------------------------------------------------------------------------
+	"finish_si_recruitment":			cmd_finish_si_recruitment,
 	# dragon nest ---------------------------------------------------------------------------------------------
 	"activate_dragon":					cmd_activate_dragon,
 	"desactivate_dragon":				cmd_deactivate_dragon,
