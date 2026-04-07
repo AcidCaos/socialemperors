@@ -1834,8 +1834,8 @@
 			"iphone_adjustments": ""
 		}
 	},
-		{
-		"_TITLE": "[Neutral] - Unit Collection patch'",
+	{
+		"_TITLE": "[Neutral] - Unit Collection patch",
 		"op": "replace",
 		"path": "/units_collections_categories",
 		"value": {
@@ -1969,5 +1969,147 @@
 			"129":	{ "category_id": 129,	"category_lang_id": 10105,	"units": [2269, 2271, 2272, 2274],			"rewards": 2022,	"cost": 150,	"costs": null,						"position": 655 },
 			"130":	{ "category_id": 130,	"category_lang_id": 10106,	"units": [2275, 2276, 2277],				"rewards": 2022,	"cost": 150,	"costs": null,						"position": 660 }
 		}
+	},
+	{
+		"_TITLE": "[Neutral] - Recruitment Prizes'",
+		"op": "add",
+		"path": "/recruitment_prices",
+		"value":
+		[
+			{
+				"id": 1,
+				"units": "556",
+				"num_recruitments": 1,
+				"unlock_level": 4,
+				"description": "POPUP_RECRUIT_DESC_1",
+				"img": "1.png",
+				"scale": 1.5,
+				"offsetX": 60,
+				"offsetY": -40
+			},
+			{
+				"id": 2,
+				"units": "603",
+				"num_recruitments": 1,
+				"unlock_level": 8,
+				"description": "POPUP_RECRUIT_DESC_2",
+				"img": "2.png",
+				"scale": 0.8,
+				"offsetX": 80,
+				"offsetY": -20
+			},
+			{
+				"id": 3,
+				"units": "602",
+				"num_recruitments": 1,
+				"unlock_level": 10,
+				"description": "POPUP_RECRUIT_DESC_3",
+				"img": "3.png",
+				"scale": 0.8,
+				"offsetX": 80,
+				"offsetY": -40
+			},
+			{
+				"id": 4,
+				"units": "569, 569",
+				"num_recruitments": 2,
+				"unlock_level": 12,
+				"description": "POPUP_RECRUIT_DESC_4",
+				"img": "4.png",
+				"scale": 1.2,
+				"offsetX": 20,
+				"offsetY": -20
+			},
+			{
+				"id": 5,
+				"units": "538",
+				"num_recruitments": 2,
+				"unlock_level": 14,
+				"description": "POPUP_RECRUIT_DESC_5",
+				"img": "5.png",
+				"scale": 0.7,
+				"offsetX": 120,
+				"offsetY": -10
+			},
+			{
+				"id": 6,
+				"units": "820, 820",
+				"num_recruitments": 3,
+				"unlock_level": 18,
+				"description": "POPUP_RECRUIT_DESC_6",
+				"img": "6.png",
+				"scale": 0.8,
+				"offsetX": 20,
+				"offsetY": 0
+			},
+			{
+				"id": 7,
+				"units": "2067",
+				"num_recruitments": 3,
+				"unlock_level": 20,
+				"description": "POPUP_RECRUIT_DESC_7",
+				"img": "7.png",
+				"scale": 0.8,
+				"offsetX": 80,
+				"offsetY": -20
+			},
+			{
+				"id": 8,
+				"units": "886",
+				"num_recruitments": 4,
+				"unlock_level": 24,
+				"description": "POPUP_RECRUIT_DESC_8",
+				"img": "8.png",
+				"scale": 0.8,
+				"offsetX": 100,
+				"offsetY": -20
+			},
+			{
+				"id": 9,
+				"units": "2181, 2181",
+				"num_recruitments": 4,
+				"unlock_level": 28,
+				"description": "POPUP_RECRUIT_DESC_9",
+				"img": "9.png",
+				"scale": 0.8,
+				"offsetX": 20,
+				"offsetY": 10
+			},
+			{
+				"id": 10,
+				"units": "798",
+				"num_recruitments": 4,
+				"unlock_level": 32,
+				"description": "POPUP_RECRUIT_DESC_10",
+				"img": "10.png",
+				"scale": 0.4,
+				"offsetX": 160,
+				"offsetY": 0
+			},
+			{
+				"id": 11,
+				"units": "2013",
+				"num_recruitments": 4,
+				"unlock_level": 38,
+				"description": "POPUP_RECRUIT_DESC_11",
+				"img": "11.png",
+				"scale": 0.4,
+				"offsetX": 160,
+				"offsetY": 0
+			},
+			{
+				"id": 12,
+				"units": "2171",
+				"num_recruitments": 4,
+				"unlock_level": 46,
+				"description": "POPUP_RECRUIT_DESC_12",
+				"img": "12.png",
+				"scale": 0.4,
+				"offsetX": 180,
+				"offsetY": -20
+			}
+		]
 	}
 ]
+
+

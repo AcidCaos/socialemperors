@@ -443,6 +443,8 @@ def migrate_loaded_save(save):
 
 	fix_variable(privateState, "firstPurchaseTimestamp", 0)			# PopupFirstBuy
 
+	fix_variable(privateState, "recruitmentPrices", [])				# Recruitment Prizes
+
 	# item collections
 	fix_variable(privateState, "collections", [])
 	if len(privateState["collections"]) == 0:
