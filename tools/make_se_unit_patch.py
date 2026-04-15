@@ -375,6 +375,15 @@ def modify_item_attack_range(items, item_id, attack_range):
 	name = item["name"]
 	print(f"set attack range for {name}")
 
+def modify_item_race(items, item_id, race):
+	item = get_item(items, item_id)
+	if not item:
+		return
+	
+	item["race"] = str(race)
+	name = item["name"]
+	print(f"set faction for {name}")
+
 def make_final(config, patch, sm_patch):
 	print(f"applying phase 1 patch...")
 	jsonpatch.apply_patch(config, patch, in_place = True)
@@ -408,6 +417,9 @@ def make_final(config, patch, sm_patch):
 		item["height"] = 2
 		name = item["name"]
 		print(f"applied size fix to {name}")
+
+	# fix summoned golem faction
+	modify_item_race(items, 630, "h")
 
 	# modify shop items
 	shop_modify(config["items"], "shop_data.csv")
