@@ -2,6 +2,7 @@ print (" [+] Loading basics...")
 import os
 import json
 import urllib
+import asset_cache # Added by Vurkz
 if os.name == 'nt':
     os.system("color")
     os.system("title Social Empires Server")
