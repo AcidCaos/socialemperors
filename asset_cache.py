@@ -4,7 +4,7 @@ import threading
 from bundle import BASE_DIR
 
 ASSETS_CACHE_DIR = os.path.join(BASE_DIR, "download_assets", "assets")
-SCAN_INTERVAL    = 30  # seconds between scans
+SCAN_INTERVAL    = 30
 
 KNOWN_EXT = {
     ".swf":  ("SWF",   "🔁"),
@@ -52,7 +52,6 @@ def _scan_and_log():
             icons[cat]   = icon
             current.add(fpath)
 
-    # Detect new files since last scan
     with _lock:
         new_files   = current - _last_known
         _last_known = current
@@ -81,6 +80,6 @@ def _loop():
         _scan_and_log()
         time.sleep(SCAN_INTERVAL)
 
-# Start on import
+
 print("[CACHE] Asset cache logger started.")
 threading.Thread(target=_loop, daemon=True).start()
