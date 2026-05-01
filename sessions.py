@@ -344,7 +344,16 @@ def pvp_pool_add(userid, village, session_type, town_id = 0):
 	if not pvp_pool_allowed(userid, village, town_id):
 		return
 
-	__pvp_data[userid] = pvp_data(village, session_type, town_id)
+	try:
+		__pvp_data[userid] = pvp_data(village, session_type, town_id)
+	except KeyError:
+		# migration usually fails if a save is outdated, migration is forced by making sure the version key is in the save
+		village["version"] = "fixme"
+		migrate_loaded_save(village)
+		save_target_session(userid, village, session_type)
+
+		__pvp_data[userid] = pvp_data(village, session_type, town_id)
+
 	if "userid" not in __pvp_pool:
 		__pvp_pool.append(userid)
 
