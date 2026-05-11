@@ -143,6 +143,7 @@ commands = {
 	"complete_tutorial":				cmd_complete_tutorial,
 	"rt_level_up":						cmd_rt_level_up,
 	"rt_publish_score":					cmd_rt_publish_score,
+	"rt_publish_achievement_unit":		cmd_rt_publish_achievement_unit,
 	"set_help_map":						cmd_set_help_map,
 	"admin_add_animal":					cmd_admin_add_animal,
 	# item collections ----------------------------------------------------------------------------------------

@@ -1026,6 +1026,18 @@ def cmd_rt_publish_score(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_rt_publish_achievement_unit(player, cmd, args, gameversion):
+	# unit_id
+	unit_id = int(args[0])
+
+	achieved = player["privateState"]["achievedUnits"]
+	if unit_id in achieved:
+		return True
+
+	achieved.append(unit_id)
+
+	return True
+
 def cmd_set_attack_team(player, cmd, args, gameversion):
 	# team_name, team_units, formation
 	team_name = args[0]

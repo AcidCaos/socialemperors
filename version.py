@@ -434,6 +434,7 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "neighborAssists", {})				# neighbour assists
 	fix_variable(privateState, "templeStep", [])					# supreme bahamut
 	fix_variable(privateState, "timeStampTemple", 0)
+	fix_variable(privateState, "achievedUnits", [])					# achieved units
 
 	fix_variable(privateState, "numDayLogged", 1)					# new daily bonus
 	fix_variable(privateState, "lastDayRewarded", 0)
