@@ -268,7 +268,7 @@ def get_enemy_save(userid):
 	return data
 
 # New village
-def new_village(username, skip_tutorial, draggy = None):
+def new_village(username, skip_tutorial, draggy = None, avatar = ""):
 	draggies = {
 		"GREEN": 698,
 		"BLUE": 651,
@@ -289,6 +289,7 @@ def new_village(username, skip_tutorial, draggy = None):
 	# Custom values
 	village["version"] = "migrateme"
 	village["playerInfo"]["pid"] = USERID
+	village["playerInfo"]["pic"] = avatar
 	village["playerInfo"]["name"] = username
 	village["maps"][0]["timestamp"] = timestamp_now()
 	village["privateState"]["dartsRandomSeed"] = abs(int((2**16 - 1) * random.random()))

@@ -67,6 +67,7 @@ from engine import timestamp_now, get_default_town_id
 from version import version_name, quest_ids, survival_arenas
 from constants import Constant
 from server_hmac import construct_hash_and_payload, check_hmac
+from avatars import get_avatars
 
 log.info(" [+] Configuring server routes...")
 
@@ -114,7 +115,7 @@ async def login():
 @app.route("/reg", methods=['GET', 'POST'])
 async def new_player():
 	do_logout()
-	return render_template("new_empire.html", version=version_name)
+	return render_template("new_empire.html", version=version_name, avatars=get_avatars())
 
 @app.route("/reg/new", methods=['POST'])
 async def new_player_register():
@@ -133,6 +134,7 @@ async def new_player_register():
 	if "skiptutorial" in request.values:
 		skiptutorial = request.values["skiptutorial"] == "skiptutorial"
 	starting_draggy = request.values["STARTING_DRAGGY"]
+	avatar = request.values["AVATAR"]
 
 	flasksession['GAMEVERSION'] = request.form['GAMEVERSION']
 	flasksession['RUNNER'] = request.form['RUNNER']
@@ -140,7 +142,7 @@ async def new_player_register():
 	if "0926" not in flasksession['GAMEVERSION']:
 		skiptutorial = 1
 
-	flasksession['USERID'] = new_village(playername, skiptutorial, starting_draggy)
+	flasksession['USERID'] = new_village(playername, skiptutorial, starting_draggy, avatar)
 
 	if flasksession['RUNNER'] == "RUFFLE":
 		return redirect("/play/ruffle")

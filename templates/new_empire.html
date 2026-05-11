@@ -47,9 +47,43 @@
 							<option value="GOLD">Golden Draggie</option>
 						</select>
 						<br><br>
+						<div style="overflow: auto; display: inblock;">
+							<div style="float: left">
+								<div style="float: left">
+									<img id="avatar_selection" src="/img/profile/default.jpg" style="width: 100px; height: 100px;"/><br>
+									<label>Select Avatar:</label>
+									<select id="AVATAR" name="AVATAR" style="height: 24px;">
+										{% for a in avatars %}
+										<option value="{{a.url}}">{{a.name}}</option>
+										{% endfor %}
+									</select>
+									<script>
+										// preview avatar when changing the selection
+										document.getElementById('AVATAR').addEventListener('change', function () 
+										{
+											document.getElementById('avatar_selection').src = this.value == "" ? "/img/profile/default.jpg" : this.value;
+										});
+
+										// random avatar on page load
+										document.addEventListener('DOMContentLoaded', function () 
+										{
+											var options = document.getElementById('AVATAR').options;
+											if (options.length > 0) 
+											{
+												var n = Math.floor(Math.random() * options.length);
+												document.getElementById('AVATAR').selectedIndex = n;
+												document.getElementById('avatar_selection').src = options[n].value == "" ? "/img/profile/default.jpg" : options[n].value;
+											}
+										});
+									</script>
+								</div>
+								<br><br>
+							</div>
+						</div>
 					</div>
 					<div style="float: left">
 						<!-- RUNNER  SELECTION -->
+						<br>
 						<b>Flash Client</b>
 						<br><br>
 						<div style="overflow: auto; display: inblock;">
