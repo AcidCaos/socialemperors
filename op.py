@@ -25,7 +25,7 @@ def cmd_ping(player, cmd, args, gameversion):
 
 def cmd_game_status(player, cmd, args, gameversion):
 	if len(args) == 3:
-		if args[0] == "MapLoaded" and args[1] == "INIT" and args[2] == "":
+		if args[0] == "MapLoaded" and args[1] == "INIT":
 			if "0926" not in gameversion:
 				claim_daily_bonus(player, timestamp_now())
 
