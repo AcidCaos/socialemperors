@@ -19,7 +19,7 @@ from engine import *
 from version import migrate_loaded_save
 from constants import Constant
 from get_game_config import get_game_config
-
+from avatars import assign_random_avatar
 from bundle import VILLAGES_DIR, SAVES_DIR, ENEMIES_DIR, FRIENDS_DIR
 
 __villages = {}  # ALL static neighbors (excluding friend/ and enemy/)
@@ -63,6 +63,7 @@ __unit_pack_state = {}
 __initial_village = json.load(open(os.path.join(VILLAGES_DIR, "initial.json")))
 __initial_village1407 = json.load(open(os.path.join(VILLAGES_DIR, "initial1407.json")))
 
+__assign_avatars = get_server_config()["misc"]["assign_random_avatars"]
 
 SESSION_SAVE = 0		# player save
 SESSION_VILLAGE = 1		# arthur
@@ -162,6 +163,8 @@ def load_saves(add_to_pvp = False):
 		if add_to_pvp:
 			pvp_pool_add(USERID, save, SESSION_SAVE, 0)
 		modified = migrate_loaded_save(save) # check save version for migration
+		if __assign_avatars:
+			assign_random_avatar(save)
 		if modified:
 			save_session(USERID, False)
 
@@ -205,6 +208,8 @@ def load_friends(add_to_pvp = False):
 			if "version" in village:
 				log.info(f"migrating friends file for {USERID}...")
 				migrate_loaded_save(village)
+				if __assign_avatars:
+					assign_random_avatar(village)
 				with open(os.path.join(FRIENDS_DIR, file), 'w') as f:
 					json.dump(village, f, indent='\t')
 

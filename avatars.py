@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import random
 from bundle import TEMPLATES_DIR, CONFIG_DIR
 from server_config import get_server_config
 
@@ -47,6 +48,23 @@ def _create_avatar_json():
 
 	with open(os.path.join(CONFIG_DIR, "avatars.json"), 'w') as f:
 		json.dump(avatars, f, indent='\t')
+
+# random excluding default avatar, returns default avatar if none are defined
+def get_random_avatar():
+	num = len(__user_avatars)
+	if num <= 1:
+		return __user_avatars[0]
+
+	return __user_avatars[random.randint(1, num - 1)]
+
+def assign_random_avatar(save):
+	playerInfo = save["playerInfo"]
+	if not "pic" in playerInfo:
+		playerInfo["pic"] = get_random_avatar()["url"]
+		return
+	if playerInfo["pic"] == "":
+		playerInfo["pic"] = get_random_avatar()["url"]
+		return
 
 def get_avatars():
 	return __user_avatars
