@@ -11,6 +11,14 @@ patch_filename = "../config/patch/2-unit_patch.json"
 # patch_filename = "unit_patch.json"
 input_csv = "se_unit_patch.csv"
 
+# DEBUG INFO - any warnings or errors will still show up in log
+# phase 1 - unit patch
+debug_unit_patch = False 
+# phase 2 - fusion builder
+debug_fusion = False
+# phase 2 - unit packs
+debug_unit_packs = False
+
 # DO THE THING
 templates = json.load(open("unit_templates.json", 'r', encoding='utf-8'))
 
@@ -161,7 +169,8 @@ def makeriderpatch(item_id, rider_tier, tamed_id):
 	p["value"] = value
 
 	# Append to rider patch list
-	print(f"Created rider patch for {ITEM_NAME}")
+	if debug_unit_patch:
+		print(f"Created rider patch for {ITEM_NAME}")
 	riderpatch.append(p)
 
 def apply_riderpatch(config, patch):
@@ -242,7 +251,8 @@ for line in lines:
 	if ITEM_RIDER_TIER != "" and ITEM_TAMED_ID != "":
 		makeriderpatch(str(ITEM_ID), str(ITEM_RIDER_TIER), str(ITEM_TAMED_ID.replace('\n','')))
 
-	print(f"Made unit patch for {ITEM_NAME}")
+	if debug_unit_patch:
+		print(f"Made unit patch for {ITEM_NAME}")
 
 def load_config(filename):
 	print(f"loading config {filename}...")
@@ -311,7 +321,9 @@ def set_unit_pack_data(item):
 	num = item["pack_num"]
 	cat = item["pack_category"]
 	chance = item["pack_chance"]
-	print(f"applied unit pack data to {name} -> num={num}, category={cat}, chance={chance}")
+
+	if debug_unit_packs:
+		print(f"applied unit pack data to {name} -> num={num}, category={cat}, chance={chance}")
 
 def get_item(items, item_id):
 	item_id = str(item_id)
@@ -384,6 +396,33 @@ def modify_item_race(items, item_id, race):
 	name = item["name"]
 	print(f"set faction for {name}")
 
+def modify_item_collect_amount(items, item_id, amount):
+	item = get_item(items, item_id)
+	if not item:
+		return
+	
+	item["collect"] = str(amount)
+	name = item["name"]
+	print(f"set collect amount for {name}")
+
+def modify_item_collect_type(items, item_id, new_type):
+	item = get_item(items, item_id)
+	if not item:
+		return
+	
+	item["collect_type"] = str(new_type)
+	name = item["name"]
+	print(f"set collect type for {name}")
+
+def modify_item_collect_xp(items, item_id, amount):
+	item = get_item(items, item_id)
+	if not item:
+		return
+	
+	item["collect_xp"] = str(amount)
+	name = item["name"]
+	print(f"set collect xp for {name}")
+
 def make_final(config, patch, sm_patch):
 	print(f"applying phase 1 patch...")
 	jsonpatch.apply_patch(config, patch, in_place = True)
@@ -396,8 +435,9 @@ def make_final(config, patch, sm_patch):
 	# remove duplicates
 	remove_duplicate_items(config)
 
-	# now define training time for units
 	items = config["items"]
+
+	# now define training time for units
 	num = 0
 	for item in items:
 		if item["type"] == "u":
@@ -405,10 +445,16 @@ def make_final(config, patch, sm_patch):
 				life = item["life"]
 				item["training_time"] = set_training_time(life)
 				num += 1
-				if "pack_chance" not in item and "sm_training_time" in item:
-					set_unit_pack_data(item)
-					
 	print(f"set training times for {num} units")
+
+	# unit pack data
+	num = 0
+	for item in items:
+		if item["type"] == "u":
+			if "pack_chance" not in item and "sm_training_time" in item:
+				set_unit_pack_data(item)
+				num += 1
+	print(f"set unit pack data for {num} units")
 
 	# fix sky tower 2 incorrect size
 	item = get_item(items, 1360)
@@ -420,6 +466,9 @@ def make_final(config, patch, sm_patch):
 
 	# fix summoned golem faction
 	modify_item_race(items, 630, "h")
+
+	# fix pharaoh's gold mine collect type
+	modify_item_collect_type(items, 1372, "g")
 
 	# modify shop items
 	shop_modify(config["items"], "shop_data.csv")
@@ -473,7 +522,7 @@ def make_final(config, patch, sm_patch):
 
 print("Patch phase 2 ----------------------------------------------------------")
 print("running fusion builder...")
-sm_patch = fusion_build()
+sm_patch = fusion_build(debug_fusion)
 patches = [ "../config/patch/0-language_en.json", "../config/patch/1-mega_patch.json" ]
 config = load_config("../config/main.json")
 load_patches(config, patches)

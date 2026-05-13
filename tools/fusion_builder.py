@@ -7,7 +7,7 @@ if __name__ == "__main__":
 	print("Please run make_se_unit_patch.py instead!")
 	exit(0)
 
-def fusion_build():
+def fusion_build(debug = True):
 	print("FUSION BUILDER ---------------------------------------------------------")
 
 	# Paths
@@ -67,11 +67,13 @@ def fusion_build():
 			sprite = f"{path_sprites}{img_name}{file_ext_sprite}"
 			thumb = f"{path_thumbs}{img_name}{file_ext_thumb}"
 			if not os.path.exists(sprite):
-				print(f"MISSING SPRITE: {sprite}")
+				if debug:
+					print(f"MISSING SPRITE: {sprite}")
 				if fail_on_missing_sprite:
 					fail = True
 			if not os.path.exists(thumb):
-				print(f"MISSING THUMBNAIL: {thumb}")
+				if debug:
+					print(f"MISSING THUMBNAIL: {thumb}")
 				if fail_on_missing_thumb:
 					fail = True
 
@@ -135,7 +137,7 @@ def fusion_build():
 		if must_exclude(item):
 			continue
 		if asset_missing(item):
-			print(f'EXCLUDED [{item["id"]}]{item["name"]}')
+			print(f'EXCLUDED [{item["id"]}]{item["name"]} -> Assets is missing!')
 			continue
 
 		# some config values for the formula
@@ -162,7 +164,8 @@ def fusion_build():
 			"value": f"{sm_training_time}"
 		}
 
-		print(f'{breeding_order} = [{item["id"]}]{item["name"]}')
+		if debug:
+			print(f'{breeding_order} = [{item["id"]}]{item["name"]}')
 
 		patch_str += ("[" if bool_first else ",") + "\n\n" + json.dumps(patch_breeding_order) + ",\n" + json.dumps(sm_training_time_order)
 		bool_first = False
