@@ -137,7 +137,7 @@ def fusion_build(debug = True):
 		if must_exclude(item):
 			continue
 		if asset_missing(item):
-			print(f'EXCLUDED [{item["id"]}]{item["name"]} -> Assets is missing!')
+			print(f'EXCLUDED [{item["id"]}]{item["name"]} -> Asset is missing!')
 			continue
 
 		# some config values for the formula
