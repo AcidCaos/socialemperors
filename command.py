@@ -176,7 +176,12 @@ commands = {
 	"assist_neighbor":					cmd_assist_neighbor,
 	"assist_neighbor_new":				cmd_assist_neighbor_new,
 	"clean_received_assists":			cmd_clean_received_assists,
-	"assist_receive":					cmd_assist_receive
+	"assist_receive":					cmd_assist_receive,
+	# survival maps (old versions only) -----------------------------------------------------------------------
+	"add_survival_vida_extra":			cmd_survival_buy_life,
+	"buy_survival_map":					cmd_survival_buy_map,
+	"start_survival":					cmd_survival_start,
+	"end_survival":						cmd_survival_end
 }
 
 def command(USERID, data, gameversion):

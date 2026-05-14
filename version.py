@@ -10,56 +10,12 @@ banned_items = []
 if "banned_items" in get_server_config()["misc"]:
 	banned_items = get_server_config()["misc"]["banned_items"]
 
-from engine import timestamp_now, hire_friends, autohire_ignore_buildings, ROUND_TABLE, resurrectable_heroes, GRAVEYARD_MAX_SLOTS, GRAVEYARD_MAX_EACH_UNIT
+from engine import timestamp_now, hire_friends, autohire_ignore_buildings, ROUND_TABLE, resurrectable_heroes, GRAVEYARD_MAX_SLOTS, GRAVEYARD_MAX_EACH_UNIT, survival_arenas, quest_ids, _forge_quests
 from get_game_config import *
 from daily_bonus import daily_bonus_process
 
 version_name = "nerroth rewrite - beyond 0.04a"
 version_code = ""
-
-quest_ids = [
-	"100000006",
-	"100000007",
-	"100000008",
-	"100000012",
-	"100000002",
-	"100000021",
-	"100000022",
-	"100000003",
-	"100000027",
-	"100000028",
-	"100000014",
-	"100000013",
-	"100000020",
-	"100000015",
-	"100000023",
-	"100000019",
-	"100000018",
-	"100000011",
-	"100000033",
-	"100000040",	# arena
-	"100000041",
-	"100000042",
-	"100000043",
-	"100000044",
-	"100000045",
-	"100000046",
-	"100000047",
-	"100000051",	# forge island
-	"100000052",
-	"100000053",
-	"100000054",
-	"100000055",
-	"100000090",	# gods
-	"100000091",
-	"100000092",
-]
-
-survival_arenas = [
-	"100000035",
-	"100000036",
-	"100000037"
-]
 
 quest_entry_seconds = int(get_server_config()["misc"]["quests_reset_hours"] * 3600)
 
@@ -470,7 +426,7 @@ def migrate_loaded_save(save):
 	fix_variable(privateState, "survivalVidaTimeStamp", [])
 	fix_variable(privateState, "survivalVidasExtra", 0)
 	fix_variable(privateState, "survivalMaps", {})
-	_fix_survival_maps(privateState["survivalMaps"], survival_arenas)
+	_fix_survival_maps(privateState["survivalMaps"], survival_arenas[:3])
 
 	# questsRank fix
 	fix_variable(privateState, "questsRank", {})

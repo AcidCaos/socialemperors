@@ -2331,3 +2331,113 @@ def cmd_win_bonus(player, cmd, args, gameversion):
 	privateState["timestampLastBonus"] = timestamp_now()
 
 	return True
+
+def cmd_survival_buy_life(player, cmd, args, gameversion):
+	# cash_cost
+	cash_cost = int(args[0])
+
+	cfg_globals = get_game_config()["globals"]
+	cost = int(cfg_globals["SURVIVAL_BUY_LIVE_CASH"])
+
+	if cost != cash_cost:
+		return False
+
+	if not pay_cash(player, cost):
+		return False
+
+	# available lives are 3 + extra - length of timestamp array
+
+	privateState = player["privateState"]
+	extra = 0
+	if "survivalVidasExtra" in privateState:
+		extra = privateState["survivalVidasExtra"]
+	privateState["survivalVidasExtra"] = extra + 1
+
+	return True
+
+def cmd_survival_buy_map(player, cmd, args, gameversion):
+	# map_id, cash_cost
+	map_id = str(args[0])
+	cash_cost = int(args[1])
+
+	# this command is never called, but let us implement it anyway
+	privateState = player["privateState"]
+	unlocked = privateState["survivalMaps"]
+
+	if map_id in unlocked:
+		return False
+
+	if not pay_cash(player, cash_cost):
+		return False
+
+	unlocked["map_id"] = { "ts": 0, "tp": 0 }
+
+	return True
+
+def cmd_survival_start(player, cmd, args, gameversion):
+	# no arguments
+	# subtract extra life or work with timestamp array
+
+	privateState = player["privateState"]
+
+	# does player have any extra hearts?
+	extra = 0
+	if "survivalVidasExtra" in privateState:
+		extra = privateState["survivalVidasExtra"]
+
+	if extra > 0:
+		privateState["survivalVidasExtra"] = max(0, extra - 1)
+		return True
+
+	# is player able to play based on last timestamps?
+	cfg_globals = get_game_config()["globals"]
+	time_refresh = 3600 * int(cfg_globals["SURVIVAL_HOURS_LIVE_REGENERATE"])
+
+	timestamps = privateState["survivalVidaTimeStamp"]
+	now = timestamp_now()
+	num_timestamps = len(timestamps)
+	hearts = max(0, 3 - min(3, num_timestamps))
+
+	# any expired timestamp counts as a life
+	idx = 0
+	while idx < num_timestamps:
+		if abs(now - timestamps[idx]) >= time_refresh:
+			hearts += 1
+			del timestamps[idx]
+			num_timestamps -= 1
+			continue
+		idx += 1
+
+	if hearts > 0:
+		timestamps.append(now)
+		return True
+
+	return False
+
+def cmd_survival_end(player, cmd, args, gameversion):
+	# map_id, time, prize_items
+	map_id = str(args[0])
+	time = int(args[1])
+	prize_items = json.loads(args[2])
+
+	# no support for other town IDs, sad :(
+	town_id = get_default_town_id(player, gameversion)
+	_map = player["maps"][town_id]
+
+	privateState = player["privateState"]
+	unlocked = privateState["survivalMaps"]
+
+	if map_id not in unlocked:
+		return False
+
+	# map record
+	map_data = unlocked[map_id]
+	map_data["ts"] = timestamp_now()
+	map_data["tp"] = max(time, map_data["tp"])
+
+	# rewards
+	if prize_items:
+		for item in prize_items:
+			add_store_item(_map, item, prize_items[item])
+
+	return True
