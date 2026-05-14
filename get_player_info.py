@@ -90,7 +90,13 @@ def get_pvp_search_result(userid, town_id):
 	return response
 
 def get_quest_info(quest_id, town_id = 0):
-	quest = get_quest_map(quest_id)
+	try:
+		quest = get_quest_map(quest_id)
+	except:
+		return { "result": "error" }
+	if not quest:
+		return { "result": "error" }
+
 	response = {
 		"result": "ok",
 		"processed_errors": 0,
