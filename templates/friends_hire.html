@@ -19,7 +19,7 @@
 				<div>
 					<img src="/img/villager.png" height="18px" style="margin-left: 5px;">
 					<h2 class="uiHeaderTitle" aria-hidden="true" style="margin-left: 2px; display: inline-block;">
-						<a href="/" style="text-decoration: none;">How to Hire Friends for <img src="/default01.static.socialpointgames.com/static/socialempires/buildingthumbs/{{building.img_name}}.jpg" height="18", style="transform: translate(0, 3px);" /> <b>{{building.name}}</b></a>
+						How to Hire Friends for <img src="/default01.static.socialpointgames.com/static/socialempires/buildingthumbs/{{building.img_name}}.jpg" height="18" , style="transform: translate(0, 3px);" /> <b>{{building.name}}</b>
 					</h2>
 				</div>
 			</div>
@@ -62,8 +62,9 @@
 				{% endif %}
 				{% if building.id | int != 387 %}
 				<hr />
-				<p>You have hired <b>{{num}}/{{required}}</b> friends for your <b>{{building.name}}</b>
-				{% endif %}
+				<p>
+					You have hired <b>{{num}}/{{required}}</b> friends for your <b>{{building.name}}</b>
+					{% endif %}
 			</div>
 		</div>
 	</div>
