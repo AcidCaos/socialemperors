@@ -102,6 +102,7 @@
 					backgroundColor: "#669C2C",
 					allowScriptAccess: false,
 					autoplay: true,
+					
 					parameters: 'spdebug=notnull&brk=0\
 						&staticUrl=http://{{SERVERIP}}:{{PORT}}/default01.static.socialpointgames.com/static/socialempires/&brk=0\
 						&dynamicUrl=http://{{SERVERIP}}:{{PORT}}/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/&brk=0\
@@ -135,10 +136,10 @@
 						&timeZone=0&brk=0\
 						&showInitialInvite=false&brk=0\
 						&game_status=3024-lev&brk=0\
-						&offer_type=0&brk=0\
+						{% if offers %}&offer_type=0&brk=0\
 						&offerBuildingTracking=false&brk=0\
 						&offerBuilding=false&brk=0\
-						&squirrel=0&brk=0\
+						{% endif %}&squirrel=0&brk=0\
 						&inviteTournament=0&brk=0\
 						&canvasaddress=http%3A%2F%2F{{SERVERIP}}%3A{{PORT}}%2Fplay&brk=0'
 					});
