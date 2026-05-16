@@ -108,6 +108,7 @@ def get_item(item_id):
 def config_refresh(ts):
 	if ts >= __shop_rotation_refresh:
 		apply_shop_rotation(ts, True)
+		refresh_darts(get_game_config(), ts)
 		apply_events(ts)
 
 def _cost_str(t):
@@ -330,9 +331,13 @@ apply_patches()
 apply_mods()
 check_unit_packs()
 apply_shop_rotation(_ts)
+from darts import refresh_darts
+refresh_darts(__game_config, _ts)
 apply_events(_ts)
 apply_server_config()
 grab_animals()
+
+
 
 # access functions
 items_dict_id_to_items_index = {int(item["id"]): i for i, item in enumerate(__game_config["items"])}
