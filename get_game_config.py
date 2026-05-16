@@ -104,7 +104,8 @@ def get_item(item_id):
 			return item
 	return None
 
-def check_shop_rotation(ts):
+# config refresh
+def config_refresh(ts):
 	if ts >= __shop_rotation_refresh:
 		apply_shop_rotation(ts, True)
 		apply_events(ts)

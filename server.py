@@ -53,7 +53,7 @@ if get_server_config()["server"]["write_logs"]:
 # --------------------------------------------------------------------------------------------------------------
 
 log.info(" [+] Loading game config...")
-from get_game_config import get_game_config, check_shop_rotation
+from get_game_config import get_game_config, config_refresh
 
 log.info(" [+] Loading players...")
 from get_player_info import *
@@ -535,7 +535,7 @@ async def get_game_config_response():
 
 	#log.info(f"get_game_config: USERID: {USERID}. --", request.values)
 	
-	check_shop_rotation(timestamp_now())
+	config_refresh(timestamp_now())
 
 	return construct_hash_and_payload(get_game_config())
 
