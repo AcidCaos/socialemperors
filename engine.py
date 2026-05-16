@@ -218,32 +218,34 @@ def timestamp_now():
 	return int(time.time())
 
 def get_version_settings(gameversion):
-	numbers = re.sub(r"[^0-9.]", "", gameversion.lower().replace(".swf", ""))
+	try:
+		numbers = re.sub(r"[^0-9.]", "", gameversion.lower().replace(".swf", ""))
 
-	version = None
-	if "." not in numbers:
-		version = [
-			numbers[0],
-			numbers[1],
-			numbers[2:]
-		]
-	else:
-		version = numbers.split(".")
+		version = None
+		if "." not in numbers:
+			version = [
+				numbers[0],
+				numbers[1],
+				numbers[2:]
+			]
+		else:
+			version = numbers.split(".")
 
-	major = int(version[0])
-	minor = int(version[1])
-	build = int(version[2])
+		major = int(version[0])
+		minor = int(version[1])
+		build = int(version[2])
 
-	settings = {
-		"version": version,
-		"new_daily": False,
-		"show_offers": False
-	}
+		settings = {
+			"version": version,
+			"new_daily": False,
+			"show_offers": False
+		}
 
-	if major >= 1 and minor >= 4:
-		settings["new_daily"] = True
-		settings["show_offers"] = True
-
+		if major >= 1 and minor >= 4:
+			settings["new_daily"] = True
+			settings["show_offers"] = True
+	except:
+		return None
 	return settings
 
 def map_add_item(map, item, x, y, orientation = 0, timestamp = None, attr = None, store = None, level = 0, userid = None):
