@@ -152,6 +152,9 @@ commands = {
 	# unit collections ----------------------------------------------------------------------------------------
 	"buy_stored_item_cash":				cmd_buy_stored_item_cash,
 	"unit_collections_completed":		cmd_unit_collections_completed,
+	# chapters (old version only) -----------------------------------------------------------------------------
+	"collect_treasure":					cmd_collect_treasure,
+	"set_quest_var":					cmd_set_quest_var,
 	# quests, tournament --------------------------------------------------------------------------------------
 	"set_attack_team":					cmd_set_attack_team,
 	"start_quest":						cmd_start_quest,

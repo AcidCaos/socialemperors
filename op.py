@@ -2332,6 +2332,52 @@ def cmd_win_bonus(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_collect_treasure(player, cmd, args, gameversion):
+	# gold, xp, next_chapter, food, stone, town_id
+	gold = int(args[0])
+	xp = int(args[1])
+	next_chapter = int(args[2])
+	food = int(args[3])
+	stone = int(args[4])
+	town_id = int(args[5])
+	
+	_map = player["maps"][town_id]
+
+	now = timestamp_now()
+	if abs(now - _map["timestampLastTreasure"]) < TIMER_OGRES_VILLAGE:
+		return False
+
+	_map["timestampLastTreasure"] = now
+	_map["idCurrentTreasure"] = next_chapter
+	_map["currentQuestVars"] = {}
+
+	add_map_currency(_map, "coins", gold)
+	add_map_currency(_map, "xp", xp)
+	add_map_currency(_map, "food", food)
+	add_map_currency(_map, "stone", stone)
+	
+	return True
+
+def cmd_set_quest_var(player, cmd, args, gameversion):
+	# town_id, key, data
+	town_id = int(args[0])
+	key = str(args[1])
+	data = json.loads(args[2])
+
+	_map = player["maps"][town_id]
+
+	# fix bug server side where a quest var write happens on finishing a chapter
+	now = timestamp_now()
+	if abs(now - _map["timestampLastTreasure"]) <= TIMER_OGRES_VILLAGE:
+		return True
+
+	if not "currentQuestVars" in _map:
+		_map["currentQuestVars"] = {}
+
+	_map["currentQuestVars"][key] = data
+
+	return True
+
 def cmd_survival_buy_life(player, cmd, args, gameversion):
 	# cash_cost
 	cash_cost = int(args[0])

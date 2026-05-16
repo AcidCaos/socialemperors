@@ -356,6 +356,7 @@ def migrate_loaded_save(save):
 		fix_variable(_map, "numTradesDone", 0)
 		fix_variable(_map, "store", {})
 		fix_variable(_map, "resourceAlliesMarket", "n")
+		fix_variable(_map, "currentQuestVars", {})
 
 		# convert resource data types from str to int
 		fix_resource_type(_map, "coins")

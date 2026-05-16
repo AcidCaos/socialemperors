@@ -158,6 +158,7 @@ _forge_quests = [
 
 SELL_DIVISOR = 1.0 / 20.0 # sell divisor (divides by 20 in game for 5% sell value, negative so we refund)
 SPEEDUP_COST_PER_HOUR = 1
+TIMER_OGRES_VILLAGE = 4 * 3600
 FRIENDS_ASSIST_DIVISOR = 1.0 / 4.0
 FRIENDS_ASSIST_EXPERIENCE = 10
 MARKET_BASE_COSTS = {
