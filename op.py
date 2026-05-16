@@ -2378,6 +2378,52 @@ def cmd_set_quest_var(player, cmd, args, gameversion):
 
 	return True
 
+def cmd_darts_reset(player, cmd, args, gameversion):
+	# seed
+	seed = int(args[0])
+
+	privateState = player["privateState"]
+	privateState["timeStampDartsReset"] = timestamp_now()
+	privateState["timeStampDartsNewFree"] = timestamp_now()
+	privateState["dartsBalloonsShot"] = []
+	privateState["dartsRandomSeed"] = seed
+	privateState["dartsHasFree"] = True
+	privateState["dartsGotExtra"] = False
+
+	return True
+
+def cmd_darts_new_free(player, cmd, args, gameversion):
+	# no arguments
+
+	privateState = player["privateState"]
+	privateState["timeStampDartsNewFree"] = timestamp_now()
+	privateState["dartsHasFree"] = True
+
+	return True
+
+def cmd_darts_shoot_balloon(player, cmd, args, gameversion):
+	# balloon, paid, got_extra
+	balloon = int(args[0])
+	paid = int(args[1])
+	got_extra = int(args[2])
+
+	privateState = player["privateState"]
+	privateState["dartsHasFree"] = False
+
+	if paid:
+		cfg_globals = get_game_config()["globals"]
+		cost = int(cfg_globals["DART_COST_CASH"])
+		if not pay_cash(player, cost):
+			return False
+
+	if got_extra:
+		privateState["dartsGotExtra"] = True
+
+	if balloon not in privateState["dartsBalloonsShot"]:
+		privateState["dartsBalloonsShot"].append(balloon)
+
+	return True
+
 def cmd_survival_buy_life(player, cmd, args, gameversion):
 	# cash_cost
 	cash_cost = int(args[0])

@@ -180,6 +180,10 @@ commands = {
 	"assist_neighbor_new":				cmd_assist_neighbor_new,
 	"clean_received_assists":			cmd_clean_received_assists,
 	"assist_receive":					cmd_assist_receive,
+	# darts (old version only) --------------------------------------------------------------------------------
+	"darts_reset":						cmd_darts_reset,
+	"darts_new_free":					cmd_darts_new_free,
+	"darts_shoot_balloon":				cmd_darts_shoot_balloon,
 	# survival maps (old versions only) -----------------------------------------------------------------------
 	"add_survival_vida_extra":			cmd_survival_buy_life,
 	"buy_survival_map":					cmd_survival_buy_map,
