@@ -661,7 +661,7 @@ async def command_response():
 	client_id = request.values['client_id']
 	last_town_id = 0
 	if "TOWNID" in flasksession:
-		last_townid = flasksession["TOWNID"]
+		last_town_id = flasksession["TOWNID"]
 
 	# log.info(f"command: USERID: {USERID}. --", request.values)
 
@@ -683,7 +683,7 @@ async def command_response():
 			# the client is stupid and will tell the server to replay the commands, this can cause data corruption
 			return ({"result": "error", "error": "json", "description": "desync detected"}, 403)
 
-	if command(USERID, data, flasksession["GAMEVERSION"], last_townid) == CMD_STATUS_OK:
+	if command(USERID, data, flasksession["GAMEVERSION"], last_town_id) == CMD_STATUS_OK:
 		return ({"result": "success"}, 200)
 
 	flasksession["CMDERR"] = True
