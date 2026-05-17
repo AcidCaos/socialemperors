@@ -62,7 +62,7 @@ load_saved_villages()
 
 log.info(" [+] Loading server...")
 
-from command import *
+from command import command, CMD_STATUS_OK, CMD_STATUS_NOT_IMPLEMENTED, CMD_STATUS_FAIL, CMD_STATUS_ERROR
 from engine import timestamp_now, get_default_town_id
 from version import version_name, quest_ids, survival_arenas
 from constants import Constant
