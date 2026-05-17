@@ -62,7 +62,7 @@ load_saved_villages()
 
 log.info(" [+] Loading server...")
 
-from command import command
+from command import *
 from engine import timestamp_now, get_default_town_id
 from version import version_name, quest_ids, survival_arenas
 from constants import Constant
@@ -82,6 +82,8 @@ def do_logout():
 	flasksession.pop('USERID', default=None)
 	flasksession.pop('GAMEVERSION', default=None)
 	flasksession.pop('RUNNER', default=None)
+	flasksession.pop('TOWNID', default=None)
+	flasksession.pop('CMDERR', default=None)
 
 @app.route("/", methods=['GET', 'POST'])
 async def login():
@@ -669,9 +671,23 @@ async def command_response():
 	data_payload = data_str[65:]
 	data = json.loads(data_payload)
 
-	command(USERID, data, flasksession["GAMEVERSION"], last_townid)
-    
-	return ({"result": "success"}, 200)
+	# STOP REPLAYING COMMANDS IF DESYNC ERROR
+	if "tries" not in data:
+		return ({"result": "error", "error": "json", "description": "desync detected"}, 403)
+
+	if "CMDERR" in flasksession:
+		if int(data["tries"]) == 1:
+			# new session so clear this flag
+			flasksession.pop('CMDERR', default=None)
+		else:
+			# the client is stupid and will tell the server to replay the commands, this can cause data corruption
+			return ({"result": "error", "error": "json", "description": "desync detected"}, 403)
+
+	if command(USERID, data, flasksession["GAMEVERSION"], last_townid) == CMD_STATUS_OK:
+		return ({"result": "success"}, 200)
+
+	flasksession["CMDERR"] = True
+	return ({"result": "error", "error": "json", "description": "desync detected"}, 403)
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_continent_ranking.php")
 async def get_continent_ranking_response():

@@ -6,27 +6,33 @@ from datetime import datetime
 from sessions import session, save_session
 from op import *
 
+CMD_STATUS_OK = 0
+CMD_STATUS_NOT_IMPLEMENTED = 1
+CMD_STATUS_FAIL = 2
+CMD_STATUS_ERROR = 3
+
 log = logging.getLogger('__main__')
 
 # command OK
 def _OK(player, cmd, args):
 	name = player["playerInfo"]["name"]
 	log.info(f"[C] OK: [{name}] -> {cmd} {args}")
+	return CMD_STATUS_OK
 
 def _NOTOK(player, cmd, args):
 	name = player["playerInfo"]["name"]
-	log.info(f"[C] FAILED: [{name}] -> {cmd} {args}")
-	raise Exception(f"Illegal server command")
+	log.warning(f"[C] FAILED: [{name}] -> {cmd} {args}")
+	return CMD_STATUS_FAIL
 
-def _ERROR(player, cmd, args):
+def _ERROR(player, cmd, args, err):
 	name = player["playerInfo"]["name"]
-	log.info(f"[C] CRASH: [{name}] -> {cmd} {args}")
-	raise Exception(f"Illegal server command")
+	log.error(f"[C] CRASH: [{name}] -> {cmd} {args}\n{traceback.format_exc()}")
+	return CMD_STATUS_ERROR
 
 def NOT_IMPLEMENTED(player, cmd, args, gameversion, last_town_id):
 	name = player["playerInfo"]["name"]
-	log.info(f"[C] UNKNOWN: [{name}] -> {cmd} {args}")
-	return True
+	log.warning(f"[C] UNKNOWN: [{name}] -> {cmd} {args}")
+	return CMD_STATUS_NOT_IMPLEMENTED
 
 def EXCEPTION(player, cmd, args, gameversion, last_town_id):
 	raise Exception("Command exception")
@@ -203,7 +209,12 @@ def command(USERID, data, gameversion, last_town_id):
 	for i, comm in enumerate(commands):
 		cmd = comm["cmd"]
 		args = comm["args"]
-		do_command(USERID, cmd, args, gameversion, last_town_id)
+		status = do_command(USERID, cmd, args, gameversion, last_town_id)
+		if status == CMD_STATUS_ERROR or status == CMD_STATUS_FAIL:
+			# error out on these instantly
+			return status
+
+	return CMD_STATUS_OK
 
 	save_session(USERID) # Save session
 
@@ -213,14 +224,14 @@ def do_command(USERID, cmd, args, gameversion, last_town_id):
 	if cmd in commands:
 		try:
 			result = commands[cmd](save, cmd, args, gameversion, last_town_id)
-		except:
+		except Exception as err:
 			# traceback.print_exc()
-			_ERROR(save, cmd, args)
-			return
+			return _ERROR(save, cmd, args, err)
+			
 
 		if result == True:
-			_OK(save, cmd, args)
+			return _OK(save, cmd, args)
 		else:
-			_NOTOK(save, cmd, args)
+			return _NOTOK(save, cmd, args)
 	else:
-		NOT_IMPLEMENTED(save, cmd, args, gameversion, last_town_id)
+		return NOT_IMPLEMENTED(save, cmd, args, gameversion, last_town_id)
