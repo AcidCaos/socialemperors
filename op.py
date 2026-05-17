@@ -16,14 +16,14 @@ from engine import *
 from event_system import hellforge_buy_all_price
 from daily_bonus import claim_daily_bonus
 
-def cmd_nop(player, cmd, args, gameversion):
+def cmd_nop(player, cmd, args, gameversion, last_town_id):
 	return True
 
-def cmd_ping(player, cmd, args, gameversion):
+def cmd_ping(player, cmd, args, gameversion, last_town_id):
 	# id
 	return True
 
-def cmd_game_status(player, cmd, args, gameversion):
+def cmd_game_status(player, cmd, args, gameversion, last_town_id):
 	if len(args) == 3:
 		if args[0] == "MapLoaded" and args[1] == "INIT":
 			if get_version_settings(gameversion)["new_daily"]:
@@ -31,7 +31,7 @@ def cmd_game_status(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_buy(player, cmd, args, gameversion):
+def cmd_buy(player, cmd, args, gameversion, last_town_id):
 	# item_id, x, y, orientation, town_id, is_free, price_multiplier, reason
 	item_id = args[0]
 	x = args[1]
@@ -41,6 +41,10 @@ def cmd_buy(player, cmd, args, gameversion):
 	is_free = args[5]
 	price_mult = args[6]
 	reason = args[7]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 	
 	_map = player["maps"][town_id]
 
@@ -59,13 +63,17 @@ def cmd_buy(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_buy_cash(player, cmd, args, gameversion):
+def cmd_buy_cash(player, cmd, args, gameversion, last_town_id):
 	# item_id, x, y, orientation, town_id
 	item_id = args[0]
 	x = args[1]
 	y = args[2]
 	orientation = args[3]
 	town_id = args[4]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 
@@ -86,7 +94,7 @@ def cmd_buy_cash(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_move(player, cmd, args, gameversion):
+def cmd_move(player, cmd, args, gameversion, last_town_id):
 	# x1, y1, item_id, x2, y2, orientation, town_id, reason
 	# reason varies from  "Unitat", "moveTo", "colisio", "MouseUsed"
 	x1 = args[0]
@@ -98,24 +106,32 @@ def cmd_move(player, cmd, args, gameversion):
 	town_id = args[6]
 	reason = args[7]
 
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
+
 	_map = player["maps"][town_id]
 	map_move_item(_map, item_id, x1, y1, x2, y2, orientation = orientation)
 
 	return True
 
-def cmd_orient(player, cmd, args, gameversion):
+def cmd_orient(player, cmd, args, gameversion, last_town_id):
 	# x, y, orientation, town_id
 	x = args[0]
 	y = args[1]
 	orientation = args[2]
 	town_id = args[3]
 
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
+
 	_map = player["maps"][town_id]
 	map_orient_item(_map, x, y, orientation)
 
 	return True
 
-def cmd_sell(player, cmd, args, gameversion):
+def cmd_sell(player, cmd, args, gameversion, last_town_id):
 	# x, y, item_id, town_id, is_free, reason
 	
 	x = args[0]
@@ -124,6 +140,10 @@ def cmd_sell(player, cmd, args, gameversion):
 	town_id = args[3]
 	is_free = args[4]
 	reason = args[5]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	resurrectable = False
 	if reason == "KILL":
@@ -146,13 +166,17 @@ def cmd_sell(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_pop_sell(player, cmd, args, gameversion):
+def cmd_pop_sell(player, cmd, args, gameversion, last_town_id):
 	# bx, by, town_id, bitem_id, uitem_id
 	bx = args[0]
 	by = args[1]
 	town_id = args[2]
 	bitem_id = args[3]
 	uitem_id = args[4]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	item = get_item_from_id(uitem_id)
 	if not item:
@@ -170,7 +194,7 @@ def cmd_pop_sell(player, cmd, args, gameversion):
 
 	return map_pop_unit_short(_map, building[0], uitem_id)
 
-def cmd_kill(player, cmd, args, gameversion):
+def cmd_kill(player, cmd, args, gameversion, last_town_id):
 	# x, y, item_id, town_id, item_type
 	x = args[0]
 	y = args[1]
@@ -178,18 +202,26 @@ def cmd_kill(player, cmd, args, gameversion):
 	town_id = args[3]
 	item_type = args[4] # b or u
 
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
+
 	_map = player["maps"][town_id]
 	map_kill_item(_map, x, y, item_id, item_type)
 	
 	return True
 
-def cmd_activate(player, cmd, args, gameversion):
+def cmd_activate(player, cmd, args, gameversion, last_town_id):
 	# bx, by, town_id, bitem_id, toggle
 	bx = args[0]
 	by = args[1]
 	town_id = args[2]
 	bitem_id = args[3]
 	toggle = args[4]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 	item = map_get_item(_map, bx, by, bitem_id)
@@ -200,13 +232,18 @@ def cmd_activate(player, cmd, args, gameversion):
 	building_activate(item[0], toggle)
 	return True
 
-def cmd_collect_new(player, cmd, args, gameversion):
+def cmd_collect_new(player, cmd, args, gameversion, last_town_id):
 	# bx, by, town_id, bitem_id, num_vills, resource_multipler, cash_spent
 	# bx, by, town_id, bitem_id -> for round table
 	bx = args[0]
 	by = args[1]
 	town_id = args[2]
 	bitem_id = args[3]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
+
 	if len(args) > 4:
 		vills = args[4]
 		res_multiplier = args[5]
@@ -232,7 +269,7 @@ def cmd_collect_new(player, cmd, args, gameversion):
 
 		return building_collect(player, _map, item[0], 0, 0)
 
-def cmd_buy_si_help(player, cmd, args, gameversion):
+def cmd_buy_si_help(player, cmd, args, gameversion, last_town_id):
 	# bx, by, town_id, bitem_id
 	# bx, by, town_id, bitem_id, no_cash == 1
 	bx = args[0]
@@ -242,6 +279,10 @@ def cmd_buy_si_help(player, cmd, args, gameversion):
 	no_cash = False
 	if len(args) > 4:
 		no_cash = args[4] == 1
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 	item = map_get_item(_map, bx, by, bitem_id)
@@ -260,13 +301,17 @@ def cmd_buy_si_help(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_roundtable_ask_help(player, cmd, args, gameversion):
+def cmd_roundtable_ask_help(player, cmd, args, gameversion, last_town_id):
 	# bx, by, town_id, bitem_id, friend_uid
 	bx = args[0]
 	by = args[1]
 	town_id = args[2]
 	bitem_id = args[3]
 	friend_uid = args[4]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 	item = map_get_item(_map, bx, by, bitem_id)
@@ -276,7 +321,7 @@ def cmd_roundtable_ask_help(player, cmd, args, gameversion):
 
 	return roundtable_ask_help(item[0], friend_uid)
 
-def cmd_finish_si(player, cmd, args, gameversion):
+def cmd_finish_si(player, cmd, args, gameversion, last_town_id):
 	# bx, by, town_id, bitem_id
 	# bx, by, town_id, bitem_id, gold, xp, hero -> round table
 	bx = args[0]
@@ -286,6 +331,10 @@ def cmd_finish_si(player, cmd, args, gameversion):
 	gold = 0
 	xp = 0
 	hero = 0
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	if len(args) > 4:
 		gold = args[4]
@@ -310,13 +359,17 @@ def cmd_finish_si(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_finish_si_recruitment(player, cmd, args, gameversion):
+def cmd_finish_si_recruitment(player, cmd, args, gameversion, last_town_id):
 	# bx, by, town_id, bitem_id, prize_id
 	bx = args[0]
 	by = args[1]
 	town_id = args[2]
 	bitem_id = args[3]
 	prize_id = int(args[4])
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 	item = map_get_item(_map, bx, by, bitem_id)
@@ -357,7 +410,7 @@ def cmd_finish_si_recruitment(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_push_unit(player, cmd, args, gameversion):
+def cmd_push_unit(player, cmd, args, gameversion, last_town_id):
 	# ux, uy, uitem_id, bx, by, town_id
 	ux = args[0]
 	uy = args[1]
@@ -365,6 +418,10 @@ def cmd_push_unit(player, cmd, args, gameversion):
 	bx = args[3]
 	by = args[4]
 	town_id = args[5]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 	building = map_get_item(_map, bx, by)
@@ -378,12 +435,17 @@ def cmd_push_unit(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_pop_unit(player, cmd, args, gameversion):
+def cmd_pop_unit(player, cmd, args, gameversion, last_town_id):
 	# bx, by, town_id, uitem_id, ux, uy, uorientation
 	bx = args[0]
 	by = args[1]
 	town_id = args[2]
 	uitem_id = args[3]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
+
 	if len(args) > 4:
 		ux = args[4]
 		uy = args[5]
@@ -411,7 +473,7 @@ def cmd_pop_unit(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_push_queue_unit(player, cmd, args, gameversion):
+def cmd_push_queue_unit(player, cmd, args, gameversion, last_town_id):
 	# bx, by, bitem_id, uitem_id, bq, not_soulmixer
 	bx = args[0]
 	by = args[1]
@@ -422,8 +484,8 @@ def cmd_push_queue_unit(player, cmd, args, gameversion):
 	if len(args) >= 5:
 		not_soulmixer = args[5]
 
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
 
 	building = map_get_item(_map, bx, by)
@@ -463,7 +525,7 @@ def cmd_push_queue_unit(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_speed_up_queue(player, cmd, args, gameversion):
+def cmd_speed_up_queue(player, cmd, args, gameversion, last_town_id):
 	# bq
 	bq = str(args[0])
 
@@ -473,15 +535,15 @@ def cmd_speed_up_queue(player, cmd, args, gameversion):
 
 	return player_speed_up_queue(player, building[0], bq)
 	
-def cmd_pop_queue_unit(player, cmd, args, gameversion):
+def cmd_pop_queue_unit(player, cmd, args, gameversion, last_town_id):
 	# bq, ux, uy, bitem_id
 	bq = str(args[0])
 	ux = args[1]
 	uy = args[2]
 	bitem_id = args[3]
 
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
 
 	building = player_get_item_with_bq(player, bq)
@@ -507,13 +569,13 @@ def cmd_pop_queue_unit(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_unqueue_unit(player, cmd, args, gameversion):
+def cmd_unqueue_unit(player, cmd, args, gameversion, last_town_id):
 	# bq, bitem_id
 	bq = str(args[0])
 	bitem_id = args[1]
 
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
 
 	building = player_get_item_with_bq(player, bq)
@@ -540,7 +602,7 @@ def cmd_unqueue_unit(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_sm_powerup(player, cmd, args, gameversion):
+def cmd_sm_powerup(player, cmd, args, gameversion, last_town_id):
 	# powerup_idx
 	powerup_idx = int(args[0])
 
@@ -550,12 +612,16 @@ def cmd_sm_powerup(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_store_item(player, cmd, args, gameversion):
+def cmd_store_item(player, cmd, args, gameversion, last_town_id):
 	# x, y, town_id, item_id
 	x = args[0]
 	y = args[1]
 	town_id = args[2]
 	item_id = args[3]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 
@@ -566,13 +632,17 @@ def cmd_store_item(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_place_gift(player, cmd, args, gameversion):
+def cmd_place_gift(player, cmd, args, gameversion, last_town_id):
 	# item_id, x, y, orientation, town_id
 	item_id = args[0]
 	x = args[1]
 	y = args[2]
 	orientation = args[3]
 	town_id = args[4]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 
@@ -588,10 +658,14 @@ def cmd_place_gift(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_sell_gift(player, cmd, args, gameversion):
+def cmd_sell_gift(player, cmd, args, gameversion, last_town_id):
 	# item_id, town_id
 	item_id	= args[0]
 	town_id = args[1]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 	
 	_map = player["maps"][town_id]
 	item = get_item_from_id(item_id)
@@ -607,13 +681,17 @@ def cmd_sell_gift(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_place_stored_item(player, cmd, args, gameversion):
+def cmd_place_stored_item(player, cmd, args, gameversion, last_town_id):
 	# item_id, x, y, orientation, town_id
 	item_id = args[0]
 	x = args[1]
 	y = args[2]
 	orientation = args[3]
 	town_id = args[4]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 
@@ -624,10 +702,14 @@ def cmd_place_stored_item(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_sell_stored_item(player, cmd, args, gameversion):
+def cmd_sell_stored_item(player, cmd, args, gameversion, last_town_id):
 	# item_id, town_id
 	item_id	= args[0]
 	town_id = args[1]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 	
 	_map = player["maps"][town_id]
 	item = get_item_from_id(item_id)
@@ -643,7 +725,7 @@ def cmd_sell_stored_item(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_tm_buy_packet(player, cmd, args, gameversion):
+def cmd_tm_buy_packet(player, cmd, args, gameversion, last_town_id):
 	# packet_id
 	packet_id = int(args[0])
 	packet = get_time_machine_packet(packet_id)
@@ -659,7 +741,7 @@ def cmd_tm_buy_packet(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_tm_use_packet(player, cmd, args, gameversion):
+def cmd_tm_use_packet(player, cmd, args, gameversion, last_town_id):
 	# packet_id
 	packet_id = int(args[0])
 	packet = get_time_machine_packet(packet_id)
@@ -677,7 +759,7 @@ def cmd_tm_use_packet(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_graveyard_buy_potions(player, cmd, args, gameversion):
+def cmd_graveyard_buy_potions(player, cmd, args, gameversion, last_town_id):
 	potion_data = get_game_config()["globals"]["GRAVEYARD_POTIONS"]
 	potion_amount = int(potion_data["amount"])
 	price = int(potion_data["price"]["c"])
@@ -688,18 +770,22 @@ def cmd_graveyard_buy_potions(player, cmd, args, gameversion):
 
 	return False
 	
-def cmd_graveyard_reset_potions_received(player, cmd, args, gameversion):
+def cmd_graveyard_reset_potions_received(player, cmd, args, gameversion, last_town_id):
 	player["privateState"]["potionsReceived"] = 0
 
 	return True
 
-def cmd_resurrect_hero(player, cmd, args, gameversion):
+def cmd_resurrect_hero(player, cmd, args, gameversion, last_town_id):
 	# item_id, x, y, town_id, used_potion -> graveyard
 	# item_id, x, y, town_id -> heroes grave
 	item_id = args[0]
 	x = args[1]
 	y = args[2]
 	town_id = args[3]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 		
 	_map = player["maps"][town_id]
 
@@ -762,10 +848,15 @@ def cmd_resurrect_hero(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_buy_mana(player, cmd, args, gameversion):
+def cmd_buy_mana(player, cmd, args, gameversion, last_town_id):
 	# town_id, use_cash
 	town_id = args[0]
 	use_cash = args[1] == 1
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
+
 	_map = player["maps"][town_id]
 
 	cfg_globals = get_game_config()["globals"]
@@ -781,11 +872,15 @@ def cmd_buy_mana(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_buy_magic(player, cmd, args, gameversion):
+def cmd_buy_magic(player, cmd, args, gameversion, last_town_id):
 	# spell_id, town_id, use_cash
 	spell_id = args[0]
 	town_id = args[1]
 	use_cash = args[2] == 1
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	learned = player["privateState"]["magics"]
 	if str(spell_id) in learned:
@@ -808,7 +903,7 @@ def cmd_buy_magic(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_use_magic(player, cmd, args, gameversion):
+def cmd_use_magic(player, cmd, args, gameversion, last_town_id):
 	# spell_id
 	spell_id = args[0]
 
@@ -827,12 +922,16 @@ def cmd_use_magic(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_add_warehoused_item(player, cmd, args, gameversion):
+def cmd_add_warehoused_item(player, cmd, args, gameversion, last_town_id):
 	# ux, uy, town_id, uitem_id
 	ux = args[0]
 	uy = args[1]
 	town_id = args[2]
 	uitem_id = args[3]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 
@@ -848,13 +947,17 @@ def cmd_add_warehoused_item(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_place_warehoused_item(player, cmd, args, gameversion):
+def cmd_place_warehoused_item(player, cmd, args, gameversion, last_town_id):
 	# uitem_id, ux, uy, 0, town_id
 	uitem_id = args[0]
 	ux = args[1]
 	uy = args[2]
 	zero = args[3]	# always 0
 	town_id = args[4]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 
@@ -869,9 +972,13 @@ def cmd_place_warehoused_item(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_buy_warehouse_capacity(player, cmd, args, gameversion):
+def cmd_buy_warehouse_capacity(player, cmd, args, gameversion, last_town_id):
 	# town_id
 	town_id = args[0]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 
@@ -889,26 +996,34 @@ def cmd_buy_warehouse_capacity(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_reset_warehouse(player, cmd, args, gameversion):
+def cmd_reset_warehouse(player, cmd, args, gameversion, last_town_id):
 	# town_id
 	town_id = args[0]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 	warehouse_reset(_map)
 
 	return True
 
-def cmd_name_map(player, cmd, args, gameversion):
+def cmd_name_map(player, cmd, args, gameversion, last_town_id):
 	# town_id, name
 	town_id = args[0]
 	name = str(args[1])
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	player["playerInfo"]["map_names"][town_id] = name
 	# player["playerInfo"]["name"] = name # allow renaming of profile too
 
 	return True
 
-def cmd_unlock_skin(player, cmd, args, gameversion):
+def cmd_unlock_skin(player, cmd, args, gameversion, last_town_id):
 	# skin_id
 	skin_id = str(args[0])
 
@@ -922,10 +1037,14 @@ def cmd_unlock_skin(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_set_skin(player, cmd, args, gameversion):
+def cmd_set_skin(player, cmd, args, gameversion, last_town_id):
 	# town_id, skin_id
 	town_id = args[0]
 	skin_id = str(args[1])
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	privateState = player["privateState"]
 	if skin_id not in privateState["unlockedSkins"] and skin_id != "0":
@@ -936,7 +1055,7 @@ def cmd_set_skin(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_set_strategy(player, cmd, args, gameversion):
+def cmd_set_strategy(player, cmd, args, gameversion, last_town_id):
 	# strategy
 	strategy = args[0]
 
@@ -944,8 +1063,13 @@ def cmd_set_strategy(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_exchange_cash(player, cmd, args, gameversion):
+def cmd_exchange_cash(player, cmd, args, gameversion, last_town_id):
+	# town_id	
 	town_id = args[0]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	cfg_globals = get_game_config()["globals"]
 	cash_amount = cfg_globals["EXCHANGE_CASH"]
@@ -959,11 +1083,15 @@ def cmd_exchange_cash(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_expand(player, cmd, args, gameversion):
+def cmd_expand(player, cmd, args, gameversion, last_town_id):
 	# land_idx, currency_type, town_id
 	land_idx = args[0]
 	currency_type = args[1]
 	town_id = args[2]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 	expansions = _map["expansions"]
@@ -985,12 +1113,12 @@ def cmd_expand(player, cmd, args, gameversion):
 	expansions.append(land_idx)
 	return True
 
-def cmd_rt_level_up(player, cmd, args, gameversion):
+def cmd_rt_level_up(player, cmd, args, gameversion, last_town_id):
 	# level_now
 	level_now = int(args[0])
 
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
 	level_old = _map["level"]
 
@@ -1008,25 +1136,27 @@ def cmd_rt_level_up(player, cmd, args, gameversion):
 	if level_now >= cfg_globals["START_LEVEL_MANA_REWARD"]:
 		add_mana(player, cfg_globals["MANA_REWARD_PER_LEVEL"])
 
-	pvp_pool_modify(player)
+	if town_id == 0:
+		pvp_pool_modify(player)
 
 	return True
 
-def cmd_rt_publish_score(player, cmd, args, gameversion):
+def cmd_rt_publish_score(player, cmd, args, gameversion, last_town_id):
 	# xp_now 
 	xp_now = int(args[0])
 
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
 
 	_map["xp"] = xp_now
 
-	pvp_pool_modify(player)
+	if town_id == 0:
+		pvp_pool_modify(player)
 
 	return True
 
-def cmd_rt_publish_achievement_unit(player, cmd, args, gameversion):
+def cmd_rt_publish_achievement_unit(player, cmd, args, gameversion, last_town_id):
 	# unit_id
 	unit_id = int(args[0])
 
@@ -1038,7 +1168,7 @@ def cmd_rt_publish_achievement_unit(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_set_attack_team(player, cmd, args, gameversion):
+def cmd_set_attack_team(player, cmd, args, gameversion, last_town_id):
 	# team_name, team_units, formation
 	team_name = args[0]
 	team_units = args[1]
@@ -1053,10 +1183,15 @@ def cmd_set_attack_team(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_start_quest(player, cmd, args, gameversion):
+def cmd_start_quest(player, cmd, args, gameversion, last_town_id):
 	# quest_id, town_id
 	quest_id = args[0]
 	town_id = args[1]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		log.info("TOWN ID DESYNC")
+		return False
 
 	ts_now = timestamp_now()
 	_map = player["maps"][town_id]
@@ -1066,16 +1201,16 @@ def cmd_start_quest(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_start_quest_new(player, cmd, args, gameversion):
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+def cmd_start_quest_new(player, cmd, args, gameversion, last_town_id):
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
 
 	_map["lastQuestTimes"].append(timestamp_now())
 
 	return True
 
-def cmd_end_quest(player, cmd, args, gameversion):
+def cmd_end_quest(player, cmd, args, gameversion, last_town_id):
 	# json
 	data = json.loads(args[0])
 	#log.info(json.dumps(data, indent='\t'))
@@ -1101,6 +1236,10 @@ def cmd_end_quest(player, cmd, args, gameversion):
 	resources = data["resources"]
 	difficulty = data["difficulty"]
 	town_id = data["map"]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 
@@ -1139,7 +1278,7 @@ def cmd_end_quest(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_reset_shield(player, cmd, args, gameversion):
+def cmd_reset_shield(player, cmd, args, gameversion, last_town_id):
 	# disables player shield without resetting cooldown
 	privateState = player["privateState"]
 	privateState["shieldEndTime"] = 0
@@ -1148,13 +1287,18 @@ def cmd_reset_shield(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_buy_shield(player, cmd, args, gameversion):
+def cmd_buy_shield(player, cmd, args, gameversion, last_town_id):
 	# shield_id
 	shield_id = args[0]
 
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
+
 	privateState = player["privateState"]
 
 	shield = get_shield_data(shield_id)
@@ -1219,13 +1363,13 @@ def cmd_buy_shield(player, cmd, args, gameversion):
 	
 	return True
 
-def cmd_pvp_get_enemy_new(player, cmd, args, gameversion):
+def cmd_pvp_get_enemy_new(player, cmd, args, gameversion, last_town_id):
 	# cost, searches_before_attack
 	cost = args[0]
 	searches = args[1]
 
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
 
 	if not pay_map_currency(_map, "coins", cost):
@@ -1233,13 +1377,13 @@ def cmd_pvp_get_enemy_new(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_pvp_begin_attack_new(player, cmd, args, gameversion):
+def cmd_pvp_begin_attack_new(player, cmd, args, gameversion, last_town_id):
 	# timestamp
 	ts = args[0]
 
 	return True
 
-def cmd_pvp_end_attack_new(player, cmd, args, gameversion):
+def cmd_pvp_end_attack_new(player, cmd, args, gameversion, last_town_id):
 	# g, f, w, s, eid, uid, ulevel, ts, winner_id, voluntary_end, attack_is_reply, dmg > shield% limit, damage_pct, xp 
 	gold = args[0]
 	food = args[1]
@@ -1260,8 +1404,8 @@ def cmd_pvp_end_attack_new(player, cmd, args, gameversion):
 	#	# what are you doing!?
 	#	return False
 
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
 
 	add_map_currency(_map, "coins", gold)
@@ -1274,7 +1418,7 @@ def cmd_pvp_end_attack_new(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_pvp_end_attack(player, cmd, args, gameversion):
+def cmd_pvp_end_attack(player, cmd, args, gameversion, last_town_id):
 	# data
 	data = json.loads(args[0])
 	
@@ -1324,12 +1468,16 @@ def cmd_pvp_end_attack(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_buy_super_offer_pack(player, cmd, args, gameversion):
+def cmd_buy_super_offer_pack(player, cmd, args, gameversion, last_town_id):
 	# town_id, pack_id, items, cost
 	town_id = args[0]
 	pack_id = args[1]
 	items = args[2]
 	cost = args[3]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	items = items.split(",")
 	pack = get_offer_pack_id(pack_id)
@@ -1372,7 +1520,7 @@ def cmd_buy_super_offer_pack(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_buy_offer_pack(player, cmd, args, gameversion):
+def cmd_buy_offer_pack(player, cmd, args, gameversion, last_town_id):
 	# town_id, pack_id
 	# town_id, pack_id, winning_id
 	town_id = args[0]
@@ -1380,6 +1528,10 @@ def cmd_buy_offer_pack(player, cmd, args, gameversion):
 	is_gacha = len(args) > 2
 	if is_gacha:
 		winning_id = args[2]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	pack = get_offer_pack_id(pack_id)
 
@@ -1421,11 +1573,10 @@ def cmd_buy_offer_pack(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_buy_unit_pack(player, cmd, args, gameversion):
+def cmd_buy_unit_pack(player, cmd, args, gameversion, last_town_id):
 	# pack_id, n
 	pack_id = int(args[0])
 	n = int(args[1])
-
 
 	userid = player["playerInfo"]["pid"]
 	pack_state = get_unit_pack_state(userid)
@@ -1434,8 +1585,8 @@ def cmd_buy_unit_pack(player, cmd, args, gameversion):
 		# stop, we already have a state
 		return True
 
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
 
 	# if n is between >= 2 and < 8, apply 10% discount (* 0.9)
@@ -1486,12 +1637,12 @@ def cmd_buy_unit_pack(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_store_add_items(player, cmd, args, gameversion):
+def cmd_store_add_items(player, cmd, args, gameversion, last_town_id):
 	# items
 	items = json.loads(args[0])
 
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
 
 	for item_id in items:
@@ -1500,7 +1651,7 @@ def cmd_store_add_items(player, cmd, args, gameversion):
 	
 	return True
 
-def cmd_add_collectable(player, cmd, args, gameversion):
+def cmd_add_collectable(player, cmd, args, gameversion, last_town_id):
 	# collection_id, index
 	collection_id = args[0]
 	index = args[1]
@@ -1515,7 +1666,7 @@ def cmd_add_collectable(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_finish_collection(player, cmd, args, gameversion):
+def cmd_finish_collection(player, cmd, args, gameversion, last_town_id):
 	# collection_id - if free
 	# collection_id, used_cash (always 1), cost
 
@@ -1559,8 +1710,8 @@ def cmd_finish_collection(player, cmd, args, gameversion):
 	if collection_id not in finished:
 		finished.append(collection_id)
 
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
 
 	add_store_item(_map, reward)
@@ -1568,11 +1719,15 @@ def cmd_finish_collection(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_buy_stored_item_cash(player, cmd, args, gameversion):
+def cmd_buy_stored_item_cash(player, cmd, args, gameversion, last_town_id):
 	# town_id, uitem_id, cost
 	town_id = args[0]
 	uitem_id = int(args[1])
 	cost = int(args[2])
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 
@@ -1585,7 +1740,7 @@ def cmd_buy_stored_item_cash(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_unit_collections_completed(player, cmd, args, gameversion):
+def cmd_unit_collections_completed(player, cmd, args, gameversion, last_town_id):
 	# collection_id
 	collection_id = int(args[0])
 	if collection_id not in player["privateState"]["unitCollectionsCompleted"]:
@@ -1595,9 +1750,13 @@ def cmd_unit_collections_completed(player, cmd, args, gameversion):
 
 	return False
 
-def cmd_set_variables(player, cmd, args, gameversion):
+def cmd_set_variables(player, cmd, args, gameversion, last_town_id):
 	playerInfo = player["playerInfo"]
 	town_id = args[7]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 	_map["coins"] = args[0]
@@ -1612,7 +1771,7 @@ def cmd_set_variables(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_ff(player, cmd, args, gameversion):
+def cmd_ff(player, cmd, args, gameversion, last_town_id):
 	# seconds
 	seconds = args[0]
 	player_fast_forward(player, int(seconds))
@@ -1621,7 +1780,7 @@ def cmd_ff(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_admin_add_animal(player, cmd, args, gameversion):
+def cmd_admin_add_animal(player, cmd, args, gameversion, last_town_id):
 	# subcategory, amount
 	subcategory = str(args[0])
 	amount = int(args[1])
@@ -1635,7 +1794,7 @@ def cmd_admin_add_animal(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_set_help_map(player, cmd, args, gameversion):
+def cmd_set_help_map(player, cmd, args, gameversion, last_town_id):
 	# key
 	key = str(args[0])
 
@@ -1645,11 +1804,15 @@ def cmd_set_help_map(player, cmd, args, gameversion):
 
 	return True
 	
-def cmd_assist_neighbor(player, cmd, args, gameversion):
+def cmd_assist_neighbor(player, cmd, args, gameversion, last_town_id):
 	# userid, assist_id, town_id
 	userid = str(args[0])
 	assist_id = args[1]
 	town_id = args[2]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 	cfg_globals = get_game_config()["globals"]
@@ -1662,11 +1825,15 @@ def cmd_assist_neighbor(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_assist_neighbor_new(player, cmd, args, gameversion):
+def cmd_assist_neighbor_new(player, cmd, args, gameversion, last_town_id):
 	# userid, town_id, assists
 	userid = str(args[0])
 	town_id = args[1]
 	assists = json.loads(args[2])
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	status = assist_neighbor(userid, town_id, assists, player["playerInfo"]["pid"])
 	if not status:
@@ -1681,17 +1848,25 @@ def cmd_assist_neighbor_new(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_assist_receive(player, cmd, args, gameversion):
+def cmd_assist_receive(player, cmd, args, gameversion, last_town_id):
 	# town_id, building_id
 	town_id = args[0]
 	building_id = args[1]
 
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
+
 	return player_assist_receive(player, player["maps"][town_id], building_id)
 
-def cmd_clean_received_assists(player, cmd, args, gameversion):
+def cmd_clean_received_assists(player, cmd, args, gameversion, last_town_id):
 	# userid, town_id
 	userid = str(args[0])
 	town_id = args[1]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 	assists = _map["receivedAssists"]
@@ -1700,12 +1875,16 @@ def cmd_clean_received_assists(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_market_trade_resource(player, cmd, args, gameversion):
+def cmd_market_trade_resource(player, cmd, args, gameversion, last_town_id):
 	# town_id, resource_type, is_sell, amount
 	town_id = args[0]
 	resource_type = args[1]
 	is_sell = args[2] == 1
 	amount = args[3]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 	res_traded = _map["resourcesTraded"]
@@ -1743,22 +1922,30 @@ def cmd_market_trade_resource(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_increase_population(player, cmd, args, gameversion):
+def cmd_increase_population(player, cmd, args, gameversion, last_town_id):
 	# town_id
 	town_id = args[0]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 	_map["increasedPopulation"] = min(5, _map["increasedPopulation"] + 1)
 
 	return True
 
-def cmd_set_resource_allies(player, cmd, args, gameversion):
+def cmd_set_resource_allies(player, cmd, args, gameversion, last_town_id):
 	# resource, bx, by, town_id, bitem_id
 	resource = args[0]
 	bx = args[1]
 	by = args[2]
 	town_id = args[3]
 	bitem_id = args[4]
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 	item = map_get_item(_map, bx, by, bitem_id)
@@ -1767,48 +1954,53 @@ def cmd_set_resource_allies(player, cmd, args, gameversion):
 
 	return set_allies_market_resource(_map, item[0], resource)
 
-def cmd_activate_dragon(player, cmd, args, gameversion):
+def cmd_activate_dragon(player, cmd, args, gameversion, last_town_id):
 	return _cmd_activate_nest(player, cmd, args, gameversion, "dragon")
 
-def cmd_activate_monster(player, cmd, args, gameversion):
+def cmd_activate_monster(player, cmd, args, gameversion, last_town_id):
 	return _cmd_activate_nest(player, cmd, args, gameversion, "monster")
 
-def cmd_deactivate_dragon(player, cmd, args, gameversion):
+def cmd_deactivate_dragon(player, cmd, args, gameversion, last_town_id):
 	return _cmd_deactivate_nest(player, cmd, args, gameversion, "dragon")
 
-def cmd_deactivate_monster(player, cmd, args, gameversion):
+def cmd_deactivate_monster(player, cmd, args, gameversion, last_town_id):
 	return _cmd_deactivate_nest(player, cmd, args, gameversion, "monster")
 
-def cmd_next_dragon(player, cmd, args, gameversion):
+def cmd_next_dragon(player, cmd, args, gameversion, last_town_id):
 	return _cmd_next_nest(player, cmd, args, gameversion, "dragon")
 
-def cmd_next_monster(player, cmd, args, gameversion):
+def cmd_next_monster(player, cmd, args, gameversion, last_town_id):
 	return _cmd_next_nest(player, cmd, args, gameversion, "monster")
 
-def cmd_next_step_dragon(player, cmd, args, gameversion):
+def cmd_next_step_dragon(player, cmd, args, gameversion, last_town_id):
 	return _cmd_next_step_nest(player, cmd, args, gameversion, "dragon")
 
-def cmd_next_step_monster(player, cmd, args, gameversion):
+def cmd_next_step_monster(player, cmd, args, gameversion, last_town_id):
 	return _cmd_next_step_nest(player, cmd, args, gameversion, "monster")
 
-def cmd_buy_step_dragon(player, cmd, args, gameversion):
+def cmd_buy_step_dragon(player, cmd, args, gameversion, last_town_id):
 	return _cmd_buy_step_nest(player, cmd, args, gameversion, "dragon")
 
-def cmd_buy_step_monster(player, cmd, args, gameversion):
+def cmd_buy_step_monster(player, cmd, args, gameversion, last_town_id):
 	return _cmd_buy_step_nest(player, cmd, args, gameversion, "monster")
 
-def cmd_reset_dragon(player, cmd, args, gameversion):
+def cmd_reset_dragon(player, cmd, args, gameversion, last_town_id):
 	return _cmd_reset_nest(player, cmd, args, gameversion, "dragon")
 
-def cmd_reset_monster(player, cmd, args, gameversion):
+def cmd_reset_monster(player, cmd, args, gameversion, last_town_id):
 	return _cmd_reset_nest(player, cmd, args, gameversion, "monster")
 
 def _cmd_activate_nest(player, cmd, args, gameversion, nest_type):
 	# currency
 	resource = str(args[0])
 
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+	# USE LAST TOWN ID
+	town_id = last_town_id
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
+
 	_map = player["maps"][town_id]
 
 	nest = get_nest(nest_type)
@@ -1918,7 +2110,7 @@ def _cmd_reset_nest(player, cmd, args, gameversion, nest_type):
 
 	return True
 
-def cmd_rider_select(player, cmd, args, gameversion):
+def cmd_rider_select(player, cmd, args, gameversion, last_town_id):
 	# rider_id
 	rider_id = int(args[0])
 	if rider_id < 0 or rider_id > 3:
@@ -1932,7 +2124,7 @@ def cmd_rider_select(player, cmd, args, gameversion):
 	privateState[rider["ts"]] = 0
 	return True
 
-def cmd_rider_next_step(player, cmd, args, gameversion):
+def cmd_rider_next_step(player, cmd, args, gameversion, last_town_id):
 	# success
 	success = int(args[0]) == 1
 
@@ -1950,7 +2142,7 @@ def cmd_rider_next_step(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_rider_buy_step(player, cmd, args, gameversion):
+def cmd_rider_buy_step(player, cmd, args, gameversion, last_town_id):
 	# cost
 	cost = int(args[0])
 
@@ -1967,7 +2159,7 @@ def cmd_rider_buy_step(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_rider_reset(player, cmd, args, gameversion):
+def cmd_rider_reset(player, cmd, args, gameversion, last_town_id):
 	rider = get_rider()
 
 	privateState = player["privateState"]
@@ -1977,13 +2169,13 @@ def cmd_rider_reset(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_sb_next_step(player, cmd, args, gameversion):
+def cmd_sb_next_step(player, cmd, args, gameversion, last_town_id):
 	# offering, step_id
 	offering = json.loads(args[0])
 	step_id = int(args[1])
 
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
 
 	if len(offering) != 1:
@@ -2018,7 +2210,7 @@ def cmd_sb_next_step(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_sb_buy_step_cash(player, cmd, args, gameversion):
+def cmd_sb_buy_step_cash(player, cmd, args, gameversion, last_town_id):
 	# cost
 	cost = int(args[0])
 	if cost > 0:
@@ -2032,7 +2224,7 @@ def cmd_sb_buy_step_cash(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_sb_reset(player, cmd, args, gameversion):
+def cmd_sb_reset(player, cmd, args, gameversion, last_town_id):
 	sb = get_sb_temple()
 
 	privateState = player["privateState"]
@@ -2040,7 +2232,7 @@ def cmd_sb_reset(player, cmd, args, gameversion):
 	privateState[sb["ts"]] = 0
 	return True
 
-def cmd_hellforge_add_item(player, cmd, args, gameversion):
+def cmd_hellforge_add_item(player, cmd, args, gameversion, last_town_id):
 	# item_id, use_cash
 	item_id = args[0]
 	use_cash = args[1] == 1
@@ -2067,7 +2259,7 @@ def cmd_hellforge_add_item(player, cmd, args, gameversion):
 	
 	return True
 
-def cmd_hellforge_update_ts(player, cmd, args, gameversion):
+def cmd_hellforge_update_ts(player, cmd, args, gameversion, last_town_id):
 	# item_id
 	item_id = args[0]
 
@@ -2078,7 +2270,7 @@ def cmd_hellforge_update_ts(player, cmd, args, gameversion):
 	
 	return True
 
-def cmd_hellforge_speed_up(player, cmd, args, gameversion):
+def cmd_hellforge_speed_up(player, cmd, args, gameversion, last_town_id):
 	# item_id
 	item_id = args[0]
 
@@ -2095,7 +2287,7 @@ def cmd_hellforge_speed_up(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_hellforge_buy_all(player, cmd, args, gameversion):
+def cmd_hellforge_buy_all(player, cmd, args, gameversion, last_town_id):
 	# hellforge_game_id
 	hellforge_game_id = int(args[0])
 	if hellforge_game_id != 1:
@@ -2123,7 +2315,7 @@ def cmd_hellforge_buy_all(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_hellforge_reward_given(player, cmd, args, gameversion):
+def cmd_hellforge_reward_given(player, cmd, args, gameversion, last_town_id):
 	# items
 	item_id = int(args[0])
 	rewards_given = player["privateState"]["collectGameGivenPrizes"]
@@ -2135,7 +2327,7 @@ def cmd_hellforge_reward_given(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_event_buy_friend(player, cmd, args, gameversion):
+def cmd_event_buy_friend(player, cmd, args, gameversion, last_town_id):
 	# offer_id
 	offer_id = args[0]
 
@@ -2166,7 +2358,7 @@ def cmd_event_buy_friend(player, cmd, args, gameversion):
 		
 	return True
 
-def cmd_event_buy_friend_all(player, cmd, args, gameversion):
+def cmd_event_buy_friend_all(player, cmd, args, gameversion, last_town_id):
 	# offer_id
 	offer_id = args[0]
 
@@ -2195,13 +2387,17 @@ def cmd_event_buy_friend_all(player, cmd, args, gameversion):
 		
 	return True
 
-def cmd_event_get_reward(player, cmd, args, gameversion):
+def cmd_event_get_reward(player, cmd, args, gameversion, last_town_id):
 	# offer_id, x, y, orientation, town_id
 	offer_id = args[0]
 	x = args[1] # not used
 	y = args[2] # not used
 	orientation = args[3] # not used
 	town_id = args[4] # not used
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	# so the game adds the item to the map on the client
 	# does NOT tell the server
@@ -2230,14 +2426,14 @@ def cmd_event_get_reward(player, cmd, args, gameversion):
 		
 	return True
 
-def cmd_set_first_purchase_ts(player, cmd, args, gameversion):
+def cmd_set_first_purchase_ts(player, cmd, args, gameversion, last_town_id):
 	player["privateState"]["firstPurchaseTimestamp"] = timestamp_now()
 
 	return True
 
-def cmd_buy_first_purchase(player, cmd, args, gameversion):
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+def cmd_buy_first_purchase(player, cmd, args, gameversion, last_town_id):
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
 
 	cfg_globals = get_game_config()["globals"]
@@ -2257,14 +2453,14 @@ def cmd_buy_first_purchase(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_complete_tutorial(player, cmd, args, gameversion):
+def cmd_complete_tutorial(player, cmd, args, gameversion, last_town_id):
 	# step
 	step = str(args[0])
 
 	player["playerInfo"]["completed_tutorial"] = step
 	return True
 
-def cmd_complete_goal(player, cmd, args, gameversion):
+def cmd_complete_goal(player, cmd, args, gameversion, last_town_id):
 	# goal_id, [cash_cost]
 	# TODO: FIX 1.4.07 GOALS
 	goal_id = int(args[0])
@@ -2285,11 +2481,15 @@ def cmd_complete_goal(player, cmd, args, gameversion):
 
 	return True
 	
-def cmd_reward_goal(player, cmd, args, gameversion):
+def cmd_reward_goal(player, cmd, args, gameversion, last_town_id):
 	# town_id, goal_id
 	# TODO: FIX 1.4.07 GOALS
 	town_id = int(args[0])
 	goal_id = int(args[1])
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	if goal_id <= 0:	# invalid goal (client error)
 		return True
@@ -2309,13 +2509,17 @@ def cmd_reward_goal(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_win_bonus(player, cmd, args, gameversion):
+def cmd_win_bonus(player, cmd, args, gameversion, last_town_id):
 	# gold, town_id, uitem_id, next_day, cash
 	gold = int(args[0])
 	town_id = int(args[1])
 	uitem_id = int(args[2])
 	next_day = int(args[3])
 	cash = int(args[4])
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 
@@ -2332,7 +2536,7 @@ def cmd_win_bonus(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_collect_treasure(player, cmd, args, gameversion):
+def cmd_collect_treasure(player, cmd, args, gameversion, last_town_id):
 	# gold, xp, next_chapter, food, stone, town_id
 	gold = int(args[0])
 	xp = int(args[1])
@@ -2341,6 +2545,10 @@ def cmd_collect_treasure(player, cmd, args, gameversion):
 	stone = int(args[4])
 	town_id = int(args[5])
 	
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
+
 	_map = player["maps"][town_id]
 
 	now = timestamp_now()
@@ -2358,11 +2566,15 @@ def cmd_collect_treasure(player, cmd, args, gameversion):
 	
 	return True
 
-def cmd_set_quest_var(player, cmd, args, gameversion):
+def cmd_set_quest_var(player, cmd, args, gameversion, last_town_id):
 	# town_id, key, data
 	town_id = int(args[0])
 	key = str(args[1])
 	data = json.loads(args[2])
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
 
 	_map = player["maps"][town_id]
 
@@ -2378,7 +2590,7 @@ def cmd_set_quest_var(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_darts_reset(player, cmd, args, gameversion):
+def cmd_darts_reset(player, cmd, args, gameversion, last_town_id):
 	# seed
 	seed = int(args[0])
 
@@ -2392,7 +2604,7 @@ def cmd_darts_reset(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_darts_new_free(player, cmd, args, gameversion):
+def cmd_darts_new_free(player, cmd, args, gameversion, last_town_id):
 	# no arguments
 
 	privateState = player["privateState"]
@@ -2401,7 +2613,7 @@ def cmd_darts_new_free(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_darts_shoot_balloon(player, cmd, args, gameversion):
+def cmd_darts_shoot_balloon(player, cmd, args, gameversion, last_town_id):
 	# balloon, paid, got_extra
 	balloon = int(args[0])
 	paid = int(args[1])
@@ -2424,7 +2636,40 @@ def cmd_darts_shoot_balloon(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_survival_buy_life(player, cmd, args, gameversion):
+def cmd_buy_map(player, cmd, args, gameversion, last_town_id):
+	# buy_id, use_cash, race, town_id
+	buy_id = int(args[0])
+	use_cash = int(args[1]) > 0
+	race = str(args[2])
+	town_id = int(args[3])
+
+	# AVOID CLIENT BUGS
+	if town_id != last_town_id:
+		return False
+
+	privateState = player["privateState"]
+	
+	data = privateState["maps"]
+	if len(data) > 1:
+		return False
+
+	_map = player["maps"][town_id]
+
+	if _map["level"] < TROLL_RACE_REQUIRED_LEVEL:
+		return False
+
+	if use_cash:
+		if not pay_cash(player, TOWN_PRICE_CASH):
+			return False
+	else:
+		if not pay_map_currency(_map, "coins", TOWN_PRICE_GOLD):
+			return False
+
+	data.append({ "r": race })
+
+	return True
+
+def cmd_survival_buy_life(player, cmd, args, gameversion, last_town_id):
 	# cash_cost
 	cash_cost = int(args[0])
 
@@ -2447,7 +2692,7 @@ def cmd_survival_buy_life(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_survival_buy_map(player, cmd, args, gameversion):
+def cmd_survival_buy_map(player, cmd, args, gameversion, last_town_id):
 	# map_id, cash_cost
 	map_id = str(args[0])
 	cash_cost = int(args[1])
@@ -2466,7 +2711,7 @@ def cmd_survival_buy_map(player, cmd, args, gameversion):
 
 	return True
 
-def cmd_survival_start(player, cmd, args, gameversion):
+def cmd_survival_start(player, cmd, args, gameversion, last_town_id):
 	# no arguments
 	# subtract extra life or work with timestamp array
 
@@ -2506,14 +2751,14 @@ def cmd_survival_start(player, cmd, args, gameversion):
 
 	return False
 
-def cmd_survival_end(player, cmd, args, gameversion):
+def cmd_survival_end(player, cmd, args, gameversion, last_town_id):
 	# map_id, time, prize_items
 	map_id = str(args[0])
 	time = int(args[1])
 	prize_items = json.loads(args[2])
 
-	# no support for other town IDs, sad :(
-	town_id = get_default_town_id(player, gameversion)
+	# USE LAST TOWN ID
+	town_id = last_town_id
 	_map = player["maps"][town_id]
 
 	privateState = player["privateState"]

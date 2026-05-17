@@ -23,12 +23,12 @@ def _ERROR(player, cmd, args):
 	log.info(f"[C] CRASH: [{name}] -> {cmd} {args}")
 	raise Exception(f"Illegal server command")
 
-def NOT_IMPLEMENTED(player, cmd, args, gameversion):
+def NOT_IMPLEMENTED(player, cmd, args, gameversion, last_town_id):
 	name = player["playerInfo"]["name"]
 	log.info(f"[C] UNKNOWN: [{name}] -> {cmd} {args}")
 	return True
 
-def EXCEPTION(player, cmd, args, gameversion):
+def EXCEPTION(player, cmd, args, gameversion, last_town_id):
 	raise Exception("Command exception")
 
 commands = {
@@ -138,6 +138,7 @@ commands = {
 	# player general ------------------------------------------------------------------------------------------
 	"expand":							cmd_expand,
 	"name_map":							cmd_name_map,
+	"buy_map":							cmd_buy_map,
 	"set_strategy":						cmd_set_strategy,
 	"exchange_cash_new":				cmd_exchange_cash,
 	"complete_tutorial":				cmd_complete_tutorial,
@@ -191,7 +192,7 @@ commands = {
 	"end_survival":						cmd_survival_end
 }
 
-def command(USERID, data, gameversion):
+def command(USERID, data, gameversion, last_town_id):
 	timestamp = data["ts"]
 	first_number = data["first_number"]
 	accessToken = data["accessToken"]
@@ -202,16 +203,16 @@ def command(USERID, data, gameversion):
 	for i, comm in enumerate(commands):
 		cmd = comm["cmd"]
 		args = comm["args"]
-		do_command(USERID, cmd, args, gameversion)
+		do_command(USERID, cmd, args, gameversion, last_town_id)
 
 	save_session(USERID) # Save session
 
-def do_command(USERID, cmd, args, gameversion):
+def do_command(USERID, cmd, args, gameversion, last_town_id):
 	save = session(USERID)
 
 	if cmd in commands:
 		try:
-			result = commands[cmd](save, cmd, args, gameversion)
+			result = commands[cmd](save, cmd, args, gameversion, last_town_id)
 		except:
 			# traceback.print_exc()
 			_ERROR(save, cmd, args)
@@ -222,4 +223,4 @@ def do_command(USERID, cmd, args, gameversion):
 		else:
 			_NOTOK(save, cmd, args)
 	else:
-		NOT_IMPLEMENTED(save, cmd, args, gameversion)
+		NOT_IMPLEMENTED(save, cmd, args, gameversion, last_town_id)

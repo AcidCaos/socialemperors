@@ -556,10 +556,16 @@ async def get_player_info_response():
 
 	# Current Player
 	if user is None:
-		return (construct_hash_and_payload(get_player_info(USERID, flasksession['USERID'])), 200)
+		flasksession["TOWNID"] = map
+		#log.info(f"SET LAST TOWN ID TO {map}")
+		return (construct_hash_and_payload(get_player_info(USERID, flasksession['USERID'], flasksession["TOWNID"])), 200)
+	elif user == USERID:
+		flasksession["TOWNID"] = map
+		#log.info(f"SET LAST TOWN ID TO {map}")
+		return (construct_hash_and_payload(get_player_info(USERID, flasksession['USERID'], flasksession["TOWNID"])), 200)
 	# PVP RANDOM
 	if user == "undefined":
-		enemy = get_pvp_search_result(USERID, map)
+		enemy = get_pvp_search_result(USERID, 0)
 		if not enemy:
 			# TODO: handle no players found
 			return ("", 404)
@@ -651,6 +657,9 @@ async def command_response():
 		spdebug = request.values['spdebug']
 	language = request.values['language']
 	client_id = request.values['client_id']
+	last_town_id = 0
+	if "TOWNID" in flasksession:
+		last_townid = flasksession["TOWNID"]
 
 	# log.info(f"command: USERID: {USERID}. --", request.values)
 
@@ -660,7 +669,7 @@ async def command_response():
 	data_payload = data_str[65:]
 	data = json.loads(data_payload)
 
-	command(USERID, data, flasksession["GAMEVERSION"])
+	command(USERID, data, flasksession["GAMEVERSION"], last_townid)
     
 	return ({"result": "success"}, 200)
 

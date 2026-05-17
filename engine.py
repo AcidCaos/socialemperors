@@ -159,6 +159,9 @@ _forge_quests = [
 SELL_DIVISOR = 1.0 / 20.0 # sell divisor (divides by 20 in game for 5% sell value, negative so we refund)
 SPEEDUP_COST_PER_HOUR = 1
 TIMER_OGRES_VILLAGE = 4 * 3600
+TOWN_PRICE_CASH = 22
+TOWN_PRICE_GOLD = 100000
+TROLL_RACE_REQUIRED_LEVEL = 20
 FRIENDS_ASSIST_DIVISOR = 1.0 / 4.0
 FRIENDS_ASSIST_EXPERIENCE = 10
 MARKET_BASE_COSTS = {
@@ -1121,3 +1124,63 @@ def get_strategy_type(id):
 	if id == 10:
 		return "Aggressive"
 	return "Unknown Strategy"
+
+def fix_troll_empire(player):
+	# source: https://www.youtube.com/watch?v=wuM_0n7yZpQ
+	maps = player["maps"]
+	
+	if len(maps) > 1:
+		return
+
+	playerInfo = player["playerInfo"]
+	map_names = playerInfo["map_names"]
+	map_sizes = playerInfo["map_sizes"]
+
+	if len(map_names) > 1:
+		map_names[1] = "My Empire 1"
+	else:
+		map_names.append("My Empire 1")
+
+	if len(map_sizes) > 1:
+		map_sizes[1] = 0
+	else:
+		map_sizes.append(0)
+
+	maps.append({
+		"id": 1,
+		"expansions": [
+			13
+		],
+		"timestamp": timestamp_now(),
+		"coins": 250,
+		"xp": 4,
+		"level": 1,
+		"stone": 250,
+		"wood": 850,
+		"food": 700,
+		"race": "t",
+		"skin": 0,
+		"idCurrentTreasure": 0,
+		"timestampLastTreasure": 0,
+		"resourcesTraded": {},
+		"receivedAssists": {},
+		"increasedPopulation": 0,
+		"expirableUnitsTime": {},
+		"universAttackWin": [],
+		"questTimes": {},
+		"lastQuestTimes": [],
+		"items": [],
+		"warehouseAditionalCapacitySingle": 50,
+		"warehousedUnits": {},
+		"timestampLastTrade": 0,
+		"numTradesDone": 0,
+		"store": {}
+	})
+
+	map_add_item(maps[1], 289, 51, 51, 0) # town hall
+	map_add_item(maps[1], 325, 45, 51, 0) # coliseum
+	map_add_item(maps[1], 307, 55, 50, 0) # houses
+	map_add_item(maps[1], 307, 55, 52, 0)
+	map_add_item(maps[1], 291, 50, 56, 0) # tower
+	map_add_item(maps[1], 580, 53, 54, 0) # extra villagers
+	map_add_item(maps[1], 580, 53, 55, 0)

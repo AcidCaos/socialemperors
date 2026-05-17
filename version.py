@@ -10,7 +10,7 @@ banned_items = []
 if "banned_items" in get_server_config()["misc"]:
 	banned_items = get_server_config()["misc"]["banned_items"]
 
-from engine import timestamp_now, hire_friends, autohire_ignore_buildings, ROUND_TABLE, resurrectable_heroes, GRAVEYARD_MAX_SLOTS, GRAVEYARD_MAX_EACH_UNIT, survival_arenas, quest_ids, _forge_quests
+from engine import timestamp_now, hire_friends, autohire_ignore_buildings, ROUND_TABLE, resurrectable_heroes, GRAVEYARD_MAX_SLOTS, GRAVEYARD_MAX_EACH_UNIT, survival_arenas, quest_ids, _forge_quests, fix_troll_empire
 from get_game_config import *
 from daily_bonus import daily_bonus_process
 
@@ -342,6 +342,11 @@ def migrate_loaded_save(save):
 
 	# convert data types as this can cause a crash later on (old quest maps, etc)
 	fix_resource_type(playerInfo, "cash")
+
+	# fix troll empire
+	fix_troll_empire(save)
+	if fix_variable(privateState, "maps", []):
+		privateState["maps"].append({ "r": "h" })
 
 	# fixes for maps
 	for _map in maps:
