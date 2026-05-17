@@ -317,7 +317,6 @@ def migrate_loaded_save(save):
 	privateState = save["privateState"]
 	maps = save["maps"]
 	ts_now = timestamp_now()
-	darts_seed = abs(int((2**16 - 1) * random.random()))
 
 	# force full migration if version is present (very old saves)
 	if "version" in save:
@@ -366,8 +365,10 @@ def migrate_loaded_save(save):
 		fix_resource_type(_map, "xp")
 		fix_resource_type(_map, "level")
 
-	# darts rng seed if missing
-	fix_variable(privateState, "dartsRandomSeed", darts_seed)
+	# fix darts
+	fix_variable(privateState, "dartsRandomSeed", 0)				# seed of 0 is fine, the client will set it anyway
+	fix_variable(privateState, "dartsHasFree", 0)					# we have to use 0 and 1, because false becomes true in the client, 0 becomes false in the client, weird issue
+	fix_variable(privateState, "dartsGotExtra", 0)					# here too
 
 	fix_variable(privateState, "arrayAnimals", {})					# fix no animal spawning
 	fix_variable(privateState, "strategy", 8)						# fix crash when attacking player

@@ -2387,8 +2387,8 @@ def cmd_darts_reset(player, cmd, args, gameversion):
 	privateState["timeStampDartsNewFree"] = timestamp_now()
 	privateState["dartsBalloonsShot"] = []
 	privateState["dartsRandomSeed"] = seed
-	privateState["dartsHasFree"] = True
-	privateState["dartsGotExtra"] = False
+	privateState["dartsHasFree"] = 1
+	privateState["dartsGotExtra"] = 0
 
 	return True
 
@@ -2397,7 +2397,7 @@ def cmd_darts_new_free(player, cmd, args, gameversion):
 
 	privateState = player["privateState"]
 	privateState["timeStampDartsNewFree"] = timestamp_now()
-	privateState["dartsHasFree"] = True
+	privateState["dartsHasFree"] = 1
 
 	return True
 
@@ -2408,7 +2408,7 @@ def cmd_darts_shoot_balloon(player, cmd, args, gameversion):
 	got_extra = int(args[2])
 
 	privateState = player["privateState"]
-	privateState["dartsHasFree"] = False
+	privateState["dartsHasFree"] = 0
 
 	if paid:
 		cfg_globals = get_game_config()["globals"]
@@ -2417,7 +2417,7 @@ def cmd_darts_shoot_balloon(player, cmd, args, gameversion):
 			return False
 
 	if got_extra:
-		privateState["dartsGotExtra"] = True
+		privateState["dartsGotExtra"] = 1
 
 	if balloon not in privateState["dartsBalloonsShot"]:
 		privateState["dartsBalloonsShot"].append(balloon)
