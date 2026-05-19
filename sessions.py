@@ -27,6 +27,7 @@ __saves = {}  # ALL saved villages
 
 # friend info
 __friend_info = {}
+__friend_info_neighbor = {}
 
 # PVP ---------------------------------------------------------------------------
 # PVP SEARCH SETTINGS
@@ -54,7 +55,10 @@ __pvp_search_result = {}
 __pvp_active_data = {}
 
 # PVP blacklist - arthur maps
-_pvp_pool_blacklist = [ "100000030", "100000031", "100000032" ]
+_pvp_pool_blacklist = []
+# blacklist arthur IDs
+for uid in arthur_ids:
+	_pvp_pool_blacklist.append(uid)
 # -------------------------------------------------------------------------------
 
 # Unit Packs states
@@ -75,6 +79,7 @@ def load_saved_villages():
 	global __villages
 	global __saves
 	global __friend_info
+	global __friend_info_neighbor
 
 	global __pvp_data
 	global __pvp_pool
@@ -213,7 +218,8 @@ def load_friends(add_to_pvp = False):
 				with open(os.path.join(FRIENDS_DIR, file), 'w') as f:
 					json.dump(village, f, indent='\t')
 
-			__friend_info[USERID] = neighbor_data(village)
+			__friend_info[USERID] = fb_friend_info(village["playerInfo"])
+			__friend_info_neighbor[USERID] = neighbor_data(village, 0)
 			if add_to_pvp:
 				pvp_pool_add(USERID, village, SESSION_FRIEND, 0)
 
@@ -730,89 +736,84 @@ def neighbor_session(USERID: str):
 	if USERID in __villages:
 		return __villages[USERID]
 
+def player_is_arthur(playerInfo):
+	pid = playerInfo["pid"]
+	if pid in arthur_ids:
+		return True
+	return False
+
 def fb_friends_str(USERID: str):
-	DELETE_ME = [{"uid": "1111", "pic_square":"http://127.0.0.1:5050/img/profile/Paladin_Justiciero.jpg"},
-		{"uid": "aa_002", "pic_square":"/default.jpg"}]
 	friends = []
+
 	# static villages
 	for key in __villages:
-		vill = __villages[key]
-		# Avoid Arthur being loaded as friend.
-		if vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_1 \
-		or vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_2 \
-		or vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_3:
+		playerInfo = __villages[key]["playerInfo"]
+		if player_is_arthur(playerInfo):
 			continue
-		frie = {}
-		frie["uid"] = vill["playerInfo"]["pid"]
-		frie["first_name"] = vill["playerInfo"]["name"]
-		frie["name"] = vill["playerInfo"]["name"]
-		frie["pic_square"] = vill["playerInfo"]["pic"]
-		if not frie["pic_square"]: frie["pic_square"] = "/img/profile/default.jpg"
-		friends += [frie]
+
+		friends.append(fb_friend_info(playerInfo))
+
 	# Friends
 	for key in __friend_info:
-		f = __friend_info[key]
-		friends += [{
-			"uid": f["pid"],
-			"pic_square": f["pic"],	# not gonna work in SI, it loads from graph.facebook.com!
-			"name": f["name"],
-			"first_name": f["first_name"],
-		}]
+		friends.append(__friend_info[key])
+
 	# other players
 	for key in __saves:
-		vill = __saves[key]
-		if vill["playerInfo"]["pid"] == USERID:
+		playerInfo = __saves[key]["playerInfo"]
+		if playerInfo["pid"] == USERID:
 			continue
-		frie = {}
-		frie["uid"] = vill["playerInfo"]["pid"]
-		frie["first_name"] = vill["playerInfo"]["name"]
-		frie["pic_square"] = vill["playerInfo"]["pic"]
-		frie["name"] = vill["playerInfo"]["name"]
-		if not frie["pic_square"]: frie["pic_square"] = "/img/profile/default.jpg"
-		friends += [frie]
+
+		friends.append(fb_friend_info(playerInfo))
 
 	return friends
 
+def fb_friend_info(playerInfo):
+	pic = "/img/profile/default.jpg"
+	if playerInfo["pic"]:
+		pic = playerInfo["pic"]
+
+	return {
+		"uid": playerInfo["pid"],
+		"first_name": playerInfo["name"],
+		"pic_square": playerInfo["pic"]
+	}
+
 def neighbors(USERID):
 	neighbors = []
+
 	# static villages
 	for key in __villages:
 		vill = __villages[key]
-		# Avoid Arthur being loaded as multiple neigtbors.
-		if vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_1 \
-		or vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_2 \
-		or vill["playerInfo"]["pid"] == Constant.NEIGHBOUR_ARTHUR_GUINEVERE_3:
+		if player_is_arthur(vill["playerInfo"]):
 			continue
 		
-		neighbors += [neighbor_data(vill, 0)]
+		neighbors.append(neighbor_data(vill, 0))
+
 	# friends
-	for key in __friend_info:
-		neighbors += [__friend_info[key]]
+	for key in __friend_info_neighbor:
+		neighbors.append(__friend_info_neighbor[key])
+
 	# other players
 	for key in __saves:
 		vill = __saves[key]
 		if vill["playerInfo"]["pid"] == USERID:
 			continue
-		neighbors += [neighbor_data(vill, 0)]
+
+		neighbors.append(neighbor_data(vill, 0))
+
 	return neighbors
 
 def neighbor_data(player, town_id = 0):
 	_map = player["maps"][town_id]
+	playerInfo = player["playerInfo"]
 
-	info = copy.deepcopy(player["playerInfo"])
-	info["coins"] = _map["coins"]
-	info["xp"] = _map["xp"]
-	info["level"] = _map["level"]
-	info["stone"] = _map["stone"]
-	info["wood"] = _map["wood"]
-	info["food"] = _map["food"]
-	info["stone"] = _map["stone"]
-	info["uid"] = info["pid"]
-	info["pic_square"] = info["pic"]
-	info["first_name"] = info["name"]
-	info["name"] = info["name"]
-	
-	return info 
+	return {
+		"pid": playerInfo["pid"],
+		"name": playerInfo["name"],
+		"level": _map["level"],
+		"xp": _map["xp"],
+		"world_id": playerInfo["world_id"]
+	}
 
 # Check for valid village
 # The reason why this was implemented is to warn the user if a save game from Social Wars was used by accident

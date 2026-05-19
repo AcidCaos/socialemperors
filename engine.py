@@ -156,6 +156,13 @@ _forge_quests = [
 	"100000055"
 ]
 
+# arthur saves
+arthur_ids = [
+	Constant.NEIGHBOUR_ARTHUR_GUINEVERE_1,
+	Constant.NEIGHBOUR_ARTHUR_GUINEVERE_2,
+	Constant.NEIGHBOUR_ARTHUR_GUINEVERE_3
+]
+
 SELL_DIVISOR = 1.0 / 20.0 # sell divisor (divides by 20 in game for 5% sell value, negative so we refund)
 SPEEDUP_COST_PER_HOUR = 1
 TIMER_OGRES_VILLAGE = 4 * 3600
