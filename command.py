@@ -214,9 +214,9 @@ def command(USERID, data, gameversion, last_town_id):
 			# error out on these instantly
 			return status
 
-	return CMD_STATUS_OK
-
 	save_session(USERID) # Save session
+
+	return CMD_STATUS_OK
 
 def do_command(USERID, cmd, args, gameversion, last_town_id):
 	save = session(USERID)
