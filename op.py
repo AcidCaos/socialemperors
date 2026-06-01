@@ -1955,42 +1955,42 @@ def cmd_set_resource_allies(player, cmd, args, gameversion, last_town_id):
 	return set_allies_market_resource(_map, item[0], resource)
 
 def cmd_activate_dragon(player, cmd, args, gameversion, last_town_id):
-	return _cmd_activate_nest(player, cmd, args, gameversion, "dragon")
+	return _cmd_activate_nest(player, cmd, args, gameversion, last_town_id, "dragon")
 
 def cmd_activate_monster(player, cmd, args, gameversion, last_town_id):
-	return _cmd_activate_nest(player, cmd, args, gameversion, "monster")
+	return _cmd_activate_nest(player, cmd, args, gameversion, last_town_id, "monster")
 
 def cmd_deactivate_dragon(player, cmd, args, gameversion, last_town_id):
-	return _cmd_deactivate_nest(player, cmd, args, gameversion, "dragon")
+	return _cmd_deactivate_nest(player, cmd, args, gameversion, last_town_id, "dragon")
 
 def cmd_deactivate_monster(player, cmd, args, gameversion, last_town_id):
-	return _cmd_deactivate_nest(player, cmd, args, gameversion, "monster")
+	return _cmd_deactivate_nest(player, cmd, args, gameversion, last_town_id, "monster")
 
 def cmd_next_dragon(player, cmd, args, gameversion, last_town_id):
-	return _cmd_next_nest(player, cmd, args, gameversion, "dragon")
+	return _cmd_next_nest(player, cmd, args, gameversion, last_town_id, "dragon")
 
 def cmd_next_monster(player, cmd, args, gameversion, last_town_id):
-	return _cmd_next_nest(player, cmd, args, gameversion, "monster")
+	return _cmd_next_nest(player, cmd, args, gameversion, last_town_id, "monster")
 
 def cmd_next_step_dragon(player, cmd, args, gameversion, last_town_id):
-	return _cmd_next_step_nest(player, cmd, args, gameversion, "dragon")
+	return _cmd_next_step_nest(player, cmd, args, gameversion, last_town_id, "dragon")
 
 def cmd_next_step_monster(player, cmd, args, gameversion, last_town_id):
-	return _cmd_next_step_nest(player, cmd, args, gameversion, "monster")
+	return _cmd_next_step_nest(player, cmd, args, gameversion, last_town_id, "monster")
 
 def cmd_buy_step_dragon(player, cmd, args, gameversion, last_town_id):
-	return _cmd_buy_step_nest(player, cmd, args, gameversion, "dragon")
+	return _cmd_buy_step_nest(player, cmd, args, gameversion, last_town_id, "dragon")
 
 def cmd_buy_step_monster(player, cmd, args, gameversion, last_town_id):
-	return _cmd_buy_step_nest(player, cmd, args, gameversion, "monster")
+	return _cmd_buy_step_nest(player, cmd, args, gameversion, last_town_id, "monster")
 
 def cmd_reset_dragon(player, cmd, args, gameversion, last_town_id):
-	return _cmd_reset_nest(player, cmd, args, gameversion, "dragon")
+	return _cmd_reset_nest(player, cmd, args, gameversion, last_town_id, "dragon")
 
 def cmd_reset_monster(player, cmd, args, gameversion, last_town_id):
-	return _cmd_reset_nest(player, cmd, args, gameversion, "monster")
+	return _cmd_reset_nest(player, cmd, args, gameversion, last_town_id, "monster")
 
-def _cmd_activate_nest(player, cmd, args, gameversion, nest_type):
+def _cmd_activate_nest(player, cmd, args, gameversion, last_town_id, nest_type):
 	# currency
 	resource = str(args[0])
 
@@ -2026,7 +2026,7 @@ def _cmd_activate_nest(player, cmd, args, gameversion, nest_type):
 
 	return True
 
-def _cmd_deactivate_nest(player, cmd, args, gameversion, nest_type):
+def _cmd_deactivate_nest(player, cmd, args, gameversion, last_town_id, nest_type):
 	nest = get_nest(nest_type)
 	if not nest:
 		return False
@@ -2038,7 +2038,7 @@ def _cmd_deactivate_nest(player, cmd, args, gameversion, nest_type):
 	privateState[nest["ts"]] = 0
 	return True
 
-def _cmd_next_nest(player, cmd, args, gameversion, nest_type):
+def _cmd_next_nest(player, cmd, args, gameversion, last_town_id, nest_type):
 	# zero
 	zero = args[0] # always sent as "0"
 
@@ -2056,7 +2056,7 @@ def _cmd_next_nest(player, cmd, args, gameversion, nest_type):
 
 	return True
 	
-def _cmd_next_step_nest(player, cmd, args, gameversion, nest_type):
+def _cmd_next_step_nest(player, cmd, args, gameversion, last_town_id, nest_type):
 	# cash_cost
 	cash_cost = args[0]
 
@@ -2077,7 +2077,7 @@ def _cmd_next_step_nest(player, cmd, args, gameversion, nest_type):
 
 	return True
 
-def _cmd_buy_step_nest(player, cmd, args, gameversion, nest_type):
+def _cmd_buy_step_nest(player, cmd, args, gameversion, last_town_id, nest_type):
 	# cash_cost
 	cash_cost = args[0]
 
@@ -2097,7 +2097,7 @@ def _cmd_buy_step_nest(player, cmd, args, gameversion, nest_type):
 
 	return True
 
-def _cmd_reset_nest(player, cmd, args, gameversion, nest_type):
+def _cmd_reset_nest(player, cmd, args, gameversion, last_town_id, nest_type):
 	nest = get_nest(nest_type)
 	if not nest:
 		return False
