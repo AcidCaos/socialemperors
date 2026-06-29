@@ -98,24 +98,32 @@ def get_level_from_xp(xp: int) -> int:
 
 items_dict_id_to_items_index = {int(item["id"]): i for i, item in enumerate(__game_config["items"])}
 
-def get_item_from_id(id: int) -> dict:
-    items_index = items_dict_id_to_items_index[int(id)] if int(id) in items_dict_id_to_items_index else None
-    return __game_config["items"][items_index] if items_index is not None else None
+def get_item_from_id(id) -> dict:
+    try:
+        val = int(id)
+        items_index = items_dict_id_to_items_index[val] if val in items_dict_id_to_items_index else None
+        return __game_config["items"][items_index] if items_index is not None else None
+    except (ValueError, TypeError):
+        return None
 
-def get_attribute_from_item_id(id: int, attribute_name: str) -> str:
+def get_attribute_from_item_id(id, attribute_name: str) -> str:
     item = get_item_from_id(id)
     return item[attribute_name] if item and attribute_name in item else None
 
-def get_name_from_item_id(id: int) -> str:
+def get_name_from_item_id(id) -> str:
     return get_attribute_from_item_id(id, "name")
 
 # subcat_functional
 
 items_dict_subcat_functional_to_items_index = {int(item["subcat_functional"]): i for i, item in enumerate(__game_config["items"])}
 
-def get_item_from_subcat_functional(subcat_functional: int) -> dict:
-    items_index = items_dict_subcat_functional_to_items_index[int(subcat_functional)] if int(subcat_functional) in items_dict_subcat_functional_to_items_index else None
-    return __game_config["items"][items_index] if items_index is not None else None
+def get_item_from_subcat_functional(subcat_functional) -> dict:
+    try:
+        val = int(subcat_functional)
+        items_index = items_dict_subcat_functional_to_items_index[val] if val in items_dict_subcat_functional_to_items_index else None
+        return __game_config["items"][items_index] if items_index is not None else None
+    except (ValueError, TypeError):
+        return None
 
 ############
 # MISSIONS #
@@ -123,10 +131,14 @@ def get_item_from_subcat_functional(subcat_functional: int) -> dict:
 
 missions_dict_id_to_missions_index = {int(item["id"]): i for i, item in enumerate(__game_config["missions"])}
 
-def get_mission_from_id(id: int) -> dict:
-    items_index = missions_dict_id_to_missions_index[int(id)] if int(id) in missions_dict_id_to_missions_index else None
-    return __game_config["missions"][items_index] if items_index is not None else None
+def get_mission_from_id(id) -> dict:
+    try:
+        val = int(id)
+        items_index = missions_dict_id_to_missions_index[val] if val in missions_dict_id_to_missions_index else None
+        return __game_config["missions"][items_index] if items_index is not None else None
+    except (ValueError, TypeError):
+        return None
 
-def get_attribute_from_mission_id(id: int, attribute_name: str) -> str:
+def get_attribute_from_mission_id(id, attribute_name: str) -> str:
     mission = get_mission_from_id(id)
     return mission[attribute_name] if mission and attribute_name in mission else None

@@ -5,6 +5,12 @@ from get_game_config import get_game_config, get_level_from_xp, get_name_from_it
 from constants import Constant
 from engine import apply_cost, apply_collect, apply_collect_xp, timestamp_now
 
+def safe_int(val, default=0):
+    try:
+        return int(val)
+    except:
+        return default
+
 def get_strategy_type(id):
     if id == 8:
         return "Defensive"
@@ -42,7 +48,7 @@ def do_command(USERID, cmd, args):
         x = args[1]
         y = args[2]
         frame = args[3] # TODO ??
-        town_id = args[4]
+        town_id = safe_int(args[4])
         bool_dont_modify_resources = bool(args[5]) # 1 if the game "buys" for you, so does not substract whatever the item cost is.
         price_multiplier = args[6]
         type = args[7]
@@ -53,7 +59,8 @@ def do_command(USERID, cmd, args):
         map = save["maps"][town_id]
         if not bool_dont_modify_resources:
             apply_cost(save["playerInfo"], map, id, price_multiplier)
-            xp = int(get_attribute_from_item_id(id, "xp"))
+            xp_val = get_attribute_from_item_id(id, "xp")
+            xp = int(xp_val) if xp_val is not None else 0
             map["xp"] = map["xp"] + xp
         map["items"] += [[id, x, y, orientation, collected_at_timestamp, level]]
     
@@ -72,7 +79,7 @@ def do_command(USERID, cmd, args):
         newx = args[3]
         newy = args[4]
         frame = args[5]
-        town_id = args[6]
+        town_id = safe_int(args[6])
         reason = args[7] # "Unitat", "moveTo", "colisio", "MouseUsed"
         print("Move", str(get_name_from_item_id(id)), "from", f"({ix},{iy})", "to", f"({newx},{newy})")
         map = save["maps"][town_id]
@@ -85,7 +92,7 @@ def do_command(USERID, cmd, args):
     elif cmd == Constant.CMD_COLLECT:
         x = args[0]
         y = args[1]
-        town_id = args[2]
+        town_id = safe_int(args[2])
         id = args[3]
         num_units_contained_when_harvested = args[4]#TODO does this affect multiplier?
         resource_multiplier = args[5]
@@ -99,7 +106,7 @@ def do_command(USERID, cmd, args):
         x = args[0]
         y = args[1]
         id = args[2]
-        town_id = args[3]
+        town_id = safe_int(args[3])
         bool_dont_modify_resources = args[4]
         reason = args[5]
         print("Remove", str(get_name_from_item_id(id)), "from", f"({x},{y}). Reason: {reason}")
@@ -119,7 +126,7 @@ def do_command(USERID, cmd, args):
         x = args[0]
         y = args[1]
         id = args[2]
-        town_id = args[3]
+        town_id = safe_int(args[3])
         type = args[4]
         print("Kill", str(get_name_from_item_id(id)), "from", f"({x},{y}).")
         map = save["maps"][town_id]
@@ -139,10 +146,11 @@ def do_command(USERID, cmd, args):
         save["privateState"]["completedMissions"] += [mission_id]
     
     elif cmd == Constant.CMD_REWARD_MISSION:
-        town_id = args[0]
+        town_id = safe_int(args[0])
         mission_id = args[1]
         print("Reward mission", mission_id, ":", str(get_attribute_from_mission_id(mission_id, "title")))
-        reward = int(get_attribute_from_mission_id(mission_id, "reward")) # gold
+        reward_val = get_attribute_from_mission_id(mission_id, "reward")
+        reward = int(reward_val) if reward_val is not None else 0
         save["maps"][town_id]["coins"] += reward   
         save["privateState"]["rewardedMissions"] += [mission_id]
     
@@ -152,7 +160,7 @@ def do_command(USERID, cmd, args):
         unit_id = args[2]
         b_x = args[3]
         b_y = args[4]
-        town_id = args[5]
+        town_id = safe_int(args[5])
         print("Push", str(get_name_from_item_id(unit_id)), "to", f"({b_x},{b_y}).")
         map = save["maps"][town_id]
         # Unit into building
@@ -171,7 +179,7 @@ def do_command(USERID, cmd, args):
     elif cmd == Constant.CMD_POP_UNIT:
         b_x = args[0]
         b_y = args[1]
-        town_id = args[2]
+        town_id = safe_int(args[2])
         unit_id = args[3]
         place_popped_unit = len(args) > 4
         if place_popped_unit:
@@ -237,7 +245,7 @@ def do_command(USERID, cmd, args):
         save["playerInfo"]["map_names"][town_id] = new_name
 
     elif cmd == Constant.CMD_EXCHANGE_CASH:
-        town_id = args[0]
+        town_id = safe_int(args[0])
         print("Exchange cash -> coins.")
         save["playerInfo"]["cash"] = max(save["playerInfo"]["cash"] - 5, 0)#maybe make function for editing resources
         save["maps"][town_id]["coins"] += 2500
@@ -263,7 +271,7 @@ def do_command(USERID, cmd, args):
         item_id = args[0]
         x = args[1]
         y = args[2]
-        town_id = args[3]#unsure, both 3 and 4 seem to stay 0
+        town_id = safe_int(args[3])#unsure, both 3 and 4 seem to stay 0
         args[4]#unknown yet
         print("Add", str(get_name_from_item_id(item_id)), "at", f"({x},{y})")
         items = save["maps"][town_id]["items"]
@@ -278,7 +286,7 @@ def do_command(USERID, cmd, args):
 
     elif cmd == Constant.CMD_SELL_GIFT:
         item_id = args[0]
-        town_id = args[1]
+        town_id = safe_int(args[1])
         print("Gift", str(get_name_from_item_id(item_id)), "sold on town:",town_id)
         gifts = save["privateState"]["gifts"]
         gifts[item_id] -= 1
@@ -357,7 +365,7 @@ def do_command(USERID, cmd, args):
         x = args[0]
         y = args[1]
         new_orientation = args[2]
-        town_id = args[3]
+        town_id = safe_int(args[3])
         print("Item at", f"({x},{y})", "changed to orientation", new_orientation)
         map = save["maps"][town_id]
         for item in map["items"]:
@@ -387,7 +395,7 @@ def do_command(USERID, cmd, args):
         pState = save["privateState"]
         pState["monsterNestActive"] = 0
         pState["stepMonsterNumber"] = 0
-        pState["MonsterNumber"] = 0
+        pState["monsterNumber"] = 0
         pState["timeStampTakeCareMonster"] = -1 # remove timer if any
 
 
@@ -406,7 +414,7 @@ def do_command(USERID, cmd, args):
 
     elif cmd == Constant.CMD_WIN_BONUS:
         coins = args[0]
-        town_id = args[1]
+        town_id = safe_int(args[1])
         hero = args[2]
         claimId = args[3]
         cash = args[4]
@@ -459,7 +467,7 @@ def do_command(USERID, cmd, args):
         unit_id = args[0]
         x = args[1]
         y = args[2]
-        town_id = args[3]
+        town_id = safe_int(args[3])
         bool_used_potion = len(args) > 4 and args[4] == '1'
         print("Resurrect", str(get_name_from_item_id(unit_id)), "from graveyard")
         # pay
@@ -472,10 +480,11 @@ def do_command(USERID, cmd, args):
         collected_at_timestamp = timestamp_now()
         level = 0 # TODO 
         orientation = 0
-        map["items"] += [[id, x, y, orientation, collected_at_timestamp, level]]
+        map = save["maps"][town_id]
+        map["items"] += [[unit_id, x, y, orientation, collected_at_timestamp, level]]
 
     elif cmd == Constant.CMD_BUY_SUPER_OFFER_PACK:
-        town_id = args[0]
+        town_id = safe_int(args[0])
         unknown2 = args[1] # this is probably the super offer pack ID?
         items = args[2]
         cash_used = args[3]
@@ -502,12 +511,12 @@ def do_command(USERID, cmd, args):
 
     elif cmd == Constant.CMD_START_QUEST:
         quest_id = args[0]
-        town_id = args[1]
+        town_id = safe_int(args[1])
         print(f"Start quest {quest_id}")
 
     elif cmd == Constant.CMD_END_QUEST:
         data = json.loads(args[0])
-        town_id = data["map"]
+        town_id = safe_int(data["map"])
         gold_gained = data["resources"]["g"]
         xp_gained = data["resources"]["x"]
         units = data["units"]

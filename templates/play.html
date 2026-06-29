@@ -1,113 +1,412 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <!-- Meta -->
-        <meta charset="utf-8"/>
-        <!-- Title and Icon -->
-        <title id="pageTitle">Social Empires</title>
-        <link rel="shortcut icon" href="img/icon.gif"/>
-        <link rel="icon" type="image/png" href="img/icon.gif"/>
-    </head>
-    <body style="font-family: 'lucida grande',tahoma,verdana,arial,sans-serif">
-    <center>
-        <!-- SESSION HEADER -->
-        <div id="header" style="width: 760px; margin-top: 50px;">
-            <div id="session" style="float: right;">
-                <p style="display:inline">Logged in as <b>{{save_info.name}}</b> lvl {{save_info.level}} (<a href="/">logout</a>)</p>
+<head>
+    <meta charset="utf-8"/>
+    <title id="pageTitle">Social Empires ~ Game Client</title>
+    <link rel="shortcut icon" href="img/icon.gif"/>
+    <link rel="icon" type="image/png" href="img/icon.gif"/>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@ruffle-rs/ruffle/ruffle.js"></script>
+    <style>
+        :root {
+            --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            --card-bg: rgba(15, 23, 42, 0.85);
+            --accent-gold: #fbbf24;
+            --accent-gold-hover: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glow: 0 0 20px rgba(251, 191, 36, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .header-panel {
+            width: 760px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .player-info img {
+            height: 24px;
+            filter: drop-shadow(0 0 4px var(--accent-gold));
+        }
+
+        .player-name {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .player-level {
+            background: rgba(251, 191, 36, 0.15);
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            border-radius: 6px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .logout-btn {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .logout-btn:hover {
+            color: #ef4444;
+            text-decoration: underline;
+        }
+
+        /* Top Game Bar */
+        .game-bar {
+            width: 760px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .game-bar-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .game-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 800;
+            font-size: 20px;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-gold) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .game-version {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .game-bar-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .links-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .action-link img {
+            height: 16px;
+        }
+
+        .action-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent-gold);
+            transform: translateY(-1px);
+        }
+
+        /* Mode Switcher Toggle */
+        .mode-switcher {
+            display: inline-flex;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 3px;
+        }
+
+        .mode-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--accent-gold) 0%, #d97706 100%);
+            color: #0f172a;
+            box-shadow: 0 2px 8px rgba(251, 191, 36, 0.2);
+        }
+
+        /* Game Box Wrapper */
+        .game-viewport {
+            width: 760px;
+            height: 600px;
+            background: #669C2C;
+            border: 3px solid #0f172a;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), var(--glow);
+            position: relative;
+        }
+
+        #game-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #game-container object, #game-container embed {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .unsupported-flash-msg {
+            color: #fff;
+            text-align: center;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            height: 100%;
+            background: #1e293b;
+        }
+
+        .unsupported-flash-msg p {
+            font-size: 15px;
+            color: var(--text-muted);
+            max-width: 480px;
+            line-height: 1.5;
+        }
+
+        .unsupported-flash-msg a {
+            color: var(--accent-gold);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- SESSION HEADER -->
+    <div class="header-panel">
+        <div class="player-info">
+            <img src="img/villager.png" alt="Villager"/>
+            <span class="player-name">{{save_info.name}}</span>
+            <span class="player-level">LVL {{save_info.level}}</span>
+        </div>
+        <a href="/" class="logout-btn">Log out</a>
+    </div>
+
+    <!-- GAME CONTROL BAR -->
+    <div class="game-bar">
+        <div class="game-bar-top">
+            <div class="game-title">
+                <img src="img/sword.png" height="20px" alt="Sword"/>
+                <span>Social Empires</span>
+            </div>
+            <div class="game-version">{{ version }} ({{ GAMEVERSION }})</div>
+        </div>
+
+        <div class="game-bar-actions">
+            <div class="links-group">
+                <a class="action-link" href="#">
+                    <img src="img/gift.png" alt="Gift"/>
+                    <span>Free Gifts</span>
+                </a>
+                <a class="action-link" href="#">
+                    <img src="img/cash.png" alt="Cash"/>
+                    <span>Get Cash</span>
+                </a>
+                <a class="action-link" href="https://discord.gg/zW5gSbQJBw" target="_blank">
+                    <img src="img/discord.png" alt="Discord"/>
+                    <span>Discord</span>
+                </a>
+            </div>
+
+            <!-- Mode Selector Switch -->
+            <div class="mode-switcher">
+                <button class="mode-btn" id="btn-ruffle" onclick="switchMode('ruffle')">
+                    <span>🎮 Ruffle WASM</span>
+                </button>
+                <button class="mode-btn" id="btn-flash" onclick="switchMode('flash')">
+                    <span>⚡ Native Flash</span>
+                </button>
             </div>
         </div>
-        <br>
-        <!-- GAME BAR -->
-        <div id="gameBar" style="margin-top: 15px;">
-            <!-- GAME BAR TOP -->
-            <div id="gamebar_top" style="width: 760px; height: 90px;">
-                <div style="float: left; margin-left:155px; padding: 4px; font-size: 10pt">
-                    <!-- VERSION -->
-                    <br><br><br>
-                    <p style="display: inline">{{ version }}</p>
-                </div>
-            </div>
-            <!-- GAME BAR BUTTONS -->
-            <div id="gamebar_buttons" style="width: 760px;">
-                &nbsp;
-                <a class="gameBarButton" href="#"><div><img src="img/gift.png">Free Gifts</div></a>
-                <a class="gameBarButton gameBarButtonSelected" href="#"><div><img>Play</div></a>
-                <a class="gameBarButton" href="#"><div><img src="img/cash.png">Get Cash</div></a>
-                <a class="gameBarButton" href="https://discord.gg/zW5gSbQJBw" target="_blank"><div><img src="img/discord.png">Discord</div></a>
-                <a class="gameBarButton" href="https://github.com/AcidCaos/socialemperors#readme" target="_blank"><div><img src="img/github.png">GitHub</div></a>
-            </div>
-            <style>
-                #gameBar {
-                    text-align: left;
-                    width: 760px;
-                    margin-bottom: 0px;
-                    padding: 0px;
-                    background-color:rgb(137, 187, 15);
-                    background-image: url('img/Gamebar_byTrevo.png');
-                    background-repeat: no-repeat;
-                    background-size: contain;
-                    border-bottom: solid #6e5335 3px;
-                }
-                .gameBarButton {
-                    display: inline-block;
-                    height: 19px;
-                    color: black;
-                    border: solid 1.5px;
-                    border-color: #9e7747;
-                    background-color:rgb(255, 245, 131);
-                    border-top-left-radius: 5px;
-                    border-top-right-radius: 5px;
-                    cursor: pointer;
-                    text-decoration: none;
-                    font-size: 11pt;
-                    padding: 2px 3px 1px 3px; 
-                }
+    </div>
 
-                .gameBarButtonSelected {
-                    background-color:rgb(233, 221, 81);
-                }
-
-                .gameBarButton img {
-                    height: 17px;
-                    padding-right: 3px;
-                    vertical-align: middle;
-                }
-
-                .gameBarButton:hover {
-                    background-color:rgb(250, 237, 90);
-                    text-decoration: none;
-                }
-
-                .gameBarButtonSelected:hover {
-                    background-color:rgb(223, 212, 82);
-                }
-
-            </style>
+    <!-- GAME VIEWPORT -->
+    <div class="game-viewport">
+        <div id="game-container">
+            <!-- Game dynamic loading placeholder -->
         </div>
-        <!-- EMBED GAME -->
-        <object>
-            <embed
-                src="http://{{SERVERIP}}:5050/default01.static.socialpointgames.com/static/socialempires/flash/SELoader.swf?swftoload=http://{{SERVERIP}}:5050/default01.static.socialpointgames.com/static/socialempires/flash/{{GAMEVERSION}}" 
-                allowFullScreen="true" bgcolor="#669C2C" quality=high WIDTH="760" HEIGHT="600" NAME="se" ALIGN=""
-                TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer"
-                flashvars='spdebug=notnull&brk=0
-                &staticUrl=http://{{SERVERIP}}:5050/default01.static.socialpointgames.com/static/socialempires/&brk=0
-                &dynamicUrl=http://{{SERVERIP}}:5050/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/&brk=0
-                &skiphash12341=notnull&brk=0
-                &fb_sig_user={{save_info.userid}}&brk=0
-                &user_key=123456789&brk=0
-                &language=en&brk=0
-                &accessToken=AAABbZAm0wdMUBALsOrR0Ho68CLjaOT8SV3vftKg9mbo1zZColaW5FljRVaLxPGxXXnm1M98mTZCAttcQ4GHwvSyXfsyxYmvKMH8Hmn5iliSPnjvIsZA6&brk=0
-                &sex=m&brk=0
-                &lastLoggedIn=1349266517&brk=0
-                &dailyBonus=0&brk=0
-                &friendsInfo={{friendsInfo | tojson}}&brk=0
-                &serverTime={{serverTime}}&brk=0
-                &forceSyncError=1&brk=0
-                &forceAttackReload=0&brk=0
-                &forceQuestReload=0&brk=0'>
-            </embed>
-        </object>
-    </center>
-    </body>
+    </div>
+
+    <script id="friends-info-data" type="application/json">
+        {{ friendsInfo | tojson }}
+    </script>
+
+    <script>
+        // Retrieve or default to Ruffle mode
+        let currentMode = localStorage.getItem('se_play_mode');
+        if (!currentMode) {
+            // Check query param if mode is explicitly passed
+            const urlParams = new URLSearchParams(window.location.search);
+            currentMode = urlParams.get('mode') || 'ruffle';
+        }
+
+        const serverIp = "{{SERVERIP}}";
+        const gameVersion = "{{GAMEVERSION}}";
+        const userid = "{{save_info.userid}}";
+        const friendsInfo = JSON.parse(document.getElementById('friends-info-data').textContent);
+        const serverTime = "{{serverTime}}";
+
+        function switchMode(mode) {
+            currentMode = mode;
+            localStorage.setItem('se_play_mode', mode);
+            renderGame();
+        }
+
+        function renderGame() {
+            // Update Toggle Button visual state
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            if (currentMode === 'ruffle') {
+                document.getElementById('btn-ruffle').classList.add('active');
+            } else {
+                document.getElementById('btn-flash').classList.add('active');
+            }
+
+            const container = document.getElementById('game-container');
+            container.innerHTML = ''; // Clear current player
+
+            const staticUrl = `http://${serverIp}:5050/default01.static.socialpointgames.com/static/socialempires/`;
+            const dynamicUrl = `http://${serverIp}:5050/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/`;
+            const mainSwf = `http://${serverIp}:5050/default01.static.socialpointgames.com/static/socialempires/flash/SELoader.swf?swftoload=http://${serverIp}:5050/default01.static.socialpointgames.com/static/socialempires/flash/${gameVersion}`;
+
+            const flashVarsStr = `spdebug=notnull&brk=0` +
+                `&staticUrl=${staticUrl}&brk=0` +
+                `&dynamicUrl=${dynamicUrl}&brk=0` +
+                `&skiphash12341=notnull&brk=0` +
+                `&fb_sig_user=${userid}&brk=0` +
+                `&user_key=123456789&brk=0` +
+                `&language=en&brk=0` +
+                `&accessToken=AAABbZAm0wdMUBALsOrR0Ho68CLjaOT8SV3vftKg9mbo1zZColaW5FljRVaLxPGxXXnm1M98mTZCAttcQ4GHwvSyXfsyxYmvKMH8Hmn5iliSPnjvIsZA6&brk=0` +
+                `&sex=m&brk=0` +
+                `&lastLoggedIn=1349266517&brk=0` +
+                `&dailyBonus=0&brk=0` +
+                `&friendsInfo=${JSON.stringify(friendsInfo)}&brk=0` +
+                `&serverTime=${serverTime}&brk=0` +
+                `&forceSyncError=1&brk=0` +
+                `&forceAttackReload=0&brk=0` +
+                `&forceQuestReload=0`;
+
+            if (currentMode === 'ruffle') {
+                // Ruffle player construction
+                const ruffle = window.RufflePlayer.newest();
+                const player = ruffle.createPlayer();
+                player.style.width = '100%';
+                player.style.height = '100%';
+                player.style.backgroundColor = '#669C2C';
+                container.appendChild(player);
+
+                player.load({
+                    url: mainSwf,
+                    backgroundColor: "#669C2C",
+                    allowScriptAccess: true,
+                    autoplay: true,
+                    parameters: flashVarsStr
+                });
+            } else {
+                // Classic embed tag for Flash-enabled browsers
+                const embed = document.createElement('embed');
+                embed.setAttribute('src', mainSwf);
+                embed.setAttribute('allowFullScreen', 'true');
+                embed.setAttribute('bgcolor', '#669C2C');
+                embed.setAttribute('quality', 'high');
+                embed.setAttribute('width', '100%');
+                embed.setAttribute('height', '100%');
+                embed.setAttribute('name', 'se');
+                embed.setAttribute('type', 'application/x-shockwave-flash');
+                embed.setAttribute('pluginspage', 'http://www.macromedia.com/go/getflashplayer');
+                embed.setAttribute('flashvars', flashVarsStr);
+
+                // Add a fallback container just in case browser doesn't run Flash at all
+                const obj = document.createElement('object');
+                obj.appendChild(embed);
+                
+                container.appendChild(obj);
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderGame();
+        });
+    </script>
+</body>
 </html>
