@@ -249,12 +249,24 @@ def get_version_settings(gameversion):
 		settings = {
 			"version": version,
 			"new_daily": False,
-			"show_offers": False
+			"show_offers": False,
+			"new_goals": False
 		}
 
-		if major >= 1 and minor >= 4:
-			settings["new_daily"] = True
-			settings["show_offers"] = True
+		
+		if major >= 1:
+			if minor >= 0:
+				if build >= 10:
+					# The goal manager was added in version 1.0.10 so any version after has a revamped goal system
+					# versions before this store mission data in the client, but after the data is supplied by the server
+					settings["new_goals"] = True
+			if major >= 1:
+				settings["new_goals"] = True
+			if minor >= 4:
+				# TODO: find out in which client version new daily and show_offers was added
+				settings["new_daily"] = True
+				settings["show_offers"] = True
+		
 	except:
 		return None
 	return settings

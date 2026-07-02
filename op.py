@@ -2462,7 +2462,6 @@ def cmd_complete_tutorial(player, cmd, args, gameversion, last_town_id):
 
 def cmd_complete_goal(player, cmd, args, gameversion, last_town_id):
 	# goal_id, [cash_cost]
-	# TODO: FIX 1.4.07 GOALS
 	goal_id = int(args[0])
 
 	if goal_id <= 0:	# invalid goal (client error)
@@ -2496,7 +2495,13 @@ def cmd_reward_goal(player, cmd, args, gameversion, last_town_id):
 
 	_map = player["maps"][town_id]
 
-	goal = get_mission(goal_id)
+	new_goals = get_version_settings(gameversion)["new_goals"]
+
+	goal = None
+	if new_goals:
+		goal = get_goal(goal_id)
+	else:
+		goal = get_mission(goal_id)
 	if not goal:
 		return True
 

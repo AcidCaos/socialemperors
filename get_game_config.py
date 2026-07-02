@@ -416,6 +416,13 @@ def get_mission(goal_id):
 			return m
 	return None
 
+def get_goal(goal_id):
+	goals = __game_config["goals"]
+	for m in goals:
+		if m["id"] == goal_id:
+			return m
+	return None
+
 def get_hellforge_item(item_id):
 	items = __game_config["collect_game_items"]
 	for it in items:
