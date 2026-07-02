@@ -65,7 +65,7 @@ for uid in arthur_ids:
 __unit_pack_state = {}
 
 __initial_village = json.load(open(os.path.join(VILLAGES_DIR, "initial.json")))
-__initial_village1407 = json.load(open(os.path.join(VILLAGES_DIR, "initial1407.json")))
+# __initial_village1407 = json.load(open(os.path.join(VILLAGES_DIR, "initial1407.json")))
 
 __assign_avatars = get_server_config()["misc"]["assign_random_avatars"]
 
@@ -279,12 +279,12 @@ def get_enemy_save(userid):
 	return data
 
 # New village
-def new_village(username, skip_tutorial, draggy = None, avatar = ""):
-	draggies = {
-		"GREEN": 698,
-		"BLUE": 651,
-		"GOLD": 710
-	}
+def new_village(username, skip_tutorial = False, draggy = None, avatar = ""):
+	# draggies = {
+	# 	"GREEN": 698,
+	# 	"BLUE": 651,
+	# 	"GOLD": 710
+	# }
 
 	# Generate USERID
 	USERID: str = str(uuid.uuid4())
@@ -292,10 +292,12 @@ def new_village(username, skip_tutorial, draggy = None, avatar = ""):
 	# Copy init
 	village = None
 
-	if skip_tutorial:
-		village = copy.deepcopy(__initial_village1407)
-	else:
-		village = copy.deepcopy(__initial_village)
+	village = copy.deepcopy(__initial_village)
+
+	# if skip_tutorial:
+	# 	village = copy.deepcopy(__initial_village1407)
+	# else:
+	# 	village = copy.deepcopy(__initial_village)
 
 	# Custom values
 	village["version"] = "migrateme"
@@ -303,13 +305,13 @@ def new_village(username, skip_tutorial, draggy = None, avatar = ""):
 	village["playerInfo"]["pic"] = avatar
 	village["playerInfo"]["name"] = username
 	village["maps"][0]["timestamp"] = timestamp_now()
-	village["privateState"]["dartsRandomSeed"] = abs(int((2**16 - 1) * random.random()))
+	#village["privateState"]["dartsRandomSeed"] = abs(int((2**16 - 1) * random.random()))
 
-	if skip_tutorial:
-		if draggy in draggies:
-			draggy = draggies[draggy]
-		if draggy:
-			map_add_item(village["maps"][0], draggy, 60, 60)
+	# if skip_tutorial:
+	# 	if draggy in draggies:
+	# 		draggy = draggies[draggy]
+	# 	if draggy:
+	# 		map_add_item(village["maps"][0], draggy, 60, 60)
 
 	# fix stuff
 	migrate_loaded_save(village)

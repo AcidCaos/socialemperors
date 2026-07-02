@@ -2058,7 +2058,7 @@ def _cmd_next_nest(player, cmd, args, gameversion, last_town_id, nest_type):
 	
 def _cmd_next_step_nest(player, cmd, args, gameversion, last_town_id, nest_type):
 	# cash_cost
-	cash_cost = args[0]
+	cash_cost = int(args[0])
 
 	nest = get_nest(nest_type)
 	if not nest:

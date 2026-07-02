@@ -15,7 +15,7 @@
 		"world_id": null,
 		"sp_ref_uid": 1000,
 		"sp_ref_cat_install": "ts",
-		"last_logged_in": -1,
+		"last_logged_in": 0,
 		"country": "Social World",
 		"attacks_won": 0,
 		"attacks_lost": 0,
@@ -356,20 +356,7 @@
 		},
 		"arrayAnimals": {},
 		"strategy": 8,
-		"survivalMaps": {
-			"100000035": {
-				"ts": 0,
-				"tp": 0
-			},
-			"100000036": {
-				"ts": 0,
-				"tp": 0
-			},
-			"100000037": {
-				"ts": 0,
-				"tp": 0
-			}
-		},
+		"survivalMaps": {},
 		"survivalVidaTimeStamp": [],
 		"survivalVidasExtra": 0,
 		"universAttackWin": [],

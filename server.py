@@ -132,10 +132,10 @@ async def new_player_register():
 		return redirect("/reg")
 
 	playername = request.values["playername"].strip()
-	skiptutorial = 0
-	if "skiptutorial" in request.values:
-		skiptutorial = request.values["skiptutorial"] == "skiptutorial"
-	starting_draggy = request.values["STARTING_DRAGGY"]
+	# skiptutorial = 0
+	# if "skiptutorial" in request.values:
+	# 	skiptutorial = request.values["skiptutorial"] == "skiptutorial"
+	# starting_draggy = request.values["STARTING_DRAGGY"]
 	avatar = request.values["AVATAR"]
 
 	flasksession['GAMEVERSION'] = request.form['GAMEVERSION']
@@ -144,7 +144,8 @@ async def new_player_register():
 	if "0926" not in flasksession['GAMEVERSION']:
 		skiptutorial = 1
 
-	flasksession['USERID'] = new_village(playername, skiptutorial, starting_draggy, avatar)
+	# flasksession['USERID'] = new_village(playername, skiptutorial, starting_draggy, avatar)
+	flasksession['USERID'] = new_village(playername, False, None, avatar)
 
 	if flasksession['RUNNER'] == "RUFFLE":
 		return redirect("/play/ruffle")
