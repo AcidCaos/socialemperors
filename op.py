@@ -2471,7 +2471,7 @@ def cmd_complete_goal(player, cmd, args, gameversion, last_town_id):
 	if goal_id in privateState["completedMissions"]:
 		return True
 
-	if len(args) >= 1:
+	if len(args) >= 2:
 		cash_cost = int(args[1])
 		if not pay_cash(player, cash_cost):
 			return False
