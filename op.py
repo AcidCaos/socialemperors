@@ -2482,7 +2482,6 @@ def cmd_complete_goal(player, cmd, args, gameversion, last_town_id):
 	
 def cmd_reward_goal(player, cmd, args, gameversion, last_town_id):
 	# town_id, goal_id
-	# TODO: FIX 1.4.07 GOALS
 	town_id = int(args[0])
 	goal_id = int(args[1])
 
@@ -2511,6 +2510,13 @@ def cmd_reward_goal(player, cmd, args, gameversion, last_town_id):
 
 	add_map_currency(_map, "coins", goal["reward"])
 	privateState["rewardedMissions"].append(goal_id)
+
+	return True
+
+def cmd_reset_goals(player, cmd, args, gameversion, last_town_id):
+	privateState = player["privateState"]
+	privateState["rewardedMissions"] = []
+	privateState["completedMissions"] = []
 
 	return True
 

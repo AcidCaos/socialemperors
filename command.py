@@ -139,6 +139,7 @@ commands = {
 	# missions/goals ------------------------------------------------------------------------------------------
 	"complete_mission":					cmd_complete_goal,
 	"reward_mission":					cmd_reward_goal,
+	"reset_completed_missions":			cmd_reset_goals,
 	# daily bonus (old) ---------------------------------------------------------------------------------------
 	"win_bonus":						cmd_win_bonus,
 	# player general ------------------------------------------------------------------------------------------
