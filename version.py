@@ -456,6 +456,9 @@ def migrate_loaded_save(save):
 	fix_variable(playerInfo, "attacks_won", 0)
 	fix_variable(playerInfo, "attacks_lost", 0)
 	fix_variable(playerInfo, "honor_points", 0)
+	# for some reason the game keeps a duplicate for goals in privateState as well
+	fix_variable(privateState, "attacksWon", playerInfo["attacks_won"])
+	fix_variable(privateState, "attacksLost", playerInfo["attacks_lost"])
 
 	check_shield_times(privateState, ts_now)
 

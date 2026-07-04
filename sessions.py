@@ -536,10 +536,13 @@ def pvp_modify_victim(request, town_id = 0):
 	attacker["playerInfo"]["honor_points"] += honor
 
 	# modify wins / loses
+	# not sure if this should sync up with goals but lets do it anyway
 	if is_winner:
 		attacker["playerInfo"]["attacks_won"] += 1
+		attacker["playerInfo"]["attacksWon"] += 1
 	else:
 		attacker["playerInfo"]["attacks_lost"] += 1
+		attacker["playerInfo"]["attacksLost"] += 1
 
 	# give PVP shield to victim
 	time_extend = _PVP_SHIELD_AFTER_ATTACK_STATIC

@@ -958,10 +958,13 @@ def pvp_steal_resources(player, town_id, resources, is_winner):
 	for res in resources:
 		pay_resource_type(player, map, res, resources[res])
 
+	# not sure if this should sync up with goals but lets do it anyway
 	if not is_winner:
 		player["playerInfo"]["attacks_won"] += 1
+		player["privateState"]["attacksWon"] += 1
 	else:
 		player["playerInfo"]["attacks_lost"] += 1
+		player["privateState"]["attacksLost"] += 1
 
 def pvp_push_attack_log(player, request, extra_data, attacker):
 	attack_log = player["privateState"]["PVPattacksReceived"]
