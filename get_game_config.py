@@ -100,6 +100,18 @@ def apply_config_patch(filename):
 def apply_goals():
 	__game_config["goals"] = __goals
 
+	images = __game_config["images"]
+
+	# tell client to load any missing goal images
+	for goal in __goals:
+		img = goal["image"]
+		char = goal["characters"]
+
+		if img != "none" and img not in images:
+			images[img] = ""
+		if char != "none" and char not in images:
+			images[char] = ""
+
 # because the way this is done sucks we have to do redefine this here
 def get_item(item_id):
 	item_id = str(item_id)
