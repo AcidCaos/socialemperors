@@ -769,15 +769,15 @@
 			},
 			{
 				"cash_cost": 4,
-				"order_increment": 1
-			},
-			{
-				"cash_cost": 8,
 				"order_increment": 2
 			},
 			{
-				"cash_cost": 15,
+				"cash_cost": 8,
 				"order_increment": 3
+			},
+			{
+				"cash_cost": 15,
+				"order_increment": 4
 			},
 			{
 				"cash_cost": 20,
