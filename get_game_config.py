@@ -16,6 +16,7 @@ log = logging.getLogger('__main__')
 __game_config = json.load(open(os.path.join(CONFIG_DIR, "main.json"), 'r', encoding='utf-8'))
 __rotation = json.load(open(os.path.join(CONFIG_DIR, "shop_rotation.json"), 'r', encoding='utf-8'))
 __goals = json.load(open(os.path.join(CONFIG_DIR, "goals.json"), 'r', encoding='utf-8'))
+__goals_own_big_tiles = []
 __shop_rotation_refresh = None
 __animals = {}
 
@@ -111,6 +112,9 @@ def apply_goals():
 			images[img] = ""
 		if char != "none" and char not in images:
 			images[char] = ""
+
+		if goal["types"] == "own_big_tiles":
+			__goals_own_big_tiles.append(goal)
 
 # because the way this is done sucks we have to do redefine this here
 def get_item(item_id):
@@ -462,3 +466,6 @@ def get_blacksmith_id():
 
 def get_university_id():
 	return int(get_items_with_subcat(Constant.SUBCATFUNC_BUILDING_UNIVERSITY)[0]["id"])
+
+def get_own_big_tiles_goals():
+	return __goals_own_big_tiles

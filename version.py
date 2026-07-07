@@ -309,6 +309,25 @@ def _graveyard_cap_units(privateState):
 
 		idx += 1
 
+def _fix_goal_softlocks(map, privateState):
+	goals = get_own_big_tiles_goals()
+	num_owned = len(map["expansions"])
+	for goal in goals:
+		params = json.loads(goal["params"])
+		req = params["ammount"]
+		if num_owned < params["ammount"]:
+			continue
+
+		goal_id = goal["id"]
+
+		if goal_id not in privateState["completedMissions"]:
+			privateState["completedMissions"].append(goal_id)
+
+		if goal_id not in privateState["rewardedMissions"]:
+			privateState["rewardedMissions"].append(goal_id)
+			map["coins"] += goal["reward"]
+
+
 def migrate_loaded_save(save):
 	# Migration always happens now, we check the data type this time and insert any new data if necessary
 	# This should make sure the save file isn't "half fixed"
@@ -484,6 +503,9 @@ def migrate_loaded_save(save):
 	if len(privateState["collectGame"]) != 6:
 		privateState["collectGame"] = _fix_hellforge()
 	fix_variable(privateState, "collectGameGivenPrizes", [])
+
+	# auto complete goals that could softlock
+	_fix_goal_softlocks(maps[0], privateState)
 
 	# more fixes if save is very old version
 	if "version" in save:
