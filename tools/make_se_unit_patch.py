@@ -498,6 +498,19 @@ def make_final(config, patch, sm_patch):
 	modify_item_attack(items, 412, 20)
 	modify_item_attack_range(items, 412, 8)
 
+	# fix production buildings being upgradeable
+	modify_item_upgrade(items, 77, 0)			# lumber mills
+	modify_item_upgrade(items, 78, 0)
+	modify_item_upgrade(items, 79, 0)
+	modify_item_upgrade(items, 312, 0)			# troll lumber mills
+	modify_item_upgrade(items, 313, 0)
+	modify_item_upgrade(items, 300, 0)			# troll mills
+	modify_item_upgrade(items, 301, 0)
+	modify_item_upgrade(items, 318, 0)			# troll stone mines
+	modify_item_upgrade(items, 319, 0)
+	modify_item_upgrade(items, 315, 0)			# troll gold mines
+	modify_item_upgrade(items, 316, 0)
+
 	# necro king barracks fixes - based on imperial elf gryphon data
 	modify_item_price(items, 1329, 30, "c")			# necro king barracks
 	modify_item_price(items, 806, 6800, "g")		# necro king
