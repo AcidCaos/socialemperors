@@ -22,6 +22,9 @@ debug_unit_packs = False
 # DO THE THING
 templates = json.load(open("unit_templates.json", 'r', encoding='utf-8'))
 
+# constants
+SUBCATFUNC_BUILDING_FEATURE = 139
+
 num_units = 0
 lines = []
 patch = []
@@ -423,6 +426,15 @@ def modify_item_collect_xp(items, item_id, amount):
 	name = item["name"]
 	print(f"set collect xp for {name}")
 
+def modify_item_subcatfunc(items, item_id, subcat):
+	item = get_item(items, item_id)
+	if not item:
+		return
+	
+	item["subcat_functional"] = str(subcat)
+	name = item["name"]
+	print(f"set subcatfunc for {name}")
+
 def make_final(config, patch, sm_patch):
 	print(f"applying phase 1 patch...")
 	jsonpatch.apply_patch(config, patch, in_place = True)
@@ -510,6 +522,10 @@ def make_final(config, patch, sm_patch):
 	modify_item_upgrade(items, 319, 0)
 	modify_item_upgrade(items, 315, 0)			# troll gold mines
 	modify_item_upgrade(items, 316, 0)
+
+	# fix allies building being treated as a house when it's not
+	modify_item_subcatfunc(items, 234, SUBCATFUNC_BUILDING_FEATURE)
+	modify_item_subcatfunc(items, 361, SUBCATFUNC_BUILDING_FEATURE)
 
 	# necro king barracks fixes - based on imperial elf gryphon data
 	modify_item_price(items, 1329, 30, "c")			# necro king barracks
