@@ -523,6 +523,13 @@ def make_final(config, patch, sm_patch):
 	modify_item_upgrade(items, 315, 0)			# troll gold mines
 	modify_item_upgrade(items, 316, 0)
 
+	# fix farms having incorrect upgrade paths
+	modify_item_upgrade(items, 10, 8)			# farm land
+	modify_item_upgrade(items, 8, 9)			# pumpkin crop
+	modify_item_upgrade(items, 9, 200)			# eggplant field
+	modify_item_upgrade(items, 200, 201)		# carrot field
+	modify_item_upgrade(items, 201, 0)			# watermelon field
+
 	# fix allies building being treated as a house when it's not
 	modify_item_subcatfunc(items, 234, SUBCATFUNC_BUILDING_FEATURE)
 	modify_item_subcatfunc(items, 361, SUBCATFUNC_BUILDING_FEATURE)
