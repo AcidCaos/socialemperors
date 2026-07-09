@@ -391,12 +391,17 @@ def cmd_finish_si_recruitment(player, cmd, args, gameversion, last_town_id):
 	if num_hired < friends_needed:
 		return False
 
-	if _map["level"] < prize["unlock_level"]:
-		return False
-
 	rewarded = player["privateState"]["recruitmentPrices"]
 	if prize_id in rewarded:
 		return False
+
+	if _map["level"] < prize["unlock_level"]:
+		# if the check all previous completed fails then the level check should fail too
+		idx = 1
+		while idx < prize_id:
+			if idx not in rewarded:
+				return False
+			idx += 1
 
 	units = prize["units"].split(",")
 	for unit in units:
