@@ -476,8 +476,9 @@ def make_final(config, patch, sm_patch):
 		name = item["name"]
 		print(f"applied size fix to {name}")
 
-	# fix summoned golem faction
-	modify_item_race(items, 630, "h")
+	# fix factions for some units
+	modify_item_race(items, 630, "h")			# summoned golem
+	modify_item_race(items, 563, "h")			# skeleton (black castle)
 
 	# fix pharaoh's gold mine collect type
 	modify_item_collect_type(items, 1372, "g")
