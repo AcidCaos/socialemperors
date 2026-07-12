@@ -2472,6 +2472,16 @@ def cmd_complete_goal(player, cmd, args, gameversion, last_town_id):
 	if goal_id <= 0:	# invalid goal (client error)
 		return True
 
+	new_goals = get_version_settings(gameversion)["new_goals"]
+
+	goal = None
+	if new_goals:
+		goal = get_goal(goal_id)
+	else:
+		goal = get_mission(goal_id)
+	if not goal:
+		return True
+
 	privateState = player["privateState"]
 	if goal_id in privateState["completedMissions"]:
 		return True
@@ -2484,16 +2494,6 @@ def cmd_complete_goal(player, cmd, args, gameversion, last_town_id):
 	privateState["completedMissions"].append(goal_id)
 
 	# give reward in case client doesn't
-	new_goals = get_version_settings(gameversion)["new_goals"]
-
-	goal = None
-	if new_goals:
-		goal = get_goal(goal_id)
-	else:
-		goal = get_mission(goal_id)
-	if not goal:
-		return True
-
 	privateState = player["privateState"]
 	if goal_id in privateState["rewardedMissions"]:
 		return True
