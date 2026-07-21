@@ -242,7 +242,7 @@ def _remove_banned_units(player, item_ids):
 		if item_str in gifts:
 			del gifts[item_str]
 			item_data = get_item_from_id(it)
-			i_id = item[0]
+			i_id = item_data["id"]
 			i_name = item_data["name"]
 			log.info(f" * Removed banned unit [{i_id}] {i_name} from player gifts!")
 
@@ -255,7 +255,7 @@ def _remove_banned_units(player, item_ids):
 			if item_str in store:
 				del store[item_str]
 				item_data = get_item_from_id(it)
-				i_id = item[0]
+				i_id = item_data["id"]
 				i_name = item_data["name"]
 				log.info(f" * Removed banned unit [{i_id}] {i_name} from map storage!")
 
@@ -266,7 +266,7 @@ def _remove_banned_units(player, item_ids):
 			if item_str in warehouse:
 				del warehouse[item_str]
 				item_data = get_item_from_id(it)
-				i_id = item[0]
+				i_id = item_data["id"]
 				i_name = item_data["name"]
 				log.info(f" * Removed banned unit [{i_id}] {i_name} from map warehouse!")
 
@@ -284,7 +284,7 @@ def _remove_banned_units(player, item_ids):
 		
 		for item in to_remove:
 			item_data = get_item_from_id(item[0])
-			i_id = item[0]
+			i_id = item_data["id"]
 			i_name = item_data["name"]
 			log.info(f" * Removed banned unit [{i_id}] {i_name} from map items!")
 			map_items.remove(item)
