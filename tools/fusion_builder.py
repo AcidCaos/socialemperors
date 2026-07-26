@@ -150,6 +150,9 @@ def fusion_build(debug = True):
 
 		# some way to approximate power (aka breeding order)
 		breeding_order = breeding_order_health(a, ar, ai, d, l, v)
+		if breeding_order < 10:
+			# game doesn't like anything below 10
+			breeding_order = 10
 		sm_training_time = 1000 * breeding_order # in seconds
 
 		# make patch
@@ -175,3 +178,113 @@ def fusion_build(debug = True):
 	print("------------------------------------------------------------------------")
 
 	return json.loads(patch_str)
+
+def fusion_build_p2(config, debug = True):
+	# the game client picks the first unit with specific power after sorting
+	# this means if multiple units share the power level only the first one can be selected but never the rest
+	# we'll adjust powers here so that no units share power levels
+	# internally in the client, unit power = breeding_order
+
+	items = config["items"]
+	sm_items = []
+	for item in items:
+		if "breeding_order" in item:
+			if int(item["breeding_order"]) > 0:
+				sm_items.append(item)
+
+	print("This may take a while...")
+
+	has_duplicates = True
+	while has_duplicates:
+		min_power = 100000
+		max_power = 0
+		for item in sm_items:
+			max_power = max(max_power, int(item["breeding_order"]))
+			min_power = min(min_power, int(item["breeding_order"]))
+
+		if min_power > 10:
+			power_shift(sm_items, -(min_power - 10))
+
+		now = min_power
+		while now <= max_power:
+			items_same = []
+			for item in sm_items:
+				if int(item["breeding_order"]) == now:
+					items_same.append(item)
+
+			num_same = len(items_same)
+
+			if num_same == 0:
+				# bad, shift down
+				power_shift_down(sm_items, now)
+				now -= 1
+				max_power -= 1
+			
+			elif num_same > 1:
+				# spread them out
+				max_power += power_spread(sm_items, items_same, now)
+
+			now += 1
+
+		has_duplicates = check_sm_duplicates(sm_items, min_power, max_power)
+
+	if debug:
+		print("New breeding order")
+	
+		sorted_items = []
+		for item in sm_items:
+			sorted_items.append(item)
+	
+		sorted_items.sort(key=sort_breeding_order)
+		for item in sorted_items:
+			item_name = item["name"]
+			item_id = item["id"]
+			item_power = item_to_fine_power(item)
+			order = item["breeding_order"]
+			print(f"[{order}] {item_id} - {item_name} -> {item_power}")
+
+def check_sm_duplicates(sm_items, min_power, max_power):
+	same = {}
+	for item in sm_items:
+		if item["breeding_order"] not in same:
+			same[item["breeding_order"]] = True
+		else:
+			return True
+	return False
+
+def power_shift(sm_items, amount):
+	for item in sm_items:
+		order = int(item["breeding_order"])
+		item["breeding_order"] = f"{order + amount}"
+
+def sort_breeding_order(item):
+	return int(item["breeding_order"])
+
+def item_to_fine_power(item):
+	return int(item["life"]) * int(item["attack"])
+
+def power_shift_down(sm_items, now):
+	for item in sm_items:
+		order = int(item["breeding_order"])
+		if order >= now:
+			item["breeding_order"] = f"{order - 1}"
+
+def power_spread(sm_items, items_same, now):
+	# I don't even know man, this code is absolute dogshit and I will not be changing this
+	# deal with it if you're reading this xd
+
+	items_same.sort(key=item_to_fine_power)
+
+	num = 1
+
+	limit = now + num
+	for item in sm_items:
+		order = int(item["breeding_order"])
+		item["breeding_order"] = f"{order + num}"
+
+	n = 0
+	for item in items_same:
+		item["breeding_order"] = f"{int(now + n)}"
+		n += 1
+		return n
+	return n

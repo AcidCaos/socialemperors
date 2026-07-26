@@ -4,7 +4,7 @@ import copy
 import jsonpatch
 import math
 
-from fusion_builder import fusion_build
+from fusion_builder import fusion_build, fusion_build_p2
 
 # CONFIG
 patch_filename = "../config/patch/2-unit_patch.json"
@@ -443,6 +443,9 @@ def make_final(config, patch, sm_patch):
 	print(f"applying fusion build patch...")
 	jsonpatch.apply_patch(config, sm_patch, in_place = True)
 	#apply_patch(config, sm_patch)
+
+	print("running fusion builder phase 2...")
+	fusion_build_p2(config)
 
 	# remove duplicates
 	remove_duplicate_items(config)
