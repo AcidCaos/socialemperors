@@ -1178,7 +1178,7 @@ def cmd_set_attack_team(player, cmd, args, gameversion, last_town_id):
 	team_name = args[0]
 	team_units = args[1]
 	formation = None
-	if len(args) >= 2:
+	if len(args) >= 3:
 		formation = args[2]
 
 	privateState = player["privateState"]

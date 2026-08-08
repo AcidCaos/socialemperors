@@ -780,7 +780,7 @@ def fb_friend_info(playerInfo):
 	return {
 		"uid": playerInfo["pid"],
 		"first_name": playerInfo["name"],
-		"pic_square": playerInfo["pic"]
+		"pic_square": pic
 	}
 
 def neighbors(USERID):
