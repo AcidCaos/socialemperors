@@ -43,7 +43,8 @@
 		"graveyard_max_each_unit":			100,
 		"graveyard_potions_per_friend":		1,
 		"banned_items":						[],
-		"assign_random_avatars":			false
+		"assign_random_avatars":			false,
+		"no_resource_regeneration_on_owned_land":	false
 	},
 	"events": 
 	[

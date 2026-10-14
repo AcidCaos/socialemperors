@@ -2,7 +2,7 @@ import os
 import logging
 from quests import get_quest_map
 from sessions import *
-from engine import timestamp_now
+from engine import timestamp_now, clear_owned_land_regen
 from version import save_reset_stuff
 
 log = logging.getLogger('__main__')
@@ -13,6 +13,9 @@ def get_player_info(USERID, player_userid = None, town_id = 0):
 
 	if player_userid == USERID:
 		save_reset_stuff(save, True)
+		# regenerating stone/gold on the player's own land disappears (see engine.clear_owned_land_regen)
+		if clear_owned_land_regen(save):
+			save_session(USERID, False)
 
 	# player
 	response = {

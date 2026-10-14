@@ -1212,3 +1212,38 @@ def fix_troll_empire(player):
 	map_add_item(maps[1], 291, 50, 56, 0) # tower
 	map_add_item(maps[1], 580, 53, 54, 0) # extra villagers
 	map_add_item(maps[1], 580, 53, 55, 0)
+
+# --- Optional: no resource regeneration on owned land ----------------------------------------------
+# The map is 100x100 tiles split into 5x5 land squares of 20x20 (IsoEngine.getLargeTile). The game
+# turns a harvested stone/gold pile into a "Regenerating stone/gold" that becomes a pile again a few
+# hours later. With misc.no_resource_regeneration_on_owned_land, on the player's own land
+# (map["expansions"], 13 = starting land) we don't keep those: a pile harvested there is gone for good,
+# so players can clear the land they bought. New piles only spawn outside owned land (game rule).
+RESOURCE_PILE_IDS = (69, 70, 71, 72, 73, 74, 75)	# Stone 1-4, Gold 1-3
+RESOURCE_REGEN_IDS = (80, 81)						# Regenerating gold, Regenerating stone
+
+def land_square(x, y):
+	return (int(y) // 20) * 5 + (int(x) // 20) + 1
+
+def is_owned_land(map, x, y):
+	return land_square(x, y) in set([13] + [int(e) for e in map.get("expansions", [])])
+
+def no_regen_on_owned_land():
+	"server_config.json misc.no_resource_regeneration_on_owned_land (off by default: the game's own rule)."
+	return bool(get_server_config().get("misc", {}).get("no_resource_regeneration_on_owned_land", False))
+
+def clear_owned_land_regen(save):
+	"Removes the regenerating stone/gold left on the player's own land. Returns how many were removed."
+	if not no_regen_on_owned_land():
+		return 0
+	removed = 0
+	for map in save["maps"]:
+		keep = []
+		for item in map["items"]:
+			if item[0] in RESOURCE_REGEN_IDS and is_owned_land(map, item[1], item[2]):
+				removed += 1
+				continue
+			keep.append(item)
+		map["items"] = keep
+	return removed
+
