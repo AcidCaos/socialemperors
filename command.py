@@ -3,7 +3,7 @@ import logging
 import traceback
 
 from datetime import datetime
-from sessions import session, save_session
+from sessions import session, save_session, save_lock
 from op import *
 
 CMD_STATUS_OK = 0
@@ -207,16 +207,26 @@ def command(USERID, data, gameversion, last_town_id):
 	publishActions = data["publishActions"]
 	commands = data["commands"]
 
-	for i, comm in enumerate(commands):
-		cmd = comm["cmd"]
-		args = comm["args"]
-		status = do_command(USERID, cmd, args, gameversion, last_town_id)
-		if status == CMD_STATUS_ERROR or status == CMD_STATUS_FAIL:
-			# error out on these instantly
-			return status
+	with save_lock:
+		if session(USERID) is None:
+			log.warning(f"[C] Commands for unknown player {USERID} ignored")
+			return CMD_STATUS_FAIL
+		status = CMD_STATUS_OK
+		try:
+			for i, comm in enumerate(commands):
+				cmd = comm["cmd"]
+				args = comm["args"]
+				status = do_command(USERID, cmd, args, gameversion, last_town_id)
+				if status == CMD_STATUS_ERROR or status == CMD_STATUS_FAIL:
+					# error out on these instantly (the game reloads from the server state)
+					break
+		finally:
+			# Always write what is in memory: after a desync the game reloads from the server,
+			# so the save on disk must match that state (it used to stay unsaved).
+			save_session(USERID) # Save session
 
-	save_session(USERID) # Save session
-
+	if status == CMD_STATUS_ERROR or status == CMD_STATUS_FAIL:
+		return status
 	return CMD_STATUS_OK
 
 def do_command(USERID, cmd, args, gameversion, last_town_id):

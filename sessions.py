@@ -6,6 +6,8 @@ import uuid
 import random
 import logging
 import re
+import threading
+import time
 from flask import session
 # from flask_session import SqlAlchemySessionInterface, current_app
 
@@ -21,6 +23,14 @@ from constants import Constant
 from get_game_config import get_game_config
 from avatars import assign_random_avatar
 from bundle import VILLAGES_DIR, SAVES_DIR, ENEMIES_DIR, FRIENDS_DIR
+
+# One lock for every change and write of the saves: Flask serves requests on several threads,
+# two requests must never modify or write the same save at the same time.
+save_lock = threading.RLock()
+
+BACKUPS_DIR = os.path.join(SAVES_DIR, "backups")
+BACKUP_EVERY_SECONDS = 10 * 60  # one dated backup per player at most every 10 minutes
+BACKUPS_TO_KEEP = 30            # older dated backups are deleted
 
 __villages = {}  # ALL static neighbors (excluding friend/ and enemy/)
 __saves = {}  # ALL saved villages
@@ -154,14 +164,16 @@ def load_saves(add_to_pvp = False):
 		if not file.endswith(".save.json"):
 			continue
 		
-		try:
-			save = json.load(open(os.path.join(SAVES_DIR, file)))
-		except json.decoder.JSONDecodeError as e:
-			log.info(f" * Player data corrupted -> {file}")
-			continue
-		if not is_valid_village(save):
-			log.info(f" * Player data invalid -> {file}")
-			continue
+		save = _read_save_file(os.path.join(SAVES_DIR, file))
+		restored = False
+		if save is None:
+			log.info(f" * Player data corrupted or invalid -> {file}")
+			save, source = _recover_save(file)
+			if save is None:
+				log.info(f"   No backup found for {file}, skipped.")
+				continue
+			log.info(f"   Restored from backup -> {source}")
+			restored = True
 		show_player_info(save, "Player")
 		USERID = save["playerInfo"]["pid"]
 		__saves[str(USERID)] = save
@@ -170,7 +182,7 @@ def load_saves(add_to_pvp = False):
 		modified = migrate_loaded_save(save) # check save version for migration
 		if __assign_avatars:
 			assign_random_avatar(save)
-		if modified:
+		if modified or restored:
 			save_session(USERID, False)
 
 def copy_static_friends():
@@ -841,24 +853,93 @@ def is_valid_village(save: dict):
 
 # Persistency
 
-def backup_session(USERID: str):
-	# TODO 
-	return
+def _read_save_file(path: str):
+	"The save stored in this file, or None if it can't be read or isn't a valid village."
+	try:
+		with open(path, encoding="utf-8") as f:
+			save = json.load(f)
+		return save if isinstance(save, dict) and is_valid_village(save) else None
+	except Exception:
+		return None
+
+def _recover_save(file: str):
+	"Tries <file>.bak, then the dated backups (newest first). Returns (save, path) or (None, None)."
+	candidates = [os.path.join(SAVES_DIR, file + ".bak")]
+	userid = file[:-len(".save.json")]
+	backup_dir = os.path.join(BACKUPS_DIR, userid)
+	if os.path.isdir(backup_dir):
+		candidates += [os.path.join(backup_dir, b) for b in sorted(os.listdir(backup_dir), reverse=True) if b.endswith(".save.json")]
+	for path in candidates:
+		if os.path.exists(path):
+			save = _read_save_file(path)
+			if save is not None:
+				return save, path
+	return None, None
+
+def _write_json_atomic(path: str, data: dict, keep_bak: bool):
+	"""Writes the whole file next to the target, flushes it to disk, then swaps it in one step:
+	the file is never left half-written, even if the server window is closed during a save."""
+	tmp_path = path + ".tmp"
+	with open(tmp_path, 'w', encoding="utf-8") as f:
+		json.dump(data, f, indent='\t')
+		f.flush()
+		os.fsync(f.fileno())
+	if keep_bak and os.path.exists(path):
+		try:
+			shutil.copy2(path, path + ".bak")
+		except OSError:
+			pass
+	for attempt in range(10):
+		try:
+			os.replace(tmp_path, path)
+			return
+		except PermissionError:
+			# Windows: an antivirus or file indexer may hold the file for a moment
+			if attempt == 9:
+				raise
+			time.sleep(0.1)
+
+def backup_session(USERID: str, force: bool = False):
+	"Dated copies in saves/backups/<USERID>/ (at most one every 10 minutes, the newest 30 are kept)."
+	with save_lock:
+		source = os.path.join(SAVES_DIR, f"{USERID}.save.json")
+		if not os.path.exists(source):
+			return
+		backup_dir = os.path.join(BACKUPS_DIR, str(USERID))
+		os.makedirs(backup_dir, exist_ok=True)
+		backups = sorted(b for b in os.listdir(backup_dir) if b.endswith(".save.json"))
+		if backups and not force:
+			last = os.path.getmtime(os.path.join(backup_dir, backups[-1]))
+			if time.time() - last < BACKUP_EVERY_SECONDS:
+				return
+		name = time.strftime("%Y%m%d-%H%M%S") + ".save.json"
+		shutil.copy2(source, os.path.join(backup_dir, name))
+		backups.append(name)
+		for old in sorted(set(backups))[:-BACKUPS_TO_KEEP]:
+			try:
+				os.remove(os.path.join(backup_dir, old))
+			except OSError:
+				pass
 
 def save_session(USERID, write_ts = True):
-	# TODO 
 	file = f"{USERID}.save.json"
-	save = session(USERID)
+	with save_lock:
+		save = session(USERID)
+		if save is None:
+			log.warning(f" * Unknown player {USERID}, not saved.")
+			return
 
-	# update timestamp
-	if write_ts:
-		save["playerInfo"]["last_logged_in"] = timestamp_now()
+		# update timestamp
+		if write_ts:
+			save["playerInfo"]["last_logged_in"] = timestamp_now()
 
-	with open(os.path.join(SAVES_DIR, file), 'w') as f:
-		json.dump(save, f, indent='\t')
+		_write_json_atomic(os.path.join(SAVES_DIR, file), save, keep_bak=True)
+		try:
+			backup_session(USERID)
+		except OSError as e:
+			log.warning(f" * Backup failed for {USERID}: {e}")
 
 def save_session_path(USERID: str, save: dict, path: str):
-	# TODO
 	file = f"{USERID}.save.json"
-	with open(os.path.join(path, file), 'w') as f:
-		json.dump(save, f, indent='\t')
+	with save_lock:
+		_write_json_atomic(os.path.join(path, file), save, keep_bak=(path == SAVES_DIR))

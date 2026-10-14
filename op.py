@@ -630,8 +630,12 @@ def cmd_store_item(player, cmd, args, gameversion, last_town_id):
 
 	_map = player["maps"][town_id]
 
-	if map_remove_item(_map, x, y, item_id) == 0:
+	# Remove ONE item: when several identical items are piled on the same tile, the game sends
+	# one store_item_frombug per extra item and keeps the last one on the map.
+	items = map_get_item(_map, x, y, item_id)
+	if not items:
 		return False
+	_map["items"].remove(items[0])
 
 	add_store_item(_map, item_id, 1)
 
