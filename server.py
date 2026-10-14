@@ -1,6 +1,7 @@
 import os
 import json
-import urllib
+import urllib.request
+import urllib.error
 import logging
 import asyncio
 
@@ -77,6 +78,10 @@ log.info(" [+] Configuring server routes...")
 
 ## PAGES AND RESOURCES
 
+# Last game version each player logged in with: the session cookie is shared by all the tabs of the
+# browser, and opening the login page in another tab clears it while the game keeps running.
+_last_gameversion = {}
+
 def do_logout():
 	# Log out previous session
 	flasksession.pop('USERID', default=None)
@@ -97,6 +102,7 @@ async def login():
 		flasksession['USERID'] = request.form['USERID']
 		flasksession['GAMEVERSION'] = request.form['GAMEVERSION']
 		flasksession['RUNNER'] = request.form['RUNNER']
+		_last_gameversion[request.form['USERID']] = request.form['GAMEVERSION']
 
 		uid = request.form['USERID']
 		version = request.form['GAMEVERSION']
@@ -146,6 +152,7 @@ async def new_player_register():
 
 	# flasksession['USERID'] = new_village(playername, skiptutorial, starting_draggy, avatar)
 	flasksession['USERID'] = new_village(playername, False, None, avatar)
+	_last_gameversion[flasksession['USERID']] = flasksession['GAMEVERSION']
 
 	if flasksession['RUNNER'] == "RUFFLE":
 		return redirect("/play/ruffle")
@@ -261,15 +268,15 @@ async def static_assets_loader(path):
 			URL = f"https://static.socialpointgames.com/static/socialempires/assets/{path}"
 			try:
 				response = urllib.request.urlretrieve(URL, f"{ASSETS_DIR}/../download_assets/assets/{path}")
-			except urllib.error.HTTPError:
+			except (urllib.error.URLError, OSError):	# HTTPError is a URLError; no internet = URLError
 				return ("", 404)
 
 			log.info(f"====== DOWNLOADED ASSET: {URL}")
-			return send_from_directory("{ASSETS_DIR}/../download_assets/assets", path)
+			return send_from_directory(f"{ASSETS_DIR}/../download_assets/assets", path)
 		else:
 			# Use downloaded CDN asset
 			log.info(f"====== USING EXTERNAL: download_assets/assets/{path}")
-			return send_from_directory("{ASSETS_DIR}/../download_assets/assets", path)
+			return send_from_directory(f"{ASSETS_DIR}/../download_assets/assets", path)
 	else:
 		# Use provided asset
 		return send_from_directory(ASSETS_DIR, path)
@@ -544,9 +551,11 @@ async def get_game_config_response():
 
 @app.route("/dynamic.flash1.dev.socialpoint.es/appsfb/socialempiresdev/srvempires/get_player_info.php", methods=['POST'])
 async def get_player_info_response():
+	USERID = request.values['USERID']
+	if 'USERID' not in flasksession:
+		flasksession['USERID'] = USERID	# cleared by the login page opened in another tab
 	player_user = flasksession['USERID']
 
-	USERID = request.values['USERID']
 	user_key = request.values['user_key']
 	spdebug = request.values['spdebug'] if 'spdebug' in request.values else None
 	language = request.values['language']
@@ -684,7 +693,8 @@ async def command_response():
 			# the client is stupid and will tell the server to replay the commands, this can cause data corruption
 			return ({"result": "error", "error": "json", "description": "desync detected"}, 403)
 
-	if command(USERID, data, flasksession["GAMEVERSION"], last_town_id) == CMD_STATUS_OK:
+	gameversion = flasksession.get("GAMEVERSION") or _last_gameversion.get(USERID, "SocialEmpires0926bsec.swf")
+	if command(USERID, data, gameversion, last_town_id) == CMD_STATUS_OK:
 		return ({"result": "success"}, 200)
 
 	flasksession["CMDERR"] = True

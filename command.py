@@ -100,6 +100,9 @@ commands = {
 	"assist_send_feed":					cmd_roundtable_ask_help,
 	# recruitment prizes --------------------------------------------------------------------------------------
 	"finish_si_recruitment":			cmd_finish_si_recruitment,
+	# early building unlock / monday bonus (0.9.26b) ---------------------------------------------------------
+	"unlock_building":					cmd_unlock_building,
+	"weekly_reward":					cmd_weekly_reward,
 	# dragon nest ---------------------------------------------------------------------------------------------
 	"activate_dragon":					cmd_activate_dragon,
 	"desactivate_dragon":				cmd_deactivate_dragon,
@@ -147,6 +150,9 @@ commands = {
 	"name_map":							cmd_name_map,
 	"buy_map":							cmd_buy_map,
 	"set_strategy":						cmd_set_strategy,
+	"gold_statue_conversion":			cmd_gold_statue_conversion,
+	"put_graveyard":					cmd_put_graveyard,
+	"set_info_showed":					cmd_set_info_showed,
 	"exchange_cash_new":				cmd_exchange_cash,
 	"complete_tutorial":				cmd_complete_tutorial,
 	"rt_level_up":						cmd_rt_level_up,
@@ -199,6 +205,8 @@ commands = {
 	"end_survival":						cmd_survival_end
 }
 
+_applied_packets = {}	# USERID -> ((first_number, commands), status) of the last packet applied
+
 def command(USERID, data, gameversion, last_town_id):
 	timestamp = data["ts"]
 	first_number = data["first_number"]
@@ -207,10 +215,20 @@ def command(USERID, data, gameversion, last_town_id):
 	publishActions = data["publishActions"]
 	commands = data["commands"]
 
+	# The game resends the same packet (tries 2, 3) when it got no answer (30s timeout or an HTTP
+	# error such as a 500). If the first try was applied, applying it again duplicates everything
+	# (gold, purchases...): answer with the result of the first try instead.
+	packet_id = (first_number, json.dumps(commands, sort_keys=True))
+
 	with save_lock:
 		if session(USERID) is None:
 			log.warning(f"[C] Commands for unknown player {USERID} ignored")
 			return CMD_STATUS_FAIL
+		last = _applied_packets.get(USERID)
+		if int(tries) > 1 and last is not None and last[0] == packet_id:
+			log.warning(f"[C] Packet {first_number} (try {tries}) was already applied, not applied again")
+			return last[1]
+		_applied_packets[USERID] = (packet_id, CMD_STATUS_ERROR)
 		status = CMD_STATUS_OK
 		try:
 			for i, comm in enumerate(commands):
@@ -220,6 +238,9 @@ def command(USERID, data, gameversion, last_town_id):
 				if status == CMD_STATUS_ERROR or status == CMD_STATUS_FAIL:
 					# error out on these instantly (the game reloads from the server state)
 					break
+			if status != CMD_STATUS_ERROR and status != CMD_STATUS_FAIL:
+				status = CMD_STATUS_OK
+			_applied_packets[USERID] = (packet_id, status)
 		finally:
 			# Always write what is in memory: after a desync the game reloads from the server,
 			# so the save on disk must match that state (it used to stay unsaved).

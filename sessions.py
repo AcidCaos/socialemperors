@@ -337,7 +337,7 @@ def new_village(username, skip_tutorial = False, draggy = None, avatar = ""):
 
 def check_player_name(playername):
 	if len(playername) < 3 or len(playername) > 16:
-		return redirect("/")
+		return { "ok": False, "msg": "Player Name be between 3 - 16 characters and contain only letters and numbers" }
 
 	name = playername.strip()
 	valid = re.match(r'^[A-Za-z0-9 ]+', name)
@@ -513,6 +513,13 @@ def pvp_data_update(userid, player, town_id = 0):
 	data["shield"] = player["privateState"]["shieldEndTime"]
 
 def pvp_modify_victim(request, town_id = 0):
+	with save_lock:
+		_pvp_modify_victim(request, town_id)
+		# the attacker's honor points and won/lost counters were only kept in memory
+		if session(request["user_id"]) is not None:
+			save_session(request["user_id"], False)
+
+def _pvp_modify_victim(request, town_id = 0):
 	userid = request["attacked_id"]
 	resources = request["resources"]
 

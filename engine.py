@@ -199,6 +199,11 @@ if "daily_bonus_repeatable" in get_server_config()["misc"]:
 	DAILY_BONUS_REPEATABLE = get_server_config()["misc"]["daily_bonus_repeatable"]
 
 map_cost_multiple = [ "coins", "wood", "food", "stone" ]
+harvest_subcats = [
+	Constant.SUBCATFUNC_RESOURCE_TREE,
+	Constant.SUBCATFUNC_RESOURCE_STONE,
+	Constant.SUBCATFUNC_RESOURCE_GOLD
+]
 allies_market_resources = [ "n", "g", "w", "f", "s" ]
 ROUND_TABLE = get_game_config()["globals"]["ROUND_TABLE"]
 autohire_ignore_buildings = [
@@ -402,8 +407,9 @@ def building_collect(player, _map, item, vills = 1, res_multiplier = 1.0):
 		if "cp" in item[7]:
 			amount *= collect_multiplier[int(item[7]["cp"])]
 
-	# amount based on vills
-	if vills > 1:
+	# amount based on vills (production buildings only: the game gives a fixed amount when
+	# harvesting trees, stones and gold, whatever the number of villagers)
+	if vills > 1 and int(data["subcat_functional"]) not in harvest_subcats:
 		amount *= 1.0 + (vills - 1) * 0.2
 
 	# resource multiplier in command

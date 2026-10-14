@@ -81,8 +81,8 @@ def cmd_buy_cash(player, cmd, args, gameversion, last_town_id):
 	if not item:
 		return False
 
-	cfg_globals = get_game_config()["globals"]
-	if item_id not in cfg_globals["HEROES"]:
+	# heroes, and any unit trained "with cash" in a barracks (RecuadroInfo.trainUnitWithCash)
+	if int(item["cost_unit_cash"] or 0) <= 0:
 		return False
 
 	if not pay_cash(player, int(item["cost_unit_cash"])):
@@ -148,6 +148,10 @@ def cmd_sell(player, cmd, args, gameversion, last_town_id):
 	resurrectable = False
 	if reason == "KILL":
 		resurrectable = True
+		# args[6] = the client's checkPutToGraveyard(): 0 for summoned units, peasants, animals and a
+		# Blue Phoenix that will be reborn from its egg. Heroes return 0 too, but go to deadHeroes.
+		if len(args) > 6 and str(args[6]) == "0" and item_id not in resurrectable_heroes:
+			resurrectable = False
 	
 	_map = player["maps"][town_id]
 	item = get_item_from_id(item_id)
@@ -508,10 +512,8 @@ def cmd_push_queue_unit(player, cmd, args, gameversion, last_town_id):
 		costs = {}
 		costs[cost_type] = cost
 		
-		cost_food = 0
-		if cost_type != "f":
-			cost_food = cost << 1			# x2 food
-			costs["f"] = cost_food
+		cost_food = training_food_cost(item_data, cost)
+		costs["f"] = costs.get("f", 0) + cost_food
 
 		refund_res = pay_resource_type(player, _map, cost_type, cost)
 
@@ -597,7 +599,7 @@ def cmd_unqueue_unit(player, cmd, args, gameversion, last_town_id):
 		item_data = get_item_from_id(unit_id)
 		cost = get_training_cost(item_data, _map)
 		cost_type = item_data["cost_type"]
-		cost_food = cost << 1			# x2 food
+		cost_food = training_food_cost(item_data, cost)
 
 		give_resource_type(player, _map, cost_type, cost)
 		give_resource_type(player, _map, "f", cost_food)
@@ -804,7 +806,7 @@ def cmd_resurrect_hero(player, cmd, args, gameversion, last_town_id):
 
 	if len(args) > 4:
 		# graveyard
-		used_potion = args[4]
+		used_potion = str(args[4]) in ("1", "True", "true")	# the client sends "1" / "0" (strings)
 
 		if not in_graveyard(player, item_id):
 			return False
@@ -818,26 +820,22 @@ def cmd_resurrect_hero(player, cmd, args, gameversion, last_town_id):
 
 			graveyard_remove(player, item_id)
 		else:
-			# charge for training costs
-			item_data = get_item_from_id(item_id)
-			cost = int(round(get_training_cost(item_data, _map, False) * RESURRECT_MULTIPLIER_GRAVEYARD))
-			cost_type = item_data["cost_type"]
-		
-			cost_food = 0
-			if cost_type != "f":
-				cost_food = cost << 1			# x2 food
-
-			refund_res = pay_resource_type(player, _map, cost_type, cost)
-
-			if not refund_res:
-				# not paid, no stealing!!!!
-				return False
-
-			if not pay_resource_type(player, _map, "f", cost_food):
-				if refund_res and cost_type != "c":
-					# lets not steal resources for no reason
-					give_resource_type(player, _map, cost_type, cost)
-				return False
+			# same price as PopupGraveyard.onBuyItem: cash units cost round(cost/2) cash,
+			# gold units cost round(cost/2) gold + cost food, anything else is free
+			base_cost = int(item["cost"])
+			half = int(math.floor(base_cost / 2 + 0.5))
+			costs = {}
+			if item["cost_type"] == "c":
+				costs = { "c": half }
+			elif item["cost_type"] == "g":
+				costs = { "f": base_cost, "g": half }
+			paid = {}
+			for cost_type in costs:
+				if not pay_resource_type(player, _map, cost_type, costs[cost_type]):
+					for t in paid:
+						give_resource_type(player, _map, t, paid[t])
+					return False
+				paid[cost_type] = costs[cost_type]
 
 			graveyard_remove(player, item_id)
 	else:
@@ -1064,11 +1062,48 @@ def cmd_set_skin(player, cmd, args, gameversion, last_town_id):
 
 	return True
 
+def cmd_set_info_showed(player, cmd, args, gameversion, last_town_id):
+	# key, showed (PlayerStatus.setInfoShowed: help popups already seen)
+	key = str(args[0])
+	showed = bool(args[1])
+
+	privateState = player["privateState"]
+	if type(privateState.get("infoShowed")) != dict:
+		privateState["infoShowed"] = {}		# old saves have []
+	privateState["infoShowed"][key] = showed
+
+	return True
+
+def training_food_cost(item_data, cost):
+	# BuildingQueueManager: food = ceil(cost * FOOD_PER_GOLD_INTRAINING (2)), peasants train for free food
+	if int(item_data["subcat_functional"]) == Constant.SUBCATFUNC_UNIT_PEASANT:
+		return 0
+	return int(math.ceil(cost * 2))
+
+def cmd_gold_statue_conversion(player, cmd, args, gameversion, last_town_id):
+	# gold (IsoGoldenDynastyDragon.convertToGoldOnce: GOLD_PER_STATUE = 10)
+	# The game also drops a gold token, but picking it up only updates the screen: this command
+	# is the only time the server hears about that gold.
+	gold = int(args[0])
+	if gold < 0 or gold > 10:
+		return False
+
+	_map = player["maps"][last_town_id]
+	add_map_currency(_map, "coins", gold)
+
+	return True
+
+def cmd_put_graveyard(player, cmd, args, gameversion, last_town_id):
+	# unit_id (PhoenixEggDelegate: the egg died before hatching, the phoenix goes to the graveyard)
+	item_id = int(args[0])
+	try_push_graveyard(player, item_id)
+	return True
+
 def cmd_set_strategy(player, cmd, args, gameversion, last_town_id):
 	# strategy
 	strategy = args[0]
 
-	save["privateState"]["strategy"] = strategy
+	player["privateState"]["strategy"] = strategy
 
 	return True
 
@@ -1282,6 +1317,13 @@ def cmd_end_quest(player, cmd, args, gameversion, last_town_id):
 	add_map_currency(_map, "coins", resources["g"])
 	add_map_currency(_map, "xp", resources["x"])
 
+	# boss islands: the client puts the reward units in storage locally (no store command)
+	item_rewards = data.get("item_rewards") or {}
+	if isinstance(item_rewards, dict):
+		for item_id in item_rewards:
+			add_store_item(_map, int(item_id), int(item_rewards[item_id]))
+			register_bought_unit(player, int(item_id), town_id)
+
 	# remove lost units and send them to graveyard
 	handle_unit_loss(player, _map, units)
 
@@ -1464,11 +1506,13 @@ def cmd_pvp_end_attack(player, cmd, args, gameversion, last_town_id):
 	#	# what are you doing!?
 	#	return False
 
-	add_map_currency(_map, "coins", data["resources"]["g"])
-	add_map_currency(_map, "food", data["resources"]["f"])
-	add_map_currency(_map, "wood", data["resources"]["w"])
-	add_map_currency(_map, "stone", data["resources"]["s"])
-	add_map_currency(_map, "xp", data["resources"]["x"])
+	# 0.9.26b (Assault.sendAssaultResults) only sends "g" and "x"
+	res = data["resources"]
+	add_map_currency(_map, "coins", res.get("g", 0))
+	add_map_currency(_map, "food", res.get("f", 0))
+	add_map_currency(_map, "wood", res.get("w", 0))
+	add_map_currency(_map, "stone", res.get("s", 0))
+	add_map_currency(_map, "xp", res.get("x", 0))
 
 	# remove lost units and send them to graveyard
 	handle_unit_loss(player, _map, data["attacker_units"])
@@ -1617,11 +1661,6 @@ def cmd_buy_unit_pack(player, cmd, args, gameversion, last_town_id):
 			if packs_bought[str(pack_id)] + n > max_packs:
 				return True
 
-	if str(pack_id) not in packs_bought:
-		packs_bought[str(pack_id)] = n
-	else:
-		packs_bought[str(pack_id)] += n
-
 	discount = 1.0
 	
 	if n >= 8:
@@ -1629,21 +1668,36 @@ def cmd_buy_unit_pack(player, cmd, args, gameversion, last_town_id):
 	elif n >= 2:
 		discount = 0.9
 
+	# same rounding as the client (UnitPacksManager.buyPack: int(price * n * discount + 0.5))
 	price = pack["price"]
 	if "c" in price:
-		cost = int(math.ceil(int(price["c"]) * n * discount))
+		cost = int(int(price["c"]) * n * discount + 0.5)
 		if not pay_cash(player, cost):
 			return False
 	elif "g" in price:
-		cost = int(math.ceil(int(price["g"]) * n * discount))
+		cost = int(int(price["g"]) * n * discount + 0.5)
 		if not pay_map_currency(_map, "coins", cost):
 			return False
 	else:
 		return False
 
+	# count the packs only once they are paid
+	if str(pack_id) not in packs_bought:
+		packs_bought[str(pack_id)] = n
+	else:
+		packs_bought[str(pack_id)] += n
+
 	# set state
 	set_unit_pack_state(userid, get_unit_pack_randoms(n))
 
+	return True
+
+def cmd_set_info_showed(player, cmd, args, gameversion, last_town_id):
+	# key, showed
+	privateState = player["privateState"]
+	if not isinstance(privateState.get("infoShowed"), dict):
+		privateState["infoShowed"] = {}
+	privateState["infoShowed"][str(args[0])] = bool(args[1]) if len(args) > 1 else True
 	return True
 
 def cmd_store_add_items(player, cmd, args, gameversion, last_town_id):
@@ -1708,12 +1762,12 @@ def cmd_finish_collection(player, cmd, args, gameversion, last_town_id):
 
 	data[0] = 1
 	
-	if len(args) < 3:
-		# subtract one of each (if no cash was used)
-		idx = 1
-		while idx <= 5:
+	# subtract one of each piece owned (CollectableManager.getReward does it in both cases)
+	idx = 1
+	while idx <= 5:
+		if data[idx] > 0:
 			data[idx] -= 1
-			idx += 1
+		idx += 1
 
 	finished = player["privateState"]["collectionsCompleted"]
 	if collection_id not in finished:
@@ -1840,9 +1894,8 @@ def cmd_assist_neighbor_new(player, cmd, args, gameversion, last_town_id):
 	town_id = args[1]
 	assists = json.loads(args[2])
 
-	# AVOID CLIENT BUGS
-	if town_id != last_town_id:
-		return False
+	# town_id is the neighbour's map (the game always sends 0), not the player's current town:
+	# comparing it with last_town_id refused every assist made after coming from the troll town
 
 	status = assist_neighbor(userid, town_id, assists, player["playerInfo"]["pid"])
 	if not status:
@@ -1902,16 +1955,17 @@ def cmd_market_trade_resource(player, cmd, args, gameversion, last_town_id):
 	res_trades = clamp(res_trades, -MARKET_MAX_DECREMENTS, MARKET_MAX_INCREMENTS)
 
 	base_cost = MARKET_BASE_COSTS[resource_type] * (amount / 100)
-	cost = int(round(base_cost + base_cost * res_trades * MARKET_INCREMENT))
-	sell_cost = int(round(cost * MARKET_SELL_PERCENTAGE))
+	# Math.round in the client (ButtonMarket.refreshCost) rounds .5 up
+	cost = int(math.floor(base_cost + base_cost * res_trades * MARKET_INCREMENT + 0.5))
+	sell_cost = int(math.floor(cost * MARKET_SELL_PERCENTAGE + 0.5))
 
 	factor = 1
 	if not is_sell:
 		factor = -1
 
 	if is_sell:
-		# buy gold, for resource_type
-		if not pay_resource_type(player, _map, resource_type, sell_cost):
+		# buy gold, for resource_type: the client gives "amount" of the resource for sell_cost gold
+		if not pay_resource_type(player, _map, resource_type, amount):
 			return False
 
 		add_map_currency(_map, "coins", sell_cost)
@@ -2490,8 +2544,9 @@ def cmd_complete_goal(player, cmd, args, gameversion, last_town_id):
 	if goal_id in privateState["completedMissions"]:
 		return True
 
-	if len(args) >= 2:
-		cash_cost = int(args[1])
+	if len(args) >= 2 and int(args[1]) == 1:
+		# MissionsManager.completeMission: args[1] is a "paid with cash" flag, the price is PRICE_COMPLETE_GOAL
+		cash_cost = int(get_game_config()["globals"]["PRICE_COMPLETE_GOAL"])
 		if not pay_cash(player, cash_cost):
 			return False
 
@@ -2593,6 +2648,12 @@ def cmd_collect_treasure(player, cmd, args, gameversion, last_town_id):
 	_map = player["maps"][town_id]
 
 	now = timestamp_now()
+	if gold == 0 and xp == 0 and food == 0 and stone == 0:
+		# MapInitializer.setCorrectQuest: the client skips a chapter that does not exist for its race
+		# (human 9 -> 10, 11 -> 12...) on every map load, also while the 4h timer runs
+		_map["idCurrentTreasure"] = next_chapter
+		return True
+
 	if abs(now - _map["timestampLastTreasure"]) < TIMER_OGRES_VILLAGE:
 		return False
 
@@ -2748,7 +2809,7 @@ def cmd_survival_buy_map(player, cmd, args, gameversion, last_town_id):
 	if not pay_cash(player, cash_cost):
 		return False
 
-	unlocked["map_id"] = { "ts": 0, "tp": 0 }
+	unlocked[map_id] = { "ts": 0, "tp": 0 }
 
 	return True
 
@@ -2818,4 +2879,52 @@ def cmd_survival_end(player, cmd, args, gameversion, last_town_id):
 		for item in prize_items:
 			add_store_item(_map, item, prize_items[item])
 
+	return True
+def cmd_unlock_building(player, cmd, args, gameversion, last_town_id):
+	# item_id (string) -> PopupUnlockBuilding: ceil(min_level / 3) cash
+	item_id = int(args[0])
+	item = get_item_from_id(item_id)
+	if not item:
+		return False
+
+	unlocked = player["privateState"].setdefault("unlockedEarlyBuildings", {})
+	if not isinstance(unlocked, dict):
+		unlocked = player["privateState"]["unlockedEarlyBuildings"] = {}
+	if str(item_id) in unlocked:
+		return True
+
+	if not pay_cash(player, int(math.ceil(int(item["min_level"]) / 3))):
+		return False
+
+	unlocked[str(item_id)] = True
+	return True
+
+def cmd_weekly_reward(player, cmd, args, gameversion, last_town_id):
+	# type, value -> MondayBonusPopUp: "g" gold, "c" cash, "u" unit id (stored)
+	reward_type = str(args[0])
+	value = int(args[1])
+
+	privateState = player["privateState"]
+	now = timestamp_now()
+	last = privateState.get("timeStampMondayBonus") or 0
+	if now - int(last) < 20 * 3600:
+		return True	# already collected this monday
+
+	cfg_globals = get_game_config()["globals"]
+	_map = player["maps"][last_town_id]
+	if reward_type == "u":
+		units = cfg_globals["MONDAY_BONUS_UNITS"]
+		if isinstance(units, str):
+			units = units.split(",")
+		if value not in [int(u) for u in units]:
+			return False
+		add_store_item(_map, value)
+		register_bought_unit(player, value, last_town_id)
+	else:
+		allowed = [r for r in cfg_globals["MONDAY_BONUS_REWARDS"] if r["type"] == reward_type and int(r["value"]) == value]
+		if not allowed or reward_type not in ("g", "c"):
+			return False
+		give_resource_type(player, _map, reward_type, value)
+
+	privateState["timeStampMondayBonus"] = now
 	return True
