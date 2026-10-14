@@ -38,6 +38,7 @@
 				<a class="gameBarButton" href="#"><div><img src="/img/cash.png">Get Cash</div></a>
 				<a class="gameBarButton" href="https://discord.gg/zW5gSbQJBw" target="_blank"><div><img src="/img/discord.png">Discord</div></a>
 				<a class="gameBarButton" href="https://github.com/AcidCaos/socialemperors#readme" target="_blank"><div><img src="/img/github.png">GitHub</div></a>
+				<a class="gameBarButton" href="#" onclick="gameFullscreen(); return false;" title="Plein ecran (Echap pour quitter)"><div>&#x26F6; Plein &eacute;cran</div></a>
 			</div>
 			<style>
 				#gameBar {
@@ -89,7 +90,11 @@
 		</div>
 		<!-- EMBED GAME -->
 		<object>
-			<div id='ruffle'></div>
+			<div id="game_wrap"><div id='ruffle'></div></div>
+			<style>
+				#game_wrap:fullscreen { background-color: #669C2C; display: flex; align-items: center; justify-content: center; width: 100vw; height: 100vh; }
+				#game_wrap:fullscreen #ruffle { line-height: 0; }
+			</style>
 			<script>
 				var ruffle = window.RufflePlayer.newest(),
 				player = Object.assign(document.getElementById("ruffle").appendChild(ruffle.createPlayer()), {
@@ -101,6 +106,7 @@
 					url: "http://{{SERVERIP}}:{{PORT}}/default01.static.socialpointgames.com/static/socialempires/flash/SELoader.swf?swftoload=http://{{SERVERIP}}:{{PORT}}/default01.static.socialpointgames.com/static/socialempires/flash/{{GAMEVERSION}}",
 					backgroundColor: "#669C2C",
 					allowScriptAccess: false,
+					allowFullscreen: false,	// the game's own full screen mode lays out badly in Ruffle: use the page's "Plein ecran" button
 					autoplay: true,
 					
 					parameters: 'spdebug=notnull&brk=0\
@@ -143,6 +149,26 @@
 						&inviteTournament=0&brk=0\
 						&canvasaddress=http%3A%2F%2F{{SERVERIP}}%3A{{PORT}}%2Fplay&brk=0'
 					});
+
+				// Page full screen: the wrapper goes full screen (not the Ruffle player), so for the game nothing
+				// changes - it stays in its normal 760x600 mode and is only displayed bigger, keeping its proportions.
+				var gameWrap = document.getElementById("game_wrap");
+				function fitGame() {
+					var w = 760, h = 600;
+					if (document.fullscreenElement === gameWrap) {
+						var ratio = 760 / 600;
+						w = window.innerWidth; h = window.innerHeight;
+						if (w / h > ratio) { w = Math.floor(h * ratio); } else { h = Math.floor(w / ratio); }
+					}
+					player.style.width = w + "px";
+					player.style.height = h + "px";
+				}
+				function gameFullscreen() {
+					if (document.fullscreenElement) { document.exitFullscreen(); return; }
+					if (gameWrap.requestFullscreen) { gameWrap.requestFullscreen(); }
+				}
+				document.addEventListener("fullscreenchange", fitGame);
+				window.addEventListener("resize", fitGame);
 			</script>
 		</object>
 	</center>

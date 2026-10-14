@@ -89,7 +89,7 @@
 		<object>
 			<embed
 				src="http://{{SERVERIP}}:{{PORT}}/default01.static.socialpointgames.com/static/socialempires/flash/SELoader.swf?swftoload=http://{{SERVERIP}}:{{PORT}}/default01.static.socialpointgames.com/static/socialempires/flash/{{GAMEVERSION}}" 
-				allowFullScreen="true" bgcolor="#669C2C" quality=high WIDTH="760" HEIGHT="600" NAME="se" ALIGN=""
+				id="se_game" allowFullScreen="true" bgcolor="#669C2C" quality=high WIDTH="760" HEIGHT="600" NAME="se" ALIGN=""
 				TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer"
 				flashvars='spdebug=notnull&brk=0
 				&staticUrl=http://{{SERVERIP}}:{{PORT}}/default01.static.socialpointgames.com/static/socialempires/&brk=0
@@ -133,5 +133,25 @@
 			</embed>
 		</object>
 	</center>
+	<script>
+		// Make the game fill the window (keeping its 760x600 proportions). In normal mode the game
+		// uses StageScaleMode.EXACT_FIT, so it stretches to the size of its frame.
+		// Maximize the browser window (or press F11) for a full-screen game.
+		function fitGame() {
+			var game = document.getElementById("se_game");
+			if (!game) return;
+			var top = game.getBoundingClientRect().top + window.scrollY;
+			var w = window.innerWidth - 4;
+			var h = window.innerHeight - top - 4;
+			var ratio = 760 / 600;
+			if (w / h > ratio) { w = Math.floor(h * ratio); } else { h = Math.floor(w / ratio); }
+			if (w < 760 || h < 600) { w = 760; h = 600; }
+			game.width = w;
+			game.height = h;
+		}
+		window.addEventListener("resize", fitGame);
+		window.addEventListener("load", fitGame);
+		fitGame();
+	</script>
 	</body>
 </html>
