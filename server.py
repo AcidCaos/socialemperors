@@ -27,8 +27,8 @@ from constants import Constant
 from quests import get_quest_map
 from bundle import ASSETS_DIR, STUB_DIR, TEMPLATES_DIR, BASE_DIR
 
-host = '127.0.0.1'
-port = 5050
+host = '0.0.0.0'
+port = int(os.environ.get("PORT", 5050))
 
 app = Flask(__name__, template_folder=TEMPLATES_DIR)
 
@@ -55,7 +55,7 @@ def login():
         print("[LOGIN] GAMEVERSION:", request.form['GAMEVERSION'])
         return redirect("/play.html")
     # Login page
-    if request.method == 'GET':
+    if request.method in ('GET', 'HEAD'):
         saves_info = all_saves_info()
         return render_template("login.html", saves_info=saves_info, version=version_name)
 
